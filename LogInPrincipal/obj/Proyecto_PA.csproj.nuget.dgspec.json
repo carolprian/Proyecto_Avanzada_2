@@ -1,0 +1,77 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\PA17FAgo-Dic2023\\Proyecto_PA\\Proyecto_PA.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\PA17FAgo-Dic2023\\Proyecto_PA\\Proyecto_PA.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\PA17FAgo-Dic2023\\Proyecto_PA\\Proyecto_PA.csproj",
+        "projectName": "Proyecto_PA",
+        "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\PA17FAgo-Dic2023\\Proyecto_PA\\Proyecto_PA.csproj",
+        "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\PA17FAgo-Dic2023\\Proyecto_PA\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[7.0.12, )"
+            },
+            "System.Data.SQLite": {
+              "target": "Package",
+              "version": "[1.0.118, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
