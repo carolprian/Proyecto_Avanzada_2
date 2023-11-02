@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace Principal.AutoGens;
+
+[Table("professors")]
+public partial class Professor
+{
+    [Key]
+    [Column("professorId", TypeName = "CHAR (10)")]
+    [Required]
+    [StringLength(10, MinimumLength = 10)]
+
+    public string ProfessorId { get; set; } = null!;
+
+    [Column("name", TypeName = "VARCHAR (30)")]
+    [Required]
+    [StringLength(30)]
+    public string? Name { get; set; }
+
+    [Column("lastNameP", TypeName = "VARCHAR (30)")]
+    [Required]
+    [StringLength(30)]
+    public string? LastNameP { get; set; }
+
+    [Column("lastNameM", TypeName = "VARCHAR (30)")]
+    [StringLength(30)]
+    public string? LastNameM { get; set; }
+
+    [Column("nip", TypeName = "VARCHAR (4)")]
+    [Required]
+    [StringLength(4, MinimumLength = 4)]
+    public string? Nip { get; set; }
+
+    [Column("password", TypeName = "VARCHAR (50)")]
+    [Required]
+    [MaxLenght(50)]
+    public string? Password { get; set; }
+
+    [InverseProperty("Professor")]
+    public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
+
+    [InverseProperty("Professor")]
+    public virtual ICollection<Teach> Teaches { get; set; } = new List<Teach>();
+}
