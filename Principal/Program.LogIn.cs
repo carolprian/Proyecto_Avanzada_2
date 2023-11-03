@@ -317,11 +317,6 @@ partial class Program
                     if (students is not null)
                     {
                         rol = tableName;
-                        //menu de acciones
-                        //1.Llenar permisos__Caro
-                        //2.Reportes de material dañado
-                        //3.Listado de materiales
-                        //4.Listado de permisos
                         return true;
                     }
 
@@ -332,9 +327,6 @@ partial class Program
                     if (professors is not null)
                     {
                         rol = tableName;
-                        //Menu
-                        //1.Aprobar permisos
-                        //2.Listado de permisos pendientes
                         return true;
 
                     }

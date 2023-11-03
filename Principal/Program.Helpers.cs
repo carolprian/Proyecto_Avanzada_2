@@ -37,12 +37,12 @@ partial class Program
         return input;
     }
 
-    public static int TryParseStringaEntero()
+    public static int TryParseStringaEntero(string op)
     {
         int input;
         while (true) // Infinite loop until there is a return, that there is a valid number
         {
-            if (int.TryParse(ReadLine(), out input))
+            if (int.TryParse(op, out input))
             {
                 return input;
             }

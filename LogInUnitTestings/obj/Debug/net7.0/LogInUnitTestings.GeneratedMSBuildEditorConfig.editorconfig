@@ -8,4 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LogInUnitTestings
-build_property.ProjectDir = C:\Users\Samantha\Documents\progra\progra avanzada\PA17FAgo-Dic2023\LogInPA\LogInUnitTestings\
+build_property.ProjectDir = c:\Users\agael\OneDrive\Documentos\BrambiProjectStorage\LogInUnitTestings\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

@@ -8,7 +8,7 @@ namespace AutoGens;
 
 [Table("equipments")]
 public partial class Equipment
-{
+{ 
     [Key]
     [Column("equipmentId", TypeName = "VARCHAR (15)")]
     [Required]

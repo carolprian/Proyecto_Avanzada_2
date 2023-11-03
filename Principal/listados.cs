@@ -1,45 +1,20 @@
-// using LogInPrincipal;
-// using Principal.AutoGens;
-// using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using AutoGens;
+partial class Program
+{
+    public void ListEquipmentsRequests()
+    {
+        using (bd_storage db = new())
+        {
+            int skip = 0;
+            int take = 20;
 
-// public partial class Login
-// {
-//     public void ListadosAlmacenista()
-//     {
-//         while (true)
-//         {
-//             WriteLine("Seleccione una opción:");
-//             WriteLine("1. Listado de vales");
-//             WriteLine("2. Listado de alumnos");
-//             WriteLine("0. Salir");
-//             string option = ReadLine();
+            IQueryable<RequestDetail> requestDetails = db.RequestDetails.Where( r => r.ProfessorNip != null);
+        }
+    }
+}
 
-//             switch (option)
-//             {
-//                 case "1":
-//                     ListadoVales();
-//                     break;
-//                 case "2":
-//                     ListadoAlumnos();
-//                     break;
-//                 case "0":
-//                     return;
-//                 default:
-//                     WriteLine("Seleccione una opción válida.");
-//                     break;
-//             }
-//         }
-//     }
 
-//     
-//     public void ListadoVales()
-//     {
-//         using (var dbContext = new bd_storage())
-//         {
-//             int skip = 0;
-//             int take = 20;
-
-//             do{
 //                 IQueryable<RequestDetail> solicitudesAprobadasQuery = dbContext.RequestDetails
 //                     .Where(rd => rd.ProfessorNip!= null) // solo solicitudes aprobadas
 //                     .GroupBy(rd => rd.requestId) // Agrupar por requestId

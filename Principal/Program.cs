@@ -25,19 +25,14 @@ public partial class Program
                     string? rol;
                     if (IniciarSesion(out rol))
                     {
-                        WriteLine($"Congratulation {rol}, you logged in succesfully!");                 
-                    }
-                    else
-                    {
-                        WriteLine("Inicio de sesión fallido.");
-                    }
-                    switch(rol)
+                        WriteLine($"Congratulation {rol}, you logged in succesfully!"); 
+                        switch(rol)
                     {
                         case "students":
                         StudentsPrincipal();
                         break;
 
-                        case "prfoessors":
+                        case "professors":
                         ProfessorsPrincipal();
                         break;
 
@@ -48,6 +43,11 @@ public partial class Program
                         case "coordinators":
                         CoordinatorsPrincipal();
                         break;
+                    }                
+                    }
+                    else
+                    {
+                        WriteLine("Inicio de sesión fallido.");
                     }
 
                 break;
