@@ -195,6 +195,7 @@ partial class Program
         return changes;
     }
 
+    
     public static bool RegistroStudent()
     {
         WriteLine("Provide your register, this will be your ID: ");
@@ -218,7 +219,8 @@ partial class Program
             using(bd_storage db = new())
             {
                 IQueryable<Group> groups = db.Groups.Where(g=> g.Name == group);
-                if(groups is null)
+                
+                if(groups is null || !groups.Any())
                 {
                     Group g = new()
                     {
@@ -229,9 +231,9 @@ partial class Program
                     int changed = db.SaveChanges();  
                 }
                 IQueryable<Group> groupsid = db.Groups.Where(g=> g.Name == group);
-                if(groupsid is not null)
+                if(groupsid is not null && groupsid.Any())
                 {
-                    var groupfirst = groupsid.First();
+                    var groupfirst = groupsid.FirstOrDefault();
                     groupid = groupfirst.GroupId;
                     op=1;
                 }
@@ -275,6 +277,7 @@ partial class Program
 
         return changes;
     }
+
 
     public static bool IniciarSesion(out string? rol)
     {
