@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,10 +17,6 @@ public partial class Schedule
     [Column("initTime", TypeName = "TIME")]
     [Required]
     public DateTime InitTime { get; set; }
-
-    [Column("endTime", TypeName = "TIME")]
-    [Required]
-    public DateTime EndTime { get; set; }
 
     [Column("weekDay", TypeName = "VARCHAR (9)")]
     [Required]

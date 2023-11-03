@@ -1,8 +1,8 @@
 partial class Program
 {
-    public static void CoordinatorsPrincipal()
+   public static void CoordinatorsPrincipal()
     {
-        string op = MenuCoordinators();
+        /*string op = MenuCoordinators();
         WriteLine();
         switch (op)
         {
@@ -47,6 +47,6 @@ partial class Program
         } while (!valid);
 
         return op;
-        }
+        }*/
     }
 }
