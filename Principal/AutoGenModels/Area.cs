@@ -4,15 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("areas")]
 public partial class Area
 {
     [Key]
     [Column("areaId")]
-    [Required]
-    public int AreaId { get; set; }
+    public short AreaId { get; set; }
 
     [Column("name", TypeName = "VARCHAR (40)")]
     [Required]

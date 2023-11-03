@@ -1,6 +1,7 @@
-public partial class Login{
+partial class Program
+{
     public static string VerifyReadLengthStringExact(int characters){
-        string text;
+        string? text;
         do
         {
             text = ReadLine();
@@ -14,7 +15,7 @@ public partial class Login{
     }
 
     public static string VerifyReadLengthString(int characters){
-        string text;
+        string? text;
         do
         {
             text = ReadLine();
@@ -29,7 +30,7 @@ public partial class Login{
    
     public static string ReadNonEmptyLine()
     {
-        string input= "";
+        string? input= "";
         while(string.IsNullOrWhiteSpace(input) || string.IsNullOrEmpty(input) || input == "" ){
         input = ReadLine();
         }

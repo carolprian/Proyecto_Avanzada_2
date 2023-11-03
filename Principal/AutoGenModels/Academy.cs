@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("academies")]
 public partial class Academy
@@ -17,6 +17,7 @@ public partial class Academy
     [Column("name", TypeName = "VARCHAR (40)")]
     [Required]
     [StringLength(40)]
+
     public string? Name { get; set; }
 
     [InverseProperty("Academy")]

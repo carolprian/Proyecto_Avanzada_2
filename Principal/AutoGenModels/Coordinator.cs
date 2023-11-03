@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("coordinators")]
 public partial class Coordinator
@@ -31,7 +31,7 @@ public partial class Coordinator
 
     [Column("password", TypeName = "VARCHAR (50)")]
     [Required]
-    [StringLength(50)]
+    [StringLength(50, MinimumLength = 8)]
     public string? Password { get; set; }
 
     [InverseProperty("Coordinator")]

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 public partial class bd_storage : DbContext
 {
@@ -55,9 +55,17 @@ public partial class bd_storage : DbContext
 
     public virtual DbSet<Teach> Teaches { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlite("Filename=bd_storage.db");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        string path = Path.Combine(Environment.CurrentDirectory, "bd_storage.db");
+        string connection = $"Filename={path}";
+        ConsoleColor backgoundColor = ForegroundColor;
+        ForegroundColor = ConsoleColor.DarkYellow;
+        WriteLine($"Connection : {connection}");
+        ForegroundColor = backgoundColor;
+        // Use The DB Motor
+        optionsBuilder.UseSqlite(connection);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

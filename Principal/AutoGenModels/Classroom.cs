@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("classrooms")]
 public partial class Classroom
@@ -29,7 +29,7 @@ public partial class Classroom
     public byte? DivisionId { get; set; }
 
     [ForeignKey("DivisionId")]
-    [InverseProperty("Classroom")]
+    [InverseProperty("Classrooms")]
     public virtual Division? Division { get; set; }
 
     [InverseProperty("Classroom")]

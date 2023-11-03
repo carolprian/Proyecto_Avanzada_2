@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("schedules")]
 public partial class Schedule
@@ -24,9 +24,10 @@ public partial class Schedule
 
     [Column("weekDay", TypeName = "VARCHAR (9)")]
     [Required]
-    [MaxLenght(9)]
+    [MaxLength(9)]
     public string? WeekDay { get; set; }
 
     [InverseProperty("Schedule")]
     public virtual ICollection<Teach> Teaches { get; set; } = new List<Teach>();
+
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("requestDetails")]
 public partial class RequestDetail
@@ -64,4 +64,5 @@ public partial class RequestDetail
     [ForeignKey("StatusId")]
     [InverseProperty("RequestDetails")]
     public virtual Status? Status { get; set; }
+
 }

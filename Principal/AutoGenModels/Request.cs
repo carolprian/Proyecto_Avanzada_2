@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("requests")]
 public partial class Request
@@ -35,7 +35,7 @@ public partial class Request
 
     [Column("subjectId", TypeName = "VARCHAR (13)")]
     [Required]
-    [MaxLenght(13)]
+    [MaxLength(13)]
     public string? SubjectId { get; set; }
 
     [ForeignKey("ClassroomId")]

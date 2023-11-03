@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("status")]
 public partial class Status
@@ -16,7 +16,7 @@ public partial class Status
 
     [Column("value", TypeName = "VARCHAR (15)")]
     [Required]
-    [MaxLenght(15)]
+    [MaxLength(15)]
     public string? Value { get; set; }
 
     [InverseProperty("Status")]
@@ -27,4 +27,5 @@ public partial class Status
 
     [InverseProperty("Status")]
     public virtual ICollection<RequestDetail> RequestDetails { get; set; } = new List<RequestDetail>();
+
 }

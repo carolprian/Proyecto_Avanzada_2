@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-namespace LogInPrincipal;
+/*using Microsoft.EntityFrameworkCore;
+namespace DBStorage;
 
 public class bd_storage : DbContext
 {
@@ -15,3 +15,4 @@ public class bd_storage : DbContext
         optionsBuilder.UseSqlite(connection);
     }
 }
+*/

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("maintenanceTypes")]
 public partial class MaintenanceType
@@ -21,4 +21,5 @@ public partial class MaintenanceType
 
     [InverseProperty("MaintenanceType")]
     public virtual ICollection<MaintenanceRegister> MaintenanceRegisters { get; set; } = new List<MaintenanceRegister>();
+
 }

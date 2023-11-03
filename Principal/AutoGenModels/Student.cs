@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("students")]
 public partial class Student
@@ -30,12 +30,13 @@ public partial class Student
     public string? LastNameM { get; set; }
 
     [Column("password", TypeName = "VARCHAR (50)")]
-    [MaxLenght(50)]
+    [MaxLength(50)]
     public string? Password { get; set; }
 
     [Column("groupId")]
     [Required]
     public int? GroupId { get; set; }
+
 
     [InverseProperty("Student")]
     public virtual ICollection<DyLequipment> DyLequipments { get; set; } = new List<DyLequipment>();

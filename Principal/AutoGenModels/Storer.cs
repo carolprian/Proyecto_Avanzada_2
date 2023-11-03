@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("storers")]
 public partial class Storer
@@ -26,13 +26,14 @@ public partial class Storer
     public string? LastNameP { get; set; }
 
     [Column("lastNameM", TypeName = "VARCHAR (30)")]
-    [StringLenght(30)]
+    [StringLength(30)]
     public string? LastNameM { get; set; }
 
     [Column("password", TypeName = "VARCHAR (50)")]
     [Required]
     [MaxLength(30)]
     public string? Password { get; set; }
+
 
     [InverseProperty("Storer")]
     public virtual ICollection<MaintenanceRegister> MaintenanceRegisters { get; set; } = new List<MaintenanceRegister>();

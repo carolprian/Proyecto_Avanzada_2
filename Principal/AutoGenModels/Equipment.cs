@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Principal.AutoGens;
+namespace AutoGens;
 
 [Table("equipments")]
 public partial class Equipment
@@ -22,7 +22,7 @@ public partial class Equipment
 
     [Column("areaId")]
     [Required]
-    public int? AreaId { get; set; }
+    public short? AreaId { get; set; }
 
     [Column("description", TypeName = "VARCHAR (200)")]
     [Required]
