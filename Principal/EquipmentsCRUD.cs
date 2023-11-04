@@ -20,8 +20,7 @@ partial class Program{
                 Year = year, 
                 StatusId = statusid, 
                 ControlNumber = controlnumber
-            };
-            
+            };            
 
             EntityEntry<Equipment> entity = db.Equipments.Add(e);
             int affected = db.SaveChanges();
@@ -31,8 +30,10 @@ partial class Program{
 
     public static void UpdateEquipment()
     {
-
+        WriteLine("Here's a list of all available equiment");
+        ViewAllEquipments();
     }
+
     public static void DeleteEquipment()
     {
     
@@ -154,16 +155,45 @@ partial class Program{
                 WriteLine("There are no status found");
             }
             int i=1;
-            WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,-15}",
+            WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
                 "Index", "EquipmentId", "Equipment Name", "Area", "Description", "Year", "Status", "Control Number", "Coordinator ID");
+            Write("-------------------------------------------------------------------------------------------------------------------");
+            Write("-------------------------------------------------------------------------------");
 
             foreach (var e in equipments)
             {
-                WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,-15}",
+                WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
                     i, e.EquipmentId, e.Name, e.Area?.Name, e.Description, e.Year, e.Status?.Value, e.ControlNumber, e.Coordinator?.CoordinatorId);
                 i++;
             }
         }
     }
 
+    public static void SearchEquipmentsByName(string searchTerm)
+    {
+        using (bd_storage db = new())
+        {
+            IQueryable<Equipment>? equipments = db.Equipments
+                .Include(e => e.Area)
+                .Include(e => e.Status)
+                .Include(e => e.Coordinator)
+                .Where(e => e.EquipmentId.StartsWith(searchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
+
+            db.ChangeTracker.LazyLoadingEnabled = false;
+
+            if (!equipments.Any())
+            {
+                WriteLine("No equipment found matching the search term: " + searchTerm);
+                return;
+            }
+
+            WriteLine("| {0,-11} | {1,-15} | {2,-26} | {3,-80} | {4,4} | {5,17} | {6,20} | {7,6}",
+                "EquipmentId", "Name", "Area", "Description", "Year", "Status", "ControlNumber", "Coordinator");
+
+            foreach (var e in equipments)
+            {
+                WriteLine($"| {e.EquipmentId,-11} | {e.Name,-15} | {e.Area?.Name,-26} | {e.Description,-80} | {e.Year,4} | {e.Status?.Value,17} | {e.ControlNumber,20} | {e.Coordinator?.Name,6}");
+            }
+        }
+    }
 }
