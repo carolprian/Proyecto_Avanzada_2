@@ -9,28 +9,6 @@ partial class Program{
         switch(op)
         {
             case "1": //  Add equipment
-<<<<<<< HEAD
-                WriteLine("Adding a new equipment:");
-                WriteLine("Provide the equipment ID for the inventory:");
-                string equipmentid = VerifyReadMaxLengthString(15);
-                WriteLine("Provide the equipment name:");
-                string name = VerifyReadMaxLengthString(40);
-                WriteLine("Choose the area of the equipment:");
-                //viewAreas();
-                WriteLine("Provide the description of the equipment:");
-                string description = VerifyReadMaxLengthString(200);
-                WriteLine("Insert the year of fabrication of the equipment:");
-                int year = TryParseStringaEntero(ReadNonEmptyLine());
-                WriteLine("Choose the current status of the equipment:");
-                //viewStatus();
-                WriteLine("Insert the control Number provided by the equipments's manufacturer:");
-                string controlnumber = VerifyReadMaxLengthString(20);
-                WriteLine("Choose the coordinator in charge:");
-                //viewCoordinators();
-                var resultAdd = AddEquipment();
-                if(resultAdd.affected == 1)
-                {
-=======
 
                 WriteLine("Adding a new equipment:");
                     string equipmentid="", controlnumber="";
@@ -59,7 +37,6 @@ partial class Program{
                 string name = VerifyReadMaxLengthString(40);
                 WriteLine();
                 short areaid=-1;
->>>>>>> 405b74ce6784aaa8a54e86b24c017990daedf7ff
                     
                     int areasCount = ListAreas();
                     WriteLine("Choose the area of the equipment:");
