@@ -13,68 +13,68 @@ partial class Program
         }
     }
 
-    public static void ListAreas()
+    public static IQueryable<Area>? ListAreas()
     {
         using( bd_storage db = new())
         {
         IQueryable<Area> areas = db.Areas;
-            //.Include(category => category.Products);
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((areas is null) || !areas.Any())
             {
                 WriteLine("There are no areas found");
-                return;
+                return null;
             }
             // Use the data
             foreach (var area in areas)
             {
                 WriteLine($"{area.AreaId} . {area.Name} ");
             }
+            return areas;
         }
     }
 
-    public static void ListStatus()
+    public static IQueryable<Status>? ListStatus()
     {
         using( bd_storage db = new())
         {
         IQueryable<Status> status = db.Statuses;
-            //.Include(category => category.Products);
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((status is null) || !status.Any())
             {
                 WriteLine("There are no status found");
-                return;
+                return null;
             }
             // Use the data
             foreach (var stat in status)
             {
                 WriteLine($"{stat.StatusId} . {stat.Value} ");
             }
+            return status;
         }
 
     }
 
-    public static void ListCoordinators()
+    public static string[]? ListCoordinators() // en esta la i al mostrar la lista empieza en 1, pero al guardar el CoordinatorId empieza en 1 en el arreglo, asi que si lo usan para buscar el coordinatorId escogido, buscar en el arreglo coordinatorsid[i-1];
     {
-        string[] coordinatorss = {};
+        string[] coordinatorsid = {};
         using( bd_storage db = new())
         {
         IQueryable<Coordinator> coordinators = db.Coordinators;
-            //.Include(category => category.Products);
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((coordinators is null) || !coordinators.Any())
             {
                 WriteLine("There are no registered coordinators found");
-                return;
+                return null;
             }
-            int i=1;
+            int i=0;
             // Use the data
             foreach (var coordinator in coordinators)
             {
-                coordinatorss[i] = Decrypt(coordinator.CoordinatorId);
-                WriteLine($"{Decrypt(coordinator.CoordinatorId)} . {coordinator.Name} {coordinator.LastNameP}");
+                coordinatorsid[i] = Decrypt(coordinator.CoordinatorId);
                 i++;
+                WriteLine($"{i}. {Decrypt(coordinator.CoordinatorId)} . {coordinator.Name} {coordinator.LastNameP}");
             }
+            return coordinatorsid;
         }
     }
 }

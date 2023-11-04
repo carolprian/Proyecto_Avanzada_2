@@ -1,11 +1,15 @@
 using AutoGens;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+
 partial class Program{
     
-    static (int affected, int productId) AddEquipment(string equipmentid, string name, short areaid, string description, int year, byte statusid, string controlnumber, string coordinatorid )
+    static (int affected, string EquipmentId) AddEquipment(string equipmentid, string name, short areaid, string description, int year, byte statusid, string controlnumber, string coordinatorid )
     {
         using(bd_storage db = new())
         {
-            if(db.Equipments is null){ return(0,0);}
+            if(db.Equipments is null){ return(0,"0");}
             Equipment e = new() 
             {
                 EquipmentId = equipmentid, 
@@ -16,9 +20,13 @@ partial class Program{
                 StatusId = statusid, 
                 ControlNumber = controlnumber
             };
+
+            EntityEntry<Equipment> entity = db.Equipments.Add(e);
+            int affected = db.SaveChanges();
+            return (affected, e.EquipmentId);
         }
-        return (0,0);
     }
+    
     public static void UpdateEquipment()
     {
 

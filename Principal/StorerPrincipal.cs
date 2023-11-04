@@ -1,4 +1,6 @@
 using System.Formats.Asn1;
+using AutoGens;
+using Microsoft.VisualBasic;
 
 partial class Program{
      public static void StorersPrincipal(){
@@ -10,26 +12,85 @@ partial class Program{
                 WriteLine("Adding a new equipment:");
                 WriteLine("Provide the equipment ID for the inventory:");
                 string equipmentid = VerifyReadMaxLengthString(15);
+                WriteLine();
                 WriteLine("Provide the equipment name:");
                 string name = VerifyReadMaxLengthString(40);
+                WriteLine();
+                IQueryable<Area>? areas = ListAreas();
                 WriteLine("Choose the area of the equipment:");
-                short areaid=1;//viewAreas();
+                short areaid=-1;
+                while(areaid <= 0 || areaid > areas?.Count() )
+                {
+                    try
+                    {
+                        areaid = Convert.ToInt16(VerifyReadLengthStringExact(1));
+                    }
+                    catch (FormatException)
+                    {
+                        WriteLine("That is not a correct option, try again.");
+                        areaid = -1;
+                    }
+                    catch (OverflowException)
+                    {
+                        WriteLine("That is not a correct option, try again.");
+                        areaid = -1;
+                    }
+                }
+
+                WriteLine();
                 WriteLine("Provide the description of the equipment:");
                 string description = VerifyReadMaxLengthString(200);
+                WriteLine();
                 WriteLine("Insert the year of fabrication of the equipment:");
                 int year = TryParseStringaEntero(ReadNonEmptyLine());
-                WriteLine("Choose the current status of the equipment:");
-                byte statusid =1;//viewStatus();
+                WriteLine();
+                IQueryable<Status>? status = ListStatus();
+                WriteLine("Choose and write the option of the current status of the equipment:");
+
+                byte statusid = 0;
+                while(statusid == 0 || statusid > status?.Count())
+                {
+                    try
+                    {
+                        statusid = Convert.ToByte(VerifyReadLengthStringExact(1));
+                    }
+                    catch (FormatException)
+                    {
+                        WriteLine("That is not a correct option, try again.");
+                        statusid = 0;
+                    }
+                    catch (OverflowException)
+                    {
+                        WriteLine("That is not a correct option, try again.");
+                        statusid = 0;
+                    }
+                }
+                WriteLine();
+
                 WriteLine("Insert the control Number provided by the equipments's manufacturer:");
                 string controlnumber = VerifyReadMaxLengthString(20);
+                WriteLine();
                 WriteLine("Choose the coordinator in charge:");
-                string coordinatorid="";//viewCoordinators();
-                var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid );
-                if(resultAdd.affected == 1)
-                {
-                    
-                }
+                string[]? coordinators = ListCoordinators();
+                WriteLine();
+                WriteLine("Write the choosen option:");
+                int coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+                string coordinatorid = "";
+                    if(coordinators is not null)
+                    {
+                        coordinatorid = coordinators[coordid -1];
+                    }
+                    var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid );
+                    if(resultAdd.affected == 1)
+                    {
+                        WriteLine($"The equipment {resultAdd.EquipmentId} was created succesfully");
+                    }
+                    else{
+                        WriteLine("The equipment was not registered.");
+                    }
+
             break;
+
             case "2": // Update equipment info
                 UpdateEquipment();
             break;

@@ -56,7 +56,7 @@ partial class Program
     public static bool RegistroProf()
     {
         WriteLine("Provide your nomin, this will be your ID: ");
-        string username = VerifyReadLengthStringExact(10);
+        string username = EncryptPass(VerifyReadLengthStringExact(10));
 
         WriteLine("Provide your name: ");
         string firstname = ReadNonEmptyLine();
@@ -125,7 +125,7 @@ partial class Program
     public static bool RegistroStorerCoord(string tableName)
     {
         WriteLine("Provide your nomin, this will be your ID: ");
-        string username = VerifyReadLengthStringExact(10);
+        string username = EncryptPass(VerifyReadLengthStringExact(10));
 
         WriteLine("Provide your name: ");
         string firstname = ReadNonEmptyLine();
