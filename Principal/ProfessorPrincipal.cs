@@ -20,14 +20,14 @@ partial class Program{
             break;
         }//END OF SWITCH
     }
-    public static void ApprovePermissions(){
-        using (bd_storage db = new())
-            {
-                IQueryable<Request> requests = db.Requests.Include(c=>c.RequestDetails.Where(p=>p.ProfessorNip == null));
-                foreach (var request in requests)
-                {
-                    WriteLine($"");
-                }
-            }
-    }
+    // public static void ApprovePermissions(){
+    //     using (bd_storage db = new())
+    //         {
+    //             IQueryable<Request> requests = db.Requests.Include(c=>c.RequestDetails.Where(p=>p.ProfessorNip == null));
+    //             foreach (var request in requests)
+    //             {
+    //                 WriteLine($"");
+    //             }
+    //         }
+    // }
 }

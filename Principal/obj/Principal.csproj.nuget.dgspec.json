@@ -1,62 +1,32 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
+    "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj": {
+    "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "projectUniqueName": "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj",
         "projectName": "Principal",
-        "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\obj\\",
-=======
-    "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
-  },
-  "projects": {
-    "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "projectName": "Principal",
-        "projectPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\artug\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\obj\\",
->>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
-=======
-    "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
-  },
-  "projects": {
-    "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "projectName": "Principal",
-        "projectPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\artug\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\obj\\",
->>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
+        "projectPath": "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "packagesPath": "C:\\Users\\agael\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-<<<<<<< HEAD
-<<<<<<< HEAD
-          "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
-=======
-=======
->>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
-          "C:\\Users\\artug\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\agael\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
->>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -69,6 +39,9 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "default"
         }
       },
       "frameworks": {
@@ -101,12 +74,30 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.9, 7.0.9]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[7.0.9, 7.0.9]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.9, 7.0.9]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.9, 7.0.9]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-preview.7.23376.3\\RuntimeIdentifierGraph.json"
         }
       }
     }
