@@ -28,6 +28,7 @@ partial class Program{
             return (affected, e.EquipmentId);
         }
     }
+
     public static void UpdateEquipment()
     {
 
@@ -36,6 +37,7 @@ partial class Program{
     {
     
     }
+    
 /*
     public static void ViewAEquipments()
 {

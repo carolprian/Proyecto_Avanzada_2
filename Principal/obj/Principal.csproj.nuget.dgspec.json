@@ -1,31 +1,62 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
+<<<<<<< HEAD
+<<<<<<< HEAD
+    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
   },
   "projects": {
-    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\Principal.csproj": {
+    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj",
         "projectName": "Principal",
-        "projectPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\Valeria\\.nuget\\packages\\",
-        "outputPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\obj\\",
+        "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\obj\\",
+=======
+    "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "projectName": "Principal",
+        "projectPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "packagesPath": "C:\\Users\\artug\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\obj\\",
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
+=======
+    "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "projectName": "Principal",
+        "projectPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "packagesPath": "C:\\Users\\artug\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\obj\\",
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Valeria\\AppData\\Roaming\\NuGet\\NuGet.Config",
+<<<<<<< HEAD
+<<<<<<< HEAD
+          "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+=======
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
+          "C:\\Users\\artug\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
