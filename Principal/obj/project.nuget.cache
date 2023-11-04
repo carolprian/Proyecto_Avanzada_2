@@ -1,6 +1,7 @@
 {
   "version": 2,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "dgSpecHash": "SfeAz2QmMW/DOvIzlnbV7mI11HkARbjODfaJAahJiEEV+V50Z5hgTnOG3BDcnva2oH6J8fnVcB+jY9fgZJWFLA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj",
@@ -38,6 +39,12 @@
   "success": true,
   "projectFilePath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
   "expectedPackageFiles": [
+=======
+  "dgSpecHash": "D1cR6GExKBeEGvxedntqNEMQa5613ArDfQFAQE9WgpBq5gog2yXs4a5tiQ2px8JBmGFai45h4/7U2fWFnGOmoA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+  "expectedPackageFiles": [
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
     "C:\\Users\\artug\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\artug\\.nuget\\packages\\microsoft.data.sqlite.core\\7.0.13\\microsoft.data.sqlite.core.7.0.13.nupkg.sha512",
     "C:\\Users\\artug\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.13\\microsoft.entityframeworkcore.7.0.13.nupkg.sha512",
@@ -66,6 +73,9 @@
     "C:\\Users\\artug\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
     "C:\\Users\\artug\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
     "C:\\Users\\artug\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512"
+<<<<<<< HEAD
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
+=======
 >>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
   ],
   "logs": []

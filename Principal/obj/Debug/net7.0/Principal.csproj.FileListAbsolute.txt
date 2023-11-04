@@ -244,6 +244,7 @@ C:\Users\aacar\BrambiProjectStorage\principal\obj\Debug\net7.0\Principal.csproj.
 C:\Users\aacar\BrambiProjectStorage\principal\obj\Debug\net7.0\Principal.genruntimeconfig.cache
 C:\Users\aacar\BrambiProjectStorage\principal\obj\Debug\net7.0\ref\Principal.dll
 <<<<<<< HEAD
+<<<<<<< HEAD
 C:\Users\Samantha\Documents\progra\progra avanzada\BrambiProjectStorage\Principal\bin\Debug\net7.0\Principal.exe
 C:\Users\Samantha\Documents\progra\progra avanzada\BrambiProjectStorage\Principal\bin\Debug\net7.0\Principal.deps.json
 C:\Users\Samantha\Documents\progra\progra avanzada\BrambiProjectStorage\Principal\bin\Debug\net7.0\Principal.runtimeconfig.json
@@ -306,6 +307,8 @@ C:\Users\Samantha\Documents\progra\progra avanzada\BrambiProjectStorage\Principa
 C:\Users\Samantha\Documents\progra\progra avanzada\BrambiProjectStorage\Principal\obj\Debug\net7.0\Principal.genruntimeconfig.cache
 C:\Users\Samantha\Documents\progra\progra avanzada\BrambiProjectStorage\Principal\obj\Debug\net7.0\ref\Principal.dll
 =======
+=======
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
 C:\Users\artug\Desktop\Practicas_ProgramacionAvanzada\ProyectoFinal\BrambiProjectStorage\Principal\bin\Debug\net7.0\Principal.exe
 C:\Users\artug\Desktop\Practicas_ProgramacionAvanzada\ProyectoFinal\BrambiProjectStorage\Principal\bin\Debug\net7.0\Principal.deps.json
 C:\Users\artug\Desktop\Practicas_ProgramacionAvanzada\ProyectoFinal\BrambiProjectStorage\Principal\bin\Debug\net7.0\Principal.runtimeconfig.json
@@ -367,4 +370,7 @@ C:\Users\artug\Desktop\Practicas_ProgramacionAvanzada\ProyectoFinal\BrambiProjec
 C:\Users\artug\Desktop\Practicas_ProgramacionAvanzada\ProyectoFinal\BrambiProjectStorage\Principal\obj\Debug\net7.0\Principal.pdb
 C:\Users\artug\Desktop\Practicas_ProgramacionAvanzada\ProyectoFinal\BrambiProjectStorage\Principal\obj\Debug\net7.0\Principal.genruntimeconfig.cache
 C:\Users\artug\Desktop\Practicas_ProgramacionAvanzada\ProyectoFinal\BrambiProjectStorage\Principal\obj\Debug\net7.0\ref\Principal.dll
+<<<<<<< HEAD
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
+=======
 >>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42

@@ -172,9 +172,98 @@ partial class Program
                     default:
                     break;
                 }
+<<<<<<< HEAD
         
         }
      }  
+=======
+                WriteLine();
+
+                opi=0;
+                    using(bd_storage db = new())
+                    {
+                        while(opi==0)
+                        {   
+                            WriteLine("Insert the control Number provided by the equipments's manufacturer:");
+                            controlnumber = VerifyReadMaxLengthString(20);
+                            IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.ControlNumber == controlnumber);
+                            
+                            if(equipments is null || !equipments.Any())
+                            {
+                                opi = 1;
+                            }
+                            else
+                            {
+                                WriteLine("That control number is already in use, try again.");
+                            }
+                        }                
+                    }
+
+                WriteLine();
+                WriteLine("Choose the coordinator in charge:");
+                string[]? coordinators = ListCoordinators();
+                WriteLine();
+                WriteLine("Write the choosen option:");
+                int coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+                string coordinatorid = "";
+                    if(coordinators is not null)
+                    {
+                        coordinatorid = coordinators[coordid -1];
+                    }
+                    var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid );
+                    if(resultAdd.affected == 1)
+                    {
+                        WriteLine($"The equipment {resultAdd.EquipmentId} was created succesfully");
+                    }
+                    else{
+                        WriteLine("The equipment was not registered.");
+                    }
+
+            break;
+
+            case "2": // Update equipment info
+                UpdateEquipment();
+            break;
+
+            case "3": // Equipment List
+                ViewAllEquipments();
+            break;
+
+            case "4": // Delete equipment
+                DeleteEquipment();
+            break;
+
+            case "5":  // List Equipment Requests
+                ListEquipmentsRequests();
+            break;
+
+            case "6": // LIst Equipment Requests only for tomorrow
+            break;
+
+            case "7":
+            break;
+
+            case "8":
+                DamagedLostReportInit();                
+            break;
+
+            case "9":
+            break;
+
+            case "10":
+            break;
+
+            case "11":
+            break;
+
+            case "12":
+            break;
+
+            default:
+            break;
+        }        
+    }
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
 
 
     public static string MenuStorer()

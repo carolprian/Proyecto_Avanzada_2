@@ -1267,8 +1267,11 @@
   },
   "packageFolders": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "C:\\Users\\Samantha\\.nuget\\packages\\": {}
 =======
+=======
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
     "C:\\Users\\artug\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
 >>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
@@ -1276,6 +1279,7 @@
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
 <<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\BrambiProjectStorage\\Principal\\Principal.csproj",
       "projectName": "Principal",
@@ -1289,11 +1293,21 @@
       "packagesPath": "C:\\Users\\artug\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\obj\\",
 >>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
+=======
+      "projectUniqueName": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+      "projectName": "Principal",
+      "projectPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+      "packagesPath": "C:\\Users\\artug\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\obj\\",
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
       "projectStyle": "PackageReference",
       "configFilePaths": [
 <<<<<<< HEAD
+<<<<<<< HEAD
         "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
 =======
+=======
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
         "C:\\Users\\artug\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"

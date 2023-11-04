@@ -9,7 +9,11 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Principal
 <<<<<<< HEAD
+<<<<<<< HEAD
 build_property.ProjectDir = C:\Users\Samantha\Documents\progra\progra avanzada\BrambiProjectStorage\Principal\
+=======
+build_property.ProjectDir = C:\Users\artug\Desktop\Practicas_ProgramacionAvanzada\ProyectoFinal\BrambiProjectStorage\Principal\
+>>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
 =======
 build_property.ProjectDir = C:\Users\artug\Desktop\Practicas_ProgramacionAvanzada\ProyectoFinal\BrambiProjectStorage\Principal\
 >>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
