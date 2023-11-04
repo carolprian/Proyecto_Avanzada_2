@@ -13,14 +13,14 @@ partial class Program
         string tableName;
         while (true)
         {
-            WriteLine("Bienvenido al registro!");
-            WriteLine("Que tipo de usuario eres? ");
-            WriteLine("1.Alumno");
-            WriteLine("2.Profesor");
-            WriteLine("3.Coordinador");
-            WriteLine("4.Almacenista");
-            WriteLine("5.Salir");
-            WriteLine("Selecciona una opcion: ");
+            WriteLine("Welcome to the register ");
+            WriteLine("What kind of user are you?");
+            WriteLine("1.Student");
+            WriteLine("2.Professor");
+            WriteLine("3.Coordinator");
+            WriteLine("4.Storer");
+            WriteLine("5.Exit");
+            WriteLine("Pick an option: ");
 
             string? opcion = ReadLine();
             bool bdquery = false;
@@ -47,7 +47,7 @@ partial class Program
                     return;
 
                 default:
-                    WriteLine("Opcion no valida. Intentalo de nuevo.");
+                    WriteLine("Not valide option. Try again");
                     break;
             }
         }
@@ -56,7 +56,7 @@ partial class Program
     public static bool RegistroProf()
     {
         WriteLine("Provide your nomin, this will be your ID: ");
-        string username = VerifyReadLengthStringExact(10);
+        string username = EncryptPass(VerifyReadLengthStringExact(10));
 
         WriteLine("Provide your name: ");
         string firstname = ReadNonEmptyLine();
@@ -125,7 +125,7 @@ partial class Program
     public static bool RegistroStorerCoord(string tableName)
     {
         WriteLine("Provide your nomin, this will be your ID: ");
-        string username = VerifyReadLengthStringExact(10);
+        string username = EncryptPass(VerifyReadLengthStringExact(10));
 
         WriteLine("Provide your name: ");
         string firstname = ReadNonEmptyLine();
@@ -195,6 +195,7 @@ partial class Program
         return changes;
     }
 
+    
     public static bool RegistroStudent()
     {
         WriteLine("Provide your register, this will be your ID: ");
@@ -218,7 +219,8 @@ partial class Program
             using(bd_storage db = new())
             {
                 IQueryable<Group> groups = db.Groups.Where(g=> g.Name == group);
-                if(groups is null)
+                
+                if(groups is null || !groups.Any())
                 {
                     Group g = new()
                     {
@@ -229,11 +231,11 @@ partial class Program
                     int changed = db.SaveChanges();  
                 }
                 IQueryable<Group> groupsid = db.Groups.Where(g=> g.Name == group);
-                if(groupsid is not null)
+                if(groupsid is not null && groupsid.Any())
                 {
-                    var groupfirst = groupsid.First();
+                    var groupfirst = groupsid.FirstOrDefault();
                     groupid = groupfirst.GroupId;
-                    op=1;
+                    op=1; 
                 }
                         
             }
@@ -276,85 +278,119 @@ partial class Program
         return changes;
     }
 
+
     public static bool IniciarSesion(out string? rol)
     {
         using (bd_storage db = new())
         {
-            WriteLine("Ingrese su ID: ");
+            WriteLine("Write your ID: ");
             string username = ReadNonEmptyLine();
 
-            WriteLine("Ingrese su contraseña: ");
+            WriteLine("Write your password: ");
             string pass = EncryptPass(ReadNonEmptyLine());
 
-            string[] tables = { "students", "professors", "storers", "coordinators" }; //si falla es por la 's'
-
-            foreach (string tableName in tables)
-            {
-                string idUser = "";
-
-                switch (tableName)
+            //string[] tables = { "students", "professors", "storers", "coordinators" }; //si falla es por la 's'
+            string idUser = "studentId";
+                while ( true )
                 {
-                    case "students":
-                        idUser = "studentId";
-                        break;
-                    case "professors":
-                        idUser = "professorId";
-                        break;
-                    case "storers":
-                        idUser = "storerId";
-                        break;
-                    case "coordinators":
-                        idUser = "cordinatorId";
-                        break;
-                    default:
-                        rol = "None";
-                        break;
-                }
 
-                if (idUser == "studentId")
-                {
-                    IQueryable<Student> students = db.Students.Where(s => s.StudentId == username && s.Password == pass);
-                    if (students is not null)
+                    if (idUser == "studentId")
                     {
-                        rol = tableName;
-                        return true;
-                    }
+                        IQueryable<Student> students = db.Students
+                        .Where(s => s.StudentId == username && s.Password == pass);
+                        WriteLine($"ToQueryString: {students.ToQueryString()}");
+                        
+                        if (students is null || !students.Any())
+                        {
+                            WriteLine("Student not found.");
+                            idUser = "professorId";
+                            rol = null;
+                        }
+                        else
+                        {
+                            foreach (var details in students)
+                            {
+                                WriteLine($"RequestId: {details.StudentId}, Pass: {details.Password}");
+                            }
+                            rol = "students";
+                            return true;
+                            break;
 
-                }
-                else if (idUser == "professorId")
-                {
-                    IQueryable<Professor> professors = db.Professors.Where(p => p.ProfessorId == username && p.Password == pass);
-                    if (professors is not null)
-                    {
-                        rol = tableName;
-                        return true;
+                        }
 
                     }
-                }
-                else if (idUser == "storerId")
-                {
-                    IQueryable<Storer> storers = db.Storers.Where(s => s.StorerId == username && s.Password == pass);
-                    if (storers is not null)
+                    else if (idUser == "professorId")
                     {
-                        rol = tableName;
-                        return true;
+                        IQueryable<Professor> professors = db.Professors.Where(p => p.ProfessorId == username && p.Password == pass);
+                        WriteLine($"ToQueryString: {professors.ToQueryString()}");
+                        if (professors is null || !professors.Any())
+                        {
+                            WriteLine("Professor not found.");
+                            idUser = "storerId";
+                            rol = null;
+                        }
+                        else
+                        {
+                            foreach (var details in professors)
+                            {
+                                WriteLine($"RequestId: {details.ProfessorId}, Pass: {details.Password}");
+                            }
+                            rol = "professors";
+                            return true;
+                            break;
+
+                        }
                     }
-                }
-                else if (idUser == "coordinatorId")
-                {
-                    IQueryable<Coordinator> coordinators = db.Coordinators.Where(s => s.CoordinatorId == username && s.Password == pass);
-                    if (coordinators is not null)
+                    else if (idUser == "storerId")
                     {
-                        rol = tableName;
-                        return true;
+                        IQueryable<Storer> storers = db.Storers.Where(s => s.StorerId == username && s.Password == pass);
+                        WriteLine($"ToQueryString: {storers.ToQueryString()}");
+
+                        if (storers is null || !storers.Any())
+                        {
+                            WriteLine("Storer not found.");
+                            idUser = "coordinatorId";
+                            rol = null;
+                        }
+                        else
+                        {
+                            foreach (var details in storers)
+                            {
+                                WriteLine($"RequestId: {details.StorerId}, Pass: {details.Password}");
+                            }
+                            rol = "storers";
+                            return true;
+                            break;
+                        }
                     }
-                }
-            }
+                    else if (idUser == "coordinatorId")
+                    {
+                        IQueryable<Coordinator> coordinators = db.Coordinators.Where(s => s.CoordinatorId == username && s.Password == pass);
+                        WriteLine($"ToQueryString: {coordinators.ToQueryString()}");
+                        if (coordinators is null || !coordinators.Any())
+                        {
+                            WriteLine("Coordinator not found.");
+                            rol = null;
+                            idUser = "none";
+                            break;
+                        }
+                        else
+                        {
+                            foreach (var details in coordinators)
+                            {
+                                WriteLine($"RequestId: {details.CoordinatorId}, Pass: {details.Password}");
+                            }
+                            rol = "coordinators";
+                            return true;
+                            break;
+                        }
+                    }
+                }    
+            //}
         }
-        rol = null;
+        //rol = null;
         return false;
     }
-
     public static string EncryptPass(string plainText)
     {
         using (Aes aesAlg = Aes.Create())
@@ -404,7 +440,7 @@ partial class Program
     {
         using (bd_storage db = new())
         {
-            WriteLine("Ingrese su ID: ");
+            WriteLine("Write your ID: ");
             string username = ReadNonEmptyLine();
 
             string[] tables = { "students", "professors", "storers", "coordinators" };
@@ -447,7 +483,7 @@ partial class Program
                         }
                         else
                         {
-                            WriteLine("Student ID is nigger");
+                            WriteLine("Student ID is null");
                         }
                     }
                     else

@@ -1,6 +1,6 @@
 partial class Program
 {
-    public static string VerifyReadLengthStringExact(int characters){
+   public static string VerifyReadLengthStringExact(int characters){
         string? text;
         do
         {
@@ -52,6 +52,8 @@ partial class Program
         return input;
     }
 
+    
+
     public static int TryParseStringaEntero(string op)
     {
         int input;
@@ -67,5 +69,4 @@ partial class Program
             }
         }
     }
-
 }

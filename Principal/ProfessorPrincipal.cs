@@ -1,5 +1,5 @@
 using AutoGens;
-using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore;
 
 partial class Program{
     public static void ProfessorsPrincipal(){
@@ -20,7 +20,7 @@ partial class Program{
             break;
         }//END OF SWITCH
     }
-    public static void ApprovePermissions(){
+    /*public static void ApprovePermissions(){
         using (bd_storage db = new())
             {
                 IQueryable<Request> requests = db.Requests.Include(c=>c.RequestDetails.Where(p=>p.ProfessorNip == null));
@@ -29,5 +29,5 @@ partial class Program{
                     WriteLine($"");
                 }
             }
-    } 
+    } */
 }

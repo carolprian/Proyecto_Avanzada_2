@@ -1,10 +1,15 @@
+using System.Formats.Asn1;
+using AutoGens;
+using Microsoft.VisualBasic;
+
 partial class Program{
-    public static void StorersPrincipal(){
+     public static void StorersPrincipal(){
         string op = MenuStorer();
         WriteLine();
         switch(op)
         {
             case "1": //  Add equipment
+<<<<<<< HEAD
                 WriteLine("Adding a new equipment:");
                 WriteLine("Provide the equipment ID for the inventory:");
                 string equipmentid = VerifyReadMaxLengthString(15);
@@ -25,9 +30,129 @@ partial class Program{
                 var resultAdd = AddEquipment();
                 if(resultAdd.affected == 1)
                 {
+=======
+
+                WriteLine("Adding a new equipment:");
+                    string equipmentid="", controlnumber="";
+                    int opi=0;        
+                    using(bd_storage db = new())
+                    {
+                        while(opi==0)
+                        {   
+                            WriteLine("Provide the equipment ID for the inventory:");
+                            equipmentid = VerifyReadMaxLengthString(15);
+                            IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.EquipmentId == equipmentid);
+                            
+                            if(equipments is null || !equipments.Any())
+                            {
+                                opi = 1;
+                            }
+                            else
+                            {
+                                WriteLine("That equipment id is already in use, try again.");
+                            }
+                        }                
+                    }
+
+                WriteLine();
+                WriteLine("Provide the equipment name:");
+                string name = VerifyReadMaxLengthString(40);
+                WriteLine();
+                short areaid=-1;
+>>>>>>> 405b74ce6784aaa8a54e86b24c017990daedf7ff
                     
+                    int areasCount = ListAreas();
+                    WriteLine("Choose the area of the equipment:");
+                    while(areaid <= 0 || areaid > areasCount )
+                    {
+                        try
+                        {
+                            areaid = Convert.ToInt16(VerifyReadMaxLengthString(2));
+                        }
+                        catch (FormatException)
+                        {
+                            WriteLine("That is not a correct option, try again.");
+                            areaid = -1;
+                        }
+                        catch (OverflowException)
+                        {
+                            WriteLine("That is not a correct option, try again.");
+                            areaid = -1;
+                        }
+                    }
+                
+                WriteLine();
+                WriteLine("Provide the description of the equipment:");
+                string description = VerifyReadMaxLengthString(200);
+                WriteLine();
+                WriteLine("Insert the year of fabrication of the equipment:");
+                int year = TryParseStringaEntero(ReadNonEmptyLine());
+                WriteLine();
+                WriteLine("Choose and write the option of the current status of the equipment:");
+                int statusCount = ListStatus();
+
+                byte statusid = 0;
+                while(statusid == 0 || statusid > statusCount)
+                {
+                    try
+                    {
+                        statusid = Convert.ToByte(VerifyReadLengthStringExact(1));
+                    }
+                    catch (FormatException)
+                    {
+                        WriteLine("That is not a correct option, try again.");
+                        statusid = 0;
+                    }
+                    catch (OverflowException)
+                    {
+                        WriteLine("That is not a correct option, try again.");
+                        statusid = 0;
+                    }
                 }
+                WriteLine();
+
+                opi=0;
+                    using(bd_storage db = new())
+                    {
+                        while(opi==0)
+                        {   
+                            WriteLine("Insert the control Number provided by the equipments's manufacturer:");
+                            controlnumber = VerifyReadMaxLengthString(20);
+                            IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.ControlNumber == controlnumber);
+                            
+                            if(equipments is null || !equipments.Any())
+                            {
+                                opi = 1;
+                            }
+                            else
+                            {
+                                WriteLine("That control number is already in use, try again.");
+                            }
+                        }                
+                    }
+
+                WriteLine();
+                WriteLine("Choose the coordinator in charge:");
+                string[]? coordinators = ListCoordinators();
+                WriteLine();
+                WriteLine("Write the choosen option:");
+                int coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+                string coordinatorid = "";
+                    if(coordinators is not null)
+                    {
+                        coordinatorid = coordinators[coordid -1];
+                    }
+                    var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid );
+                    if(resultAdd.affected == 1)
+                    {
+                        WriteLine($"The equipment {resultAdd.EquipmentId} was created succesfully");
+                    }
+                    else{
+                        WriteLine("The equipment was not registered.");
+                    }
+
             break;
+
             case "2": // Update equipment info
                 UpdateEquipment();
             break;
@@ -38,13 +163,15 @@ partial class Program{
                 DeleteEquipment();
             break;
             case "5":  // List Equipment Requests
-                //ListEquipmentsRequests();
+                ListEquipmentsRequests();
             break;
             case "6": // LIst Equipment Requests only for tomorrow
             break;
             case "7":
             break;
             case "8":
+                DamagedLostReportInit();
+                
             break;
             case "9":
             break;
@@ -58,7 +185,8 @@ partial class Program{
             break;
         }
         
-    } 
+    }
+
 
     public static string MenuStorer()
     {
@@ -66,18 +194,28 @@ partial class Program{
         WriteLine();
         WriteLine("Welcome Storer !");
         WriteLine("Please choose an option, a number between 1 and 12");
-        WriteLine(" 1. Add new equipment"); // volley
+        WriteLine(" 1. Add new equipment"); // volley SI
         WriteLine(" 2. Update equipment information");  // furry
-        WriteLine(" 3. View equipments");  // volley
+        WriteLine(" 3. View equipments");  // volley SI
         WriteLine(" 4. Delete equipment");  // furry
-        WriteLine(" 5. View Equipment Requests"); // sam
-        WriteLine(" 6. View Tomorrows Equipment Requests"); // sam
-        WriteLine(" 7. View and Search for a Students History"); // volley
-        WriteLine(" 8. Create report of damaged or lost equipment");  // volley
-        WriteLine(" 9. Program maintenance for a equipment ");  // furry
-        WriteLine(" 10. View Maintenance History");  // volley
-        WriteLine(" 11. Change password");  // furry
-        WriteLine(" 12. Sign out"); // ni pa las muelas chaparro
+        WriteLine(" 5. View Equipment Requests"); // sam SI
+        WriteLine(" 6. View Tomorrows Equipment Requests"); // sam SI
+        /*
+        WriteLine(" 7. View and Search for a Students History"); // volley 
+        WriteLine("         a. See all students");
+        WriteLine("         b. Search for a student in specific");
+        WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)");
+        WriteLine(" 8. View and Search for Students using Equipment at this moment");
+        WriteLine("         a. See all students using equipments ");
+        WriteLine("         b. Search for a specific student in this list");
+        WriteLine("         c. See the list of students that are late for returning equipments");
+        WriteLine(" 9. Return a equipment"); // busca por registro de estudiante, y verifica que todo sea igual a su request, al final pregunta si llegó dañado o en malas condiciones y lo manda a create
+        */  
+        WriteLine(" 10. Create report of damaged or lost equipment");  // volley MASO
+        WriteLine(" 11. Program maintenance for a equipment ");  // furry
+        WriteLine(" 12. View Maintenance History");  // volley 
+        WriteLine(" 13. Change password");  // furry
+        WriteLine(" 14. Sign out"); // ni pa las muelas chaparro 
         bool valid = false;
         do{
             op = ReadNonEmptyLine();
@@ -93,7 +231,7 @@ partial class Program{
         } while (!valid);
 
         return op;
- }
+        }
 
     public void SubMenuRequestsForStorers()
     {
