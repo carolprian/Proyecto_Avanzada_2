@@ -2,7 +2,8 @@ using System.Formats.Asn1;
 using AutoGens;
 using Microsoft.VisualBasic;
 
-partial class Program{
+partial class Program
+{
      public static void StorersPrincipal(){
         
         bool exit = false;
@@ -133,51 +134,42 @@ partial class Program{
                         else{
                             WriteLine("The equipment was not registered.");
                         }
+                        break;
 
-                break;
-
-                case "2": // Update equipment info
-                    UpdateEquipment();
-                break;
-                case "3": // Equipment List
-                    ViewAllEquipments();
-                break;
-                case "4": // Delete equipment
-                    DeleteEquipment();
-                break;
-                case "5": // List Equipment Requests
-                    ListEquipmentsRequests();
-                break;
-                case "6": // LIst Equipment Requests only for tomorrow
-                    TomorrowsEquipmentRequests();
-                break;
-                case "7":
-                    SubMenuStudentsHistory();
-                break;
-                case "8":
-                    SubMenuStudentsusingEquipment();
-                break;
-                case "9":
-                break;
-                case "10":
-                    DamagedLostReportInit();
-                break;
-                case "11":
-                break;
-                case "12":
-                break;
-                case "13":
-                break;
-                case "14":
-                    exit = true;
-                break;
-                default:
-                    WriteLine("That option doesnt exist. ");
-                break;
-            }
-        }    
+                    case "2": // Update equipment info
+                        UpdateEquipment();
+                    break;
+                    case "3": // Equipment List
+                        ViewAllEquipments();
+                    break;
+                    case "4": // Delete equipment
+                        DeleteEquipment();
+                    break;
+                    case "5":  // List Equipment Requests
+                        ListEquipmentsRequests();
+                    break;
+                    case "6": // LIst Equipment Requests only for tomorrow
+                    break;
+                    case "7":
+                    break;
+                    case "8":
+                        DamagedLostReportInit();
+                        
+                    break;
+                    case "9":
+                    break;
+                    case "10":
+                    break;
+                    case "11":
+                    break;
+                    case "12":
+                    break;
+                    default:
+                    break;
+                }
         
-    }
+        }
+     }  
 
 
     public static string MenuStorer()
