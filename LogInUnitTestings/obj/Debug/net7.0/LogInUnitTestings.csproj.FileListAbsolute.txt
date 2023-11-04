@@ -1,0 +1,5 @@
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.csproj.AssemblyReference.cache
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.AssemblyInfoInputs.cache
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.AssemblyInfo.cs
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.csproj.CoreCompileInputs.cache

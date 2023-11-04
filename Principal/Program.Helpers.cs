@@ -52,6 +52,8 @@ partial class Program
         return input;
     }
 
+    
+
     public static int TryParseStringaEntero(string op)
     {
         int input;

@@ -8,18 +8,16 @@ public partial class Program
     {
         bd_storage db = new();
         WriteLine($"Provider : {db.Database.ProviderName}"); 
-
-        StorersPrincipal();
         WriteLine();
         
         while (true)
         {
-            WriteLine("Menu principal: ");
-            WriteLine("1.Iniciar sesion");
-            WriteLine("2.Registrarme ");
-            WriteLine("3.Recuperar Contraseña");
-            WriteLine("4. Salir");
-            WriteLine("Selecciona una opcion: ");
+            WriteLine("Principal Menu: ");
+            WriteLine("1.Log In");
+            WriteLine("2.Sign up ");
+            WriteLine("3.Password Recovery");
+            WriteLine("4. Exit");
+            WriteLine("Pick an option: ");
 
             string? opcion = ReadLine();
             switch (opcion)
@@ -50,7 +48,7 @@ public partial class Program
                     }
                     else
                     {
-                        WriteLine("Inicio de sesión fallido.");
+                        WriteLine("Log in unsuccesfull.");
                     }
 
                 break;
@@ -66,7 +64,7 @@ public partial class Program
                 case "4":
                 return;
                 default:
-                    WriteLine("Opcion no valida. Intentalo de nuevo.");
+                    WriteLine("Not valide option. Try again");
                 break;
             }
         }

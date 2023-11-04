@@ -13,14 +13,14 @@ partial class Program
         string tableName;
         while (true)
         {
-            WriteLine("Bienvenido al registro!");
-            WriteLine("Que tipo de usuario eres? ");
-            WriteLine("1.Alumno");
-            WriteLine("2.Profesor");
-            WriteLine("3.Coordinador");
-            WriteLine("4.Almacenista");
-            WriteLine("5.Salir");
-            WriteLine("Selecciona una opcion: ");
+            WriteLine("Welcome to the register ");
+            WriteLine("What kind of user are you?");
+            WriteLine("1.Student");
+            WriteLine("2.Professor");
+            WriteLine("3.Coordinator");
+            WriteLine("4.Storer");
+            WriteLine("5.Exit");
+            WriteLine("Pick an option: ");
 
             string? opcion = ReadLine();
             bool bdquery = false;
@@ -47,7 +47,7 @@ partial class Program
                     return;
 
                 default:
-                    WriteLine("Opcion no valida. Intentalo de nuevo.");
+                    WriteLine("Not valide option. Try again");
                     break;
             }
         }
@@ -283,10 +283,10 @@ partial class Program
     {
         using (bd_storage db = new())
         {
-            WriteLine("Ingrese su ID: ");
+            WriteLine("Write your ID: ");
             string username = ReadNonEmptyLine();
 
-            WriteLine("Ingrese su contraseña: ");
+            WriteLine("Write your password: ");
             string pass = EncryptPass(ReadNonEmptyLine());
 
             //string[] tables = { "students", "professors", "storers", "coordinators" }; //si falla es por la 's'
@@ -302,7 +302,7 @@ partial class Program
                         
                         if (students is null || !students.Any())
                         {
-                            WriteLine("No hay resultados.");
+                            WriteLine("Student not found.");
                             idUser = "professorId";
                             rol = null;
                         }
@@ -325,7 +325,7 @@ partial class Program
                         WriteLine($"ToQueryString: {professors.ToQueryString()}");
                         if (professors is null || !professors.Any())
                         {
-                            WriteLine("No hay resultados.");
+                            WriteLine("Professor not found.");
                             idUser = "storerId";
                             rol = null;
                         }
@@ -348,7 +348,7 @@ partial class Program
 
                         if (storers is null || !storers.Any())
                         {
-                            WriteLine("No hay resultados.");
+                            WriteLine("Storer not found.");
                             idUser = "coordinatorId";
                             rol = null;
                         }
@@ -369,7 +369,7 @@ partial class Program
                         WriteLine($"ToQueryString: {coordinators.ToQueryString()}");
                         if (coordinators is null || !coordinators.Any())
                         {
-                            WriteLine("No hay resultados.");
+                            WriteLine("Coordinator not found.");
                             rol = null;
                             idUser = "none";
                             break;
@@ -440,7 +440,7 @@ partial class Program
     {
         using (bd_storage db = new())
         {
-            WriteLine("Ingrese su ID: ");
+            WriteLine("Write your ID: ");
             string username = ReadNonEmptyLine();
 
             string[] tables = { "students", "professors", "storers", "coordinators" };
@@ -483,7 +483,7 @@ partial class Program
                         }
                         else
                         {
-                            WriteLine("Student ID is nigger");
+                            WriteLine("Student ID is null");
                         }
                     }
                     else
