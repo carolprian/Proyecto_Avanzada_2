@@ -284,7 +284,7 @@ partial class Program
         using (bd_storage db = new())
         {
             WriteLine("Write your ID: ");
-            string username = ReadNonEmptyLine();
+            string username = EncryptPass(ReadNonEmptyLine());
 
             WriteLine("Write your password: ");
             string pass = EncryptPass(ReadNonEmptyLine());

@@ -4,163 +4,178 @@ using Microsoft.VisualBasic;
 
 partial class Program{
      public static void StorersPrincipal(){
-        string op = MenuStorer();
-        WriteLine();
-        switch(op)
-        {
-            case "1": //  Add equipment
+        
+        bool exit = false;
 
-                WriteLine("Adding a new equipment:");
-                    string equipmentid="", controlnumber="";
-                    int opi=0;        
-                    using(bd_storage db = new())
-                    {
-                        while(opi==0)
-                        {   
-                            WriteLine("Provide the equipment ID for the inventory:");
-                            equipmentid = VerifyReadMaxLengthString(15);
-                            IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.EquipmentId == equipmentid);
-                            
-                            if(equipments is null || !equipments.Any())
-                            {
-                                opi = 1;
-                            }
-                            else
-                            {
-                                WriteLine("That equipment id is already in use, try again.");
-                            }
-                        }                
-                    }
+        while(!exit){
 
-                WriteLine();
-                WriteLine("Provide the equipment name:");
-                string name = VerifyReadMaxLengthString(40);
-                WriteLine();
-                short areaid=-1;
+            string op = MenuStorer();
+            WriteLine();
+
+            switch(op)
+            {
+                case "1": //  Add equipment
+
+                    WriteLine("Adding a new equipment:");
+                        string equipmentid="", controlnumber="";
+                        int opi=0;        
+                        using(bd_storage db = new())
+                        {
+                            while(opi==0)
+                            {   
+                                WriteLine("Provide the equipment ID for the inventory:");
+                                equipmentid = VerifyReadMaxLengthString(15);
+                                IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.EquipmentId == equipmentid);
+                                
+                                if(equipments is null || !equipments.Any())
+                                {
+                                    opi = 1;
+                                }
+                                else
+                                {
+                                    WriteLine("That equipment id is already in use, try again.");
+                                }
+                            }                
+                        }
+
+                    WriteLine();
+                    WriteLine("Provide the equipment name:");
+                    string name = VerifyReadMaxLengthString(40);
+                    WriteLine();
+                    short areaid=-1;
+                        
+                        int areasCount = ListAreas();
+                        WriteLine("Choose the area of the equipment:");
+                        while(areaid <= 0 || areaid > areasCount )
+                        {
+                            try
+                            {
+                                areaid = Convert.ToInt16(VerifyReadMaxLengthString(2));
+                            }
+                            catch (FormatException)
+                            {
+                                WriteLine("That is not a correct option, try again.");
+                                areaid = -1;
+                            }
+                            catch (OverflowException)
+                            {
+                                WriteLine("That is not a correct option, try again.");
+                                areaid = -1;
+                            }
+                        }
                     
-                    int areasCount = ListAreas();
-                    WriteLine("Choose the area of the equipment:");
-                    while(areaid <= 0 || areaid > areasCount )
+                    WriteLine();
+                    WriteLine("Provide the description of the equipment:");
+                    string description = VerifyReadMaxLengthString(200);
+                    WriteLine();
+                    WriteLine("Insert the year of fabrication of the equipment:");
+                    int year = TryParseStringaEntero(ReadNonEmptyLine());
+                    WriteLine();
+                    WriteLine("Choose and write the option of the current status of the equipment:");
+                    int statusCount = ListStatus();
+
+                    byte statusid = 0;
+                    while(statusid == 0 || statusid > statusCount)
                     {
                         try
                         {
-                            areaid = Convert.ToInt16(VerifyReadMaxLengthString(2));
+                            statusid = Convert.ToByte(VerifyReadLengthStringExact(1));
                         }
                         catch (FormatException)
                         {
                             WriteLine("That is not a correct option, try again.");
-                            areaid = -1;
+                            statusid = 0;
                         }
                         catch (OverflowException)
                         {
                             WriteLine("That is not a correct option, try again.");
-                            areaid = -1;
+                            statusid = 0;
                         }
                     }
-                
-                WriteLine();
-                WriteLine("Provide the description of the equipment:");
-                string description = VerifyReadMaxLengthString(200);
-                WriteLine();
-                WriteLine("Insert the year of fabrication of the equipment:");
-                int year = TryParseStringaEntero(ReadNonEmptyLine());
-                WriteLine();
-                WriteLine("Choose and write the option of the current status of the equipment:");
-                int statusCount = ListStatus();
+                    WriteLine();
 
-                byte statusid = 0;
-                while(statusid == 0 || statusid > statusCount)
-                {
-                    try
-                    {
-                        statusid = Convert.ToByte(VerifyReadLengthStringExact(1));
-                    }
-                    catch (FormatException)
-                    {
-                        WriteLine("That is not a correct option, try again.");
-                        statusid = 0;
-                    }
-                    catch (OverflowException)
-                    {
-                        WriteLine("That is not a correct option, try again.");
-                        statusid = 0;
-                    }
-                }
-                WriteLine();
+                    opi=0;
+                        using(bd_storage db = new())
+                        {
+                            while(opi==0)
+                            {   
+                                WriteLine("Insert the control Number provided by the equipments's manufacturer:");
+                                controlnumber = VerifyReadMaxLengthString(20);
+                                IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.ControlNumber == controlnumber);
+                                
+                                if(equipments is null || !equipments.Any())
+                                {
+                                    opi = 1;
+                                }
+                                else
+                                {
+                                    WriteLine("That control number is already in use, try again.");
+                                }
+                            }                
+                        }
 
-                opi=0;
-                    using(bd_storage db = new())
-                    {
-                        while(opi==0)
-                        {   
-                            WriteLine("Insert the control Number provided by the equipments's manufacturer:");
-                            controlnumber = VerifyReadMaxLengthString(20);
-                            IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.ControlNumber == controlnumber);
-                            
-                            if(equipments is null || !equipments.Any())
-                            {
-                                opi = 1;
-                            }
-                            else
-                            {
-                                WriteLine("That control number is already in use, try again.");
-                            }
-                        }                
-                    }
+                    WriteLine();
+                    WriteLine("Choose the coordinator in charge:");
+                    string[]? coordinators = ListCoordinators();
+                    WriteLine();
+                    WriteLine("Write the choosen option:");
+                    int coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+                    string coordinatorid = "";
+                        if(coordinators is not null)
+                        {
+                            coordinatorid = coordinators[coordid -1];
+                        }
+                        var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid );
+                        if(resultAdd.affected == 1)
+                        {
+                            WriteLine($"The equipment {resultAdd.EquipmentId} was created succesfully");
+                        }
+                        else{
+                            WriteLine("The equipment was not registered.");
+                        }
 
-                WriteLine();
-                WriteLine("Choose the coordinator in charge:");
-                string[]? coordinators = ListCoordinators();
-                WriteLine();
-                WriteLine("Write the choosen option:");
-                int coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1));
-                string coordinatorid = "";
-                    if(coordinators is not null)
-                    {
-                        coordinatorid = coordinators[coordid -1];
-                    }
-                    var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid );
-                    if(resultAdd.affected == 1)
-                    {
-                        WriteLine($"The equipment {resultAdd.EquipmentId} was created succesfully");
-                    }
-                    else{
-                        WriteLine("The equipment was not registered.");
-                    }
+                break;
 
-            break;
-
-            case "2": // Update equipment info
-                UpdateEquipment();
-            break;
-            case "3": // Equipment List
-                ViewAllEquipments();
-            break;
-            case "4": // Delete equipment
-                DeleteEquipment();
-            break;
-            case "5":  // List Equipment Requests
-                ListEquipmentsRequests();
-            break;
-            case "6": // LIst Equipment Requests only for tomorrow
-            break;
-            case "7":
-            break;
-            case "8":
-                DamagedLostReportInit();
-                
-            break;
-            case "9":
-            break;
-            case "10":
-            break;
-            case "11":
-            break;
-            case "12":
-            break;
-            default:
-            break;
-        }
+                case "2": // Update equipment info
+                    UpdateEquipment();
+                break;
+                case "3": // Equipment List
+                    ViewAllEquipments();
+                break;
+                case "4": // Delete equipment
+                    DeleteEquipment();
+                break;
+                case "5": // List Equipment Requests
+                    ListEquipmentsRequests();
+                break;
+                case "6": // LIst Equipment Requests only for tomorrow
+                    TomorrowsEquipmentRequests();
+                break;
+                case "7":
+                    SubMenuStudentsHistory();
+                break;
+                case "8":
+                    SubMenuStudentsusingEquipment();
+                break;
+                case "9":
+                break;
+                case "10":
+                    DamagedLostReportInit();
+                break;
+                case "11":
+                break;
+                case "12":
+                break;
+                case "13":
+                break;
+                case "14":
+                    exit = true;
+                break;
+                default:
+                    WriteLine("That option doesnt exist. ");
+                break;
+            }
+        }    
         
     }
 
@@ -177,17 +192,9 @@ partial class Program{
         WriteLine(" 4. Delete equipment");  // furry
         WriteLine(" 5. View Equipment Requests"); // sam SI
         WriteLine(" 6. View Tomorrows Equipment Requests"); // sam SI
-        /*
-        WriteLine(" 7. View and Search for a Students History"); // volley 
-        WriteLine("         a. See all students");
-        WriteLine("         b. Search for a student in specific");
-        WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)");
-        WriteLine(" 8. View and Search for Students using Equipment at this moment");
-        WriteLine("         a. See all students using equipments ");
-        WriteLine("         b. Search for a specific student in this list");
-        WriteLine("         c. See the list of students that are late for returning equipments");
+        WriteLine(" 7. View and Search for a Students History"); // sam
+        WriteLine(" 8. View and Search for Students using Equipment at this moment"); //sam
         WriteLine(" 9. Return a equipment"); // busca por registro de estudiante, y verifica que todo sea igual a su request, al final pregunta si llegó dañado o en malas condiciones y lo manda a create
-        */  
         WriteLine(" 10. Create report of damaged or lost equipment");  // volley MASO
         WriteLine(" 11. Program maintenance for a equipment ");  // furry
         WriteLine(" 12. View Maintenance History");  // volley 
@@ -196,9 +203,9 @@ partial class Program{
         bool valid = false;
         do{
             op = ReadNonEmptyLine();
-            if (op != "1"  &&  op != "2" &&  op != "3" &&  op != "4" &&  op != "5" &&  op != "6" &&  op != "7" &&  op != "8" &&  op != "9" &&  op != "10" &&  op != "11" &&  op != "12")
+            if (op != "1"  &&  op != "2" &&  op != "3" &&  op != "4" &&  op != "5" &&  op != "6" &&  op != "7" &&  op != "8" &&  op != "9" &&  op != "10" &&  op != "11" &&  op != "12" && op != "13" && op != "14" )
             {
-                WriteLine("Please choose a valid option (1 - 12)");
+                WriteLine("Please choose a valid option (1 - 14)");
                 op = ReadNonEmptyLine(); 
             }
             else
@@ -210,11 +217,96 @@ partial class Program{
         return op;
         }
 
-    public void SubMenuRequestsForStorers()
+    public static void SubMenuRequestsForStorers()
     {
         WriteLine("a. View a request info");
 
     }
 
+    public static void SubMenuStudentsHistory()
+    {
+        string op = "";
+        WriteLine("Choose an option: ");
+        WriteLine("a. See all students");
+        WriteLine("b. Search for a student in specific");
+        WriteLine("c. See students that have lost or damaged an equipment (and haven't made up for it)");
+        WriteLine("d. Exit");
+        bool valid = false;
+        do{
+            op = ReadNonEmptyLine();
+            if (op != "a"  &&  op != "b" &&  op != "c")
+            {
+                WriteLine("Please choose a valid option (a, b or c)");
+                op = ReadNonEmptyLine(); 
+            }
+            else
+            {
+                valid = true;
+            }
+        } while (!valid);
+        switch(op)
+        {
+            case "a": // all students
+                allstudents();
+            break;
+            case "b": // search
+                SearchStudentGeneral();
+            break;
+            case "c": // students with lost or damaged
+                studentsLostDamage();
+            break;
+            case "d":
+                return;
+            break;
+            default:
+                WriteLine("That option doesnt exist. ");
+            break;
+            
+
+            
+
+        }   
+    }
+
+    public static void SubMenuStudentsusingEquipment()
+    {        
+        string op = "";
+        WriteLine("Choose an option: ");
+        WriteLine("a. See all students using equipments ");
+        WriteLine("b. Search for a specific student in this list");
+        WriteLine("c. See the list of students that are late for returning equipments");
+        WriteLine("d. Exit");
+        bool valid = false;
+        do{
+            op = ReadNonEmptyLine();
+            if (op != "a"  &&  op != "b" &&  op != "c")
+            {
+                WriteLine("Please choose a valid option (a, b or c)");
+                op = ReadNonEmptyLine(); 
+            }
+            else
+            {
+                valid = true;
+            }
+        } while (!valid);
+        switch(op)
+        {
+            case "a": // student that r using equipments
+                StudentsUsingEquipments();
+            break;
+            case "b": // search
+                SearchStudentUsingEquipment();
+            break;
+            case "c": // late for returning
+                StudentsLateReturn();
+            break;
+            case "d":
+                return;
+            break;
+            default:
+                WriteLine("That option doesnt exist. ");
+            break;
+        }
+    }
     
 }
