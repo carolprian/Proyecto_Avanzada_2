@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\3P\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.csproj.AssemblyReference.cache
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\3P\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.GeneratedMSBuildEditorConfig.editorconfig
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\3P\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.AssemblyInfoInputs.cache
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\3P\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.AssemblyInfo.cs
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\3P\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.csproj.CoreCompileInputs.cache
+=======
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.csproj.AssemblyReference.cache
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.AssemblyInfoInputs.cache
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.AssemblyInfo.cs
+C:\Users\aacar\BrambiProjectStorage\LogInUnitTestings\obj\Debug\net7.0\LogInUnitTestings.csproj.CoreCompileInputs.cache
+>>>>>>> 09aa68d18a4be3c0621c7c5e8b6e5fa93edeb137
