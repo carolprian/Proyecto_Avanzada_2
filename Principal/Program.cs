@@ -10,7 +10,6 @@ public partial class Program
         WriteLine($"Provider : {db.Database.ProviderName}"); 
 
         StorersPrincipal();
-        WriteLine();
         
         while (true)
         {

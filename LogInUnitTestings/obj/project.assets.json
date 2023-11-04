@@ -5518,24 +5518,31 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\aacar\\.nuget\\packages\\": {}
+    "C:\\Users\\Valeria\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aacar\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
+      "projectUniqueName": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
       "projectName": "LogInUnitTestings",
-      "projectPath": "C:\\Users\\aacar\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
-      "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aacar\\BrambiProjectStorage\\LogInUnitTestings\\obj\\",
+      "projectPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
+      "packagesPath": "C:\\Users\\Valeria\\.nuget\\packages\\",
+      "outputPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\LogInUnitTestings\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Valeria\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

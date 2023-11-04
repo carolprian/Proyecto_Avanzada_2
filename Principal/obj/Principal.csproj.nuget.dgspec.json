@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\aacar\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
+    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\aacar\\BrambiProjectStorage\\Principal\\Principal.csproj": {
+    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\Principal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\aacar\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "projectUniqueName": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\Principal.csproj",
         "projectName": "Principal",
-        "projectPath": "C:\\Users\\aacar\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\aacar\\BrambiProjectStorage\\Principal\\obj\\",
+        "projectPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "packagesPath": "C:\\Users\\Valeria\\.nuget\\packages\\",
+        "outputPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\BrambiProjectStorage\\Principal\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Valeria\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,6 +44,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",

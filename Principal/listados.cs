@@ -66,7 +66,7 @@ partial class Program
         }
     }
 
-    public static IQueryable<Area>? ListAreas()
+    public static int ListAreas()
     {
         using( bd_storage db = new())
         {
@@ -75,18 +75,18 @@ partial class Program
             if ((areas is null) || !areas.Any())
             {
                 WriteLine("There are no areas found");
-                return null;
+                return 0;
             }
             // Use the data
             foreach (var area in areas)
             {
                 WriteLine($"{area.AreaId} . {area.Name} ");
             }
-            return areas;
+            return areas.Count();
         }
     }
 
-    public static IQueryable<Status>? ListStatus()
+    public static int ListStatus()
     {
         using( bd_storage db = new())
         {
@@ -95,39 +95,70 @@ partial class Program
             if ((status is null) || !status.Any())
             {
                 WriteLine("There are no status found");
-                return null;
+                return 0;
             }
             // Use the data
             foreach (var stat in status)
             {
                 WriteLine($"{stat.StatusId} . {stat.Value} ");
             }
-            return status;
+            return status.Count();
         }
 
     }
 
-    public static string[]? ListCoordinators() // en esta la i al mostrar la lista empieza en 1, pero al guardar el CoordinatorId empieza en 1 en el arreglo, asi que si lo usan para buscar el coordinatorId escogido, buscar en el arreglo coordinatorsid[i-1];
+    public static string[]? ListCoordinators()
+{
+    using (bd_storage db = new())
     {
-        string[] coordinatorsid = {};
-        using( bd_storage db = new())
-        {
         IQueryable<Coordinator> coordinators = db.Coordinators;
-            db.ChangeTracker.LazyLoadingEnabled = false;
-            if ((coordinators is null) || !coordinators.Any())
-            {
-                WriteLine("There are no registered coordinators found");
-                return null;
-            }
-            int i=0;
-            // Use the data
-            foreach (var coordinator in coordinators)
-            {
-                coordinatorsid[i] = Decrypt(coordinator.CoordinatorId);
-                i++;
-                WriteLine($"{i}. {Decrypt(coordinator.CoordinatorId)} . {coordinator.Name} {coordinator.LastNameP}");
-            }
-            return coordinatorsid;
+        db.ChangeTracker.LazyLoadingEnabled = false;
+        if ((coordinators is null) || !coordinators.Any())
+        {
+            WriteLine("There are no registered coordinators found");
+            return null;
         }
+
+        int i = 0;
+        string[] coordinatorsid = new string[coordinators.Count()]; // Declarar el arreglo con el tamaño adecuado
+
+        foreach (var coordinator in coordinators)
+        {
+            coordinatorsid[i] = Decrypt(coordinator.CoordinatorId);
+            i++;
+            WriteLine($"{i}. {Decrypt(coordinator.CoordinatorId)} . {coordinator.Name} {coordinator.LastNameP}");
+        }
+
+        return coordinatorsid;
     }
+}
+
+
+    public static string[]? ListStudents()
+{
+    using (bd_storage db = new())
+    {
+        IQueryable<Student> students = db.Students;
+        db.ChangeTracker.LazyLoadingEnabled = false;
+        if ((students is null) || !students.Any())
+        {
+            WriteLine("There are no registered students found");
+            return null;
+        }
+
+        int i = 0;
+        string[] studentsid = new string[students.Count()]; // Declarar el arreglo con el tamaño adecuado
+
+        foreach (var s in students)
+        {
+            studentsid[i] = s.StudentId;
+            i++;
+            WriteLine($"{i}. {s.StudentId} . {s.Name} {s.LastNameP}");
+        }
+
+        return studentsid;
+    }
+}
+
+
 }

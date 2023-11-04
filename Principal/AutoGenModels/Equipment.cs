@@ -43,7 +43,6 @@ public partial class Equipment
     public string? ControlNumber { get; set; }
 
     [Column("coordinatorId", TypeName = "CHAR (10)")]
-    [Required]
     [StringLength(10, MinimumLength = 10)]
     public string? CoordinatorId { get; set; }
 
