@@ -101,7 +101,7 @@ partial class Program{
                 DeleteEquipment();
             break;
             case "5":  // List Equipment Requests
-                //ListEquipmentsRequests();
+                ListEquipmentsRequests();
             break;
             case "6": // LIst Equipment Requests only for tomorrow
             break;
