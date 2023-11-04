@@ -12,6 +12,71 @@ partial class Program
             IQueryable<RequestDetail> requestDetails = db.RequestDetails.Where( r => r.ProfessorNip != null);
         }
     }
+
+    public static void ListAreas()
+    {
+        using( bd_storage db = new())
+        {
+        IQueryable<Area> areas = db.Areas;
+            //.Include(category => category.Products);
+            db.ChangeTracker.LazyLoadingEnabled = false;
+            if ((areas is null) || !areas.Any())
+            {
+                WriteLine("There are no areas found");
+                return;
+            }
+            // Use the data
+            foreach (var area in areas)
+            {
+                WriteLine($"{area.AreaId} . {area.Name} ");
+            }
+        }
+    }
+
+    public static void ListStatus()
+    {
+        using( bd_storage db = new())
+        {
+        IQueryable<Status> status = db.Statuses;
+            //.Include(category => category.Products);
+            db.ChangeTracker.LazyLoadingEnabled = false;
+            if ((status is null) || !status.Any())
+            {
+                WriteLine("There are no status found");
+                return;
+            }
+            // Use the data
+            foreach (var stat in status)
+            {
+                WriteLine($"{stat.StatusId} . {stat.Value} ");
+            }
+        }
+
+    }
+
+    public static void ListCoordinators()
+    {
+        string[] coordinatorss = {};
+        using( bd_storage db = new())
+        {
+        IQueryable<Coordinator> coordinators = db.Coordinators;
+            //.Include(category => category.Products);
+            db.ChangeTracker.LazyLoadingEnabled = false;
+            if ((coordinators is null) || !coordinators.Any())
+            {
+                WriteLine("There are no registered coordinators found");
+                return;
+            }
+            int i=1;
+            // Use the data
+            foreach (var coordinator in coordinators)
+            {
+                coordinatorss[i] = Decrypt(coordinator.CoordinatorId);
+                WriteLine($"{Decrypt(coordinator.CoordinatorId)} . {coordinator.Name} {coordinator.LastNameP}");
+                i++;
+            }
+        }
+    }
 }
 
 

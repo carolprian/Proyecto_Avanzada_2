@@ -1,3 +1,5 @@
+using System.Formats.Asn1;
+
 partial class Program{
      public static void StorersPrincipal(){
         string op = MenuStorer();
@@ -11,18 +13,18 @@ partial class Program{
                 WriteLine("Provide the equipment name:");
                 string name = VerifyReadMaxLengthString(40);
                 WriteLine("Choose the area of the equipment:");
-                //viewAreas();
+                short areaid=1;//viewAreas();
                 WriteLine("Provide the description of the equipment:");
                 string description = VerifyReadMaxLengthString(200);
                 WriteLine("Insert the year of fabrication of the equipment:");
                 int year = TryParseStringaEntero(ReadNonEmptyLine());
                 WriteLine("Choose the current status of the equipment:");
-                //viewStatus();
+                byte statusid =1;//viewStatus();
                 WriteLine("Insert the control Number provided by the equipments's manufacturer:");
                 string controlnumber = VerifyReadMaxLengthString(20);
                 WriteLine("Choose the coordinator in charge:");
-                //viewCoordinators();
-                var resultAdd = AddEquipment();
+                string coordinatorid="";//viewCoordinators();
+                var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid );
                 if(resultAdd.affected == 1)
                 {
                     

@@ -235,7 +235,7 @@ partial class Program
                 {
                     var groupfirst = groupsid.FirstOrDefault();
                     groupid = groupfirst.GroupId;
-                    op=1;
+                    op=1; 
                 }
                         
             }

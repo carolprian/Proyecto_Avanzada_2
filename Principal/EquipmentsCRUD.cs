@@ -1,20 +1,20 @@
 using AutoGens;
 partial class Program{
     
-    static (int affected, int productId) AddEquipment()
+    static (int affected, int productId) AddEquipment(string equipmentid, string name, short areaid, string description, int year, byte statusid, string controlnumber, string coordinatorid )
     {
         using(bd_storage db = new())
         {
             if(db.Equipments is null){ return(0,0);}
             Equipment e = new() 
             {
-                // EquipmentId = equipmentid, 
-                // Name = name,
-                // AreaId = areaid, 
-                // Description = description, 
-                // Year = year, 
-                // StatusId = statusid, 
-                // ControlNumber = controlnumber
+                EquipmentId = equipmentid, 
+                Name = name,
+                AreaId = areaid, 
+                Description = description, 
+                Year = year, 
+                StatusId = statusid, 
+                ControlNumber = controlnumber
             };
         }
         return (0,0);
@@ -54,5 +54,5 @@ partial class Program{
             // }
         }
     }
-    
+
 }

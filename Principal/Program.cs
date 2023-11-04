@@ -8,6 +8,7 @@ public partial class Program
     {
         bd_storage db = new();
         WriteLine($"Provider : {db.Database.ProviderName}"); 
+
         
         while (true)
         {
