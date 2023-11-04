@@ -133,35 +133,44 @@ partial class Program{
             case "2": // Update equipment info
                 UpdateEquipment();
             break;
+
             case "3": // Equipment List
                 ViewAllEquipments();
             break;
+
             case "4": // Delete equipment
                 DeleteEquipment();
             break;
+
             case "5":  // List Equipment Requests
                 ListEquipmentsRequests();
             break;
+
             case "6": // LIst Equipment Requests only for tomorrow
             break;
+
             case "7":
             break;
+
             case "8":
-                DamagedLostReportInit();
-                
+                DamagedLostReportInit();                
             break;
+
             case "9":
             break;
+
             case "10":
             break;
+
             case "11":
             break;
+
             case "12":
             break;
+
             default:
             break;
-        }
-        
+        }        
     }
 
 

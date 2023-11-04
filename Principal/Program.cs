@@ -26,29 +26,29 @@ public partial class Program
                     string? rol;
                     if (IniciarSesion(out rol))
                     {
-                        WriteLine($"Congratulation {rol}, you logged in succesfully!"); 
+                        WriteLine($"Congratulations {rol}, you logged in succesfully!"); 
                         switch(rol)
-                    {
-                        case "students":
-                        StudentsPrincipal();
-                        break;
+                        {
+                            case "students":
+                            StudentsPrincipal();
+                            break;
 
-                        case "professors":
-                        ProfessorsPrincipal();
-                        break;
+                            case "professors":
+                            ProfessorsPrincipal();
+                            break;
 
-                        case "storers":
-                        StorersPrincipal();
-                        break;
+                            case "storers":
+                            StorersPrincipal();
+                            break;
 
-                        case "coordinators":
-                        CoordinatorsPrincipal();
-                        break;
-                    }                
+                            case "coordinators":
+                            CoordinatorsPrincipal();
+                            break;
+                        }                
                     }
                     else
                     {
-                        WriteLine("Log in unsuccesfull.");
+                        WriteLine("Log in unsuccesful.");
                     }
 
                 break;
@@ -63,8 +63,9 @@ public partial class Program
 
                 case "4":
                 return;
+
                 default:
-                    WriteLine("Not valide option. Try again");
+                    WriteLine("Not a valid option. Try again");
                 break;
             }
         }
