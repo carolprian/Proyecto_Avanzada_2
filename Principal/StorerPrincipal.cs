@@ -5,6 +5,23 @@ partial class Program{
         switch(op)
         {
             case "1": //  Add equipment
+                WriteLine("Adding a new equipment:");
+                WriteLine("Provide the equipment ID for the inventory:");
+                string equipmentid = VerifyReadMaxLengthString(15);
+                WriteLine("Provide the equipment name:");
+                string name = VerifyReadMaxLengthString(40);
+                WriteLine("Choose the area of the equipment:");
+                //viewAreas();
+                WriteLine("Provide the description of the equipment:");
+                string description = VerifyReadMaxLengthString(200);
+                WriteLine("Insert the year of fabrication of the equipment:");
+                int year = TryParseStringaEntero(ReadNonEmptyLine());
+                WriteLine("Choose the current status of the equipment:");
+                //viewStatus();
+                WriteLine("Insert the control Number provided by the equipments's manufacturer:");
+                string controlnumber = VerifyReadMaxLengthString(20);
+                WriteLine("Choose the coordinator in charge:");
+                //viewCoordinators();
                 var resultAdd = AddEquipment();
                 if(resultAdd.affected == 1)
                 {

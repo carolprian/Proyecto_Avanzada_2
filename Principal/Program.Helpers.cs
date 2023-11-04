@@ -10,7 +10,7 @@ partial class Program
                 WriteLine($"The input must have {characters} caracteres. Try again:");
             }
 
-        } while (text.Length < characters);
+        } while (text.Length < characters || text.Length > characters);
         return text;
     }
 
@@ -21,12 +21,27 @@ partial class Program
             text = ReadLine();
             if (text.Length < characters)
             {
-                WriteLine($"The input must have {characters} caracteres. Try again:");
+                WriteLine($"The input must have minimum {characters} caracteres. Try again:");
             }
 
         } while (text.Length < characters);
         return text;
     }
+
+    public static string VerifyReadMaxLengthString(int characters){
+        string? text;
+        do
+        {
+            text = ReadLine();
+            if (text.Length > characters)
+            {
+                WriteLine($"The input must have maximum {characters} caracteres. Try again:");
+            }
+
+        } while (text.Length > characters);
+        return text;
+    }
+
    
     public static string ReadNonEmptyLine()
     {

@@ -26,7 +26,7 @@ partial class Program{
                 IQueryable<Request> requests = db.Requests.Include(c=>c.RequestDetails.Where(p=>p.ProfessorNip == null));
                 foreach (var request in requests)
                 {
-                    WriteLine($"Info about the request");
+                    WriteLine($"");
                 }
             }
     } 
