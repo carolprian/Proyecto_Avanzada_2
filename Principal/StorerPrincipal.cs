@@ -164,6 +164,11 @@ partial class Program
                     break;
                     case "12":
                     break;
+                    case "13":
+                    break;
+                    case "14":
+                        exit = true;
+                    break;
                     default:
                     break;
                 }
