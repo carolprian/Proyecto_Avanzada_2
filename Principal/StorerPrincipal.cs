@@ -4,7 +4,8 @@ using Microsoft.VisualBasic;
 
 partial class Program
 {
-     public static void StorersPrincipal(){
+     public static void StorersPrincipal()
+     {
         
         bool exit = false;
 
@@ -172,11 +173,10 @@ partial class Program
                     default:
                     break;
                 }
-<<<<<<< HEAD
+            }   
         
         }
      }  
-=======
                 WriteLine();
 
                 opi=0;
@@ -219,52 +219,51 @@ partial class Program
                         WriteLine("The equipment was not registered.");
                     }
 
-            break;
+                    break;
 
-            case "2": // Update equipment info
-                UpdateEquipment();
-            break;
+                    case "2": // Update equipment info
+                        UpdateEquipment();
+                    break;
 
-            case "3": // Equipment List
-                ViewAllEquipments();
-            break;
+                    case "3": // Equipment List
+                        ViewAllEquipments();
+                    break;
 
-            case "4": // Delete equipment
-                DeleteEquipment();
-            break;
+                    case "4": // Delete equipment
+                        DeleteEquipment();
+                    break;
 
-            case "5":  // List Equipment Requests
-                ListEquipmentsRequests();
-            break;
+                    case "5":  // List Equipment Requests
+                        ListEquipmentsRequests();
+                    break;
 
-            case "6": // LIst Equipment Requests only for tomorrow
-            break;
+                    case "6": // LIst Equipment Requests only for tomorrow
+                    break;
 
-            case "7":
-            break;
+                    case "7":
+                    break;
 
-            case "8":
-                DamagedLostReportInit();                
-            break;
+                    case "8":
+                        DamagedLostReportInit();                
+                    break;
 
-            case "9":
-            break;
+                    case "9":
+                    break;
 
-            case "10":
-            break;
+                    case "10":
+                    break;
 
-            case "11":
-            break;
+                    case "11":
+                    break;
 
-            case "12":
-            break;
+                    case "12":
+                    break;
 
-            default:
-            break;
-        }        
+                    default:
+                    break;
+                }   
+            
     }
->>>>>>> 6eef88f9a5c4f00264041647eab91fa428341a42
-
 
     public static string MenuStorer()
     {
