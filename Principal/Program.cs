@@ -26,13 +26,14 @@ public partial class Program
             {
                 case "1":
                     string? rol;
-                    if (IniciarSesion(out rol))
+                    var logIn = IniciarSesion(out rol);
+                    if (rol!=null)
                     {
                         WriteLine($"Congratulations {rol}, you logged in succesfully!"); 
                         switch(rol)
                         {
                             case "students":
-                            StudentsPrincipal();
+                            StudentsPrincipal(logIn.username);
                             break;
 
                             case "professors":

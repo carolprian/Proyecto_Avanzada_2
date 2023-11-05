@@ -1,53 +1,25 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
-    "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
+    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj": {
+    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj",
         "projectName": "Principal",
-        "projectPath": "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\agael\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\obj\\",
-=======
-    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
-  },
-  "projects": {
-    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\Principal\\Principal.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "projectName": "Principal",
-        "projectPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\Valeria\\.nuget\\packages\\",
-        "outputPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\Principal\\obj\\",
->>>>>>> f002455b43fad74875b43ab4d0dd8b0c2e16dc1c
+        "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-<<<<<<< HEAD
-          "C:\\Users\\agael\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-          "C:\\Users\\Valeria\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> f002455b43fad74875b43ab4d0dd8b0c2e16dc1c
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-<<<<<<< HEAD
-          "C:\\Program Files\\dotnet\\library-packs": {},
-=======
->>>>>>> f002455b43fad74875b43ab4d0dd8b0c2e16dc1c
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -60,9 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "default"
         }
       },
       "frameworks": {
@@ -95,30 +64,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[7.0.9, 7.0.9]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[7.0.9, 7.0.9]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[7.0.9, 7.0.9]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[7.0.9, 7.0.9]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-preview.7.23376.3\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

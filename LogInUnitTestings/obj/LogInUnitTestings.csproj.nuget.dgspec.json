@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj": {}
+    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj": {}
   },
   "projects": {
-    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj": {
+    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
+        "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
         "projectName": "LogInUnitTestings",
-        "projectPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
-        "packagesPath": "C:\\Users\\Valeria\\.nuget\\packages\\",
-        "outputPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\Proyecto\\BrambiProjectStorage\\LogInUnitTestings\\obj\\",
+        "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
+        "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Valeria\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

@@ -310,12 +310,12 @@ partial class Program
         return changes;
     }
 
-    public static bool IniciarSesion(out string? rol)
+    public static (bool logged, string username) IniciarSesion(out string? rol)
     {
         using (bd_storage db = new())
         {
             WriteLine("Write your ID: ");
-            string username = EncryptPass(ReadNonEmptyLine());
+            string username = ReadNonEmptyLine();
 
             WriteLine("Write your password: ");
             string pass = EncryptPass(ReadNonEmptyLine());
@@ -336,7 +336,7 @@ partial class Program
                     else
                     {
                         rol = "students";
-                        return true;
+                        return (true, username);
                         break;
 
                     }
@@ -355,7 +355,7 @@ partial class Program
                     else
                     {
                         rol = "professors";
-                        return true;
+                        return (true, username);
                         break;
 
                     }
@@ -373,7 +373,7 @@ partial class Program
                     else
                     {
                         rol = "storers";
-                        return true;
+                        return (true, username);
                         break;
                     }
                 }
@@ -391,13 +391,13 @@ partial class Program
                     else
                     {
                         rol = "coordinators";
-                        return true;
+                        return (true, username);
                         break;
                     }
                 }
             }
         }
-        return false;
+        return (false, null);
     }
 
     public static string EncryptPass(string plainText)

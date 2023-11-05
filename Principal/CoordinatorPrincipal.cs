@@ -3,9 +3,10 @@ using System.Security.Cryptography.X509Certificates;
 partial class Program
 {
     //CODE DONE BY THE NIGGER
+    
     public static void CoordinatorsPrincipal()
     {
-        string op = MenuCoordinators();
+       string op = MenuCoordinators();
         WriteLine();
         switch (op)
         {
@@ -125,7 +126,7 @@ partial class Program
 
     public static void SearchEquipmentsById(string searchTerm)
     {
-        using (bd_storage db = new())
+       using (bd_storage db = new())
         {
             IQueryable<Equipment>? equipments = db.Equipments
                 .Include(e => e.Area)
@@ -154,6 +155,7 @@ partial class Program
     public static void ListStudentsforCoord()
     {
         //string[] studentss = {};
+        
         using (bd_storage db = new())
         {
             IQueryable<Student> students = db.Students

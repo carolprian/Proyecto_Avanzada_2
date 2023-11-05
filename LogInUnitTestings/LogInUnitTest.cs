@@ -1,5 +1,4 @@
 namespace LogInUnitTestings;
-using LogInPrincipal;
 
 public class LogInUnitTest
 {
