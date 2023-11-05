@@ -9,13 +9,9 @@ public partial class Program
         bd_storage db = new();
         WriteLine($"Provider : {db.Database.ProviderName}"); 
         WriteLine();
-<<<<<<< HEAD
-        ApprovePermissions();
-=======
-
-        StorersPrincipal();
+        // ApprovePermissions();
+        // StorersPrincipal();
         
->>>>>>> f002455b43fad74875b43ab4d0dd8b0c2e16dc1c
         while (true)
         {
             WriteLine("Principal Menu: ");
