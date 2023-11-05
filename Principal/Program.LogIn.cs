@@ -315,7 +315,7 @@ partial class Program
         using (bd_storage db = new())
         {
             WriteLine("Write your ID: ");
-            string username = ReadNonEmptyLine();
+            string username = EncryptPass(ReadNonEmptyLine());
 
             WriteLine("Write your password: ");
             string pass = EncryptPass(ReadNonEmptyLine());
@@ -337,13 +337,15 @@ partial class Program
                     {
                         rol = "students";
                         return true;
+                        break;
+
                     }
 
                 }
                 else if (idUser == "professorId")
                 {
                     IQueryable<Professor> professors = db.Professors
-                    .Where(p => p.ProfessorId == EncryptPass(username) && p.Password == pass);
+                    .Where(p => p.ProfessorId == username && p.Password == pass);
 
                     if (professors is null || !professors.Any())
                     {
@@ -354,12 +356,14 @@ partial class Program
                     {
                         rol = "professors";
                         return true;
+                        break;
+
                     }
                 }
                 else if (idUser == "storerId")
                 {
                     IQueryable<Storer> storers = db.Storers
-                    .Where(s => s.StorerId == EncryptPass(username) && s.Password == pass);
+                    .Where(s => s.StorerId == username && s.Password == pass);
 
                     if (storers is null || !storers.Any())
                     {
@@ -370,12 +374,13 @@ partial class Program
                     {
                         rol = "storers";
                         return true;
+                        break;
                     }
                 }
                 else if (idUser == "coordinatorId")
                 {
                     IQueryable<Coordinator> coordinators = db.Coordinators
-                    .Where(s => s.CoordinatorId == EncryptPass(username) && s.Password == pass);
+                    .Where(s => s.CoordinatorId == username && s.Password == pass);
 
                     if (coordinators is null || !coordinators.Any())
                     {
@@ -387,6 +392,7 @@ partial class Program
                     {
                         rol = "coordinators";
                         return true;
+                        break;
                     }
                 }
             }

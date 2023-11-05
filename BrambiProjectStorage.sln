@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogInUnitTestings", "LogInUnitTestings\LogInUnitTestings.csproj", "{E6EEDAAC-C91B-4C67-A540-6EA987743631}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Principal", "Principal\Principal.csproj", "{10F949A7-FCA2-4E88-ACAB-DE00418FA76B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E6EEDAAC-C91B-4C67-A540-6EA987743631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6EEDAAC-C91B-4C67-A540-6EA987743631}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6EEDAAC-C91B-4C67-A540-6EA987743631}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6EEDAAC-C91B-4C67-A540-6EA987743631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10F949A7-FCA2-4E88-ACAB-DE00418FA76B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10F949A7-FCA2-4E88-ACAB-DE00418FA76B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10F949A7-FCA2-4E88-ACAB-DE00418FA76B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10F949A7-FCA2-4E88-ACAB-DE00418FA76B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {989681A5-F56E-4026-B237-5FBB94D821E3}
+	EndGlobalSection
+EndGlobal

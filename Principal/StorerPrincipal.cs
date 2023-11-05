@@ -3,9 +3,11 @@ using AutoGens;
 using Microsoft.VisualBasic;
 
 partial class Program{
-     public static void StorersPrincipal(){        
+     public static void StorersPrincipal(){  
+
         WriteLine();
         WriteLine("Welcome Storer !");
+
         while (true)
         {
             string op = MenuStorer();
@@ -146,21 +148,24 @@ partial class Program{
                     DeleteEquipment();
                 break;
 
-                case "5":  // List Equipment Requests
+                case "5":  // Search for a equipment by equipment ID
+                    
+                break;
+
+                case "6": // LIst Equipment Requests
                     ListEquipmentsRequests();
                 break;
 
-                case "6": // LIst Equipment Requests only for tomorrow
+                case "7": // LIst Equipment Requests only for tomorrow
+                    TomorrowsEquipmentRequests();
                 break;
 
-                case "7":
-                break;
-
-                case "8":
-                    DamagedLostReportInit();                
+                case "8":    
+                    SubMenuStudentsHistory();            
                 break;
 
                 case "9":
+                    SubMenuStudentsusingEquipment();
                 break;
 
                 case "10":
@@ -237,6 +242,89 @@ partial class Program{
     {
         WriteLine("a. View a request info");
 
+    }
+
+    public static void SubMenuStudentsHistory()
+    {
+        string op = "";
+        WriteLine("Choose an option: ");
+        WriteLine("a. See all students");
+        WriteLine("b. Search for a student in specific");
+        WriteLine("c. See students that have lost or damaged an equipment (and haven't made up for it)");
+        WriteLine("d. Exit");
+        bool valid = false;
+        do{
+            op = ReadNonEmptyLine();
+            if (op != "a"  &&  op != "b" &&  op != "c")
+            {
+                WriteLine("Please choose a valid option (a, b or c)");
+                op = ReadNonEmptyLine(); 
+            }
+            else
+            {
+                valid = true;
+            }
+        } while (!valid);
+        switch(op)
+        {
+            case "a": // all students
+                allstudents();
+            break;
+            case "b": // search
+                SearchStudentGeneral();
+            break;
+            case "c": // students with lost or damaged
+                studentsLostDamage();
+            break;
+            case "d":
+                return;
+            break;
+            default:
+                WriteLine("That option doesnt exist. ");
+            break;
+
+        }   
+    }
+
+    public static void SubMenuStudentsusingEquipment()
+    {        
+        string op = "";
+        WriteLine("Choose an option: ");
+        WriteLine("a. See all students using equipments ");
+        WriteLine("b. Search for a specific student in this list");
+        WriteLine("c. See the list of students that are late for returning equipments");
+        WriteLine("d. Exit");
+        bool valid = false;
+        do{
+            op = ReadNonEmptyLine();
+            if (op != "a"  &&  op != "b" &&  op != "c")
+            {
+                WriteLine("Please choose a valid option (a, b or c)");
+                op = ReadNonEmptyLine(); 
+            }
+            else
+            {
+                valid = true;
+            }
+        } while (!valid);
+        switch(op)
+        {
+            case "a": // student that r using equipments
+                StudentsUsingEquipments();
+            break;
+            case "b": // search
+                SearchStudentUsingEquipment();
+            break;
+            case "c": // late for returning
+                StudentsLateReturn();
+            break;
+            case "d":
+                return;
+            break;
+            default:
+                WriteLine("That option doesnt exist. ");
+            break;
+        }
     }
 
     
