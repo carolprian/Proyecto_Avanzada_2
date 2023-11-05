@@ -212,7 +212,10 @@ partial class Program{
         WriteLine("         a. See all students using equipments ");
         WriteLine("         b. Search for a specific student in this list");
         WriteLine("         c. See the list of students that are late for returning equipments");
-       //volley WriteLine(" 9. Return a equipment"); // busca por registro de estudiante, y verifica que todo sea igual a su request, al final pregunta si llegó dañado o en malas condiciones y lo manda a create
+        WriteLine(" 10. Delivery equipment.");
+        WriteLine("         a. To students ");
+        WriteLine("         a. To professor ");
+        //volley WriteLine(" 9. Return a equipment"); // busca por registro de estudiante, y verifica que todo sea igual a su request, al final pregunta si llegó dañado o en malas condiciones y lo manda a create
         WriteLine(" 10. Create report of damaged or lost equipment");  // volley MASO preguntar al profe
         WriteLine(" 11. Program maintenance for a equipment ");  // furry
         WriteLine(" 12. View Maintenance History");  // volley 
@@ -255,9 +258,9 @@ partial class Program{
         bool valid = false;
         do{
             op = ReadNonEmptyLine();
-            if (op != "a"  &&  op != "b" &&  op != "c")
+            if (op != "a"  &&  op != "b" &&  op != "c" &&  op != "d")
             {
-                WriteLine("Please choose a valid option (a, b or c)");
+                WriteLine("Please choose a valid option (a, b, c or d)");
                 op = ReadNonEmptyLine(); 
             }
             else
@@ -297,9 +300,9 @@ partial class Program{
         bool valid = false;
         do{
             op = ReadNonEmptyLine();
-            if (op != "a"  &&  op != "b" &&  op != "c")
+            if (op != "a"  &&  op != "b" &&  op != "c" &&  op != "d")
             {
-                WriteLine("Please choose a valid option (a, b or c)");
+                WriteLine("Please choose a valid option (a, b, c or d)");
                 op = ReadNonEmptyLine(); 
             }
             else
@@ -324,8 +327,44 @@ partial class Program{
             default:
                 WriteLine("That option doesnt exist. ");
             break;
-        }
+        } 
     }
 
+    public static void DeliveryEquipment()
+    {        
+        string op = "";
+        WriteLine("Choose an option: ");
+        WriteLine("a. To student");
+        WriteLine("b. To teacher");
+        WriteLine("d. Exit");
+        bool valid = false;
+        do{
+            op = ReadNonEmptyLine();
+            if (op != "a"  &&  op != "b" &&  op != "c")
+            {
+                WriteLine("Please choose a valid option (a, b or c )");
+                op = ReadNonEmptyLine(); 
+            }
+            else
+            {
+                valid = true;
+            }
+        } while (!valid);
+        switch(op)
+        {
+            case "a": // students
+                DeliveryEquipmentStudents();
+            break;
+            case "b": // professors
+                DeliveryEquipmentsProfessors();
+            break;
+            case "c":
+                return;
+            break;
+            default:
+                WriteLine("That option doesnt exist. ");
+            break;
+        }
+    }
     
 }
