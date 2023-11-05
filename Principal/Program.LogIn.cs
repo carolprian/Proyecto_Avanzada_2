@@ -315,7 +315,7 @@ partial class Program
         using (bd_storage db = new())
         {
             WriteLine("Write your ID: ");
-            string username = ReadNonEmptyLine();
+            string? username = ReadNonEmptyLine();
 
             WriteLine("Write your password: ");
             string pass = EncryptPass(ReadNonEmptyLine());
@@ -337,8 +337,6 @@ partial class Program
                     {
                         rol = "students";
                         return (true, username);
-                        break;
-
                     }
 
                 }
@@ -356,8 +354,6 @@ partial class Program
                     {
                         rol = "professors";
                         return (true, username);
-                        break;
-
                     }
                 }
                 else if (idUser == "storerId")
@@ -374,7 +370,6 @@ partial class Program
                     {
                         rol = "storers";
                         return (true, username);
-                        break;
                     }
                 }
                 else if (idUser == "coordinatorId")
@@ -392,7 +387,6 @@ partial class Program
                     {
                         rol = "coordinators";
                         return (true, username);
-                        break;
                     }
                 }
             }

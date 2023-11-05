@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
+    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\principal\\Principal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj": {
+    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\principal\\Principal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\principal\\Principal.csproj",
         "projectName": "Principal",
-        "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\principal\\Principal.csproj",
         "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\obj\\",
+        "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\principal\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"

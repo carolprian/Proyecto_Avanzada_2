@@ -1271,11 +1271,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj",
+      "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\principal\\Principal.csproj",
       "projectName": "Principal",
-      "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj",
+      "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\principal\\Principal.csproj",
       "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\obj\\",
+      "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\principal\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -1336,13 +1336,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }

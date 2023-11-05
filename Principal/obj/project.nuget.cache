@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VDU5LCE8EYKlJcTsKPH+vH3slQe8Vx4VEnWSEBqrhUQSD/8Qz9jrltporUXBV4JQx7PWJbq0mLVqqQQllblGww==",
+  "dgSpecHash": "7rf7XlSt6hZUFIccRT4gF1guPEnObFTZypPP0m7/7+c47VyS0Kstw6eU2LDLybIqm7fLM9+WRxyxGqyyIepyrg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj",
+  "projectFilePath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\principal\\Principal.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aacar\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\aacar\\.nuget\\packages\\microsoft.data.sqlite.core\\7.0.13\\microsoft.data.sqlite.core.7.0.13.nupkg.sha512",
@@ -33,12 +33,5 @@
     "C:\\Users\\aacar\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
     "C:\\Users\\aacar\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }

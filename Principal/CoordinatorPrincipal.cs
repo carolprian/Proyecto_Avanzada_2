@@ -1,12 +1,13 @@
+using AutoGens;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
 partial class Program
 {
-    //CODE DONE BY THE NIGGER
-    
     public static void CoordinatorsPrincipal()
     {
-       string op = MenuCoordinators();
+        string op = MenuCoordinators();
         WriteLine();
         switch (op)
         {
@@ -48,9 +49,43 @@ partial class Program
 
                 break;
             case "10":
-
+                ListGroups(); // Listar grupos
+                break;
+            case "11":
+                WriteLine("Enter the name of the group to add:");
+                string groupNameToAdd = ReadLine();
+                AddGroup(groupNameToAdd); // Agregar grupo
+                break;
+            case "12":
+                WriteLine("Enter the current name of the group to update:");
+                string currentGroupName = ReadLine();
+                WriteLine("Enter the new name for the group:");
+                string newGroupName = ReadLine();
+                int updateResult = UpdateGroupName(currentGroupName, newGroupName); // Actualizar grupo
+                if (updateResult > 0)
+                {
+                    WriteLine("Group updated successfully.");
+                }
+                else
+                {
+                    WriteLine("Group not found or update failed.");
+                }
+                break;
+            case "13":
+                WriteLine("Enter the name of the group to delete:");
+                string groupNameToDelete = ReadLine();
+                int deleteResult = DeleteGroup(groupNameToDelete); // Eliminar grupo
+                if (deleteResult > 0)
+                {
+                    WriteLine("Group deleted successfully.");
+                }
+                else
+                {
+                    WriteLine("Group not found or delete failed.");
+                }
                 break;
             default:
+
                 break;
         }
     }
@@ -82,14 +117,17 @@ partial class Program
         WriteLine(" 7. Search damaged or lost equipment by date of event");
         WriteLine(" 8. Search damaged or lost equipment by student name");
         WriteLine(" 9. View loan history");
-        WriteLine(" 10. Agregar grupos");
+        WriteLine(" 10. Ver grupos");
+        WriteLine(" 11. Agregar grupos");
+        WriteLine(" 12. Actualizar grupos");
+        WriteLine(" 13. Eliminar grupos");
         bool valid = false;
         do
         {
             op = ReadNonEmptyLine();
-            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5")
+            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8" && op != "9" && op != "10" && op != "11" && op != "12" && op != "13")
             {
-                WriteLine("Please choose a valid option (1 - 5)");
+                WriteLine("Please choose a valid option (1 - 13)");
                 op = ReadNonEmptyLine();
             }
             else
@@ -100,233 +138,88 @@ partial class Program
 
         return op;
     }
-    public static void ViewAllEquipmentsCoord()
+
+    public static void ListGroups()
     {
         using (bd_storage db = new())
         {
-            IQueryable<Equipment>? equipments = db.Equipments
-            .Include(e => e.Area)
-            .Include(e => e.Status)
-            .Include(e => e.Coordinator);
-
-            db.ChangeTracker.LazyLoadingEnabled = false;
-            if ((equipments is null) || !equipments.Any())
+            if ((db.Groups is null) || !db.Groups.Any())
             {
-                WriteLine("There are no status found");
-            }
-            WriteLine("| {0,-11} | {1,-15} | {2,-26} | {3,-80} | {4,4} | {5,17} | {6,20} | {7,6}",
-            "EquipmentId", "Name", "Area", "Description", "Year", "Status", "ControlNumber", "Coordinator");
-            foreach (var e in equipments)
-            {
-                WriteLine($"| {0,-11} | {1,-15} | {2,-26} | {3,-80} | {4,4} | {5,17} | {6,20} | {7,6}",
-                e.EquipmentId, e.Name, e.Area?.Name, e.Description, e.Year, e.Status?.Value, e.ControlNumber, e.Coordinator?.Name);
-            }
-        }
-    }
-
-    public static void SearchEquipmentsById(string searchTerm)
-    {
-       using (bd_storage db = new())
-        {
-            IQueryable<Equipment>? equipments = db.Equipments
-                .Include(e => e.Area)
-                .Include(e => e.Status)
-                .Include(e => e.Coordinator)
-                .Where(e => e.EquipmentId.StartsWith(searchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
-
-            db.ChangeTracker.LazyLoadingEnabled = false;
-
-            if (!equipments.Any())
-            {
-                WriteLine("No equipment found matching the search term: " + searchTerm);
+                WriteLine("There are no groups");
                 return;
             }
 
-            WriteLine("| {0,-11} | {1,-15} | {2,-26} | {3,-80} | {4,4} | {5,17} | {6,20} | {7,6}",
-                "EquipmentId", "Name", "Area", "Description", "Year", "Status", "ControlNumber", "Coordinator");
+            WriteLine("| {0,-3} | {1,-10} |", "Id", "Group Name");
 
-            foreach (var e in equipments)
+            foreach (var group in db.Groups)
             {
-                WriteLine($"| {e.EquipmentId,-11} | {e.Name,-15} | {e.Area?.Name,-26} | {e.Description,-80} | {e.Year,4} | {e.Status?.Value,17} | {e.ControlNumber,20} | {e.Coordinator?.Name,6}");
+                WriteLine("| {0:000} | {1,-10} |", group.GroupId, group.Name);
             }
         }
     }
 
-    public static void ListStudentsforCoord()
-    {
-        //string[] studentss = {};
-        
-        using (bd_storage db = new())
-        {
-            IQueryable<Student> students = db.Students
-            .Include(s => s.Group);
-            //.Include(category => category.Products);
-            db.ChangeTracker.LazyLoadingEnabled = false;
-            if ((students is null) || !students.Any())
-            {
-                WriteLine("There are no registered students found");
-                return;
-            }
-            WriteLine("| {0,-9} | {1,-10} | {2,-15} | {3,-15} | {4,15} | {5,7}",
-            "StudentId", "Name", "LastNameP", "LastNameM", "Password", "GroupId");
-            //int i=1;
-            // Use the data
-            foreach (var s in students)
-            {
-
-                //studentss[i] = Decrypt(student.Password);
-                WriteLine($"| {0,-9} | {1,-10} | {2,-15} | {3,-15} | {4,15} | {5,7}",
-                s.StudentId, s.Name, s.LastNameP, s.LastNameM, Decrypt(s.Password), s.Group?.Name);
-                //i++;
-            }
-        }
-    }
-
-    public static void ListDandLequipment()
-    {
-        //string[] dyLequipmentss = {};
-        using (bd_storage db = new())
-        {
-            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
-            .Include(dal => dal.Status)
-            .Include(dal => dal.Equipment)
-            .Include(dal => dal.Student)
-            .Include(dal => dal.Coordinator);
-            //.Include(category => category.Products);
-            db.ChangeTracker.LazyLoadingEnabled = false;
-            if ((dyLequipments is null) || !dyLequipments.Any())
-            {
-                WriteLine("There are no registered damaged or lost equipments found");
-                return;
-            }
-            //aqui
-            WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
-            "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
-            //int i=1;
-            // Use the data
-            foreach (var dal in dyLequipments)
-            {
-                //dyLequipmentss[i] = Decrypt(dyLequipments.Password);
-                WriteLine($"| {0,-9} | {1,-10} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
-                dal.DyLequipmentId, dal.Status?.Value, dal.Equipment?.Name, dal.Description, dal.DateOfEvent, dal.Student?.Name, dal.Coordinator?.Name);
-                //i++;
-            }
-        }
-    }
-
-    public static void FindDandLequipmentById(string equipmentIdToFind)
+    public static void AddGroup(string groupName)
     {
         using (bd_storage db = new())
         {
-            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
-                .Include(dal => dal.Status)
-                .Include(dal => dal.Equipment)
-                .Include(dal => dal.Student)
-                .Include(dal => dal.Coordinator)
-                .Where(dal => dal.DyLequipmentId.ToString().StartsWith(equipmentIdToFind));
-
-            db.ChangeTracker.LazyLoadingEnabled = false;
-
-            if (!dyLequipments.Any())
+            if (db.Groups is null)
             {
-                WriteLine("No damaged or lost equipment found with ID: " + equipmentIdToFind);
                 return;
             }
 
-            WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
-                "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
-
-            foreach (var dal in dyLequipments)
+            Group g = new()
             {
-                WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
-            }
+                Name = groupName
+            };
+
+            EntityEntry<Group> entity = db.Groups.Add(g);
+            int affected = db.SaveChanges();
+            WriteLine("Group added with ID: {0}", entity.Entity.GroupId);
         }
     }
 
-    public static void FindDandLequipmentByName(string equipmentNameToFind)
+    public static int UpdateGroupName(string oldName, string newName)
     {
         using (bd_storage db = new())
         {
-            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
-                .Include(dal => dal.Status)
-                .Include(dal => dal.Equipment)
-                .Include(dal => dal.Student)
-                .Include(dal => dal.Coordinator)
-                .Where(dal => dal.Equipment.Name.StartsWith(equipmentNameToFind)); // Utiliza StartsWith para buscar coincidencias parciales en el nombre del equipo
-
-            db.ChangeTracker.LazyLoadingEnabled = false;
-
-            if (!dyLequipments.Any())
+            if (db.Groups is null)
             {
-                WriteLine("No damaged or lost equipment found matching the equipment name: " + equipmentNameToFind);
-                return;
+                return 0;
             }
 
-            WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
-                "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
+            Group groupToUpdate = db.Groups.FirstOrDefault(g => g.Name == oldName);
 
-            foreach (var dal in dyLequipments)
+            if (groupToUpdate != null)
             {
-                WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
+                groupToUpdate.Name = newName;
+                int affected = db.SaveChanges();
+                return affected;
             }
+
+            return 0;
         }
     }
 
-    public static void FindDandLequipmentByDate(string dateToFind)
+    public static int DeleteGroup(string groupName)
     {
         using (bd_storage db = new())
         {
-            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
-                .Include(dal => dal.Status)
-                .Include(dal => dal.Equipment)
-                .Include(dal => dal.Student)
-                .Include(dal => dal.Coordinator)
-                .Where(dal => dal.DateOfEvent.ToString().StartsWith(dateToFind));
+            IQueryable<Group>? groupsToDelete = db.Groups?.Where(g => g.Name == groupName);
 
-            db.ChangeTracker.LazyLoadingEnabled = false;
-
-            if (!dyLequipments.Any())
+            if (groupsToDelete is null || !groupsToDelete.Any())
             {
-                WriteLine("No damaged or lost equipment found with Date of Event: " + dateToFind);
-                return;
+                WriteLine("No groups to delete");
+                return 0;
+            }
+            else
+            {
+                if (db.Groups is null) return 0;
+                db.Groups.RemoveRange(groupsToDelete);
             }
 
-            WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
-                "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
-
-            foreach (var dal in dyLequipments)
-            {
-                WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
-            }
+            int affected = db.SaveChanges();
+            return affected;
         }
     }
 
-    public static void FindDandLequipmentByStudentName(string studentNameToFind)
-    {
-        using (bd_storage db = new())
-        {
-            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
-                .Include(dal => dal.Status)
-                .Include(dal => dal.Equipment)
-                .Include(dal => dal.Student)
-                .Include(dal => dal.Coordinator)
-                .Where(dal => dal.Student.Name.StartsWith(studentNameToFind)); // Utiliza StartsWith para buscar coincidencias parciales en el nombre del alumno
-
-            db.ChangeTracker.LazyLoadingEnabled = false;
-
-            if (!dyLequipments.Any())
-            {
-                WriteLine("No damaged or lost equipment found with Student Name: " + studentNameToFind);
-                return;
-            }
-
-            WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
-                "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
-
-            foreach (var dal in dyLequipments)
-            {
-                WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
-            }
-        }
-    }
 }
