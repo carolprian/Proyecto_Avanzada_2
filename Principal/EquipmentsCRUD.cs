@@ -21,7 +21,7 @@ partial class Program{
                 Year = year, 
                 StatusId = statusid, 
                 ControlNumber = controlnumber,
-                // CoordinatorId = coordinatorid
+                CoordinatorId = EncryptPass(coordinatorid)
             };
             
 

@@ -169,6 +169,7 @@ partial class Program{
                 break;
 
                 case "10":
+                    DamagedLostReportInit();
                 break;
 
                 case "11":
@@ -197,13 +198,13 @@ partial class Program{
         WriteLine();
         WriteLine("***********************************MENU***********************************");
         WriteLine("Please choose an option, a number between 1 and 14");
-        WriteLine(" 1. Add new equipment"); // volley SI
+        WriteLine(" 1. Add new equipment"); // SI volley SI
         WriteLine(" 2. Update equipment information");  // furry
-        WriteLine(" 3. View equipments");  // volley SI y axel hace el de buscar un equipo en especifico
+        WriteLine(" 3. View equipments");  // SI volley SI y axel hace el de buscar un equipo en especifico
         WriteLine(" 4. Delete equipment");  // furry
         WriteLine(" 5. Search for a equipment by equipment ID "); //
-        WriteLine(" 6. View Equipment Requests"); // sam SI
-        WriteLine(" 7. View Tomorrows Equipment Requests"); // sam SI
+        WriteLine(" 6. View Equipment Requests"); // SI sam SI
+        WriteLine(" 7. View Tomorrows Equipment Requests"); // SI sam SI
         WriteLine(" 8. View and Search for a Students History"); // sam
         WriteLine("         a. See all students");
         WriteLine("         b. Search for a student in specific");
@@ -216,7 +217,7 @@ partial class Program{
         WriteLine("         a. To students ");
         WriteLine("         a. To professor ");
         //volley WriteLine(" 9. Return a equipment"); // busca por registro de estudiante, y verifica que todo sea igual a su request, al final pregunta si llegó dañado o en malas condiciones y lo manda a create
-        WriteLine(" 10. Create report of damaged or lost equipment");  // volley MASO preguntar al profe
+        WriteLine(" 10. Create report of damaged or lost equipment");  // SI volley SI
         WriteLine(" 11. Program maintenance for a equipment ");  // furry
         WriteLine(" 12. View Maintenance History");  // volley 
         WriteLine(" 13. Change password");  // furry
