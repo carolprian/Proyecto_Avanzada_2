@@ -108,57 +108,57 @@ partial class Program
     }
 
     public static string[]? ListCoordinators()
-{
-    using (bd_storage db = new())
     {
-        IQueryable<Coordinator> coordinators = db.Coordinators;
-        db.ChangeTracker.LazyLoadingEnabled = false;
-        if ((coordinators is null) || !coordinators.Any())
+        using (bd_storage db = new())
         {
-            WriteLine("There are no registered coordinators found");
-            return null;
+            IQueryable<Coordinator> coordinators = db.Coordinators;
+            db.ChangeTracker.LazyLoadingEnabled = false;
+            if ((coordinators is null) || !coordinators.Any())
+            {
+                WriteLine("There are no registered coordinators found");
+                return null;
+            }
+
+            int i = 0;
+            string[] coordinatorsid = new string[coordinators.Count()]; // Declarar el arreglo con el tamaño adecuado
+
+            foreach (var coordinator in coordinators)
+            {
+                coordinatorsid[i] = Decrypt(coordinator.CoordinatorId);
+                i++;
+                WriteLine($"{i}. {Decrypt(coordinator.CoordinatorId)} . {coordinator.Name} {coordinator.LastNameP}");
+            }
+
+            return coordinatorsid;
         }
-
-        int i = 0;
-        string[] coordinatorsid = new string[coordinators.Count()]; // Declarar el arreglo con el tamaño adecuado
-
-        foreach (var coordinator in coordinators)
-        {
-            coordinatorsid[i] = Decrypt(coordinator.CoordinatorId);
-            i++;
-            WriteLine($"{i}. {Decrypt(coordinator.CoordinatorId)} . {coordinator.Name} {coordinator.LastNameP}");
-        }
-
-        return coordinatorsid;
     }
-}
 
 
     public static string[]? ListStudents()
-{
-    using (bd_storage db = new())
     {
-        IQueryable<Student> students = db.Students;
-        db.ChangeTracker.LazyLoadingEnabled = false;
-        if ((students is null) || !students.Any())
+        using (bd_storage db = new())
         {
-            WriteLine("There are no registered students found");
-            return null;
+            IQueryable<Student> students = db.Students;
+            db.ChangeTracker.LazyLoadingEnabled = false;
+            if ((students is null) || !students.Any())
+            {
+                WriteLine("There are no registered students found");
+                return null;
+            }
+
+            int i = 0;
+            string[] studentsid = new string[students.Count()]; // Declarar el arreglo con el tamaño adecuado
+
+            foreach (var s in students)
+            {
+                studentsid[i] = s.StudentId;
+                i++;
+                WriteLine($"{i}. {s.StudentId} . {s.Name} {s.LastNameP}");
+            }
+
+            return studentsid;
         }
-
-        int i = 0;
-        string[] studentsid = new string[students.Count()]; // Declarar el arreglo con el tamaño adecuado
-
-        foreach (var s in students)
-        {
-            studentsid[i] = s.StudentId;
-            i++;
-            WriteLine($"{i}. {s.StudentId} . {s.Name} {s.LastNameP}");
-        }
-
-        return studentsid;
     }
-}
 
 
 }

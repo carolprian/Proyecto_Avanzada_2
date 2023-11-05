@@ -24,6 +24,7 @@ partial class Program
 
             string? opcion = ReadLine();
             bool bdquery = false;
+            string safecode;
             switch (opcion)
             {
                 case "1":
@@ -32,7 +33,7 @@ partial class Program
 
                 case "2":
                     WriteLine("Please enter the safecode in order to create a new Professor");
-                    string safecode = ReadNonEmptyLine();
+                    safecode = ReadNonEmptyLine();
                     if(safecode == "Brambi12345")
                     {
                         bdquery = RegistroProf();
@@ -47,7 +48,7 @@ partial class Program
                 case "3":
                     tableName = "Coordinator";
                     WriteLine("Please enter the safecode in order to create a new Coordinator");
-                    string safecode = ReadNonEmptyLine();
+                    safecode = ReadNonEmptyLine();
                     if(safecode == "Brambi12345")
                     {
                         bdquery = RegistroStorerCoord(tableName);
@@ -61,9 +62,8 @@ partial class Program
 
                 case "4":
                     tableName = "Storer";
-                    tableName = "Coordinator";
                     WriteLine("Please enter the safecode in order to create a new Storer");
-                    string safecode = ReadNonEmptyLine();
+                    safecode = ReadNonEmptyLine();
                     if(safecode == "Brambi12345")
                     {
                         bdquery = RegistroStorerCoord(tableName);
@@ -88,7 +88,7 @@ partial class Program
 
     public static bool RegistroProf()
     {
-        WriteLine("Provide your nomin, this will be your ID: ");
+        WriteLine("Provide your payroll number, this will be your ID: ");
         string username = EncryptPass(VerifyReadLengthStringExact(10));
 
         WriteLine("Provide your name: ");
@@ -157,7 +157,7 @@ partial class Program
 
     public static bool RegistroStorerCoord(string tableName)
     {
-        WriteLine("Provide your nomin, this will be your ID: ");
+        WriteLine("Provide your payroll number, this will be your ID: ");
         string username = EncryptPass(VerifyReadLengthStringExact(10));
 
         WriteLine("Provide your name: ");
@@ -337,8 +337,6 @@ partial class Program
                     {
                         rol = "students";
                         return true;
-                        break;
-
                     }
 
                 }
@@ -356,8 +354,6 @@ partial class Program
                     {
                         rol = "professors";
                         return true;
-                        break;
-
                     }
                 }
                 else if (idUser == "storerId")
@@ -374,7 +370,6 @@ partial class Program
                     {
                         rol = "storers";
                         return true;
-                        break;
                     }
                 }
                 else if (idUser == "coordinatorId")
@@ -392,7 +387,6 @@ partial class Program
                     {
                         rol = "coordinators";
                         return true;
-                        break;
                     }
                 }
             }
