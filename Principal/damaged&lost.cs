@@ -101,7 +101,7 @@ partial class Program{
                 Description = description,
                 DateOfEvent = dateofevent,
                 StudentId = studentid,
-                CoordinatorId = coordinatorid
+                CoordinatorId = EncryptPass(coordinatorid)
             };            
 
             EntityEntry<DyLequipment> entity = db.DyLequipments.Add(dl);
