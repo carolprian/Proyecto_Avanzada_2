@@ -1266,23 +1266,39 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\agael\\.nuget\\packages\\": {},
+=======
+    "C:\\Users\\artug\\.nuget\\packages\\": {},
+>>>>>>> 8b0fa69219d15ca7619acc7e653997fb4488170a
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj",
       "projectName": "Principal",
       "projectPath": "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\Principal.csproj",
       "packagesPath": "C:\\Users\\agael\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\agael\\OneDrive\\Documentos\\BrambiProjectStorage\\Principal\\obj\\",
+=======
+      "projectUniqueName": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+      "projectName": "Principal",
+      "projectPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+      "packagesPath": "C:\\Users\\artug\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\obj\\",
+>>>>>>> 8b0fa69219d15ca7619acc7e653997fb4488170a
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
+<<<<<<< HEAD
         "C:\\Users\\agael\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+        "C:\\Users\\artug\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> 8b0fa69219d15ca7619acc7e653997fb4488170a
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1291,7 +1307,10 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+<<<<<<< HEAD
         "C:\\Program Files\\dotnet\\library-packs": {},
+=======
+>>>>>>> 8b0fa69219d15ca7619acc7e653997fb4488170a
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1365,6 +1384,7 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-preview.7.23376.3\\RuntimeIdentifierGraph.json"
       }
     }
+<<<<<<< HEAD
   },
   "logs": [
     {
@@ -1378,4 +1398,7 @@
 >>>>>>> 1da6429349b1211ee8641b1adff048d474d1c4f5
     }
   ]
+=======
+  }
+>>>>>>> 8b0fa69219d15ca7619acc7e653997fb4488170a
 }

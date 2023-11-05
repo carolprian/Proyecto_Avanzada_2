@@ -31,18 +31,50 @@ partial class Program
                     return;
 
                 case "2":
-                    bdquery = RegistroProf();
+                    WriteLine("Please enter the safecode in order to create a new Professor");
+                    string safecode = ReadNonEmptyLine();
+                    if(safecode == "Brambi12345")
+                    {
+                        bdquery = RegistroProf();
+                    }
+                    else
+                    {
+                        WriteLine("Safecode is not correct, going back to main menu...");
+                        WriteLine();
+                    }
                     return;
 
                 case "3":
                     tableName = "Coordinator";
-                    bdquery = RegistroStorerCoord(tableName);
+                    WriteLine("Please enter the safecode in order to create a new Coordinator");
+                    string safecode = ReadNonEmptyLine();
+                    if(safecode == "Brambi12345")
+                    {
+                        bdquery = RegistroStorerCoord(tableName);
+                    }
+                    else
+                    {
+                        WriteLine("Safecode is not correct, going back to main menu...");
+                        WriteLine();
+                    }                    
                     return;
 
                 case "4":
                     tableName = "Storer";
-                    bdquery = RegistroStorerCoord(tableName);
+                    tableName = "Coordinator";
+                    WriteLine("Please enter the safecode in order to create a new Storer");
+                    string safecode = ReadNonEmptyLine();
+                    if(safecode == "Brambi12345")
+                    {
+                        bdquery = RegistroStorerCoord(tableName);
+                    }
+                    else
+                    {
+                        WriteLine("Safecode is not correct, going back to main menu...");
+                        WriteLine();
+                    }                    
                     return;
+                    
                 case "5":
                     return;
 
@@ -283,7 +315,7 @@ partial class Program
         using (bd_storage db = new())
         {
             WriteLine("Write your ID: ");
-            string username = EncryptPass(ReadNonEmptyLine());
+            string username = ReadNonEmptyLine();
 
             WriteLine("Write your password: ");
             string pass = EncryptPass(ReadNonEmptyLine());
@@ -313,7 +345,7 @@ partial class Program
                 else if (idUser == "professorId")
                 {
                     IQueryable<Professor> professors = db.Professors
-                    .Where(p => p.ProfessorId == username && p.Password == pass);
+                    .Where(p => p.ProfessorId == EncryptPass(username) && p.Password == pass);
 
                     if (professors is null || !professors.Any())
                     {
@@ -331,7 +363,7 @@ partial class Program
                 else if (idUser == "storerId")
                 {
                     IQueryable<Storer> storers = db.Storers
-                    .Where(s => s.StorerId == username && s.Password == pass);
+                    .Where(s => s.StorerId == EncryptPass(username) && s.Password == pass);
 
                     if (storers is null || !storers.Any())
                     {
@@ -348,7 +380,7 @@ partial class Program
                 else if (idUser == "coordinatorId")
                 {
                     IQueryable<Coordinator> coordinators = db.Coordinators
-                    .Where(s => s.CoordinatorId == username && s.Password == pass);
+                    .Where(s => s.CoordinatorId == EncryptPass(username) && s.Password == pass);
 
                     if (coordinators is null || !coordinators.Any())
                     {
