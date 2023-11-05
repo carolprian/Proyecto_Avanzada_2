@@ -10,6 +10,7 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LogInUnitTestings
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 build_property.ProjectDir = c:\Users\agael\OneDrive\Documentos\BrambiProjectStorage\LogInUnitTestings\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
@@ -19,3 +20,6 @@ build_property.ProjectDir = C:\Users\Samantha\Documents\progra\progra avanzada\B
 =======
 build_property.ProjectDir = D:\Valeria\Documents\.ceti\7mo\prograAvanzada\3P\BrambiProjectStorage\LogInUnitTestings\
 >>>>>>> 8b0fa69219d15ca7619acc7e653997fb4488170a
+=======
+build_property.ProjectDir = C:\Users\Samantha\Documents\progra\progra avanzada\PROYECTO_CLONE\BrambiProjectStorage\LogInUnitTestings\
+>>>>>>> 97d6a1708c4d4e1879e91288bf46c941817197e4

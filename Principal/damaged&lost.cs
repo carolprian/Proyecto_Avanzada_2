@@ -8,14 +8,13 @@ partial class Program{
             WriteLine("Create a Report of Damaged or Lost Equipment");
                 byte status =0;
                 string descrip ="", student="", coordi="", equipment ="";
-                DateTime eventdate = DateTime.Now;
+                DateTime eventdate = DateTime.Today;
 
                 byte opi=0;
                 using(bd_storage db = new())
                 {
                         while(opi==0)
                         {   
-                            
                             WriteLine("What was the damaged or lost equipment ID ?");
                             equipment = VerifyReadMaxLengthString(15);
                             IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.EquipmentId == equipment);
@@ -34,6 +33,12 @@ partial class Program{
                 status = Convert.ToByte(VerifyReadLengthStringExact(1));
                 if(status == 1){ status = 3;}
                 else if(status == 2){ status = 4;} // this is the status in the statusId table Statuses
+                /*IQueryable<Status> statuses = db.Statuses.Where(s => s.StatusId == status);
+                if(statuses is null || !statuses.Any())
+                {
+                    
+                }*/
+                
 
                 WriteLine("How did it happened?");
                 descrip = VerifyReadMaxLengthString(200);
@@ -42,9 +47,9 @@ partial class Program{
                 opi = 0;
                 while(opi==0)
                 {     
-                    WriteLine("When did it happened? (format: dd-MM-yyyy)");
+                    WriteLine("When did it happened? (format: yyyy-MM-dd)");
                     string date = VerifyReadLengthStringExact(10);
-                    if (DateTime.TryParseExact(date, "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out eventdate)) { opi = 1; }
+                    if (DateTime.TryParseExact(date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out eventdate)) { opi = 1; }
                     else{ WriteLine("That is not a correct date, try again."); }
                 }
                 WriteLine();
@@ -97,11 +102,10 @@ partial class Program{
                 DateOfEvent = dateofevent,
                 StudentId = studentid,
                 CoordinatorId = coordinatorid
-            };
-            
+            };            
 
             EntityEntry<DyLequipment> entity = db.DyLequipments.Add(dl);
-            int affected = db.SaveChanges();
+            int affected = db.SaveChanges();    
             return (affected, dl.DyLequipmentId);
         }
     }

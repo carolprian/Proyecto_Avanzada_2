@@ -24,6 +24,7 @@ partial class Program
 
             string? opcion = ReadLine();
             bool bdquery = false;
+            string safecode;
             switch (opcion)
             {
                 case "1":
@@ -32,7 +33,7 @@ partial class Program
 
                 case "2":
                     WriteLine("Please enter the safecode in order to create a new Professor");
-                    string safecode = ReadNonEmptyLine();
+                    safecode = ReadNonEmptyLine();
                     if(safecode == "Brambi12345")
                     {
                         bdquery = RegistroProf();
@@ -47,7 +48,7 @@ partial class Program
                 case "3":
                     tableName = "Coordinator";
                     WriteLine("Please enter the safecode in order to create a new Coordinator");
-                    string safecode = ReadNonEmptyLine();
+                    safecode = ReadNonEmptyLine();
                     if(safecode == "Brambi12345")
                     {
                         bdquery = RegistroStorerCoord(tableName);
@@ -61,9 +62,8 @@ partial class Program
 
                 case "4":
                     tableName = "Storer";
-                    tableName = "Coordinator";
                     WriteLine("Please enter the safecode in order to create a new Storer");
-                    string safecode = ReadNonEmptyLine();
+                    safecode = ReadNonEmptyLine();
                     if(safecode == "Brambi12345")
                     {
                         bdquery = RegistroStorerCoord(tableName);
@@ -88,7 +88,7 @@ partial class Program
 
     public static bool RegistroProf()
     {
-        WriteLine("Provide your nomin, this will be your ID: ");
+        WriteLine("Provide your payroll number, this will be your ID: ");
         string username = EncryptPass(VerifyReadLengthStringExact(10));
 
         WriteLine("Provide your name: ");
@@ -157,7 +157,7 @@ partial class Program
 
     public static bool RegistroStorerCoord(string tableName)
     {
-        WriteLine("Provide your nomin, this will be your ID: ");
+        WriteLine("Provide your payroll number, this will be your ID: ");
         string username = EncryptPass(VerifyReadLengthStringExact(10));
 
         WriteLine("Provide your name: ");
@@ -315,7 +315,7 @@ partial class Program
         using (bd_storage db = new())
         {
             WriteLine("Write your ID: ");
-            string username = ReadNonEmptyLine();
+            string username = EncryptPass(ReadNonEmptyLine());
 
             WriteLine("Write your password: ");
             string pass = EncryptPass(ReadNonEmptyLine());
@@ -345,7 +345,7 @@ partial class Program
                 else if (idUser == "professorId")
                 {
                     IQueryable<Professor> professors = db.Professors
-                    .Where(p => p.ProfessorId == EncryptPass(username) && p.Password == pass);
+                    .Where(p => p.ProfessorId == username && p.Password == pass);
 
                     if (professors is null || !professors.Any())
                     {
@@ -363,7 +363,7 @@ partial class Program
                 else if (idUser == "storerId")
                 {
                     IQueryable<Storer> storers = db.Storers
-                    .Where(s => s.StorerId == EncryptPass(username) && s.Password == pass);
+                    .Where(s => s.StorerId == username && s.Password == pass);
 
                     if (storers is null || !storers.Any())
                     {
@@ -380,7 +380,7 @@ partial class Program
                 else if (idUser == "coordinatorId")
                 {
                     IQueryable<Coordinator> coordinators = db.Coordinators
-                    .Where(s => s.CoordinatorId == EncryptPass(username) && s.Password == pass);
+                    .Where(s => s.CoordinatorId == username && s.Password == pass);
 
                     if (coordinators is null || !coordinators.Any())
                     {

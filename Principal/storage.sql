@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS coordinators (
     password      VARCHAR (50) 
 );
 
+
 -- Table: divisions
 CREATE TABLE IF NOT EXISTS divisions (
     divisionId INTEGER      PRIMARY KEY AUTOINCREMENT,
@@ -194,7 +195,7 @@ CREATE TABLE IF NOT EXISTS professors (
 CREATE TABLE IF NOT EXISTS requestDetails (
     requestDetailsId INTEGER      PRIMARY KEY AUTOINCREMENT,
     requestId        INTEGER      REFERENCES requests (requestId),
-    equipmentId      VARCHAR (15) REFERENCES equipments (equipmentId),
+    equipmentId      VARCHAR (15) REFERENCES equipments (equipmentId), //se llama id y es int 
     quantity         INTEGER,
     statusId         INTEGER      REFERENCES status (statusId),
     professorNIP     VARCHAR (4),
@@ -204,6 +205,7 @@ CREATE TABLE IF NOT EXISTS requestDetails (
     currentDate      DATE
 );
 
+INSERT INTO requestDetails (requestDetailsId, requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES (1, 1, 26798, 2,  )
 -- Table: requests
 CREATE TABLE IF NOT EXISTS requests (
     requestId   INTEGER   PRIMARY KEY AUTOINCREMENT,
