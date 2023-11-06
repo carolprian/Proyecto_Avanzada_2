@@ -272,7 +272,7 @@ partial class Program{
         switch(op)
         {
             case "a": // all students
-                allstudents();
+                ListStudents();
             break;
             case "b": // search
                 SearchStudentGeneral();

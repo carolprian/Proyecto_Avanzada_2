@@ -205,7 +205,6 @@ CREATE TABLE IF NOT EXISTS requestDetails (
     currentDate      DATE
 );
 
-INSERT INTO requestDetails (requestDetailsId, requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES (1, 1, 26798, 2,  )
 -- Table: requests
 CREATE TABLE IF NOT EXISTS requests (
     requestId   INTEGER   PRIMARY KEY AUTOINCREMENT,

@@ -102,8 +102,10 @@ partial class Program
 
         WriteLine("Create your password: ");
         string encryptedPassword = EncryptPass(VerifyReadLengthString(8));
+        
         string nip = "";
         int op = 0;
+
         while (op == 0)
         {
             WriteLine("Create your confirmation NIP for your students requests (4 digits): ");
@@ -316,6 +318,7 @@ partial class Program
         {
             WriteLine("Write your ID: ");
             string? username = ReadNonEmptyLine();
+            string encyptUsr = EncryptPass(username);
 
             WriteLine("Write your password: ");
             string pass = EncryptPass(ReadNonEmptyLine());
@@ -343,7 +346,7 @@ partial class Program
                 else if (idUser == "professorId")
                 {
                     IQueryable<Professor> professors = db.Professors
-                    .Where(p => p.ProfessorId == username && p.Password == pass);
+                    .Where(p => p.ProfessorId == encyptUsr && p.Password == pass);
 
                     if (professors is null || !professors.Any())
                     {
@@ -359,7 +362,7 @@ partial class Program
                 else if (idUser == "storerId")
                 {
                     IQueryable<Storer> storers = db.Storers
-                    .Where(s => s.StorerId == username && s.Password == pass);
+                    .Where(s => s.StorerId == encyptUsr && s.Password == pass);
 
                     if (storers is null || !storers.Any())
                     {
@@ -375,7 +378,7 @@ partial class Program
                 else if (idUser == "coordinatorId")
                 {
                     IQueryable<Coordinator> coordinators = db.Coordinators
-                    .Where(s => s.CoordinatorId == username && s.Password == pass);
+                    .Where(s => s.CoordinatorId == encyptUsr && s.Password == pass);
 
                     if (coordinators is null || !coordinators.Any())
                     {
