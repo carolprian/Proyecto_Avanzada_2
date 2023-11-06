@@ -363,7 +363,6 @@ partial class Program
                 {
                     IQueryable<Storer> storers = db.Storers
                     .Where(s => s.StorerId == encyptUsr && s.Password == pass);
-
                     if (storers is null || !storers.Any())
                     {
                         idUser = "coordinatorId";
@@ -379,7 +378,6 @@ partial class Program
                 {
                     IQueryable<Coordinator> coordinators = db.Coordinators
                     .Where(s => s.CoordinatorId == encyptUsr && s.Password == pass);
-
                     if (coordinators is null || !coordinators.Any())
                     {
                         rol = null;
@@ -478,7 +476,6 @@ partial class Program
                 {
                     // SELECT * FROM [UserTable] WHERE [UserTablePK] = UsernameInput
                     IQueryable<Student> students = db.Students.Where(s => s.StudentId == username);
-                    //WriteLine($"ToQueryString : {students.ToQueryString()}");
                     // checks if there are any registers with the desired ID
                     if (students is not null && students.Any())
                     {
@@ -492,67 +489,40 @@ partial class Program
                             WriteLine("Student ID is null");
                         }
                     }
-                    else
-                    {
-                        WriteLine("Student not found");
-                    }
-                    /*foreach (var student in students)
-                    {
-                        if (!reader.IsDBNull(reader.GetOrdinal("StudentId")))
-                        {
-                            WriteLine($"StudentID : {student.StudentId} - Password : {Decrypt(student.Password)}");
-                        }
-                        else
-                        {
-                            WriteLine("Student not found");
-                        }
-                    }*/
                 }
                 else if (idUser == "professorId")
                 {
-                    IQueryable<Professor> professors = db.Professors.Where(p => p.ProfessorId == username);
+                    IQueryable<Professor> professors = db.Professors.Where(p => p.ProfessorId == EncryptPass(username));
 
                     if (professors is not null || professors.Any())
                     {
                         foreach (var professor in professors)
                         {
-                            WriteLine($"ProfessorID : {professor.ProfessorId} - Password : {Decrypt(professor.Password)}");
+                            WriteLine($"ProfessorID : {Decrypt(professor.ProfessorId)} - Password : {Decrypt(professor.Password)}");
                         }
-                    }
-                    else
-                    {
-                        WriteLine("Professor not found");
                     }
                 }
                 else if (idUser == "storerId")
                 {
-                    IQueryable<Storer> storers = db.Storers.Where(s => s.StorerId == username);
+                    IQueryable<Storer> storers = db.Storers.Where(s => s.StorerId == EncryptPass(username));
 
                     if (storers is not null || storers.Any())
                     {
                         foreach (var storer in storers)
                         {
-                            WriteLine($"StorerID : {storer.StorerId} - Password : {Decrypt(storer.Password)}");
+                            WriteLine($"StorerID : {Decrypt(storer.StorerId)} - Password : {Decrypt(storer.Password)}");
                         }
-                    }
-                    else
-                    {
-                        WriteLine("Storer not found");
                     }
                 }
                 else if (idUser == "coordinatorId")
                 {
-                    IQueryable<Coordinator> coordinators = db.Coordinators.Where(c => c.CoordinatorId == username);
+                    IQueryable<Coordinator> coordinators = db.Coordinators.Where(c => c.CoordinatorId == EncryptPass(username));
                     if (coordinators is not null || coordinators.Any())
                     {
                         foreach (var coordinator in coordinators)
                         {
-                            WriteLine($"CoordinatorId : {coordinator.CoordinatorId} - Password : {Decrypt(coordinator.Password)}");
+                            WriteLine($"CoordinatorId : {Decrypt(coordinator.CoordinatorId)} - Password : {Decrypt(coordinator.Password)}");
                         }
-                    }
-                    else
-                    {
-                        WriteLine("Coordinator not found");
                     }
                 }
             }

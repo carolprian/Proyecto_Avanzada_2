@@ -1266,24 +1266,47 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\Samantha\\.nuget\\packages\\": {}
+=======
+    "C:\\Users\\artug\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+>>>>>>> ba33be861c47dd138842f76f6e844890f06b9f5a
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\BrambiProjectStorage\\Principal\\Principal.csproj",
       "projectName": "Principal",
       "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\BrambiProjectStorage\\Principal\\Principal.csproj",
       "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\BrambiProjectStorage\\Principal\\obj\\",
+=======
+      "projectUniqueName": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+      "projectName": "Principal",
+      "projectPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\Principal.csproj",
+      "packagesPath": "C:\\Users\\artug\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\BrambiProjectStorage\\Principal\\obj\\",
+>>>>>>> ba33be861c47dd138842f76f6e844890f06b9f5a
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
+<<<<<<< HEAD
         "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+        "C:\\Users\\artug\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+>>>>>>> ba33be861c47dd138842f76f6e844890f06b9f5a
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

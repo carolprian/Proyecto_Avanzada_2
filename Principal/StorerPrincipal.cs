@@ -3,7 +3,7 @@ using AutoGens;
 using Microsoft.VisualBasic;
 
 partial class Program{
-     public static void StorersPrincipal(){  
+     public static void StorersPrincipal(string username){  
 
         WriteLine();
         WriteLine("Welcome Storer !");
@@ -178,7 +178,12 @@ partial class Program{
                 case "12":
                 break;
 
-                case "13":
+                case "13": // change storer password
+                    var resultChangeStorerPsw = ChangeStorerPsw(username);
+                    if(resultChangeStorerPsw.affected == 1)
+                    {
+                        WriteLine($"Password was successfully changed for {Decrypt(resultChangeStorerPsw.storerId)}");
+                    }
                 break;
 
                 case "14":
@@ -190,6 +195,47 @@ partial class Program{
         }               
     }
 
+    static (int affected, string storerId) ChangeStorerPsw(string username)
+    {
+        using(bd_storage db = new())
+        {
+            int incorrect = 0;
+            // checks if it exists
+            IQueryable<Storer> storers = db.Storers
+            .Where(s => s.StorerId == EncryptPass(username));
+                                    
+            if(storers is null || !storers.Any())
+            {
+                WriteLine("Storer not found");
+            }
+            else
+            {
+                string oldPassword = "";
+                do
+                {
+                    WriteLine();
+                    WriteLine("Please enter your old password"); 
+                    oldPassword = ReadNonEmptyLine();
+                    if(EncryptPass(oldPassword) != storers.First().Password)
+                    {
+                        incorrect++;
+                        if(incorrect >= 3) return (0,"0");
+                        WriteLine($"Incorrect Password, please try again ({incorrect})");
+                    }
+                    else
+                    {
+                        string newPassword = "";
+                        WriteLine("Please enter your new password");
+                        newPassword = EncryptPass(VerifyReadLengthString(8));
+                        storers.First().Password = newPassword;
+                        int affected = db.SaveChanges();
+                        return(affected, storers.First().StorerId);;
+                    }
+                } while (true);                
+            }
+        }
+        return (0,"0");
+    }
 
     public static string MenuStorer()
     {
