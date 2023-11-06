@@ -191,6 +191,14 @@ CREATE TABLE IF NOT EXISTS professors (
     password    VARCHAR (50) 
 );
 
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password)
+VALUES ('1234567890', 'Alejandra', 'Alcaraz', 'Torres', 'NIP1', 'Colomos23');
+VALUES ('1010101010', 'Nancy del Carmen', 'Benavides', 'Medina', 'NIP2', 'Colomos23');
+VALUES ('0987654321', 'Diana Marisol', 'Figueroa', 'Flores', 'NIP3', 'Colomos23');
+VALUES ('1111111111', 'Clara Gabriela', 'Garcia', 'Duran', 'NIP4', 'Colomos23');
+VALUES ('1231231231', 'Carlos', 'Molina', 'Martinez', 'NIP5', 'Colomos23');
+
+
 -- Table: requestDetails
 CREATE TABLE IF NOT EXISTS requestDetails (
     requestDetailsId INTEGER      PRIMARY KEY AUTOINCREMENT,
@@ -205,6 +213,14 @@ CREATE TABLE IF NOT EXISTS requestDetails (
     currentDate      DATE
 );
 
+INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate)
+VALUES(1, 'multim12345', 2, 1, 'NIP1', '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
+VALUES(1, 'oscilo12345', 1, 1, 'NIP1', '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
+VALUES(2, 'multi1234567', 3, 1, NULL, '10:20:00', '14:30:00', '2023-09-07', '2023-09-05');
+VALUES(3, 'mp123123123', 1, 1, 'NIP3', '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
+VALUES(3, 'multim12345', 2, 1, 'NIP3', '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
+
+
 -- Table: requests
 CREATE TABLE IF NOT EXISTS requests (
     requestId   INTEGER   PRIMARY KEY AUTOINCREMENT,
@@ -214,6 +230,11 @@ CREATE TABLE IF NOT EXISTS requests (
     storerId    CHAR (10) REFERENCES storers (storerId),
     subjectId   VARCHAR (13)   REFERENCES subjects (subjectId) 
 );
+
+INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId)
+VALUES (1, 3, '123456789', '20300679', '1', '18MPBDSO101');
+VALUES (2, 7, '1010101010', '20300698', '1', '18MPBDSO202');
+VALUES (3, 12, '0987654321', '20300826', '1', '18MPBDSO411');
 
 -- Table: schedules
 CREATE TABLE IF NOT EXISTS schedules (

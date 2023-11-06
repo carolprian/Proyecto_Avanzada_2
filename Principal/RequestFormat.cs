@@ -28,6 +28,7 @@ partial class Program
         }while(ban==false);
         WriteLine("Insert today's date: yyyy/mm/dd ");
         string currentDate = ReadNonEmptyLine();
+
         using(bd_storage db = new()){
             IQueryable<Student> students = db.Students.Where(s => s.StudentId==username);
             var studentss = students.FirstOrDefault();
@@ -49,10 +50,8 @@ partial class Program
             }
             
         }
-        do
-        {
-            WriteLine("Check if your credentials are correct:");
-        }while(ban==true);
+        WriteLine("Check if your credentials are correct:");
+        string correct = ReadNonEmptyLine();
         //listado de materias
         WriteLine("Select the number of the subject: ");
         using (bd_storage db = new()){

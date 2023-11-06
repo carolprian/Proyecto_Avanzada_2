@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
+    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\BrambiProjectStorage\\Principal\\Principal.csproj": {
+    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj",
         "projectName": "Principal",
-        "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\BrambiProjectStorage\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\BrambiProjectStorage\\Principal\\obj\\",
+        "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\Principal.csproj",
+        "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\Principal\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
