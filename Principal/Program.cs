@@ -41,7 +41,7 @@ public partial class Program
                             break;
 
                             case "storers":
-                            StorersPrincipal();
+                            StorersPrincipal(logIn.username);
                             break;
 
                             case "coordinators":
