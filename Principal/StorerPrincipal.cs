@@ -177,7 +177,7 @@ partial class Program{
                 break;
 
                 case "7": // LIst Equipment Requests only for tomorrow
-                    //TomorrowsEquipmentRequests();
+                    TomorrowsEquipmentRequests();
                 break;
 
                 case "8":    

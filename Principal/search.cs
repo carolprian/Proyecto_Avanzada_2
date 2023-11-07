@@ -51,16 +51,15 @@ partial class Program
 
                 WriteLine($"Request {i}: ");
                 WriteLine($"Request Detail: {firstRequest.RequestId}");
-                WriteLine($"Quantity: {firstRequest.Quantity}");
                 WriteLine($"Dispatch Time: {firstRequest.DispatchTime}");
                 WriteLine($"Return Time: {firstRequest.ReturnTime}");
                 WriteLine($"Requested Date: {firstRequest.RequestedDate}");
                 WriteLine($"Current Date: {firstRequest.CurrentDate}");
 
-                WriteLine("Equipment Names:");
+                WriteLine("Equipment:");
                 foreach (var r in group)
                 {
-                    WriteLine($"  - {r.Equipment.Name}");
+                    WriteLine($"  - Quantity: {r.Quantity}, Equipment Name: {r.Equipment.Name}");
                 }
             }  
         }
@@ -111,13 +110,12 @@ partial class Program
                 WriteLine("Student {i} Information: ");
                 WriteLine("");
                 WriteLine($"Name: {student.Name}, Last Name: {student.LastNameP}, Group: {student.Group.Name}");
-                WriteLine("Equipment Names:");
+                WriteLine("Equipment:");
                 foreach (var r in group)
                 {
-                    WriteLine($"  - {r.Equipment.Name}");
+                    WriteLine($"  - Quantity: {r.Quantity}, Equipment Name: {r.Equipment.Name}");
                 }
 
-                WriteLine($"Quantity: {firstRequest.Quantity}");
                 WriteLine($"Return Time: {firstRequest.ReturnTime}");
                 WriteLine($"Date: {firstRequest.RequestedDate}");
 

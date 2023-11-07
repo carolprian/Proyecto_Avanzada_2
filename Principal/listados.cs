@@ -27,17 +27,57 @@ partial class Program
                 i++;
                 var firstRequest = group.First();
 
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, Quantity: {firstRequest.Quantity}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, ReturnTime: {firstRequest.ReturnTime}, RequestedDate: {firstRequest.RequestedDate}");
+                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, ReturnTime: {firstRequest.ReturnTime}, RequestedDate: {firstRequest.RequestedDate}");
 
-                WriteLine("Equipment Names:");
+                WriteLine("Equipment:");
                 foreach (var r in group)
                 {
-                    WriteLine($"  - {r.Equipment.Name}");
+                    WriteLine($"  - Quantity: {r.Quantity}, Equipment Name: {r.Equipment.Name}");
                 }
             }
 
             return "";
 
+        }
+    }
+
+    public static string? TomorrowsEquipmentRequests()
+    {
+        using (bd_storage db = new())
+        {
+            DateTime tomorrow = DateTime.Now.Date.AddDays(1);
+            IQueryable<RequestDetail> requestDetails = db.RequestDetails
+            .Include( e => e.Equipment)
+            .Where( r => r.ProfessorNip == "1")
+            .Where(r => r.DispatchTime != null && r.DispatchTime.Date == tomorrow);
+            
+            db.ChangeTracker.LazyLoadingEnabled = false;
+            if ((requestDetails is null) || !requestDetails.Any())
+            {
+                WriteLine("There are no request found");
+                return null;
+            }
+
+
+            var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
+
+            int i = 0;
+
+            foreach (var group in groupedRequests)
+            {
+                i++;
+                var firstRequest = group.First();
+
+                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, ReturnTime: {firstRequest.ReturnTime}, RequestedDate: {firstRequest.RequestedDate}");
+
+                WriteLine("Equipments:");
+                foreach (var r in group)
+                {
+                    WriteLine($"  - Quantity: {r.Quantity}, Equipment Name: {r.Equipment.Name}");
+                }
+            }
+
+            return "";
         }
     }
 
@@ -54,7 +94,8 @@ partial class Program
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
             .Include( r => r.Request.Student.Group)
             .Include( r => r.Equipment)
-            .Where( s => s.StatusId == 1);
+            .Where( s => s.StatusId == 2)
+            .Where( r => r.ProfessorNip == "1");
 
             if (!requestDetails.Any() || requestDetails is null)
             {
@@ -68,10 +109,10 @@ partial class Program
             {
 
                 i++;
-                WriteLine("Student {i} Information: ");
+                WriteLine($"Student {i} Information: ");
                 WriteLine("");
                 WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
-                WriteLine("Equipment Name: {use.Equipment.Name} ");
+                WriteLine($"Equipment Name: {use.Equipment.Name} ");
                 WriteLine($"Quantity: {use.Quantity}");
                 WriteLine($"Return Time: {use.ReturnTime}");
                 WriteLine($"Date: {use.RequestedDate}");
@@ -82,7 +123,38 @@ partial class Program
 
     public static void StudentsLateReturn()
     {
+        using (bd_storage db = new())
+        {
+            var currentDate = DateTime.Now;
 
+            IQueryable<RequestDetail> requestDetails = db.RequestDetails
+            .Include(r => r.Request.Student.Group)
+            .Include(r => r.Equipment)
+            .Where(s => s.StatusId == 2 && s.ProfessorNip == "1" && s.RequestedDate < currentDate);
+            WriteLine($"Query: {requestDetails.ToQueryString()}");
+            if (!requestDetails.Any())
+            {
+                WriteLine("No students found with overdue equipment.");
+                SubMenuStudentsusingEquipment();
+                return;
+            }
+
+            int i = 0;
+            foreach (var use in requestDetails)
+            {
+                if (use.ReturnTime < currentDate)
+                {
+                    i++;
+                    WriteLine($"Student {i} Information: ");
+                    WriteLine("");
+                    WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
+                    WriteLine($"Equipment Name: {use.Equipment.Name} ");
+                    WriteLine($"Quantity: {use.Quantity}");
+                    WriteLine($"Return Time: {use.ReturnTime}");
+                    WriteLine($"Date: {use.RequestedDate}");
+                }
+            }
+        }
     }
 
     public static int ListAreas()
