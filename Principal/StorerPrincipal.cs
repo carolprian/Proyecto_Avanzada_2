@@ -149,7 +149,27 @@ partial class Program{
                 break;
 
                 case "5":  // Search for a equipment by equipment ID
-                    
+                    WriteLine();
+                    WriteLine("1. Search for a equipment info by the equipment ID");
+                    WriteLine("2. Search for a equipments info by the equipment name");
+                    WriteLine("Choose the option:");
+                    string opic = VerifyReadLengthStringExact(1);
+                    if(opic == "1")
+                    {
+                        WriteLine("Provide the equipment ID: (it can be the first part of it)");
+                        string equipment = VerifyReadMaxLengthString(15);
+                        SearchEquipmentsById(equipment);
+                    }
+                    else if(opic == "2")
+                    {
+                        WriteLine("Provide the equipment name: (it can be the first part of it)");
+                        string equipment = VerifyReadMaxLengthString(15);
+                        SearchEquipmentsByName(equipment);
+                    }
+                    else
+                    {
+                        WriteLine("Sorry, that is not an option.");
+                    }
                 break;
 
                 case "6": // LIst Equipment Requests
@@ -176,6 +196,7 @@ partial class Program{
                 break;
 
                 case "12":
+                    ViewMaintenanceHistory();
                 break;
 
                 case "13": // change storer password
@@ -248,7 +269,7 @@ partial class Program{
         WriteLine(" 2. Update equipment information");  // furry
         WriteLine(" 3. View equipments");  // SI volley SI y axel hace el de buscar un equipo en especifico
         WriteLine(" 4. Delete equipment");  // furry
-        WriteLine(" 5. Search for a equipment by equipment ID "); // cambia para ID y aparte nombre
+        WriteLine(" 5. Search for a equipment by equipment ID or equipment Name"); // cambia para ID y aparte nombre
         WriteLine(" 6. View Equipment Requests"); // SI sam SI
         WriteLine(" 7. View Tomorrows Equipment Requests"); // SI sam SI
         WriteLine(" 8. View and Search for a Students History"); // sam
@@ -267,7 +288,7 @@ partial class Program{
         WriteLine(" 11. Program maintenance for a equipment ");  // furry  ( cambiar sttatus) (se debe poder programar frecuencia mantenimiento)
         WriteLine(" 12. View Maintenance History");  // volley 
         WriteLine(" 13. Change password");  // SI furry
-        WriteLine(" 14. Sign out"); // ni pa las muelas chaparro 
+        WriteLine(" 14. Sign out");
         // View equipments actualmente prestados en general 
         // hacer 8, 9, 10, 11, 12,    
         bool valid = false;

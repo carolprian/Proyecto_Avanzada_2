@@ -320,7 +320,7 @@ partial class Program{
                 .Include(e => e.Area)
                 .Include(e => e.Status)
                 .Include(e => e.Coordinator)
-                .Where(e => e.EquipmentId.StartsWith(searchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
+                .Where(e => e.Name.StartsWith(searchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
 
             db.ChangeTracker.LazyLoadingEnabled = false;
 
@@ -345,29 +345,6 @@ partial class Program{
 {
         using (bd_storage db = new())
         {
-<<<<<<< HEAD
-        // using (bd_storage db = new())
-        // {
-        //     if((db.Products is null) || (!db.Products.Any()))
-        //     {
-        //         Fail("There are no products");
-        //         return;
-        //     }
-        //     WriteLine("| {0,-3} | {1,-35} | {2,8} | {3,5} | {4}",
-        //     "Id", "Product Name", "Cost", "Stock", "Disc");
-        //     foreach (var product in db.Products)
-        //     {
-        //         ConsoleColor backgroundColor = ForegroundColor;
-        //         if((productsToHiglight is not null) && productsToHiglight.Contains(product.ProductId))
-        //         {
-        //             ForegroundColor = ConsoleColor.Red;
-        //         }
-        //         WriteLine("| {0:000} | {1,-35} | {2,8:$#,##0.00} | {3,5} | {4}",
-        //         product.ProductId, product.ProductName, product.Cost, product.Stock, product.Discontinued);
-        //         ForegroundColor = backgroundColor;
-        //     }
-        // }
-=======
         IQueryable<Equipment>? equipments = (IQueryable<Equipment>?)db.Equipments
     .Join(
         db.Areas,
@@ -406,7 +383,6 @@ partial class Program{
                     }
                 }
 
->>>>>>> 405b74ce6784aaa8a54e86b24c017990daedf7ff
         }
     }
 

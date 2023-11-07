@@ -284,7 +284,7 @@ partial class Program
             {
                 StudentId = username,
                 Name = firstname,
-                LastNameP = lastnameM,
+                LastNameP = lastnameP,
                 LastNameM = lastnameM,
                 GroupId = groupid,
                 Password = encryptedPassword
