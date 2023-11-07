@@ -3,153 +3,29 @@ using AutoGens;
 partial class Program
 {
     
-    public static void ListEquipmentsRequests()
+    public static string? ListEquipmentsRequests()
     {
         using (bd_storage db = new())
         {
-
-            IQueryable<RequestDetail> requestDetails = db.RequestDetails
-            .Where( r => r.ProfessorNip != null)
-            .GroupBy( r => new
+            IQueryable<RequestDetail> requestDetails = db.RequestDetails;
+            db.ChangeTracker.LazyLoadingEnabled = false;
+            if ((requestDetails is null) || !requestDetails.Any())
             {
-                r.RequestId,
-                r.Quantity,
-                r.StatusId,
-                r.ProfessorNip,
-                r.DispatchTime,
-                r.ReturnTime,
-                r.RequestedDate
-            })
-            .Select( group => new RequestDetail
-            {
-                RequestId = group.Key.RequestId,
-                Quantity = group.Key.Quantity,
-                StatusId = group.Key.StatusId,
-                ProfessorNip = group.Key.ProfessorNip,
-                DispatchTime = group.Key.DispatchTime,
-                ReturnTime = group.Key.ReturnTime,
-                RequestedDate = group.Key.RequestedDate,
-                EquipmentId = string.Join(",", group.Select(r => r.EquipmentId))
-            })
-            .Join(
-                db.Equipments,
-                detail => detail.EquipmentId,
-                equipment => equipment.EquipmentId,
-                (detail, equipment) => new RequestDetail
-                {
-                    RequestId = detail.RequestId,
-                    Quantity = detail.Quantity,
-                    StatusId = detail.StatusId,
-                    ProfessorNip = detail.ProfessorNip,
-                    DispatchTime = detail.DispatchTime,
-                    ReturnTime = detail.ReturnTime,
-                    RequestedDate = detail.RequestedDate,
-                    EquipmentName = equipment.Name
-                }
-            );
-
-            WriteLine($"ToQueryString: {requestDetails.ToQueryString()}");
-
-            int batchSize = 20;
-            int offset = 0;
-            bool continueListing = true;
-
-            while (continueListing)
-            {
-                var batch = requestDetails.Skip(offset).Take(batchSize);
-
-                WriteLine($"ToQueryString: {batch.ToQueryString()}");
-
-                if (!batch.Any())
-                {
-                    WriteLine("No hay más resultados.");
-                    break;
-                }
-
-                foreach (var details in batch)
-                {
-                    WriteLine($"RequestId: {details.RequestId}, Quantity: {details.Quantity}, StatusId: {details.StatusId}, ProfessorNip: {details.ProfessorNip}, DispatchTime: {details.DispatchTime}, ReturnTime: {details.ReturnTime}, RequestedDate: {details.RequestedDate}, EquipmentNames: {details.EquipmentName}");
-                }
-
-                WriteLine("Presiona una tecla para cargar más resultados (o presiona 'q' para salir)...");
-                var key = ReadKey().Key;
-                
-                if (key == ConsoleKey.Q)
-                {
-                    continueListing = false;
-                }
-
-                offset += batchSize;
+                WriteLine("There are no request found");
+                return null;
             }
+
+            int i = 0;
+            string[] requestDetailsid = new string[requestDetails.Count()]; // Declarar el arreglo con el tamaño adecuado
+
+            foreach (var r in requestDetails)
+            {
+                i++;
+                WriteLine($"{i}. RequestId: {r.RequestId}, Quantity: {r.Quantity}, StatusId: {r.StatusId}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime}, ReturnTime: {r.ReturnTime}, RequestedDate: {r.RequestedDate}");
+            }
+
+            return "hola";
         }
-    }
-
-    public static void TomorrowsEquipmentRequests()
-    {
-        DateTime tomorrow = DateTime.Now.Date.AddDays(1);  // Obtener la fecha de mañana
-        using (bd_storage db = new())
-        {
-
-            IQueryable<RequestDetail> requestDetailsForTomorrow = db.RequestDetails
-            .Where( r => r.ProfessorNip != null)
-            .GroupBy( r => new
-            {
-                r.RequestId,
-                r.Quantity,
-                r.StatusId,
-                r.ProfessorNip,
-                r.DispatchTime,
-                r.ReturnTime,
-                r.RequestedDate
-            })
-            .Select( group => new RequestDetail
-            {
-                RequestId = group.Key.RequestId,
-                Quantity = group.Key.Quantity,
-                StatusId = group.Key.StatusId,
-                ProfessorNip = group.Key.ProfessorNip,
-                DispatchTime = group.Key.DispatchTime,
-                ReturnTime = group.Key.ReturnTime,
-                RequestedDate = group.Key.RequestedDate,
-                EquipmentId = string.Join(",", group.Select(r => r.EquipmentId))
-            })
-            .Join(
-                db.Equipments,
-                detail => detail.EquipmentId,
-                equipment => equipment.EquipmentId,
-                (detail, equipment) => new RequestDetail
-                {
-                    RequestId = detail.RequestId,
-                    Quantity = detail.Quantity,
-                    StatusId = detail.StatusId,
-                    ProfessorNip = detail.ProfessorNip,
-                    DispatchTime = detail.DispatchTime,
-                    ReturnTime = detail.ReturnTime,
-                    RequestedDate = detail.RequestedDate,
-                    EquipmentName = equipment.Name
-                }
-            )
-            .Where(r => r.DispatchTime != null && r.DispatchTime.Date == tomorrow);
-
-            WriteLine($"ToQueryString: {requestDetailsForTomorrow.ToQueryString()}");
-
-            if (requestDetailsForTomorrow is null || !requestDetailsForTomorrow.Any())
-            {
-                WriteLine("No hay resultados.");
-            }
-            else
-            {
-                foreach (var details in requestDetailsForTomorrow)
-                {
-                    WriteLine($"RequestId: {details.RequestId}, Quantity: {details.Quantity}, StatusId: {details.StatusId}, ProfessorNip: {details.ProfessorNip}, DispatchTime: {details.DispatchTime}, ReturnTime: {details.ReturnTime}, RequestedDate: {details.RequestedDate}, EquipmentNames: {details.EquipmentName}");
-                }
-            }
-        }
-    }
-
-    public static void allstudents()
-    {
-
     }
 
     public static void studentsLostDamage()

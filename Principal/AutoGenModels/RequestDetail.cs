@@ -64,5 +64,4 @@ public partial class RequestDetail
     [ForeignKey("StatusId")]
     [InverseProperty("RequestDetails")]
     public virtual Status? Status { get; set; }
-    public string? EquipmentName { get; internal set; }  
 }

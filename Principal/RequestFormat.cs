@@ -39,19 +39,23 @@ partial class Program
                 {
                     if(studentss.LastNameM is not null){
                         WriteLine($"Name: {studentss.Name} {studentss.LastNameP} {studentss.LastNameM}");
-                        WriteLine($"Register {studentss.StudentId}");
+                        WriteLine($"Register: {studentss.StudentId}");
                         WriteLine($"Group: {groupss.GroupId}");
                     } else{
                         WriteLine($"Name: {studentss.Name} {studentss.LastNameP}");
-                        WriteLine($"Register {studentss.StudentId}");
+                        WriteLine($"Register: {studentss.StudentId}");
                         WriteLine($"Group: {groupss.GroupId}");
                     }
             }
             }
             
         }
-        WriteLine("Check if your credentials are correct:");
-        string correct = ReadNonEmptyLine();
+        string correct;
+        do{
+            WriteLine("Are your credentials correct: y/n");
+            correct = ReadNonEmptyLine();
+        }while(correct!="y" && correct!="n");
+        
         //listado de materias
         WriteLine("Select the number of the subject: ");
         using (bd_storage db = new()){

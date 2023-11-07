@@ -157,7 +157,7 @@ partial class Program{
                 break;
 
                 case "7": // LIst Equipment Requests only for tomorrow
-                    TomorrowsEquipmentRequests();
+                    //TomorrowsEquipmentRequests();
                 break;
 
                 case "8":    
@@ -242,33 +242,34 @@ partial class Program{
         //hay que hacer cambios en el switch case arriba
         string op = "";
         WriteLine();
-        WriteLine("***********************************MENU***********************************");
+        WriteLine("**********************************MENU**********************************");
         WriteLine("Please choose an option, a number between 1 and 14");
         WriteLine(" 1. Add new equipment"); // SI volley SI
         WriteLine(" 2. Update equipment information");  // furry
         WriteLine(" 3. View equipments");  // SI volley SI y axel hace el de buscar un equipo en especifico
         WriteLine(" 4. Delete equipment");  // furry
-        WriteLine(" 5. Search for a equipment by equipment ID "); //
+        WriteLine(" 5. Search for a equipment by equipment ID "); // cambia para ID y aparte nombre
         WriteLine(" 6. View Equipment Requests"); // SI sam SI
         WriteLine(" 7. View Tomorrows Equipment Requests"); // SI sam SI
         WriteLine(" 8. View and Search for a Students History"); // sam
-        WriteLine("         a. See all students");
-        WriteLine("         b. Search for a student in specific");
+        WriteLine("         a. See all students"); // SI
+        WriteLine("         b. Search for a student in specific"); // (con historial)
         WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)"); 
         WriteLine(" 9. View and Search for Students using Equipment at this moment"); // sam
         WriteLine("         a. See all students using equipments ");
         WriteLine("         b. Search for a specific student in this list");
         WriteLine("         c. See the list of students that are late for returning equipments");
-        WriteLine(" 10. Delivery equipment.");
-        WriteLine("         a. To students ");
-        WriteLine("         a. To professor ");
+        WriteLine(" 10. Delivery equipment."); // vali (cambiar status)
+        WriteLine("         a. To students "); // vali
+        WriteLine("         a. To professor "); // vali
         //volley WriteLine(" 9. Return a equipment"); // busca por registro de estudiante, y verifica que todo sea igual a su request, al final pregunta si llegó dañado o en malas condiciones y lo manda a create
         WriteLine(" 10. Create report of damaged or lost equipment");  // SI volley SI
-        WriteLine(" 11. Program maintenance for a equipment ");  // furry
+        WriteLine(" 11. Program maintenance for a equipment ");  // furry  ( cambiar sttatus) (se debe poder programar frecuencia mantenimiento)
         WriteLine(" 12. View Maintenance History");  // volley 
-        WriteLine(" 13. Change password");  // furry
+        WriteLine(" 13. Change password");  // SI furry
         WriteLine(" 14. Sign out"); // ni pa las muelas chaparro 
-        WriteLine();        
+        // View equipments actualmente prestados en general 
+        // hacer 8, 9, 10, 11, 12,    
         bool valid = false;
         do
         {

@@ -145,6 +145,8 @@ CREATE TABLE IF NOT EXISTS groups (
     name    CHAR (3) 
 );
 
+INSERT INTO groups (groupId, name) VALUES (1, '8A1');
+
 -- Table: maintain
 CREATE TABLE IF NOT EXISTS maintain (
     maintainId    INTEGER      PRIMARY KEY AUTOINCREMENT,
@@ -205,18 +207,18 @@ CREATE TABLE IF NOT EXISTS requestDetails (
     equipmentId      VARCHAR (15) REFERENCES equipments (equipmentId),
     quantity         INTEGER,
     statusId         INTEGER      REFERENCES status (statusId),
-    professorNIP     VARCHAR (4),
+    professorNIP     INTEGER,
     dispatchTime     TIME,
     returnTime       TIME,
     requestedDate    DATE,
     currentDate      DATE
 );
 
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'multim12345', 2, 1, 'NIP1', '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'oscilo12345', 1, 1, 'NIP1', '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(2, 'multi1234567', 3, 1, NULL, '10:20:00', '14:30:00', '2023-09-07', '2023-09-05');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'mp123123123', 1, 1, 'NIP3', '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'multim12345', 2, 1, 'NIP3', '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
+INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'multim12345', 2, 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
+INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'oscilo12345', 1, 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
+INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(2, 'multi1234567', 3, 1, 0, '10:20:00', '14:30:00', '2023-09-07', '2023-09-05');
+INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'mp123123123', 1, 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
+INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'multim12345', 2, 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
 
 
 -- Table: requests
@@ -229,9 +231,9 @@ CREATE TABLE IF NOT EXISTS requests (
     subjectId   VARCHAR (13)   REFERENCES subjects (subjectId) 
 );
 
-INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (1, 3, '123456789', '20300679', '1', '18MPBDSO101');
-INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (2, 7, '1010101010', '20300698', '1', '18MPBDSO202');
-INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (3, 12, '0987654321', '20300826', '1', '18MPBDSO411');
+INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (1, 3, '123456789', '20300679', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO101');
+INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (2, 7, '1010101010', '20300698', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO202');
+INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (3, 12, '0987654321', '20300826', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO411');
  
 -- Table: schedules
 CREATE TABLE IF NOT EXISTS schedules (
@@ -305,6 +307,8 @@ CREATE TABLE IF NOT EXISTS storers (
     password  VARCHAR (50) 
 );
 
+INSERT INTO storers (storerId, name, lastNameP, lastnameM, password) VALUES ('owTkVgr0sk6DHaUug+7/SA==', 'Anel', 'Gomez', 'Lopez', 'Colomos23');
+
 -- Table: students
 CREATE TABLE IF NOT EXISTS students (
     studentId CHAR (8)     PRIMARY KEY,
@@ -318,6 +322,8 @@ CREATE TABLE IF NOT EXISTS students (
     )
     REFERENCES groups (groupId) 
 );
+
+INSERT INTO students (studentId, name, lastNameP, lastNameM, password, groupId) VALUES ('11111111', 'Generico', 'Generico', 'Generico', 'F8t128gjJIaegDAGPG//LA==', '1');
 
 -- Table: subjects
 CREATE TABLE IF NOT EXISTS subjects (

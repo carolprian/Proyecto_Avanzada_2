@@ -31,7 +31,7 @@ partial class Program{
                 WriteLine($"ToQueryString: {requests.ToQueryString()}");
 
                 if(requests is null || !requests.Any()){
-                    WriteLine("There are not Permissions to aprrove Teacher");
+                    WriteLine("There are not Permissions to aprove Teacher");
                     WriteLine();
                     return;
                 }
