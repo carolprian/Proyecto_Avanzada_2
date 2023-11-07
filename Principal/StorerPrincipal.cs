@@ -274,12 +274,12 @@ partial class Program{
         WriteLine(" 7. View Tomorrows Equipment Requests"); // SI sam SI
         WriteLine(" 8. View and Search for a Students History"); // sam
         WriteLine("         a. See all students"); // SI
-        WriteLine("         b. Search for a student in specific"); // (con historial)
-        WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)"); 
+        WriteLine("         b. Search for a student in specific"); // (con historial) si
+        WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)"); // sam si
         WriteLine(" 9. View and Search for Students using Equipment at this moment"); // sam
-        WriteLine("         a. See all students using equipments ");
-        WriteLine("         b. Search for a specific student in this list");
-        WriteLine("         c. See the list of students that are late for returning equipments");
+        WriteLine("         a. See all students using equipments "); // sam si
+        WriteLine("         b. Search for a specific student in this list"); //sam si
+        WriteLine("         c. See the list of students that are late for returning equipments"); // sam si
         WriteLine(" 10. Delivery equipment."); // vali (cambiar status)
         WriteLine("         a. To students "); // vali
         WriteLine("         a. To professor "); // vali

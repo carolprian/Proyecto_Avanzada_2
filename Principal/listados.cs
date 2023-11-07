@@ -83,7 +83,33 @@ partial class Program
 
     public static void studentsLostDamage()
     {
+        using (bd_storage db = new())
+        {
+            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
+            .Include( s => s.Student.Group)
+            .Include( e => e.Equipment)
+            .Include( t => t.Status);
 
+            if (!dyLequipments.Any() || dyLequipments is null)
+            {
+                WriteLine("No students found.");
+                SubMenuStudentsusingEquipment();
+                return;
+            }
+
+            int i = 0;
+            foreach (var use in dyLequipments)
+            {
+                i++;
+                WriteLine($"Student {i} Information: ");
+                WriteLine($"Name: {use.Student.Name}, Last Name: {use.Student.LastNameP}, Group: {use.Student.Group.Name}");
+                WriteLine("Equipment Information");
+                WriteLine($"status: {use.Status.Value}");
+                WriteLine($"Equipment Name: {use.Equipment.Name} ");
+                WriteLine($"Description: {use.Description}");
+                WriteLine($"Date of event: {use.DateOfEvent}");
+            } 
+        }
     }
 
     public static void StudentsUsingEquipments()
