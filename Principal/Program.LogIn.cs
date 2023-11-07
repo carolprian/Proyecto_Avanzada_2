@@ -160,8 +160,7 @@ partial class Program
     public static bool RegistroStorerCoord(string tableName)
     {
         WriteLine("Provide your payroll number, this will be your ID: ");
-       // string username = EncryptPass(VerifyReadLengthStringExact(10));
-        string username = ReadLine();
+        string username = EncryptPass(VerifyReadLengthStringExact(10));
         WriteLine("Provide your name: ");
         string firstname = ReadNonEmptyLine();
 
