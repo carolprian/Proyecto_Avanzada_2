@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj": {}
+    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj": {}
   },
   "projects": {
-    "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj": {
+    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
+        "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
         "projectName": "LogInUnitTestings",
-        "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
-        "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\obj\\",
+        "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
+        "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"

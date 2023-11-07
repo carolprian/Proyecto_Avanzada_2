@@ -8,7 +8,6 @@ partial class Program
         using (bd_storage db = new())
         {
             IQueryable<RequestDetail> requestDetails = db.RequestDetails;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((requestDetails is null) || !requestDetails.Any())
             {
                 WriteLine("There are no request found");
