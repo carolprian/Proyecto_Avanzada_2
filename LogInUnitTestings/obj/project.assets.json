@@ -5518,28 +5518,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\aacar\\.nuget\\packages\\": {}
+    "C:\\Users\\Samantha\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
+      "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
       "projectName": "LogInUnitTestings",
-      "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\LogInUnitTestings.csproj",
-      "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\BrambiProjectStorage\\LogInUnitTestings\\obj\\",
+      "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
+      "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

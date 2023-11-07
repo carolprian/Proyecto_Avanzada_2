@@ -7,23 +7,37 @@ partial class Program
     {
         using (bd_storage db = new())
         {
-            IQueryable<RequestDetail> requestDetails = db.RequestDetails;
+            IQueryable<RequestDetail> requestDetails = db.RequestDetails
+            .Include( e => e.Equipment)
+            .Where( r => r.ProfessorNip == "1");
+
             if ((requestDetails is null) || !requestDetails.Any())
             {
                 WriteLine("There are no request found");
                 return null;
             }
 
-            int i = 0;
-            string[] requestDetailsid = new string[requestDetails.Count()]; // Declarar el arreglo con el tamaño adecuado
 
-            foreach (var r in requestDetails)
+            var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
+
+            int i = 0;
+
+            foreach (var group in groupedRequests)
             {
                 i++;
-                WriteLine($"{i}. RequestId: {r.RequestId}, Quantity: {r.Quantity}, StatusId: {r.StatusId}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime}, ReturnTime: {r.ReturnTime}, RequestedDate: {r.RequestedDate}");
+                var firstRequest = group.First();
+
+                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, Quantity: {firstRequest.Quantity}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, ReturnTime: {firstRequest.ReturnTime}, RequestedDate: {firstRequest.RequestedDate}");
+
+                WriteLine("Equipment Names:");
+                foreach (var r in group)
+                {
+                    WriteLine($"  - {r.Equipment.Name}");
+                }
             }
 
-            return "hola";
+            return "";
+
         }
     }
 
@@ -34,7 +48,36 @@ partial class Program
 
     public static void StudentsUsingEquipments()
     {
+        using (bd_storage db = new())
+        {
 
+            IQueryable<RequestDetail> requestDetails = db.RequestDetails
+            .Include( r => r.Request.Student.Group)
+            .Include( r => r.Equipment)
+            .Where( s => s.StatusId == 1);
+
+            if (!requestDetails.Any() || requestDetails is null)
+            {
+                WriteLine("No students found.");
+                SubMenuStudentsusingEquipment();
+                return;
+            }
+
+            int i = 0;
+            foreach (var use in requestDetails)
+            {
+
+                i++;
+                WriteLine("Student {i} Information: ");
+                WriteLine("");
+                WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
+                WriteLine("Equipment Name: {use.Equipment.Name} ");
+                WriteLine($"Quantity: {use.Quantity}");
+                WriteLine($"Return Time: {use.ReturnTime}");
+                WriteLine($"Date: {use.RequestedDate}");
+
+            } 
+        }
     }
 
     public static void StudentsLateReturn()

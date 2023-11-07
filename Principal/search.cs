@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using AutoGens;
+using System.Linq;
 partial class Program
 {
     public static void SearchStudentGeneral()
@@ -7,86 +8,121 @@ partial class Program
         using (bd_storage db = new())
         {
             WriteLine("Provide the ID of the student you want to search:");
-            string Id = ReadNonEmptyLine();
+            string studentId = ReadNonEmptyLine();
 
-            var studentHistory = db.Students
-                .Where(s => s.StudentId == Id)
-                .Join(
-                    db.Requests,
-                    student => student.StudentId,
-                    request => request.StudentId,
-                    (student, request) => new
-                    {
-                        student.Name,
-                        student.LastNameP,
-                        student.LastNameM,
-                        student.Group,
-                        request.RequestId
-                    })
-                .Join(
-                    db.RequestDetails,
-                    studentRequest => studentRequest.RequestId,
-                    requestDetail => requestDetail.RequestId,
-                    (studentRequest, requestDetail) => new
-                    {
-                        studentRequest.Name,
-                        studentRequest.LastNameP,
-                        studentRequest.LastNameM,
-                        studentRequest.Group,
-                        requestDetail.Quantity,
-                        requestDetail.ProfessorNip,
-                        requestDetail.DispatchTime,
-                        requestDetail.ReturnTime,
-                        requestDetail.RequestedDate,
-                        requestDetail.CurrentDate,
-                        requestDetail.EquipmentId
-                    })
-                .GroupJoin(
-                    db.Equipments,
-                    requestDetail => requestDetail.EquipmentId,
-                    equipment => equipment.EquipmentId,
-                    (requestDetail, equipment) => new
-                    {
-                        requestDetail.Name,
-                        requestDetail.LastNameP,
-                        requestDetail.LastNameM,
-                        requestDetail.Group,
-                        requestDetail.Quantity,
-                        requestDetail.ProfessorNip,
-                        requestDetail.DispatchTime,
-                        requestDetail.ReturnTime,
-                        requestDetail.RequestedDate,
-                        requestDetail.CurrentDate,
-                        requestDetail.EquipmentId,
-                        EquipmentName = equipment.FirstOrDefault().Name
-                    });
+            var student = db.Students
+            .Include( g => g.Group)
+            .SingleOrDefault(s => s.StudentId == studentId);
 
-            WriteLine($"ToQueryString: {studentHistory.ToQueryString()}");
-            // var query = studentHistory.ToQueryString();
-            // WriteLine($"Generated SQL Query: {query}");
-            
-            if (!studentHistory.Any())
+            if (student == null)
             {
-                WriteLine("No student or history found");
-                return;
+                WriteLine("No student found");
+                SubMenuStudentsHistory();
             }
 
-            foreach (var result in studentHistory)
-            {
-                WriteLine($"Name: {result.Name}, Paternal Last Name: {result.LastNameP}, Maternal Last Name: {result.LastNameM}, Group: {result.Group}");
-                WriteLine($"Request Detail: {result.EquipmentId}, Equipment Name: {result.EquipmentName}");
-                WriteLine($"Quantity: {result.Quantity}");
-                WriteLine($"Professor NIP: {result.ProfessorNip}");
-                WriteLine($"Dispatch Time: {result.DispatchTime}");
-                WriteLine($"Return Time: {result.ReturnTime}");
-                WriteLine($"Requested Date: {result.RequestedDate}");
-                WriteLine($"Current Date: {result.CurrentDate}");
-            }
+            WriteLine("Student Information: ");
             
+            WriteLine($"Name: {student.Name}, Paternal Last Name: {student.LastNameP}, Maternal Last Name: {student.LastNameM}, Group: {student.Group.Name}");
+
+            var requests = db.Requests.Where(r => r.StudentId == student.StudentId).ToList();
+
+            if (requests.Count == 0)
+            {
+                WriteLine("No history found for the student.");
+                SubMenuStudentsusingEquipment();
+            }
+
+            List<int> requestIds = requests.Select(r => r.RequestId).ToList();
+            
+            IQueryable<RequestDetail> RequestDetails = db.RequestDetails
+            .Where(rd => requestIds.Contains((int)rd.RequestId))
+            .Include(rd => rd.Equipment);
+
+            var groupedRequests = RequestDetails.GroupBy(r => r.RequestId);
+
+            int i = 0;
+            WriteLine("");
+            WriteLine("Student History: ");
+
+            foreach (var group in groupedRequests)
+            {
+                i++;
+                var firstRequest = group.First();
+
+                WriteLine($"Request {i}: ");
+                WriteLine($"Request Detail: {firstRequest.RequestId}");
+                WriteLine($"Quantity: {firstRequest.Quantity}");
+                WriteLine($"Dispatch Time: {firstRequest.DispatchTime}");
+                WriteLine($"Return Time: {firstRequest.ReturnTime}");
+                WriteLine($"Requested Date: {firstRequest.RequestedDate}");
+                WriteLine($"Current Date: {firstRequest.CurrentDate}");
+
+                WriteLine("Equipment Names:");
+                foreach (var r in group)
+                {
+                    WriteLine($"  - {r.Equipment.Name}");
+                }
+            }  
         }
     }
 
-    public static void SearchStudentUsingEquipment(){
+    public static void SearchStudentUsingEquipment()
+    {
+        using (bd_storage db = new())
+        {
+            WriteLine("Provide the ID of the student you want to search:");
+            string studentId = ReadNonEmptyLine();
 
+            var student = db.Students
+            .Include( g => g.Group)
+            .SingleOrDefault(s => s.StudentId == studentId);
+
+            if (student == null)
+            {
+                WriteLine("No student found");
+                SubMenuStudentsusingEquipment();
+            }
+
+            var requests = db.Requests.Where(r => r.StudentId == student.StudentId).ToList();
+
+            if (requests.Count == 0)
+            {
+                WriteLine("No history found for the student.");
+                SubMenuStudentsusingEquipment();
+            }
+
+            List<int> requestIds = requests.Select(r => r.RequestId).ToList();
+            
+            IQueryable<RequestDetail> RequestDetails = db.RequestDetails
+            .Where(rd => requestIds.Contains((int)rd.RequestId) && rd.StatusId == 2)
+            .Include(rd => rd.Equipment);
+
+            var groupedRequests = RequestDetails.GroupBy(r => r.RequestId);
+
+            int i = 0;
+            WriteLine("");
+            WriteLine("Students with Equipments in use: ");
+
+            foreach (var group in groupedRequests)
+            {
+                i++;
+                var firstRequest = group.First();
+
+                WriteLine("Student {i} Information: ");
+                WriteLine("");
+                WriteLine($"Name: {student.Name}, Last Name: {student.LastNameP}, Group: {student.Group.Name}");
+                WriteLine("Equipment Names:");
+                foreach (var r in group)
+                {
+                    WriteLine($"  - {r.Equipment.Name}");
+                }
+
+                WriteLine($"Quantity: {firstRequest.Quantity}");
+                WriteLine($"Return Time: {firstRequest.ReturnTime}");
+                WriteLine($"Date: {firstRequest.RequestedDate}");
+
+            } 
+        }
     }
 }
+
