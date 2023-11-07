@@ -31,7 +31,7 @@ public partial class bd_storage : DbContext
 
     public virtual DbSet<Group> Groups { get; set; }
 
-    public virtual DbSet<Maintain> Maintains { get; set; }
+    public virtual DbSet<Maintain> Maintain { get; set; }
 
     public virtual DbSet<MaintenanceRegister> MaintenanceRegisters { get; set; }
 
