@@ -141,7 +141,7 @@ partial class Program{
                 break;
 
                 case "3": // Equipment List
-                    ViewAllEquipments();
+                    ViewAllEquipments(1);
                 break;
 
                 case "4": // Delete equipment

@@ -1,11 +1,11 @@
 partial class Program{
     public static void StudentsPrincipal(string username){
         //menu de acciones
-        //1.Llenar permisos__Caro
+        //1.Llenar permisos__Caro //agregar validacion de un permiso por día
         //2.Reportes de material dañado
         //3.Listado de materiales
         //4.Listado de permisos
-       // MenuStudents(username);
+       MenuStudents(username);
     } 
 
     public static void MenuStudents(string username){
