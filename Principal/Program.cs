@@ -10,7 +10,7 @@ public partial class Program
         WriteLine($"Provider : {db.Database.ProviderName}"); 
         WriteLine();
         // ApprovePermissions();
-        // StorersPrincipal();
+        StorersPrincipal("1234567890");
         
         while (true)
         {
