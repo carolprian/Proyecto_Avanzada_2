@@ -205,7 +205,6 @@ CREATE TABLE IF NOT EXISTS requestDetails (
     requestDetailsId INTEGER      PRIMARY KEY AUTOINCREMENT,
     requestId        INTEGER      REFERENCES requests (requestId),
     equipmentId      VARCHAR (15) REFERENCES equipments (equipmentId),
-    quantity         INTEGER,
     statusId         INTEGER      REFERENCES status (statusId),
     professorNIP     INTEGER,
     dispatchTime     TIME,
@@ -214,11 +213,11 @@ CREATE TABLE IF NOT EXISTS requestDetails (
     currentDate      DATE
 );
 
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'multim12345', 2, 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'oscilo12345', 1, 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(2, 'multi1234567', 3, 1, 0, '10:20:00', '14:30:00', '2023-09-07', '2023-09-05');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'mp123123123', 1, 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'multim12345', 2, 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'multim12345', 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'oscilo12345', 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(2, 'multi1234567', 1, 0, '10:20:00', '14:30:00', '2023-09-07', '2023-09-05');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'mp123123123', 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'multim12345', 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
 
 
 -- Table: requests

@@ -9,8 +9,7 @@ public partial class Program
         bd_storage db = new();
         WriteLine($"Provider : {db.Database.ProviderName}"); 
         WriteLine();
-        // ApprovePermissions();
-        StorersPrincipal("1234567890");
+        
         
         while (true)
         {
