@@ -95,6 +95,8 @@ CREATE TABLE IF NOT EXISTS DyLEquipments (
     equipmentId    VARCHAR (15)  REFERENCES equipments (equipmentId),
     description    VARCHAR (200),
     dateOfEvent    DATE,
+    dateOfReturn   DATE,
+    objectReturn   VARCHAR(100),
     studentId      CHAR (8)      REFERENCES students (studentId),
     coordinatorId  CHAR (10)      REFERENCES coordinators (coordinatorId),
     FOREIGN KEY (
@@ -193,11 +195,11 @@ CREATE TABLE IF NOT EXISTS professors (
     password    VARCHAR (50) 
 );
 
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1234567890', 'Alejandra', 'Alcaraz', 'Torres', 'NIP1', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1010101010', 'Nancy del Carmen', 'Benavides', 'Medina', 'NIP2', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('0987654321', 'Diana Marisol', 'Figueroa', 'Flores', 'NIP3', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1111111111', 'Clara Gabriela', 'Garcia', 'Duran', 'NIP4', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1231231231', 'Carlos', 'Molina', 'Martinez', 'NIP5', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('owTkVgr0sk6DHaUug+7/SA==', 'Alejandra', 'Alcaraz', 'Torres', 'gxLjEIaXCcvWek8lrMK0Qg==', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('s+d1CVba7aAcZHO4z0LPaw==', 'Nancy del Carmen', 'Benavides', 'Medina', 'NJhRuGQE/CqIGDl0yZkNnMQ==IP2', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('AEd+FHe4V36Wpe7FXKWZtg==', 'Diana Marisol', 'Figueroa', 'Flores', 'MSMqLGP2jK9q59XrnJ4f+w==', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('i7T8ZRB4ZgI/GHgQY3B6IQ==', 'Clara Gabriela', 'Garcia', 'Duran', 'QUhomydkInt//RMMHtlzNQ==', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('CokUy+/bPTOOfNMUx77mMg==', 'Carlos', 'Molina', 'Martinez', 'NAvzNYe0JliYidWPKpqBEw==', 'F8t128gjJIaegDAGPG//LA==');
 
 
 -- Table: requestDetails
@@ -230,9 +232,9 @@ CREATE TABLE IF NOT EXISTS requests (
     subjectId   VARCHAR (13)   REFERENCES subjects (subjectId) 
 );
 
-INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (1, 3, '123456789', '20300679', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO101');
-INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (2, 7, '1010101010', '20300698', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO202');
-INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (3, 12, '0987654321', '20300826', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO411');
+INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (1, 3, 'owTkVgr0sk6DHaUug+7/SA==', '20300679', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO101');
+INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (2, 7, 's+d1CVba7aAcZHO4z0LPaw==', '20300698', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO202');
+INSERT INTO requests (requestId, classroomId, professorId, studentId, storerId, subjectId) VALUES (3, 12, 'AEd+FHe4V36Wpe7FXKWZtg==', '20300826', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO411');
  
 -- Table: schedules
 CREATE TABLE IF NOT EXISTS schedules (
@@ -311,7 +313,7 @@ CREATE TABLE IF NOT EXISTS storers (
     password  VARCHAR (50) 
 );
 
-INSERT INTO storers (storerId, name, lastNameP, lastnameM, password) VALUES ('owTkVgr0sk6DHaUug+7/SA==', 'Anel', 'Gomez', 'Lopez', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO storers (storerId, name, lastNameP, lastnameM, password) VALUES ('owTkVgr0sk6DHaUug+7/SA==', 'Annel', 'Marin', 'Gutierrez', 'F8t128gjJIaegDAGPG//LA==');
 
 -- Table: students
 CREATE TABLE IF NOT EXISTS students (
@@ -327,7 +329,6 @@ CREATE TABLE IF NOT EXISTS students (
     REFERENCES groups (groupId) 
 );
 
-INSERT INTO students (studentId, name, lastNameP, lastNameM, password, groupId) VALUES ('11111111', 'Generico', 'Generico', 'Generico', 'F8t128gjJIaegDAGPG//LA==', '1');
 
 -- Table: subjects
 CREATE TABLE IF NOT EXISTS subjects (

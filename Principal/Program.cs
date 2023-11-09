@@ -12,6 +12,7 @@ public partial class Program
         // ApprovePermissions();
         // StorersPrincipal();
         //MenuStudents("20300826");
+        //Hi();
         while (true)
         {
             WriteLine("Principal Menu: ");
