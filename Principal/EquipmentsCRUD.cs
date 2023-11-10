@@ -35,7 +35,7 @@ partial class Program{
     public static void UpdateEquipment()
     {
         WriteLine("Here's a list of all registered equipment, please enter the ID of the equipment you wish to change");
-        ViewAllEquipments();
+        ViewAllEquipments(1);
         do
         {
             WriteLine();
@@ -249,7 +249,7 @@ partial class Program{
     public static void DeleteEquipment()
     {
         WriteLine("Here's a list of all registered equipment, please enter the ID of the equipment you wish to change");
-        ViewAllEquipments();
+        ViewAllEquipments(1);
         do
         {
             WriteLine();
@@ -285,29 +285,54 @@ partial class Program{
     }
 
     // READ
-    public static void ViewAllEquipments()
+    public static void ViewAllEquipments(int op)
     {
-        using( bd_storage db = new())
-        {
-            IQueryable<Equipment>? equipments = db.Equipments
-            .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator);
-
-            db.ChangeTracker.LazyLoadingEnabled = false;
-            if((equipments is null) || !equipments.Any())
+        if (op==1){
+            using( bd_storage db = new())
             {
-                WriteLine("There are no status found");
-            }
-            int i=1;
-            WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
-                "Index", "EquipmentId", "Equipment Name", "Area", "Description", "Year", "Status", "Control Number", "Coordinator ID");
-            Write("-------------------------------------------------------------------------------------------------------------------");
-            WriteLine("-------------------------------------------------------------------------------");
+                IQueryable<Equipment>? equipments = db.Equipments
+                .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator);
 
-            foreach (var e in equipments)
-            {
+                db.ChangeTracker.LazyLoadingEnabled = false;
+                if((equipments is null) || !equipments.Any())
+                {
+                    WriteLine("There are no status found");
+                }
+                int i=1;
                 WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
-                    i, e.EquipmentId, e.Name, e.Area?.Name, e.Description, e.Year, e.Status?.Value, e.ControlNumber, e.Coordinator?.CoordinatorId);
-                i++;
+                    "Index", "EquipmentId", "Equipment Name", "Area", "Description", "Year", "Status", "Control Number", "Coordinator ID");
+                Write("-------------------------------------------------------------------------------------------------------------------");
+                WriteLine("-------------------------------------------------------------------------------");
+
+                foreach (var e in equipments)
+                {
+                    WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
+                        i, e.EquipmentId, e.Name, e.Area?.Name, e.Description, e.Year, e.Status?.Value, e.ControlNumber, e.Coordinator?.CoordinatorId);
+                    i++;
+                }
+            }
+        } else 
+        {
+            using( bd_storage db = new())
+            {
+                IQueryable<Equipment>? equipments = db.Equipments
+                .Include(e => e.Status).Where(s => s.Status.StatusId==1 || s.Status.StatusId==2);
+
+                db.ChangeTracker.LazyLoadingEnabled = false;
+                if((equipments is null) || !equipments.Any())
+                {
+                    WriteLine("There are no status found");
+                }
+                int i=1;
+                WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22}", "Index", "EquipmentId", "Equipment Name", "Description");
+                WriteLine("-------------------------------------------------------------------------------");
+
+                foreach (var e in equipments)
+                {
+                    WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22}",
+                        i, e.EquipmentId, e.Name, e.Description);
+                    i++;
+                }
             }
         }
     }

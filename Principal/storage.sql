@@ -12,11 +12,11 @@ CREATE TABLE IF NOT EXISTS academies (
                            NOT NULL,
     name      VARCHAR (40) 
 );
-INSERT INTO academies (academyId, name) VALUES (1, 'Computaci�n');
-INSERT INTO academies (academyId, name) VALUES (2, 'Inform�tica');
-INSERT INTO academies (academyId, name) VALUES (3, 'Sistemas electr�nicos');
+INSERT INTO academies (academyId, name) VALUES (1, 'Computacion');
+INSERT INTO academies (academyId, name) VALUES (2, 'Informatica');
+INSERT INTO academies (academyId, name) VALUES (3, 'Sistemas electronicos');
 INSERT INTO academies (academyId, name) VALUES (4, 'Sistemas digitales');
-INSERT INTO academies (academyId, name) VALUES (5, 'Infraestructura y tecnolog�as de la informaci�n');
+INSERT INTO academies (academyId, name) VALUES (5, 'Infraestructura y tecnologias de la informacion');
 
 -- Table: areas
 CREATE TABLE IF NOT EXISTS areas (
@@ -24,12 +24,12 @@ CREATE TABLE IF NOT EXISTS areas (
     name   VARCHAR (40) 
 );
 INSERT INTO areas (areaId, name) VALUES (1, 'Osciloscopios');
-INSERT INTO areas (areaId, name) VALUES (2, 'Fuentes de alimentaci�n');
-INSERT INTO areas (areaId, name) VALUES (3, 'Mult�metros');
+INSERT INTO areas (areaId, name) VALUES (2, 'Fuentes de alimentacion');
+INSERT INTO areas (areaId, name) VALUES (3, 'Multimetros');
 INSERT INTO areas (areaId, name) VALUES (4, 'Generadores');
-INSERT INTO areas (areaId, name) VALUES (5, 'Frecuenc�metros');
+INSERT INTO areas (areaId, name) VALUES (5, 'Frecuencimetros');
 INSERT INTO areas (areaId, name) VALUES (6, 'Programadores');
-INSERT INTO areas (areaId, name) VALUES (7, 'Kit de fibra �ptica');
+INSERT INTO areas (areaId, name) VALUES (7, 'Kit de fibra optica');
 INSERT INTO areas (areaId, name) VALUES (8, 'Herramientas para redes');
 INSERT INTO areas (areaId, name) VALUES (9, 'Motores');
 INSERT INTO areas (areaId, name) VALUES (10, 'Tarjetas de desarrollo');
@@ -48,18 +48,18 @@ CREATE TABLE IF NOT EXISTS classrooms (
     )
     REFERENCES divisions (divisionId) 
 );
-INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (1, 'Laboratorio de c�mputo E', 'F:LABE', 1);
-INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (2, 'Laboratorio de c�mputo D', 'F:LABD', 1);
-INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (3, 'Laboratorio de c�mputo C', 'F:LABC', 1);
-INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (4, 'Laboratorio de c�mputo B', 'F:LABB', 1);
-INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (5, 'Laboratorio de c�mputo A', 'F:LABA', 1);
+INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (1, 'Laboratorio de computo E', 'F:LABE', 1);
+INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (2, 'Laboratorio de computo D', 'F:LABD', 1);
+INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (3, 'Laboratorio de computo C', 'F:LABC', 1);
+INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (4, 'Laboratorio de computo B', 'F:LABB', 1);
+INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (5, 'Laboratorio de computo A', 'F:LABA', 1);
 INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (6, 'Aula F-215 Interactiva', 'F:I215', 1);
 INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (7, 'Laboratorio de software 1', 'F:SL1', 1);
 INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (8, 'Laboratorio de software libre 3', 'F:SL3', 1);
 INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (9, 'Laboratorio de software libre 2', 'F:SL2', 1);
-INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (10, 'Taller de electr�nica B', 'F-ELECB', 1);
-INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (11, 'Taller de electr�nica C', 'F-ELECC', 1);
-INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (12, 'Taller de electr�nica A', 'F-ELECA', 1);
+INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (10, 'Taller de electronica B', 'F-ELECB', 1);
+INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (11, 'Taller de electronica C', 'F-ELECC', 1);
+INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (12, 'Taller de electronica A', 'F-ELECA', 1);
 INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (13, 'Taller de sistemas digitales II', 'F-LSDIG2', 1);
 INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (14, 'Taller de sistemas digitales I', 'F-LSDIG1', 1);
 INSERT INTO classrooms (classroomId, name, clave, divisionId) VALUES (15, 'Laboratorio de Redes I', 'F:LRED1', 1);
@@ -193,11 +193,11 @@ CREATE TABLE IF NOT EXISTS professors (
     password    VARCHAR (50) 
 );
 
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1234567890', 'Alejandra', 'Alcaraz', 'Torres', 'NIP1', 'Colomos23');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1010101010', 'Nancy del Carmen', 'Benavides', 'Medina', 'NIP2', 'Colomos23');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('0987654321', 'Diana Marisol', 'Figueroa', 'Flores', 'NIP3', 'Colomos23');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1111111111', 'Clara Gabriela', 'Garcia', 'Duran', 'NIP4', 'Colomos23');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1231231231', 'Carlos', 'Molina', 'Martinez', 'NIP5', 'Colomos23');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1234567890', 'Alejandra', 'Alcaraz', 'Torres', 'NIP1', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1010101010', 'Nancy del Carmen', 'Benavides', 'Medina', 'NIP2', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('0987654321', 'Diana Marisol', 'Figueroa', 'Flores', 'NIP3', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1111111111', 'Clara Gabriela', 'Garcia', 'Duran', 'NIP4', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('1231231231', 'Carlos', 'Molina', 'Martinez', 'NIP5', 'F8t128gjJIaegDAGPG//LA==');
 
 
 -- Table: requestDetails
@@ -205,7 +205,6 @@ CREATE TABLE IF NOT EXISTS requestDetails (
     requestDetailsId INTEGER      PRIMARY KEY AUTOINCREMENT,
     requestId        INTEGER      REFERENCES requests (requestId),
     equipmentId      VARCHAR (15) REFERENCES equipments (equipmentId),
-    quantity         INTEGER,
     statusId         INTEGER      REFERENCES status (statusId),
     professorNIP     INTEGER,
     dispatchTime     TIME,
@@ -214,11 +213,11 @@ CREATE TABLE IF NOT EXISTS requestDetails (
     currentDate      DATE
 );
 
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'multim12345', 2, 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'oscilo12345', 1, 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(2, 'multi1234567', 3, 1, 0, '10:20:00', '14:30:00', '2023-09-07', '2023-09-05');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'mp123123123', 1, 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
-INSERT INTO requestDetails (requestId, equipmentId, quantity, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'multim12345', 2, 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'multim12345', 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(1, 'oscilo12345', 1, 1, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(2, 'multi1234567', 1, 0, '10:20:00', '14:30:00', '2023-09-07', '2023-09-05');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'mp123123123', 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
+INSERT INTO requestDetails (requestId, equipmentId, statusId, professorNIP, dispatchTime, returnTime, requestedDate, currentDate) VALUES(3, 'multim12345', 1, 1, '11:10:00', '12:50:00', '2023-11-08', '2023-11-07');
 
 
 -- Table: requests
@@ -250,42 +249,47 @@ INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (6, '11:10', 'Monda
 INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (7, '12:00', 'Monday');
 INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (8, '12:50', 'Monday');
 INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (9, '13:40', 'Monday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (10, '7:00', 'Tuesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (11, '7:50', 'Tuesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (12, '8:40', 'Tuesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (13, '9:30', 'Tuesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (14, '10:20', 'Tuesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (15, '11:10', 'Tuesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (16, '12:00', 'Tuesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (17, '12:50', 'Tuesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (18, '13:40', 'Tuesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (19, '7:00', 'Wednesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (20, '7:50', 'Wednesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (21, '8:40', 'Wednesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (22, '9:30', 'Wednesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (23, '10:20', 'Wednesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (24, '11:10', 'Wednesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (25, '12:00', 'Wednesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (26, '12:50', 'Wednesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (27, '13:40', 'Wednesday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (28, '7:00', 'Thursday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (29, '7:50', 'Thursday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (30, '8:40', 'Thursday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (31, '9:30', 'Thursday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (32, '10:20', 'Thursday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (33, '11:10', 'Thursday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (34, '12:00', 'Thursday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (35, '12:50', 'Thursday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (36, '13:40', 'Thursday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (37, '7:00', 'Friday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (38, '7:50', 'Friday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (39, '8:40', 'Friday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (40, '9:30', 'Friday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (41, '10:20', 'Friday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (42, '11:10', 'Friday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (43, '12:00', 'Friday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (44, '12:50', 'Friday');
-INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (45, '13:40', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (10, '14:30', 'Monday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (11, '7:00', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (12, '7:50', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (13, '8:40', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (14, '9:30', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (15, '10:20', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (16, '11:10', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (17, '12:00', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (18, '12:50', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (19, '13:40', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (20, '14:30', 'Tuesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (21, '7:00', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (22, '7:50', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (23, '8:40', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (24, '9:30', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (25, '10:20', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (26, '11:10', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (27, '12:00', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (28, '12:50', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (29, '13:40', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (30, '14:30', 'Wednesday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (31, '7:00', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (32, '7:50', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (33, '8:40', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (34, '9:30', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (35, '10:20', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (36, '11:10', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (37, '12:00', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (38, '12:50', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (39, '13:40', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (40, '14:30', 'Thursday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (41, '7:00', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (42, '7:50', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (43, '8:40', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (44, '9:30', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (45, '10:20', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (46, '11:10', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (47, '12:00', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (48, '12:50', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (49, '13:40', 'Friday');
+INSERT INTO schedules (scheduleId, initTime, weekDay) VALUES (50, '14:30', 'Friday');
 
 -- Table: status
 CREATE TABLE IF NOT EXISTS status (
@@ -307,7 +311,7 @@ CREATE TABLE IF NOT EXISTS storers (
     password  VARCHAR (50) 
 );
 
-INSERT INTO storers (storerId, name, lastNameP, lastnameM, password) VALUES ('owTkVgr0sk6DHaUug+7/SA==', 'Anel', 'Gomez', 'Lopez', 'Colomos23');
+INSERT INTO storers (storerId, name, lastNameP, lastnameM, password) VALUES ('owTkVgr0sk6DHaUug+7/SA==', 'Anel', 'Gomez', 'Lopez', 'F8t128gjJIaegDAGPG//LA==');
 
 -- Table: students
 CREATE TABLE IF NOT EXISTS students (
@@ -335,43 +339,43 @@ CREATE TABLE IF NOT EXISTS subjects (
     )
     REFERENCES academies (academyId) 
 );
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0101', 'Fundamentos de Programaci�n', 1);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0202', 'Fundamentos de Electr�nica I', 3);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0203', 'Mantenimiento de Tecnolog�as de Informaci�n I', 5);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0204', 'Programaci�n I', 1);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0305', 'Mantenimiento de Tecnolog�as de Informaci�n II', 5);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0306', 'Programaci�n II', 1);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0307', 'Sistemas Digitales I', 4);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0308', 'Fundamentos de Electr�nica II', 3);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0101', 'Fundamentos de Programacion ', 1);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0202', 'Fundamentos de Electronica I ', 3);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0203', 'Mantenimiento de Tecnologias de Informacion I ', 5);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0204', 'Programacion I ', 1);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0305', 'Mantenimiento de Tecnologias de Informacion II', 5);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0306', 'Programacion II', 1);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0307', 'Sistemas Digitales I ', 4);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0308', 'Fundamentos de Electronica II', 3);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0409', 'Sistemas Digitales II', 4);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0410', 'An�lisis y Dise�o de Sistemas', 2);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0410', 'Analisis y Diseno de Sistemas', 2);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0411', 'Infraestructura de Redes Locales', 5);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0412', 'Programaci�n Orientada a Objetos', 1);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0413', 'Temas de Electr�nica I', 3);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0514', 'Arquitectura y Organizaci�n de Computadoras', 4);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0515', 'Bases de Datos I', 2);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0517', 'Temas de Electr�nica II', 3);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0412', 'Programacion Orientada a Objetos', 1);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0413', 'Temas de Electronica I ', 3);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0514', 'Arquitectura y Organizacion de Computadoras', 4);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0515', 'Bases de Datos I ', 2);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0517', 'Temas de Electronica II', 3);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPBDS0518', 'Estructuras de Datos', 1);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0516', 'Enrutamiento de Redes', 5);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0619', 'Bases de Datos II', 2);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0620', 'Interfaces', 3);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0621', 'Programaci�n M�vil I', 1);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0621', 'Programacion Movil I ', 1);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0622', 'Sistemas Operativos', 5);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0623', 'Sistemas Embebidos I', 4);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0623', 'Sistemas Embebidos I ', 4);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0729', 'Sistemas Embebidos II', 4);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0730', 'Sistemas de Medici�n y Control', 3);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0727', 'Proyecto Integrador de Desarrollo de Software I', 2);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0724', 'Programaci�n M�vil II', 1);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0726', 'Programaci�n Web I', 2);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0728', 'Servicios de Red y C�mputo Nube', 5);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0725', 'Programaci�n Avanzada I', 1);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0835', 'Seguridad en Infraestructura de Tecnolog�as de Informaci�n', 5);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0730', 'Sistemas de Medicion y Control', 3);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0727', 'Proyecto Integrador de Desarrollo de Software I ', 2);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0724', 'Programacion Movil II', 1);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0726', 'Programacion Web I ', 2);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0728', 'Servicios de Red y Computo Nube', 5);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0725', 'Programacion Avanzada I ', 1);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0835', 'Seguridad en Infraestructura de Tecnologias de Informacion', 5);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0836', 'Sistemas Inteligentes', 4);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDSS063', 'Proyecto Integrador de Desarrollo de Software II', 2);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS833', 'Seguridad en Software', 2);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0832', 'Programaci�n Web II', 2);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0832', 'Programacion Web II', 2);
 INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0834', 'Sistemas Multimedia', 2);
-INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0831', 'Programaci�n Avanzada II', 1);
+INSERT INTO subjects (subjectId, name, academyId) VALUES ('18MPEDS0831', 'Programacion Avanzada II', 1);
 
 -- Table: teaches
 CREATE TABLE IF NOT EXISTS teaches (
