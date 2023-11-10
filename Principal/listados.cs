@@ -32,7 +32,7 @@ partial class Program
                 WriteLine("Equipment:");
                 foreach (var r in group)
                 {
-                    WriteLine($" Equipment Name: {r.Equipment.Name}");
+                    WriteLine($"  - Equipment Name: {r.Equipment.Name}");
                 }
             }
 
