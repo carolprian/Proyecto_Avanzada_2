@@ -50,10 +50,12 @@ partial class Program{
                 break;
                 case 6:
                     DeleteRequestFormat(username);
+                    continued=false;
                 break;
 
                 case 7:
                     LateReturningStudent(username);
+                    continued=false;
                 break;
 
                 case 8:
