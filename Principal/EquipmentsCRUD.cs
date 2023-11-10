@@ -363,6 +363,34 @@ partial class Program{
                 WriteLine($"| {e.EquipmentId,-11} | {e.Name,-15} | {e.Area?.Name,-26} | {e.Description,-80} | {e.Year,4} | {e.Status?.Value,17} | {e.ControlNumber,20} | {e.Coordinator?.Name,6}");
             }
         }
+        
+    }
+
+    public static void ViewAllEquipmentsForMaintenance()
+    {
+        using( bd_storage db = new())
+        {
+            IQueryable<Equipment>? equipments = db.Equipments
+            .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator);
+
+            if((equipments is null) || !equipments.Any())
+            {
+                WriteLine("No equipment was found");
+            }
+            WriteLine("| {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
+                "EquipmentId", "Equipment Name", "Area", "Description", "Year", "Status", "Control Number", "Coordinator ID");
+            Write("-------------------------------------------------------------------------------------------------------------------");
+            WriteLine("-------------------------------------------------------------------------------");
+
+            foreach (var e in equipments)
+            {
+                if(e.StatusId != 2 && e.StatusId != 3 && e.StatusId != 5)
+                {
+                     WriteLine("| {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
+                    e.EquipmentId, e.Name, e.Area?.Name, e.Description, e.Year, e.Status?.Value, e.ControlNumber, e.Coordinator?.CoordinatorId);
+                }               
+            }
+        }
     }
     
 /*

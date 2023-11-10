@@ -2,6 +2,7 @@ using System.Threading.Tasks.Dataflow;
 using AutoGens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 partial class Program{
     public static void ViewMaintenanceHistory() //order by equipments
@@ -248,6 +249,206 @@ partial class Program{
                     }
             }
             
+        }
     }
+
+    public static int RegisterNewMaintenance(string username)
+    {
+        WriteLine("Here's a list of all the available equipment for maintenance (Only Available or Damaged Equipment)");
+        ViewAllEquipmentsForMaintenance();
+        List<string> equipmentIdList = new();
+        bool valid = false; 
+        string equipmentId = "";
+        do
+        {
+            WriteLine("Please select the ID of the Equipment you wish to add");
+            equipmentId = ReadNonEmptyLine();
+            using(bd_storage db = new())
+            {
+                IQueryable<Equipment>? availableEquipment = db.Equipments
+                .Where(e => e.EquipmentId == equipmentId); // checks if the user selected a valid id from the table
+                if(availableEquipment is null || !availableEquipment.Any())
+                {
+                    WriteLine($"Equipment ID : {equipmentId} is not-existent");
+                }
+                else
+                {
+                    if(availableEquipment.First().StatusId != 2 && availableEquipment.First().StatusId != 3 && availableEquipment.First().StatusId != 5)
+                    {
+                        bool repeated = false;
+                        foreach (var eq in equipmentIdList)
+                        {
+                            if(equipmentId == eq)
+                            {
+                                WriteLine($"{equipmentId} was already added");
+                                repeated = true;
+                            }
+                        }
+                        if(!repeated) 
+                        {
+                            equipmentIdList.Add(equipmentId);                        
+                            WriteLine("Do you want to add another equipment to the Maintenance Register? y/n");
+                            string moreEquipment = "";
+                            bool validAns = false;
+                            do
+                            {
+                                Write("Option: ");
+                                moreEquipment = ReadNonEmptyLine();
+                                if (moreEquipment != "y" && moreEquipment != "n" && moreEquipment != "Y" && moreEquipment != "N")
+                                {
+                                    WriteLine("Please select a valid option");
+                                }
+                                else
+                                {
+                                    validAns = true;
+                                }
+                            } while (!validAns);
+                            switch (moreEquipment)
+                            {
+                                case "y": case "Y":
+                                    WriteLine($"You have added {equipmentIdList.Count()} equipments until now");
+                                break; 
+
+                                case "n": case "N":
+                                    WriteLine("Continuing...");
+                                    valid = true;
+                                break;
+
+                                default:
+                                    WriteLine("Option is not valid");
+                                break;
+                            }
+                        }  
+                        repeated = false;                      
+                    }
+                    else
+                    {
+                        WriteLine("Please select an equipment from the table shown above");
+                    }                    
+                }
+            }
+        } while (!valid);
+
+        WriteLine();
+        WriteLine("Here's a list of all the maintenance types");
+        ListMaintenanceTypes(); 
+        valid = false; 
+        string mTypeID = "";
+        do
+        {
+            WriteLine("Please select the ID of the Maintenance Type you wish to create");
+            mTypeID = ReadNonEmptyLine();
+            if (mTypeID != "1" && mTypeID != "2" && mTypeID != "3")
+            {
+                WriteLine("Please select a valid option");
+            }
+            else
+            {
+                valid = true;
+            }
+        } while (!valid);
+
+        WriteLine();
+        WriteLine("Instructions for Maintenance: ");
+        string instruct = VerifyReadMaxLengthString(255);
+
+        WriteLine();
+        WriteLine("Programmed date for Maintenance: ");
+        Write("Day: ");
+        int day = TryParseStringaEntero(ReadNonEmptyLine());
+        Write("Month: ");
+        int month = TryParseStringaEntero(ReadNonEmptyLine());
+        Write("Year: ");
+        int year = TryParseStringaEntero(ReadNonEmptyLine());
+        DateTime initialDate = new(year, month, day);
+        List<DateTime> dateList = new();
+        dateList.Add(initialDate);
+        DateTime date;        
+        valid = false;
+        if(mTypeID != "2")
+        {
+            WriteLine();
+            WriteLine("Do you want to periodically repeat this maintenance? y/n");            
+            string repeatMaintenance = "";
+            do
+            {
+                Write("Option: ");
+                repeatMaintenance = ReadNonEmptyLine();
+                if (repeatMaintenance != "y" && repeatMaintenance != "n" && repeatMaintenance != "Y" && repeatMaintenance != "N")
+                {
+                    WriteLine("Please select a valid option");
+                }
+                else
+                {
+                    valid = true;
+                }
+            } while (!valid);
+            switch (repeatMaintenance)
+            {
+                case "y": case "Y":
+                    int maintenanceFrequency = 0;
+                    int maintenanceQuantity = 0;
+                    WriteLine();
+                    WriteLine("Frequency of Maintenance in Months (ex. 1 - Every Month, 2 - Every 2 months, ...) : ");
+                    maintenanceFrequency = TryParseStringaEntero(ReadNonEmptyLine()); 
+
+                    WriteLine("How many times do you want to repeat the maintenance?");
+                    maintenanceQuantity = TryParseStringaEntero(ReadNonEmptyLine()); 
+
+                    date = initialDate;
+                    for (int i = 0; i < maintenanceQuantity; i++)
+                    {                        
+                        date = date.Date.AddMonths(maintenanceFrequency);
+                        dateList.Add(date);
+                    }
+                break; 
+
+                case "n": case "N":
+                    WriteLine("Maintenance will only happen once");
+                break;
+
+                default:
+                    WriteLine("Option is not valid");
+                break;
+            }
+        }
+        
+        int affected = 0;
+        // Add values to new register
+        using(bd_storage db = new())
+        {
+            if(db.MaintenanceRegisters is null) return 0;
+            foreach (var dateValue in dateList)
+            {
+                MaintenanceRegister m = new() 
+                {
+                    MaintenanceTypeId = Convert.ToByte(mTypeID), 
+                    MaintenanceInstructions = instruct,
+                    ProgrammedDate = dateValue, 
+                    ExitDate = new(year:2001, month: 01, day: 01), 
+                    MaintenanceDescription = "0", 
+                    StorerId = EncryptPass(username), 
+                    MaintenanceMaterialsDescription = "0"
+                };
+                EntityEntry<MaintenanceRegister> entity = db.MaintenanceRegisters.Add(m);
+                affected += db.SaveChanges();
+                foreach (var EID in equipmentIdList)
+                {
+                    Maintain maintainValue = new()
+                    {
+                        MaintenanceId = m.MaintenanceId,
+                        EquipmentId = EID
+                    };
+                    EntityEntry<Maintain> entity2 = db.Maintain.Add(maintainValue);
+                    affected += db.SaveChanges();
+                }
+            }
+            return affected;
+        }
+    }
+
+    public static void FinishMaintenanceReport(string username)
+    {
+
     }
 }
