@@ -32,6 +32,15 @@ public partial class DyLequipment
     [Required]
     public DateTime? DateOfEvent { get; set; }
 
+    [Column ("dateOfReturn", TypeName = "DATE")]
+    [Required]
+    public DateTime? DateOfReturn {get; set;}
+
+    [Column("objectReturn", TypeName = "VARCHAR (100)")]
+    [Required]
+    [StringLength(100)]
+    public string? objectReturn { get; set; }
+
     [Column("studentId", TypeName = "CHAR (8)")]
     [Required]
     [StringLength(8, MinimumLength = 8)]

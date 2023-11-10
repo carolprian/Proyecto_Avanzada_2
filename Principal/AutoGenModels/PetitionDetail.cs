@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoGens;
 
-[Table("requestDetails")]
-public partial class RequestDetail
+[Table("petitionDetails")]
+public partial class PetitionDetail
 {
     [Key]
-    [Column("requestDetailsId")]
+    [Column("petitionDetailsId")]
     [Required]
-    public int RequestDetailsId { get; set; }
+    public int PetitionDetailsId { get; set; }
 
-    [Column("requestId")]
+    [Column("petitionId")]
     [Required]
-    public int? RequestId { get; set; }
+    public int? PetitionId { get; set; }
 
     [Column("equipmentId", TypeName = "VARCHAR (15)")]
     [Required]
@@ -26,11 +26,6 @@ public partial class RequestDetail
     [Column("statusId")]
     [Required]
     public byte? StatusId { get; set; }
-
-    [Column("professorNIP", TypeName = "VARCHAR (4)")]
-    [Required]
-    [StringLength(4, MinimumLength = 4)]
-    public string? ProfessorNip { get; set; }
 
     [Column("dispatchTime", TypeName = "TIME")]
     [Required]
@@ -49,14 +44,14 @@ public partial class RequestDetail
     public DateTime CurrentDate { get; set; }
 
     [ForeignKey("EquipmentId")]
-    [InverseProperty("RequestDetails")]
+    [InverseProperty("PetitionDetails")]
     public virtual Equipment? Equipment { get; set; }
 
-    [ForeignKey("RequestId")]
-    [InverseProperty("RequestDetails")]
-    public virtual Request? Request { get; set; }
+    [ForeignKey("PetitionId")]
+    [InverseProperty("PetitionDetails")]
+    public virtual Petition? Petition { get; set; }
 
     [ForeignKey("StatusId")]
-    [InverseProperty("RequestDetails")]
+    [InverseProperty("PetitionDetails")]
     public virtual Status? Status { get; set; }
 }

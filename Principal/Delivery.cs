@@ -45,7 +45,7 @@ partial class Program
                     {
                         foreach(var r in requestDetailss)
                         {
-                            WriteLine($"Id: {r.EquipmentId} . Name: {r.Equipment?.Name} . Quantity: {r.Quantity} . Status: {r.Status?.Value}");
+                            WriteLine($"Id: {r.EquipmentId} . Name: {r.Equipment?.Name} . Status: {r.Status?.Value}");
                         }
                     }
                     

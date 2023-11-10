@@ -5,25 +5,21 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 partial class Program{
     public static void StudentsPrincipal(string username){
-        //menu de acciones
-        //1.Llenar permisos__Caro //agregar validacion de un permiso por día
-        //2.Reportes de material dañado
-        //3.Listado de materiales
-        //4.Listado de permisos
        MenuStudents(username);
     } 
 
-    public static void MenuStudents(string username){
+    public static void MenuStudents(string username){ 
         WriteLine();
         WriteLine("Welcome Student!");
         WriteLine("********Menu********");
-        WriteLine("1. Fill a request format");
+        WriteLine("1. Fill a request format"); //SI
         WriteLine("2. Report damage and lost equipment");
-        WriteLine("3. View equipments");
-        WriteLine("4. View request formats");
-        WriteLine("5. Edit request formats that aren't signed yet");
-        WriteLine("6. Delete request formats that aren't signed yet");
-        WriteLine("7. Exit");
+        WriteLine("3. View equipments"); //SI
+        WriteLine("4. View request formats"); //sam SI
+        WriteLine("5. Edit request formats that aren't signed yet"); //CARO
+        WriteLine("6. Delete request formats that aren't signed yet"); //SAM SI
+        WriteLine("7. See a list of equipments that are late for returning"); //SAM ver sus request tardios
+        WriteLine("8. Sign out");
         string opString = ReadNonEmptyLine();
         int op = TryParseStringaEntero(opString);
         bool validate = false, continued=true;
@@ -46,19 +42,25 @@ partial class Program{
                     ViewAllEquipments(2);
                 break;
                 case 4:
-
+                    ListEquipmentsRequestsStudent(username);
+                    continued=false;
                 break;
                 case 5:
 
                 break;
                 case 6:
-
+                    DeleteRequestFormat(username);
                 break;
+
                 case 7:
-
+                    LateReturningStudent(username);
                 break;
-                default:
 
+                case 8:
+                continued=false;
+                break;
+
+                default:
                 break;
             }
         }

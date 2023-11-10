@@ -41,4 +41,19 @@ partial class Program{
                 }
             }
     }
+
+    public static void Hi()
+    {
+        List<int> valuesToEncrypt = new List<int> { 1234567890, 1010101010, 0987654321, 1231231231 };
+
+        foreach (int value in valuesToEncrypt)
+        {
+            string stringValue = value.ToString();
+            string encryptedValue = EncryptPass(stringValue);
+
+            Console.WriteLine($"Original Value: {value}, Encrypted Value: {encryptedValue}");
+        }
+    }
+
+
 }

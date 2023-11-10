@@ -201,7 +201,7 @@ partial class Program{
                 case "12":
                     DamagedLostReportInit();
                 break;
-                
+
                 case "13": // Student debt of lost or damaged
                     StudentDebtLostDamagedEquipment();
                 break;

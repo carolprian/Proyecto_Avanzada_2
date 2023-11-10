@@ -31,12 +31,45 @@ partial class Program
         DateTime requestDate = AddDate(currentDate);
         var times = AddTimes(requestDate);
         List<string> equipmentsId = new List<string>();
-        equipmentsId = SearchEquipmentsRecursive(equipmentsId, requestDate, times.Item1, times.Item2);
+        List<byte?> statusEquipments = new List<byte?>();
+        var equipments = SearchEquipmentsRecursive(equipmentsId, statusEquipments, requestDate, times.Item1, times.Item2);
         string professorNip = "0";
-        //equipmentId---
-        //status
-        //proffesorNip---
-
+        var requestDetailsId = AddRequestDetails(request.requestId, equipments.equipmentsId, professorNip, times.Item1, times.Item2, requestDate, currentDate, equipments.statusEquipments);
+    }
+    public static (List<int> affected, List<int> requestDetailsId) AddRequestDetails(int requestId, List<string> equipmentsId, string professorNip, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments){
+        int i=0;
+        List<int> requestDetailsId = new List<int>();
+        List<int> affecteds = new List<int>();
+        if (equipmentsId == null || statusEquipments == null || equipmentsId.Count != statusEquipments.Count)
+        {
+            // Manejar el caso donde las listas no son válidas
+            return (affecteds, requestDetailsId);
+        }
+        using (bd_storage db = new()){
+            if (!db.Database.EnsureCreated())
+            {
+                // La tabla no existe, puede manejar esto según tus necesidades
+                // Por ejemplo, lanzar una excepción, crear la tabla manualmente, etc.
+                return (affecteds, requestDetailsId);
+            }
+            foreach(var e in equipmentsId){
+                RequestDetail rD = new() {
+                    RequestId = requestId,
+                    EquipmentId = equipmentsId[i],
+                    StatusId = statusEquipments[i],
+                    ProfessorNip = professorNip,
+                    DispatchTime = initTime,
+                    ReturnTime = endTime,
+                    RequestedDate = requestedDate,
+                    CurrentDate = currentDate
+                };
+                EntityEntry<RequestDetail> entity = db.RequestDetails.Add(rD);
+                affecteds[i] = db.SaveChanges();
+                requestDetailsId[i] = rD.RequestDetailsId;
+                i++;
+            }
+        }
+        return (affecteds, requestDetailsId);
     }
 
     public static string AddPlantel(){
@@ -499,7 +532,7 @@ partial class Program
         return (initTimeValue, endTimeValue);
     }
 
-    public static List<string> SearchEquipmentsRecursive(List<string> selectedEquipments, DateTime requested, DateTime init, DateTime end)
+    public static (List<string> equipmentsId, List<byte?> statusEquipments) SearchEquipmentsRecursive(List<string> selectedEquipments, List<byte?> statusEquipments, DateTime requested, DateTime init, DateTime end)
         {
             const int maxEquipment = 4;
             string response = "h";
@@ -520,7 +553,7 @@ partial class Program
                 if (!equipments.Any() || equipments.Count() < 1 || equipments is null)
                 {
                     WriteLine("No equipment found matching the search term: " + searchTerm + " Try again.");
-                    SearchEquipmentsRecursive(selectedEquipments, requested, init, end);
+                    SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end);
                 }
                 else if (equipments.Count() > 1)
                 {
@@ -541,9 +574,10 @@ partial class Program
                         if (response == "1")
                         {
                             selectedEquipments.Add(randomEquipment.EquipmentId);
+                            statusEquipments.Add(randomEquipment.StatusId);
                         }
                         if (response =="3"){
-                            SearchEquipmentsRecursive(selectedEquipments, requested, init, end);
+                            SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end);
                         }
                     }while(response=="2");
 
@@ -562,6 +596,7 @@ partial class Program
                     if (response == "y")
                     {
                         selectedEquipments.Add(singleEquipment.EquipmentId);
+                        statusEquipments.Add(singleEquipment.StatusId);
                     }
                 }
             }
@@ -572,21 +607,80 @@ partial class Program
                 response = ReadNonEmptyLine().ToLower();
                 if (response == "y")
                 {
-                    SearchEquipmentsRecursive(selectedEquipments, requested, init, end);
+                    SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end);
                 }
                 else
                 {
-                    return selectedEquipments;
+                    return (selectedEquipments, statusEquipments);
                 }
             }
             else
             {
                 WriteLine($"You have reached the maximum limit of {maxEquipment} equipments.");
-                return selectedEquipments;
+                return (selectedEquipments, statusEquipments);
             }
-            return selectedEquipments;
+            return (selectedEquipments, statusEquipments);
         }
 
+            // DELETE
+    public static void DeleteRequestFormat(string username)
+    {
+        WriteLine("Here's a list of all the request format that has not been accepted yet. ");
+        ViewRequestFormatNotAcceptedYet(username);
+        do
+        {
+            WriteLine();
+            WriteLine("Provide the ID of the request that you want to delete (check the list): ");
+            int requestID = Convert.ToInt32(ReadLine());
+
+            using(bd_storage db = new())
+            {
+                // checks if it exists
+                IQueryable<RequestDetail> requestDetails = db.RequestDetails
+                .Where(e => e.RequestDetailsId == requestID);
+                                        
+                if(requestDetails is null || !requestDetails.Any())
+                {
+                    WriteLine("That request ID doesn't exist in the database, try again");
+                }
+                else
+                {
+                    db.RequestDetails.Remove(requestDetails.First());
+                    int affected = db.SaveChanges();
+                    if(affected == 1)
+                    {
+                        WriteLine("Equipment successfully deleted");
+                    }
+                    else
+                    {
+                        WriteLine("Equipment couldn't be deleted");
+                    }
+
+                    // Obtén el RequestId asociado
+                    int requestId = db.RequestDetails
+                    .Where(e => e.RequestDetailsId == requestID)
+                    .Select(r => r.Request.RequestId)
+                    .FirstOrDefault();
+
+                    // Elimina el registro de Requests
+                    var request = db.Requests
+                    .Where(r => r.RequestId == requestId)
+                    .FirstOrDefault();
+                    if(affected == 1)
+                    {
+                        WriteLine("Equipment successfully deleted");
+                    }
+                    else
+                    {
+                        WriteLine("Equipment couldn't be deleted");
+                    }
+                }               
+            }
+            return;
+        } while (true);            
+    }
+
+    
 
     
     /*public static void SearchEquipmentsByNameStudents(string searchTerm){

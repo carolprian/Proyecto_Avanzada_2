@@ -109,4 +109,74 @@ partial class Program{
             return (affected, dl.DyLequipmentId);
         }
     }
+
+    public static void StudentDebtLostDamagedEquipment()
+    {
+        using(bd_storage db = new())
+        {
+            studentsLostDamage();
+
+            if (studentsLostDamage() == true){
+                return;
+            } else {
+
+                WriteLine("Provide the ID of the student who want to discharge their debt:");
+                string studentId = ReadNonEmptyLine();
+
+                IQueryable<DyLequipment> dyLequipments = db.DyLequipments
+                .Where( dl => dl.StudentId == studentId)
+                .Include( e => e.Equipment)
+                .Include( s => s.Student);
+
+                if (dyLequipments == null || !dyLequipments.Any())
+                {
+                    WriteLine("No student found");
+                    MenuStorer();
+                }
+                else
+                {
+
+                    foreach (var dyLequipment in dyLequipments)
+                    {
+                        WriteLine($"Student:{dyLequipment.StudentId}, {dyLequipment.Student.Name} {dyLequipment.Student.LastNameP}");
+                        WriteLine($"Name: {dyLequipment.Equipment.Name}");
+                        WriteLine($"Description: {dyLequipment.Equipment.Description}");
+                        WriteLine($"Description: {dyLequipment.Description}");
+                        WriteLine($"Status: {dyLequipment.StatusId}");
+                        WriteLine("-----------------------------------------------------------------");
+
+                        WriteLine("Is the information correct? (y/n)");
+                        string response = ReadNonEmptyLine().ToLower();
+
+                        if (response == "y")
+                        {
+                            dyLequipment.StatusId = 1;
+
+                            Equipment equipment = dyLequipment.Equipment;
+                            equipment.StatusId = 1;
+
+                            db.Update(dyLequipment);
+                            db.Update(equipment);
+                            db.SaveChanges();
+
+                            WriteLine("Equipment status updated successfully.");
+                        }
+                        else if (response == "n")
+                        {
+                            WriteLine("The student has one more week to return the equipment.");
+
+                            dyLequipment.DateOfReturn = DateTime.Now.AddDays(7);
+
+                            db.Update(dyLequipment);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            WriteLine("Invalid response. Please enter 'y' or 'n'.");
+                        }
+                    }    
+                }
+            }
+        }    
+    }
 }

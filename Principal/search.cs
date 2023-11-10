@@ -59,7 +59,7 @@ partial class Program
                 WriteLine("Equipment:");
                 foreach (var r in group)
                 {
-                    WriteLine($"  - Quantity: {r.Quantity}, Equipment Name: {r.Equipment.Name}");
+                    WriteLine($"Equipment Name: {r.Equipment.Name}");
                 }
             }  
         }
@@ -113,7 +113,7 @@ partial class Program
                 WriteLine("Equipment:");
                 foreach (var r in group)
                 {
-                    WriteLine($"  - Quantity: {r.Quantity}, Equipment Name: {r.Equipment.Name}");
+                    WriteLine($" Equipment Name: {r.Equipment.Name}");
                 }
 
                 WriteLine($"Return Time: {firstRequest.ReturnTime}");
