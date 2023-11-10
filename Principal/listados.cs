@@ -502,20 +502,20 @@ partial class Program
             }
         }
     }
-
+    
     public static void ListMaintenanceTypes()
     {
         using (bd_storage db = new())
         {
-            IQueryable<MaintenanceType> mTypes = db.MaintenanceTypes; // Utiliza StartsWith para buscar coincidencias parciales en el nombre del alumno
+            IQueryable<MaintenanceType> mTypes = db.MaintenanceTypes; 
 
-            if (!mTypes.Any())
+            if (!mTypes.Any() || mTypes is null)
             {
                 WriteLine("No Maintenance Types were found");
                 return;
             }
 
-            WriteLine("| {1,-8} | {2,-15} |",
+            WriteLine("| {0,-8} | {1,-15} |",
                 "ID", "Name");
 
             foreach (var type in mTypes)

@@ -507,7 +507,18 @@ partial class Program{
         switch (ans)
         {
             case "1":
-                //RegisterNewMaintenance(username);
+                int affected = RegisterNewMaintenance(username);
+                if(affected > 1)
+                {
+                    WriteLine($"{affected} rows were succesfully added");
+                    WriteLine("Here's a list of all Maintenances Registers that haven't been made yet");
+                    WriteLine();
+                    ViewMaintenanceNotMade();
+                }
+                else
+                {
+                    WriteLine("Maintenances Register couldn't be created");
+                }
             break;
 
             case "2":
@@ -522,94 +533,5 @@ partial class Program{
             break;
         }
         return;        
-    }
-/*
-    public static void RegisterNewMaintenance(string username)
-    {
-        WriteLine("Here's a list of all the maintenance types");
-        ListMaintenanceTypes(); 
-        bool valid = false; 
-        string mTypeID = "";
-        do
-        {
-            WriteLine("Please select the ID of the Maintenance Type you wish to create");
-            mTypeID = ReadNonEmptyLine();
-            if (mTypeID != "1" && mTypeID != "2" && mTypeID != "3")
-            {
-                WriteLine("Please select a valid option");
-            }
-            else
-            {
-                valid = true;
-            }
-        } while (!valid);
-
-        WriteLine("Instructions for Maintenance: ");
-        string instruct = VerifyReadMaxLengthString(255);
-
-        WriteLine("Programmed date for Maintenance: ");
-        Write("Day: ");
-        int day = TryParseStringaEntero(ReadNonEmptyLine());
-        Write("Month: ");
-        int month = TryParseStringaEntero(ReadNonEmptyLine());
-        Write("Year: ");
-        int year = TryParseStringaEntero(ReadNonEmptyLine());
-        DateTime initialDate = new(year, month, day);
-        List<DateTime> dateList = new();
-        dateList.Add(initialDate);
-        DateTime date;        
-        valid = false;
-        if(mTypeID != "2")
-        {
-            WriteLine("Do you want to periodically repeat this maintenance? y/n");            
-            string repeatMaintenance = "";
-            do
-            {
-                Write("Option: ");
-                repeatMaintenance = ReadNonEmptyLine();
-                if (repeatMaintenance != "y" && repeatMaintenance != "n" && repeatMaintenance != "Y" && repeatMaintenance != "N")
-                {
-                    WriteLine("Please select a valid option");
-                }
-                else
-                {
-                    valid = true;
-                }
-            } while (!valid);
-            switch (repeatMaintenance)
-            {
-                case "y": case "Y":
-                    int maintenanceFrequency = 0;
-                    int maintenanceQuantity = 0;
-                    WriteLine("Frequency of Maintenance in Months (ex. 1 - Every Month, 2 - Every 2 months, ...) : ");
-                    maintenanceFrequency = TryParseStringaEntero(ReadNonEmptyLine()); 
-
-                    WriteLine("How many times do you want to repeat the maintenance?");
-                    maintenanceQuantity = TryParseStringaEntero(ReadNonEmptyLine()); 
-
-                    for (int i = 0; i < maintenanceQuantity; i++)
-                    {
-                        date = initialDate;
-                        date = date.
-                        DateTime tomorrow = DateTime.Now.Date.AddDays(1);
-                    }
-                break; 
-
-                case "n": case "N":
-                    WriteLine("Maintenance will only happen once");
-                break;
-
-                default:
-                    WriteLine("Option is not valid");
-                break;
-            }
-        }
-        
-    }
-*/
-  
-    public static void FinishMaintenanceReport(string username)
-    {
-
     }
 }
