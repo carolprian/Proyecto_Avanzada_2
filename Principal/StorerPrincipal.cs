@@ -201,15 +201,20 @@ partial class Program{
                 case "12":
                     DamagedLostReportInit();
                 break;
-                case "13": // Program maintenance for a equipment
+                
+                case "13": // Student debt of lost or damaged
+                    StudentDebtLostDamagedEquipment();
+                break;
+
+                case "14":// Program maintenance for a equipment
                     MaintenanceRegisterSubMenu(username);
                 break;
 
-                case "14":
+                case "15": 
                     ViewMaintenanceHistory();
                 break;
 
-                case "15": // change storer password
+                case "16":// change storer password
                     var resultChangeStorerPsw = ChangeStorerPsw(username);
                     if(resultChangeStorerPsw.affected == 1)
                     {
@@ -217,8 +222,7 @@ partial class Program{
                     }
                 break;
 
-                case "16":
-
+                case "17":
                 return;
 
                 default:
@@ -323,7 +327,7 @@ partial class Program{
         WriteLine(" 7. View Tomorrows Equipment Requests"); // SI sam SI
         WriteLine(" 8. View and Search for a Students History"); //SI sam
         WriteLine("         a. See all students"); // SI
-        WriteLine("         b. Search for a student in specific"); // SI (con historial) si
+        WriteLine("         b. Search for a student in specific"); // sam SI (con historial) si
         WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)"); // SI sam si
         WriteLine(" 9. View and Search for Students using Equipment at this moment"); // SI sam
         WriteLine("         a. See all students using equipments "); // SI sam si
@@ -335,12 +339,13 @@ partial class Program{
         WriteLine(" 11. Register the Return of Equipment(s) of a request"); // SI
         //volley WriteLine(" 9. Return a equipment"); // busca por registro de estudiante, y verifica que todo sea igual a su request, al final pregunta si llegó dañado o en malas condiciones y lo manda a create
         WriteLine(" 12. Create report of damaged or lost equipment");  // SI volley SI
-        WriteLine(" 13. Program maintenance for a equipment");  // furry  ( cambiar sttatus) (se debe poder programar frecuencia mantenimiento)
+        WriteLine(" 13. Student debt Of LostDamagedEquipment"); //sam 
+        WriteLine(" 14. Program maintenance for a equipment");  // furry  ( cambiar sttatus) (se debe poder programar frecuencia mantenimiento)
         WriteLine("         a. Program a new maintenance");
         WriteLine("         b. Report Finished Maintenance");
-        WriteLine(" 14. View Maintenance History");  // SI volley 
-        WriteLine(" 15. Change password");  // SI furry
-        WriteLine(" 16. Sign out");
+        WriteLine(" 15. View Maintenance History");  // SI volley 
+        WriteLine(" 16. Change password");  // SI furry
+        WriteLine(" 17. Sign out");
         // View equipments actualmente prestados en general 
         // hacer 8, 9, 10, 11, 12,    
         bool valid = false;
@@ -348,9 +353,9 @@ partial class Program{
         {
             Write("Option : ");
             op = ReadNonEmptyLine();
-            if (op != "1"  &&  op != "2" &&  op != "3" &&  op != "4" &&  op != "5" &&  op != "6" &&  op != "7" &&  op != "8" &&  op != "9" &&  op != "10" &&  op != "11" &&  op != "12" &&  op != "13" &&  op != "14" && op!="15" && op!="16")
+            if (op != "1"  &&  op != "2" &&  op != "3" &&  op != "4" &&  op != "5" &&  op != "6" &&  op != "7" &&  op != "8" &&  op != "9" &&  op != "10" &&  op != "11" &&  op != "12" &&  op != "13" &&  op != "14" && op!="15" && op!="16" && op!="17")
             {
-                WriteLine("Please choose a valid option (1 - 16)");
+                WriteLine("Please choose a valid option (1 - 17)");
                 op = ReadNonEmptyLine(); 
             }
             else

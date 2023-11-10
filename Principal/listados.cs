@@ -81,8 +81,9 @@ partial class Program
         }
     }
 
-    public static void studentsLostDamage()
+    public static bool studentsLostDamage()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<DyLequipment> dyLequipments = db.DyLequipments
@@ -93,8 +94,7 @@ partial class Program
             if (!dyLequipments.Any() || dyLequipments is null)
             {
                 WriteLine("No students found.");
-                SubMenuStudentsusingEquipment();
-                return;
+                aux = true;
             }
 
             int i = 0;
@@ -110,6 +110,7 @@ partial class Program
                 WriteLine($"Date of event: {use.DateOfEvent}");
             } 
         }
+        return aux;
     }
 
     public static void StudentsUsingEquipments()

@@ -613,7 +613,6 @@ C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Pri
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.pdb
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.genruntimeconfig.cache
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\ref\Principal.dll
-<<<<<<< HEAD
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\Proy\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.exe
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\Proy\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.deps.json
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\Proy\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.runtimeconfig.json
@@ -675,7 +674,6 @@ D:\Valeria\Documents\.ceti\7mo\prograAvanzada\Proy\Proyecto_Avanzada_2\Principal
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\Proy\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.pdb
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\Proy\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.genruntimeconfig.cache
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\Proy\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\ref\Principal.dll
-=======
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.exe
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.deps.json
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.runtimeconfig.json
