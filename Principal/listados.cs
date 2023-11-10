@@ -32,7 +32,7 @@ partial class Program
                 WriteLine("Equipment:");
                 foreach (var r in group)
                 {
-                    WriteLine($"  - Quantity: {r.Quantity}, Equipment Name: {r.Equipment.Name}");
+                    WriteLine($" Equipment Name: {r.Equipment.Name}");
                 }
             }
 
@@ -73,7 +73,7 @@ partial class Program
                 WriteLine("Equipments:");
                 foreach (var r in group)
                 {
-                    WriteLine($"  - Quantity: {r.Quantity}, Equipment Name: {r.Equipment.Name}");
+                    WriteLine($" Equipment Name: {r.Equipment.Name}");
                 }
             }
 
@@ -139,7 +139,6 @@ partial class Program
                 WriteLine("");
                 WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
                 WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                WriteLine($"Quantity: {use.Quantity}");
                 WriteLine($"Return Time: {use.ReturnTime}");
                 WriteLine($"Date: {use.RequestedDate}");
 
@@ -175,7 +174,6 @@ partial class Program
                     WriteLine("");
                     WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
                     WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                    WriteLine($"Quantity: {use.Quantity}");
                     WriteLine($"Return Time: {use.ReturnTime}");
                     WriteLine($"Date: {use.RequestedDate}");
                 }
@@ -476,7 +474,7 @@ partial class Program
         }
     }
 
-     public static void FindDandLequipmentByStudentName(string studentNameToFind)
+    public static void FindDandLequipmentByStudentName(string studentNameToFind)
     {
         using (bd_storage db = new())
         {
@@ -502,6 +500,28 @@ partial class Program
             {
                 WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
             }
-        }
-    }
+        }
+    }
+
+    public static void ListMaintenanceTypes()
+    {
+        using (bd_storage db = new())
+        {
+            IQueryable<MaintenanceType> mTypes = db.MaintenanceTypes; // Utiliza StartsWith para buscar coincidencias parciales en el nombre del alumno
+
+            if (!mTypes.Any())
+            {
+                WriteLine("No Maintenance Types were found");
+                return;
+            }
+
+            WriteLine("| {1,-8} | {2,-15} |",
+                "ID", "Name");
+
+            foreach (var type in mTypes)
+            {
+                WriteLine($"| {type.MaintenanceTypeId,-8} | {type.Name,-15} |");
+            }
+        }
+    }
 }

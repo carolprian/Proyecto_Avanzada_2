@@ -1,6 +1,8 @@
 using System.Formats.Asn1;
 using AutoGens;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.VisualBasic;
+//este es el bueno
 
 partial class Program{
      public static void StorersPrincipal(string username){  
@@ -189,17 +191,25 @@ partial class Program{
                 break;
 
                 case "10":
-                    DamagedLostReportInit();
+                    DeliveryEquipment(); 
                 break;
 
                 case "11":
+                    ReturnEquipment();
                 break;
 
                 case "12":
+                    DamagedLostReportInit();
+                break;
+                case "13": // Program maintenance for a equipment
+                    MaintenanceRegisterSubMenu(username);
+                break;
+
+                case "14":
                     ViewMaintenanceHistory();
                 break;
 
-                case "13": // change storer password
+                case "15": // change storer password
                     var resultChangeStorerPsw = ChangeStorerPsw(username);
                     if(resultChangeStorerPsw.affected == 1)
                     {
@@ -207,7 +217,8 @@ partial class Program{
                     }
                 break;
 
-                case "14":
+                case "16":
+
                 return;
 
                 default:
@@ -258,6 +269,44 @@ partial class Program{
         return (0,"0");
     }
 
+
+    public static void ReturnEquipment()
+    {        
+        string op = "";
+        WriteLine("Choose an option: ");
+        WriteLine("a. By student");
+        WriteLine("b. By teacher");
+        WriteLine("c. Exit");
+        bool valid = false;
+        do{
+            op = ReadNonEmptyLine();
+            if (op != "a"  &&  op != "b" &&  op != "c")
+            {
+                WriteLine("Please choose a valid option (a, b or c )");
+                op = ReadNonEmptyLine(); 
+            }
+            else
+            {
+                valid = true;
+            }
+        } while (!valid);
+        switch(op)
+        {
+            case "a": // students
+                ReturnEquipmentByStudent();
+            break;
+            case "b": // professors
+                ReturnEquipmentByProfessor();
+            break;
+            case "c":
+                return;
+            default:
+                WriteLine("That option doesnt exist. ");
+            break;
+        }
+    }
+    
+    DateTime date = new(year: 2005, month: 05, day: 14);
     public static string MenuStorer()
     {
         //hay que hacer cambios en el switch case arriba
@@ -266,29 +315,32 @@ partial class Program{
         WriteLine("**********************************MENU**********************************");
         WriteLine("Please choose an option, a number between 1 and 14");
         WriteLine(" 1. Add new equipment"); // SI volley SI
-        WriteLine(" 2. Update equipment information");  // furry
+        WriteLine(" 2. Update equipment information");  // SI furry
         WriteLine(" 3. View equipments");  // SI volley SI y axel hace el de buscar un equipo en especifico
-        WriteLine(" 4. Delete equipment");  // furry
-        WriteLine(" 5. Search for a equipment by equipment ID or equipment Name"); // cambia para ID y aparte nombre
+        WriteLine(" 4. Delete equipment");  // SI furry
+        WriteLine(" 5. Search for a equipment by equipment ID or equipment Name"); // SI cambia para ID y aparte nombre
         WriteLine(" 6. View Equipment Requests"); // SI sam SI
         WriteLine(" 7. View Tomorrows Equipment Requests"); // SI sam SI
-        WriteLine(" 8. View and Search for a Students History"); // sam
+        WriteLine(" 8. View and Search for a Students History"); //SI sam
         WriteLine("         a. See all students"); // SI
-        WriteLine("         b. Search for a student in specific"); // (con historial) si
-        WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)"); // sam si
-        WriteLine(" 9. View and Search for Students using Equipment at this moment"); // sam
-        WriteLine("         a. See all students using equipments "); // sam si
-        WriteLine("         b. Search for a specific student in this list"); //sam si
+        WriteLine("         b. Search for a student in specific"); // SI (con historial) si
+        WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)"); // SI sam si
+        WriteLine(" 9. View and Search for Students using Equipment at this moment"); // SI sam
+        WriteLine("         a. See all students using equipments "); // SI sam si
+        WriteLine("         b. Search for a specific student in this list"); //SI sam si
         WriteLine("         c. See the list of students that are late for returning equipments"); // sam si
-        WriteLine(" 10. Delivery equipment."); // vali (cambiar status)
-        WriteLine("         a. To students "); // vali
-        WriteLine("         a. To professor "); // vali
+        WriteLine(" 10. Delivery equipment."); // SI vali (cambiar status)
+        WriteLine("         a. To students "); // SI vali
+        WriteLine("         b. To professor "); // SI vali
+        WriteLine(" 11. Register the Return of Equipment(s) of a request"); // SI
         //volley WriteLine(" 9. Return a equipment"); // busca por registro de estudiante, y verifica que todo sea igual a su request, al final pregunta si llegó dañado o en malas condiciones y lo manda a create
-        WriteLine(" 10. Create report of damaged or lost equipment");  // SI volley SI
-        WriteLine(" 11. Program maintenance for a equipment ");  // furry  ( cambiar sttatus) (se debe poder programar frecuencia mantenimiento)
-        WriteLine(" 12. View Maintenance History");  // volley 
-        WriteLine(" 13. Change password");  // SI furry
-        WriteLine(" 14. Sign out");
+        WriteLine(" 12. Create report of damaged or lost equipment");  // SI volley SI
+        WriteLine(" 13. Program maintenance for a equipment");  // furry  ( cambiar sttatus) (se debe poder programar frecuencia mantenimiento)
+        WriteLine("         a. Program a new maintenance");
+        WriteLine("         b. Report Finished Maintenance");
+        WriteLine(" 14. View Maintenance History");  // SI volley 
+        WriteLine(" 15. Change password");  // SI furry
+        WriteLine(" 16. Sign out");
         // View equipments actualmente prestados en general 
         // hacer 8, 9, 10, 11, 12,    
         bool valid = false;
@@ -296,9 +348,9 @@ partial class Program{
         {
             Write("Option : ");
             op = ReadNonEmptyLine();
-            if (op != "1"  &&  op != "2" &&  op != "3" &&  op != "4" &&  op != "5" &&  op != "6" &&  op != "7" &&  op != "8" &&  op != "9" &&  op != "10" &&  op != "11" &&  op != "12" &&  op != "13" &&  op != "14")
+            if (op != "1"  &&  op != "2" &&  op != "3" &&  op != "4" &&  op != "5" &&  op != "6" &&  op != "7" &&  op != "8" &&  op != "9" &&  op != "10" &&  op != "11" &&  op != "12" &&  op != "13" &&  op != "14" && op!="15" && op!="16")
             {
-                WriteLine("Please choose a valid option (1 - 14)");
+                WriteLine("Please choose a valid option (1 - 16)");
                 op = ReadNonEmptyLine(); 
             }
             else
@@ -422,7 +474,7 @@ partial class Program{
         switch(op)
         {
             case "a": // students
-                DeliveryEquipmentStudents();
+                DeliveryEquipmentsStudents();
             break;
             case "b": // professors
                 DeliveryEquipmentsProfessors();
@@ -435,5 +487,129 @@ partial class Program{
             break;
         }
     }
-    
+
+    public static void MaintenanceRegisterSubMenu(string username)
+    {   
+        WriteLine("Program Maintenance for Equipment:");
+        WriteLine("1. Program a new maintenance");
+        WriteLine("2. Report Finished Maintenance");
+        WriteLine("3. Cancel");
+        string ans = "";
+        bool valid = false;
+        do
+        {
+            WriteLine();
+            Write("Option : ");
+            ans = ReadNonEmptyLine();
+            if(ans != "1" && ans != "2" && ans != "3") WriteLine("Please select a valid option 1 / 2 / 3");
+            else valid = true;
+        } while (!valid);
+        switch (ans)
+        {
+            case "1":
+                //RegisterNewMaintenance(username);
+            break;
+
+            case "2":
+                FinishMaintenanceReport(username);
+            break;
+
+            case "3":
+            return;
+
+            default:
+                WriteLine("Option is not valid");
+            break;
+        }
+        return;        
+    }
+/*
+    public static void RegisterNewMaintenance(string username)
+    {
+        WriteLine("Here's a list of all the maintenance types");
+        ListMaintenanceTypes(); 
+        bool valid = false; 
+        string mTypeID = "";
+        do
+        {
+            WriteLine("Please select the ID of the Maintenance Type you wish to create");
+            mTypeID = ReadNonEmptyLine();
+            if (mTypeID != "1" && mTypeID != "2" && mTypeID != "3")
+            {
+                WriteLine("Please select a valid option");
+            }
+            else
+            {
+                valid = true;
+            }
+        } while (!valid);
+
+        WriteLine("Instructions for Maintenance: ");
+        string instruct = VerifyReadMaxLengthString(255);
+
+        WriteLine("Programmed date for Maintenance: ");
+        Write("Day: ");
+        int day = TryParseStringaEntero(ReadNonEmptyLine());
+        Write("Month: ");
+        int month = TryParseStringaEntero(ReadNonEmptyLine());
+        Write("Year: ");
+        int year = TryParseStringaEntero(ReadNonEmptyLine());
+        DateTime initialDate = new(year, month, day);
+        List<DateTime> dateList = new();
+        dateList.Add(initialDate);
+        DateTime date;        
+        valid = false;
+        if(mTypeID != "2")
+        {
+            WriteLine("Do you want to periodically repeat this maintenance? y/n");            
+            string repeatMaintenance = "";
+            do
+            {
+                Write("Option: ");
+                repeatMaintenance = ReadNonEmptyLine();
+                if (repeatMaintenance != "y" && repeatMaintenance != "n" && repeatMaintenance != "Y" && repeatMaintenance != "N")
+                {
+                    WriteLine("Please select a valid option");
+                }
+                else
+                {
+                    valid = true;
+                }
+            } while (!valid);
+            switch (repeatMaintenance)
+            {
+                case "y": case "Y":
+                    int maintenanceFrequency = 0;
+                    int maintenanceQuantity = 0;
+                    WriteLine("Frequency of Maintenance in Months (ex. 1 - Every Month, 2 - Every 2 months, ...) : ");
+                    maintenanceFrequency = TryParseStringaEntero(ReadNonEmptyLine()); 
+
+                    WriteLine("How many times do you want to repeat the maintenance?");
+                    maintenanceQuantity = TryParseStringaEntero(ReadNonEmptyLine()); 
+
+                    for (int i = 0; i < maintenanceQuantity; i++)
+                    {
+                        date = initialDate;
+                        date = date.
+                        DateTime tomorrow = DateTime.Now.Date.AddDays(1);
+                    }
+                break; 
+
+                case "n": case "N":
+                    WriteLine("Maintenance will only happen once");
+                break;
+
+                default:
+                    WriteLine("Option is not valid");
+                break;
+            }
+        }
+        
+    }
+*/
+  
+    public static void FinishMaintenanceReport(string username)
+    {
+
+    }
 }

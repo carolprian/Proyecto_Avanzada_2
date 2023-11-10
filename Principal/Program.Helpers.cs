@@ -60,12 +60,13 @@ partial class Program
         while (true) // Infinite loop until there is a return, that there is a valid number
         {
             if (int.TryParse(op, out input))
-            {
+            {                
                 return input;
             }
             else
             {
                 WriteLine("That's not a correct form of number. Try again:");
+                op = ReadNonEmptyLine();
             }
         }
     }
