@@ -10,7 +10,7 @@ partial class Program{
         WriteLine("Ingrese la opcion que desa hacer:");
         WriteLine("1.- Aprobar permisos");
         WriteLine("2.- Ver Permisos Pendientes de aprobar");
-        //hacer todo lo de pedir materiales de profesores
+        WriteLine("3.- Sign out");
         string opString = ReadNonEmptyLine();
         int op = TryParseStringaEntero(opString);
         switch(op){
@@ -20,6 +20,9 @@ partial class Program{
             case 2:
 
             break;
+
+            case 3:
+            return;
         }//END OF SWITCH
     }
     public static void ApprovePermissions(){

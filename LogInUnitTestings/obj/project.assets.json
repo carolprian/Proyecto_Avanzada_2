@@ -5518,16 +5518,11 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
     "C:\\Users\\Samantha\\.nuget\\packages\\": {}
-=======
-    "C:\\Users\\aacar\\.nuget\\packages\\": {}
->>>>>>> 9d670c2d74ebb1e485e9a673fa4799c35177abae
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
       "projectName": "LogInUnitTestings",
       "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
@@ -5536,16 +5531,6 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
-=======
-      "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
-      "projectName": "LogInUnitTestings",
-      "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
-      "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\LogInUnitTestings\\obj\\",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
->>>>>>> 9d670c2d74ebb1e485e9a673fa4799c35177abae
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -5609,5 +5594,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

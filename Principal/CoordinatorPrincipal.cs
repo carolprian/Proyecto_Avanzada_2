@@ -84,6 +84,8 @@ partial class Program
                     WriteLine("Group not found or delete failed.");
                 }
                 break;
+                case "14":
+                return;
             default:
 
                 break;
@@ -121,13 +123,14 @@ partial class Program
         WriteLine(" 11. Agregar grupos");
         WriteLine(" 12. Actualizar grupos");
         WriteLine(" 13. Eliminar grupos");
+        WriteLine(" 14. Sign out");
         bool valid = false;
         do
         {
             op = ReadNonEmptyLine();
-            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8" && op != "9" && op != "10" && op != "11" && op != "12" && op != "13")
+            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8" && op != "9" && op != "10" && op != "11" && op != "12" && op != "13"&& op != "14")
             {
-                WriteLine("Please choose a valid option (1 - 13)");
+                WriteLine("Please choose a valid option (1 - 14)");
                 op = ReadNonEmptyLine();
             }
             else
