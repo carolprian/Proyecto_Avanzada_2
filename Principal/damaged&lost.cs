@@ -139,7 +139,7 @@ partial class Program{
             IQueryable<Equipment> equipments = db.Equipments
             .Where(e=> e.EquipmentId == equipmentId);
 
-            equipments.First().Status = newStatus;
+            equipments.First().StatusId = newStatus;
             affected = db.SaveChanges();
         }
         return affected;
