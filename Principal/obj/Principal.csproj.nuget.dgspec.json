@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {}
+    "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {
+    "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
+        "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
         "projectName": "Principal",
-        "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\obj\\",
+        "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
+        "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
