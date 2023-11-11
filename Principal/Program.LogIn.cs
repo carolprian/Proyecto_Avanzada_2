@@ -320,7 +320,7 @@ partial class Program
             string encyptUsr = EncryptPass(username);
 
             WriteLine("Write your password: ");
-            string pass = EncryptPass(ReadNonEmptyLine());
+            string pass = EncryptPass(ReadPassword());
 
             string idUser = "studentId";
             while ( true )

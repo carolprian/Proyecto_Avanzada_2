@@ -5518,31 +5518,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\artug\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Samantha\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
+      "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
       "projectName": "LogInUnitTestings",
-      "projectPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
-      "packagesPath": "C:\\Users\\artug\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\artug\\Desktop\\Practicas_ProgramacionAvanzada\\ProyectoFinal\\Proyecto_Avanzada_2\\LogInUnitTestings\\obj\\",
+      "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\LogInUnitTestings.csproj",
+      "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\artug\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

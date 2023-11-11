@@ -70,4 +70,29 @@ partial class Program
             }
         }
     }
+
+    public static string ReadPassword(){
+        string password = "";
+        ConsoleKeyInfo key;
+
+        do{
+            key = ReadKey(true);
+
+            if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Backspace)
+            {
+                password += key.KeyChar;
+                Write("*"); // Muestra un asterisco en lugar del carácter
+            }
+            else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+            {
+                // Si se presiona Backspace y hay caracteres en la contraseña, elimina el último carácter
+                password = password.Substring(0, password.Length - 1);
+                Write("\b \b"); // Borra el último asterisco mostrado
+            }
+        }
+        while (key.Key != ConsoleKey.Enter);
+
+        WriteLine(); // Agrega una nueva línea después de ingresar la contraseña
+        return password;
+    }
 }

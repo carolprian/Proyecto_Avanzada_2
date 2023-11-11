@@ -638,6 +638,17 @@ partial class Program
                 // checks if it exists
                 IQueryable<RequestDetail> requestDetails = db.RequestDetails
                 .Where(e => e.RequestDetailsId == requestID);
+
+                // Obtén el RequestId asociado
+                int requestId = db.RequestDetails
+                    .Where(e => e.RequestDetailsId == requestID)
+                    .Select(r => r.Request.RequestId)
+                    .FirstOrDefault();
+
+                var request = db.Requests
+                    .Where(r => r.RequestId == requestId)
+                    .FirstOrDefault();
+                    
                                         
                 if(requestDetails is null || !requestDetails.Any())
                 {
@@ -647,33 +658,29 @@ partial class Program
                 {
                     db.RequestDetails.Remove(requestDetails.First());
                     int affected = db.SaveChanges();
-                    if(affected == 1)
+                    if(affected > 0)
                     {
                         WriteLine("Equipment successfully deleted");
+
+                        db.Requests.Remove(request);
+
+                        int affectedRows = db.SaveChanges();
+
+                        // Verifica si la eliminación fue exitosa
+                        if (affectedRows > 0)
+                        {
+                            WriteLine("Request successfully deleted.");
+                        }
+                        else
+                        {
+                            WriteLine("Request couldn't be deleted.");
+                        }
                     }
                     else
                     {
                         WriteLine("Equipment couldn't be deleted");
                     }
 
-                    // Obtén el RequestId asociado
-                    int requestId = db.RequestDetails
-                    .Where(e => e.RequestDetailsId == requestID)
-                    .Select(r => r.Request.RequestId)
-                    .FirstOrDefault();
-
-                    // Elimina el registro de Requests
-                    var request = db.Requests
-                    .Where(r => r.RequestId == requestId)
-                    .FirstOrDefault();
-                    if(affected == 1)
-                    {
-                        WriteLine("Equipment successfully deleted");
-                    }
-                    else
-                    {
-                        WriteLine("Equipment couldn't be deleted");
-                    }
                 }               
             }
             return;
