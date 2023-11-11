@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Net;
+using System.Diagnostics.CodeAnalysis;
 
 partial class Program
 {
@@ -33,10 +34,10 @@ partial class Program
         List<string> equipmentsId = new List<string>();
         List<byte?> statusEquipments = new List<byte?>();
         var equipments = SearchEquipmentsRecursive(equipmentsId, statusEquipments, requestDate, times.Item1, times.Item2);
-        string professorNip = "0";
+        int? professorNip = 0;
         var requestDetailsId = AddRequestDetails(request.requestId, equipments.equipmentsId, professorNip, times.Item1, times.Item2, requestDate, currentDate, equipments.statusEquipments);
     }
-    public static (List<int> affected, List<int> requestDetailsId) AddRequestDetails(int requestId, List<string> equipmentsId, string professorNip, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments){
+    public static (List<int> affected, List<int> requestDetailsId) AddRequestDetails(int requestId, List<string> equipmentsId, int? professorNip, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments){
         int i=0;
         List<int> requestDetailsId = new List<int>();
         List<int> affecteds = new List<int>();
@@ -622,7 +623,7 @@ partial class Program
             return (selectedEquipments, statusEquipments);
         }
 
-            // DELETE
+    // DELETE
     public static void DeleteRequestFormat(string username)
     {
         WriteLine("Here's a list of all the request format that has not been accepted yet. ");
@@ -631,17 +632,17 @@ partial class Program
         {
             WriteLine();
             WriteLine("Provide the ID of the request that you want to delete (check the list): ");
-            int requestID = Convert.ToInt32(ReadLine());
+            int detailsId = Convert.ToInt32(ReadLine());
 
             using(bd_storage db = new())
             {
                 // checks if it exists
                 IQueryable<RequestDetail> requestDetails = db.RequestDetails
-                .Where(e => e.RequestDetailsId == requestID);
+                .Where(e => e.RequestDetailsId == detailsId);
 
                 // Obtén el RequestId asociado
                 int requestId = db.RequestDetails
-                    .Where(e => e.RequestDetailsId == requestID)
+                    .Where(e => e.RequestDetailsId == detailsId)
                     .Select(r => r.Request.RequestId)
                     .FirstOrDefault();
 

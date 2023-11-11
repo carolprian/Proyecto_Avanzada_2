@@ -265,7 +265,7 @@ partial class Program
             
             IQueryable<RequestDetail> requestDetailsToday = db.RequestDetails
             .Include( e => e.Equipment).Include(e=> e.Status)
-            .Where( r => r.ProfessorNip == "1")
+            .Where( r => r.ProfessorNip == 1)
             .Where(r => r.DispatchTime != null && r.RequestedDate.Date == today)
             .Where(r=>r.StatusId != 2)
             .Where(r=>r.Request.StudentId.Equals(register));
@@ -304,7 +304,7 @@ partial class Program
             
             IQueryable<RequestDetail> requestDetailsToday = db.RequestDetails
             .Include( e => e.Equipment).Include(e=> e.Status)
-            .Where( r => r.ProfessorNip == "1")
+            .Where( r => r.ProfessorNip == 1)
             .Where(r => r.DispatchTime != null && r.RequestedDate.Date == today)
             .Where(r=>r.Request.ProfessorId.Equals(register)) // poner EncryptPass
             .Where(r=>r.Request.StudentId == "11111111")

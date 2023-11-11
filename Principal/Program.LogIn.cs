@@ -242,7 +242,7 @@ partial class Program
 
         WriteLine("Provide your maternal last name: ");
         string lastnameM = ReadNonEmptyLine();
-        int groupid=0;
+        int? groupid=0;
         int op=0;
         
         while(op==0)
@@ -311,7 +311,7 @@ partial class Program
         return changes;
     }
 
-    public static (bool logged, string username) IniciarSesion(out string? rol)
+    public static (bool logged, string? username) IniciarSesion(out string? rol)
     {
         using (bd_storage db = new())
         {
@@ -491,7 +491,7 @@ partial class Program
                 }
                 else if (idUser == "professorId")
                 {
-                    IQueryable<Professor> professors = db.Professors.Where(p => p.ProfessorId == EncryptPass(username));
+                    IQueryable<Professor>? professors = db.Professors.Where(p => p.ProfessorId == EncryptPass(username));
 
                     if (professors is not null || professors.Any())
                     {

@@ -152,7 +152,7 @@ partial class Program{
         {            
             IQueryable<RequestDetail> requestDetailsToReturn = db.RequestDetails
             .Include( e => e.Equipment).Include(e=> e.Status)
-            .Where( r => r.ProfessorNip == "1")
+            .Where( r => r.ProfessorNip == 1)
             .Where(r => r.DispatchTime != null)
             .Where(r=>r.StatusId == 2)
             .Where(r=>r.Request.StudentId.Equals(register));
@@ -196,7 +196,7 @@ partial class Program{
         {            
             IQueryable<RequestDetail>? requestDetailsToReturn = db.RequestDetails?
             .Include( e => e.Equipment).Include(e=> e.Status)
-            .Where( r => r.ProfessorNip == "1")
+            .Where( r => r.ProfessorNip == 1)
             .Where(r => r.DispatchTime != null)
             .Where(r=>r.StatusId == 2)
             .Where(r=>r.Request.StudentId.Equals("11111111"));

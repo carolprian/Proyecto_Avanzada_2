@@ -347,7 +347,6 @@ partial class Program{
         WriteLine(" 16. Change password");  // SI furry
         WriteLine(" 17. Sign out");
         // View equipments actualmente prestados en general 
-        // hacer 8, 9, 10, 11, 12,    
         bool valid = false;
         do
         {
@@ -407,7 +406,6 @@ partial class Program{
             break;
             case "d":
                 return;
-            break;
             default:
                 WriteLine("That option doesnt exist. ");
             break;
@@ -449,7 +447,6 @@ partial class Program{
             break;
             case "d":
                 return;
-            break;
             default:
                 WriteLine("That option doesnt exist. ");
             break;
@@ -486,7 +483,6 @@ partial class Program{
             break;
             case "c":
                 return;
-            break;
             default:
                 WriteLine("That option doesnt exist. ");
             break;
