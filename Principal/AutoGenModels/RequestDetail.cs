@@ -27,10 +27,9 @@ public partial class RequestDetail
     [Required]
     public byte? StatusId { get; set; }
 
-    [Column("professorNIP", TypeName = "VARCHAR (4)")]
+    [Column("professorNIP")]
     [Required]
-    [StringLength(4, MinimumLength = 4)]
-    public string? ProfessorNip { get; set; }
+    public int? ProfessorNip { get; set; }
 
     [Column("dispatchTime", TypeName = "TIME")]
     [Required]

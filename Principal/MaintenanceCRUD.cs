@@ -140,7 +140,7 @@ partial class Program{
             .Where(m=>m.Maintenance.MaintenanceMaterialsDescription == "0")
             .OrderBy(m=>m.MaintenanceId)
             .OrderByDescending(m=>m.Maintenance.ProgrammedDate);
-        //    var maintainGroup = maintain.GroupBy(ma=>ma.Maintenance.MaintenanceId);
+            // var maintainGroup = maintain.GroupBy(ma=>ma.Maintenance.MaintenanceId);
         
 
             if(maintain is null || !maintain.Any())
@@ -156,21 +156,20 @@ partial class Program{
             int pp=1;
 
             while (continueListing)
-                {
+            {
                var maintainn = maintain.Skip(offset).Take(batchS);
 
-//                Console.Clear();
+                Console.Clear();
                 
-                        WriteLine("|{0,-2}|{1,-15}|{2,-20}|{3,-11}|{4,-40}|{5, -40}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
-                "ID", "ID Equipment", "Equipment", "Maintenance", "Instructions for maintenance", "Description of the made maintenance", "Started", "Returned", "Storer", "",  "Used Materials" );
-            WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    foreach( var m in maintainn)
-                    {
-                        WriteLine("|{0,-2}|{1,-15}|{2,-20}|{3,-11}|{4,-40}|{5, -40}|{6, -10}|{7,-10}|{8, 10} {9,-10}|{10}",
-                    m.MaintenanceId, m.Equipment?.EquipmentId, m.Equipment?.Name, m.Maintenance?.MaintenanceType?.Name, m.Maintenance?.MaintenanceInstructions, m.Maintenance?.MaintenanceDescription, m.Maintenance?.ProgrammedDate.ToString("dd-MM-yyyy"), m.Maintenance?.ExitDate.ToString("dd-MM-yyyy"), m.Maintenance?.Storer?.Name, m.Maintenance?.Storer?.LastNameP, m.Maintenance?.MaintenanceMaterialsDescription);
-                    
-                    }
-            
+                WriteLine("|{0,-3}|{1,-12}|{2,-50}|{3,-11}|{4,-80}|{5, -15}|{6, -15}|",
+                "ID", "ID Equipment", "Equipment", "Maintenance", "Instructions for maintenance",  "Started",  "Storer ID");
+                WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                foreach( var m in maintainn)
+                {
+                    WriteLine("|{0,-3}|{1,-12}|{2,-50}|{3,-11}|{4,-80}|{5, -15}|{6, -15}|",
+                    m.MaintenanceId, m.Equipment?.EquipmentId, m.Equipment?.Name, m.Maintenance?.MaintenanceType?.Name, m.Maintenance?.MaintenanceInstructions, m.Maintenance?.ProgrammedDate.ToString("dd-MM-yyyy"), Decrypt(m.Maintenance?.Storer?.StorerId));
+                }
+                
                 WriteLine();
                 WriteLine($"Total:   {countTotal} ");
                 WriteLine($"{pp} / {pages}");
@@ -184,7 +183,6 @@ partial class Program{
                     pp--;
                     }
                     Console.Clear();
-
                 }
                 if(ReadKey(intercept: true).Key == ConsoleKey.RightArrow)
                 {
@@ -201,10 +199,7 @@ partial class Program{
                     Console.Clear();
                 }
             }
-
-
-        }
-    
+        }    
     }
 
     public static void SearchMaintenanceOfEquipment()
@@ -441,6 +436,18 @@ partial class Program{
                     };
                     EntityEntry<Maintain> entity2 = db.Maintain.Add(maintainValue);
                     affected += db.SaveChanges();
+
+                    IQueryable<Equipment>? equipments = db.Equipments
+                    .Where(e => e.EquipmentId == EID);
+                    byte status = 5;
+                    if(equipments is not null && equipments.Any())
+                    {
+                        equipments.ExecuteUpdate(u => u.SetProperty(
+                            p => p.StatusId, // Property Selctor
+                            p => status // Value to edit
+                        ));
+                        affected += db.SaveChanges();
+                    }
                 }
             }
             return affected;
@@ -449,6 +456,84 @@ partial class Program{
 
     public static void FinishMaintenanceReport(string username)
     {
+        using(bd_storage db = new())
+        {
+            WriteLine("Here's a list of all Maintenances Registers that haven't been completed yet");
+            WriteLine();
+            ViewMaintenanceNotMade();
+            WriteLine();
+            /*
+            bool valid = false;
+            do
+            {
+                WriteLine("Please select the ID of the Equipment you wish to add");
+                equipmentId = ReadNonEmptyLine();
+                using(bd_storage db = new())
+                {
+                    IQueryable<Equipment>? availableEquipment = db.Equipments
+                    .Where(e => e.EquipmentId == equipmentId); // checks if the user selected a valid id from the table
+                    if(availableEquipment is null || !availableEquipment.Any())
+                    {
+                        WriteLine($"Equipment ID : {equipmentId} is not-existent");
+                    }
+                    else
+                    {
+                        if(availableEquipment.First().StatusId != 2 && availableEquipment.First().StatusId != 3 && availableEquipment.First().StatusId != 5)
+                        {
+                            bool repeated = false;
+                            foreach (var eq in equipmentIdList)
+                            {
+                                if(equipmentId == eq)
+                                {
+                                    WriteLine($"{equipmentId} was already added");
+                                    repeated = true;
+                                }
+                            }
+                            if(!repeated) 
+                            {
+                                equipmentIdList.Add(equipmentId);                        
+                                WriteLine("Do you want to add another equipment to the Maintenance Register? y/n");
+                                string moreEquipment = "";
+                                bool validAns = false;
+                                do
+                                {
+                                    Write("Option: ");
+                                    moreEquipment = ReadNonEmptyLine();
+                                    if (moreEquipment != "y" && moreEquipment != "n" && moreEquipment != "Y" && moreEquipment != "N")
+                                    {
+                                        WriteLine("Please select a valid option");
+                                    }
+                                    else
+                                    {
+                                        validAns = true;
+                                    }
+                                } while (!validAns);
+                                switch (moreEquipment)
+                                {
+                                    case "y": case "Y":
+                                        WriteLine($"You have added {equipmentIdList.Count()} equipments until now");
+                                    break; 
 
+                                    case "n": case "N":
+                                        WriteLine("Continuing...");
+                                        valid = true;
+                                    break;
+
+                                    default:
+                                        WriteLine("Option is not valid");
+                                    break;
+                                }
+                            }  
+                            repeated = false;                      
+                        }
+                        else
+                        {
+                            WriteLine("Please select an equipment from the table shown above");
+                        }                    
+                    }
+                }
+            } while (!valid);
+        }
+        */
     }
 }
