@@ -49,7 +49,7 @@ partial class Program
             }
         }
     }
-    public static (List<int> affected, List<int> requestDetailsId) AddRequestDetails(int requestId, List<string> equipmentsId, string professorNip, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments){
+    public static (List<int> affected, List<int> requestDetailsId) AddRequestDetails(int requestId, List<string> equipmentsId, int professorNip, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments){
         int i=0;
         List<int>? requestDetailsId = new List<int>();
         List<int>? affecteds = new List<int>();
@@ -661,23 +661,15 @@ partial class Program
 
     public static void DeleteRequest(int requestId)
     {
-        using(bd_storage db = new())
-        {
-            // checks if it exists
-            IQueryable<Request> requests = db.Requests
-            .Where(e => e.RequestId == requestId);
-                                    
-            if(requests is null || !requests.Any())
-            {
-                WriteLine("That request ID doesn't exist in the database, try again");
-            }
-            else
-            {
-                WriteLine($"You have reached the maximum limit of {maxEquipment} equipments.");
-                return (selectedEquipments, statusEquipments);
-            }
-            return (selectedEquipments, statusEquipments);
+        using(bd_storage db = new()){
+            var request = db.Requests
+                    .Where(r => r.RequestId == requestId)
+                    .FirstOrDefault();
+             WriteLine();
+             db.Requests.Remove(request);
+                    int affected = db.SaveChanges();
         }
+    }
 
             // DELETE
     public static void DeleteRequestFormat(string username)
@@ -725,13 +717,13 @@ partial class Program
                     }
 
                     // Obtén el RequestId asociado
-                    int requestId = db.RequestDetails
-                    .Where(e => e.RequestDetailsId == requestID)
+                    int requestsId = db.RequestDetails
+                    .Where(e => e.RequestDetailsId == requestId)
                     .Select(r => r.Request.RequestId)
                     .FirstOrDefault();
 
                     // Elimina el registro de Requests
-                    var request = db.Requests
+                    var requests = db.Requests
                     .Where(r => r.RequestId == requestId)
                     .FirstOrDefault();
                     if(affected == 1)

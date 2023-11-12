@@ -38,7 +38,7 @@ public partial class Program
                             break;
 
                             case "professors":
-                            ProfessorsPrincipal();
+                            ProfessorsPrincipal(logIn.username);
                             break;
 
                             case "storers":
