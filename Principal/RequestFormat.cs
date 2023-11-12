@@ -726,6 +726,8 @@ partial class Program
                     var requests = db.Requests
                     .Where(r => r.RequestId == requestId)
                     .FirstOrDefault();
+                    db.Requests.Remove(requests);
+                    affected = db.SaveChanges();
                     if(affected == 1)
                     {
                         WriteLine("Equipment successfully deleted");
