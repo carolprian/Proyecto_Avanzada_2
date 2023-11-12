@@ -368,7 +368,7 @@ partial class Program{
 
     public static void ViewAllEquipmentsForMaintenance()
     {
-        using( bd_storage db = new())
+        using(bd_storage db = new())
         {
             IQueryable<Equipment>? equipments = db.Equipments
             .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator);
@@ -377,17 +377,17 @@ partial class Program{
             {
                 WriteLine("No equipment was found");
             }
-            WriteLine("| {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
+            WriteLine("| {0,-12} | {1,-50} | {2,-28} | {3,-72} | {4,-6} | {5,-20} |  {6,-16} | {7,-12} |",
                 "EquipmentId", "Equipment Name", "Area", "Description", "Year", "Status", "Control Number", "Coordinator ID");
             Write("-------------------------------------------------------------------------------------------------------------------");
-            WriteLine("-------------------------------------------------------------------------------");
+            WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------");
 
             foreach (var e in equipments)
             {
                 if(e.StatusId != 2 && e.StatusId != 3 && e.StatusId != 5)
                 {
-                     WriteLine("| {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
-                    e.EquipmentId, e.Name, e.Area?.Name, e.Description, e.Year, e.Status?.Value, e.ControlNumber, e.Coordinator?.CoordinatorId);
+                    WriteLine("| {0,-12} | {1,-50} | {2,-28} | {3,-72} | {4,-6} | {5,-20} | {6,-16} | {7,-12} |",
+                    e.EquipmentId, e.Name, e.Area?.Name, e.Description, e.Year, e.Status?.Value, e.ControlNumber, Decrypt(e.Coordinator?.CoordinatorId));
                 }               
             }
         }

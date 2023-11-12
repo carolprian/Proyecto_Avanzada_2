@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Net;
+using System.Diagnostics.CodeAnalysis;
 
 partial class Program
 {
@@ -48,7 +49,7 @@ partial class Program
             }
         }
     }
-    public static (List<int>? affected, List<int>? requestDetailsId) AddRequestDetails(int requestId, List<string> equipmentsId, int professorNip, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments){
+    public static (List<int> affected, List<int> requestDetailsId) AddRequestDetails(int requestId, List<string> equipmentsId, string professorNip, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments){
         int i=0;
         List<int>? requestDetailsId = new List<int>();
         List<int>? affecteds = new List<int>();
@@ -672,21 +673,13 @@ partial class Program
             }
             else
             {
-                db.Requests.Remove(requests.First());
-                int affected = db.SaveChanges();
-                if(affected == 1)
-                {
-                    WriteLine("Request successfully deleted");
-                }
-                else
-                {
-                    WriteLine("Request couldn't be deleted");
-                }
-
-            }               
+                WriteLine($"You have reached the maximum limit of {maxEquipment} equipments.");
+                return (selectedEquipments, statusEquipments);
+            }
+            return (selectedEquipments, statusEquipments);
         }
-    }
 
+            // DELETE
     public static void DeleteRequestFormat(string username)
     {
         WriteLine("Here's a list of all the request format that has not been accepted yet. ");
@@ -695,13 +688,24 @@ partial class Program
         {
             WriteLine();
             WriteLine("Provide the ID of the request that you want to delete (check the list): ");
-            int requestID = Convert.ToInt32(ReadLine());
+            int detailsId = Convert.ToInt32(ReadLine());
 
             using(bd_storage db = new())
             {
                 // checks if it exists
                 IQueryable<RequestDetail> requestDetails = db.RequestDetails
-                .Where(e => e.RequestDetailsId == requestID);
+                .Where(e => e.RequestDetailsId == detailsId);
+
+                // Obtén el RequestId asociado
+                int requestId = db.RequestDetails
+                    .Where(e => e.RequestDetailsId == detailsId)
+                    .Select(r => r.Request.RequestId)
+                    .FirstOrDefault();
+
+                var request = db.Requests
+                    .Where(r => r.RequestId == requestId)
+                    .FirstOrDefault();
+                    
                                         
                 if(requestDetails is null || !requestDetails.Any())
                 {
@@ -711,7 +715,7 @@ partial class Program
                 {
                     db.RequestDetails.Remove(requestDetails.First());
                     int affected = db.SaveChanges();
-                    if(affected == 1)
+                    if(affected > 0)
                     {
                         WriteLine("Equipment successfully deleted");
                     }
@@ -730,8 +734,6 @@ partial class Program
                     var request = db.Requests
                     .Where(r => r.RequestId == requestId)
                     .FirstOrDefault();
-                    db.Requests.Remove(request);
-                    affected = db.SaveChanges();
                     if(affected == 1)
                     {
                         WriteLine("Equipment successfully deleted");
@@ -740,6 +742,7 @@ partial class Program
                     {
                         WriteLine("Equipment couldn't be deleted");
                     }
+
                 }               
             }
             return;

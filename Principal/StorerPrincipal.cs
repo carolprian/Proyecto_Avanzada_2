@@ -347,7 +347,6 @@ partial class Program{
         WriteLine(" 16. Change password");  // SI furry
         WriteLine(" 17. Sign out");
         // View equipments actualmente prestados en general 
-        // hacer 8, 9, 10, 11, 12,    
         bool valid = false;
         do
         {
@@ -407,7 +406,6 @@ partial class Program{
             break;
             case "d":
                 return;
-            break;
             default:
                 WriteLine("That option doesnt exist. ");
             break;
@@ -449,7 +447,6 @@ partial class Program{
             break;
             case "d":
                 return;
-            break;
             default:
                 WriteLine("That option doesnt exist. ");
             break;
@@ -486,7 +483,6 @@ partial class Program{
             break;
             case "c":
                 return;
-            break;
             default:
                 WriteLine("That option doesnt exist. ");
             break;
@@ -509,10 +505,12 @@ partial class Program{
             if(ans != "1" && ans != "2" && ans != "3") WriteLine("Please select a valid option 1 / 2 / 3");
             else valid = true;
         } while (!valid);
+
+        int affected = 0;
         switch (ans)
         {
             case "1":
-                int affected = RegisterNewMaintenance(username);
+                affected = RegisterNewMaintenance(username);
                 if(affected > 1)
                 {
                     WriteLine($"{affected} rows were succesfully added");
@@ -527,7 +525,14 @@ partial class Program{
             break;
 
             case "2":
-                FinishMaintenanceReport(username);
+                affected = FinishMaintenanceReport(username);
+                if(affected > 1)
+                {
+                    WriteLine($"{affected} rows were succesfully added");
+                    WriteLine("Here's a list of all still pending Maintenance Registers");
+                    WriteLine();
+                    ViewMaintenanceNotMade();
+                }
             break;
 
             case "3":

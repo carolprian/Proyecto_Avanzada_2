@@ -7,9 +7,10 @@ partial class Program
     {
         using (bd_storage db = new())
         {
-            IQueryable<RequestDetail> requestDetails = db.RequestDetails
+            IQueryable<RequestDetail>? requestDetails = db.RequestDetails
             .Include( e => e.Equipment)
-            .Where( r => r.ProfessorNip == 1);
+            .Where( r => r.ProfessorNip == 1)
+            .OrderByDescending( f  => f.RequestedDate);
 
             if ((requestDetails is null) || !requestDetails.Any())
             {
@@ -44,10 +45,22 @@ partial class Program
     {
         using (bd_storage db = new())
         {
-            DateTime tomorrow = DateTime.Now.Date.AddDays(1);
+            DateTime today = DateTime.Now;
+
+            DateTime tomorrow;
+
+            if (today.DayOfWeek == DayOfWeek.Friday)
+            {
+                tomorrow = DateTime.Now.Date.AddDays(3);
+            }
+            else
+            {
+                tomorrow = DateTime.Now.Date.AddDays(1);
+            }
+
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
             .Include( e => e.Equipment)
-            .Where( r => r.ProfessorNip == 1)
+            .Where( r => r.ProfessorNip == "1")
             .Where(r => r.DispatchTime != null && r.DispatchTime.Date == tomorrow);
             
             db.ChangeTracker.LazyLoadingEnabled = false;
@@ -56,7 +69,6 @@ partial class Program
                 WriteLine("There are no request found");
                 return null;
             }
-
 
             var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
 

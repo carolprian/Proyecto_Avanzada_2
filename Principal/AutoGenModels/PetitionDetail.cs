@@ -29,7 +29,7 @@ public partial class PetitionDetail
 
     [Column("dispatchTime", TypeName = "TIME")]
     [Required]
-    public DateTime DispatchTime { get; set; }
+    public DateTime? DispatchTime { get; set; }
 
     [Column("returnTime", TypeName = "TIME")]
     [Required]

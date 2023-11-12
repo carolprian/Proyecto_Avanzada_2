@@ -23,7 +23,7 @@
   </ItemGroup>
 
 <ItemGroup>
-<ProjectReference Include="../LogInPrincipal.csproj"/>
+<ProjectReference Include="../Principal/Principal.csproj"/>
 </ItemGroup>
 
   <ItemGroup>
