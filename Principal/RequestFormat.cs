@@ -552,13 +552,19 @@ partial class Program
             WriteLine("Insert the start of the name of equipment without accents: ");
             string searchTerm = ReadNonEmptyLine().ToLower();
 
-            var equipmentIdsInUse = db.RequestDetails
+            var equipmentIdsInUseStudent = db.RequestDetails
+            .Where(rd => rd.RequestedDate.Date == requested &&
+                         (init >= rd.ReturnTime)).Select(rd => rd.EquipmentId).ToList();
+            
+            var equipmentIdsInUseProf = db.PetitionDetails
             .Where(rd => rd.RequestedDate.Date == requested &&
                          (init >= rd.ReturnTime)).Select(rd => rd.EquipmentId).ToList();
 
+
             IQueryable<Equipment>? equipments = db.Equipments.Include(s => s.Status)
                 .Where(e => e.Name.ToLower().StartsWith(searchTerm) &&
-                            !equipmentIdsInUse.Contains(e.EquipmentId) &&
+                            !equipmentIdsInUseStudent.Contains(e.EquipmentId) &&
+                            !equipmentIdsInUseProf.Contains(e.EquipmentId) &&
                             e.StatusId != 3 && e.StatusId != 4 && e.StatusId != 5)
             .AsEnumerable()  // Materializar la consulta aquí
             .OrderBy(e => Guid.NewGuid())
