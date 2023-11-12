@@ -122,6 +122,7 @@ partial class Program
     public static int AddClassroom(){
         int i=0, classId=0;
         bool ban=true;
+        Console.Clear();
         do{
             using (bd_storage db = new()){
                 IQueryable<Classroom> classrooms = db.Classrooms;
@@ -151,6 +152,7 @@ partial class Program
 
     public static string SearchSubjectsByName(string searchTerm, int op)
     {
+       // Console.Clear();
         int i = 0;
         if(op==1){
         WriteLine("Insert the name start of the subject WITHOUT accents");
@@ -658,7 +660,6 @@ partial class Program
         return (selectedEquipments, statusEquipments, 0);
     }
 
-
     public static void DeleteRequest(int requestId)
     {
         using(bd_storage db = new()){
@@ -671,7 +672,7 @@ partial class Program
         }
     }
 
-            // DELETE
+
     public static void DeleteRequestFormat(string username)
     {
         WriteLine("Here's a list of all the request format that has not been accepted yet. ");
@@ -744,18 +745,17 @@ partial class Program
     }
 
     public static void UpdateRequestFormat(string username){
-        WriteLine("Here's a list of all the request format that has not been accepted yet. ");
+       /* WriteLine("Here's a list of all the request format that has not been accepted yet. ");
         ViewRequestFormatNotAcceptedYet(username);
         WriteLine();
         WriteLine("Provide the ID of the request that you want to modify (check the list): ");
         int requestID = Convert.ToInt32(ReadNonEmptyLine());
+        using(bd_storage db = new bd_storage()){
+            var 
+        }
+        switch(op){
+
+        }*/
         
     }
 }
-
-/*
-        para pedir el equipo hacer una query que consulte el requestDetails con la misma hora de inicio en la 
-        misma fecha conviertes el datetime de la fecha a string y lo comparas, lo mismo con la hora
-        no tiene que estar aprobado 
-        //que no haya hecho mas de un permiso por día para el mismo día y 
-*/

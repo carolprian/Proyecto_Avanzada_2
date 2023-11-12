@@ -11,7 +11,7 @@ public partial class Program
         // ApprovePermissions();
         // StorersPrincipal();
     //MenuStudents("20300826");
-        //Hi();
+        Hi();
         RequestFormat("20300826");
         while (true)
         {
