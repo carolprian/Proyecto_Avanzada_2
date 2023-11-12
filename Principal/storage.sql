@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS coordinators (
     lastNameM     VARCHAR (30),
     password      VARCHAR (50) 
 );
-INSERT INTO coordinators (coordinatorId, name, lastNameP, lastNameM, password) VALUES ('CokUy+/bPTOOfNMUx77mMg==', 'Andres', 'Figueroa', 'Flores', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO coordinators (coordinatorId, name, lastNameP, lastNameM, password) VALUES ('ZzfV8bJ4zIFA9VKJuivNXg==', 'Andres', 'Figueroa', 'Flores', 'F8t128gjJIaegDAGPG//LA==');
 
 -- Tabla: divisions
 CREATE TABLE IF NOT EXISTS divisions (
@@ -280,10 +280,11 @@ CREATE TABLE IF NOT EXISTS professors (
     name        VARCHAR (30),
     lastNameP   VARCHAR (30),
     lastNameM   VARCHAR (30),
-    nip         VARCHAR (4),
+    nip         VARCHAR (50),
     password    VARCHAR (50) 
 );
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('s+d1CVba7aAcZHO4z0LPaw==', 'Nancy del Carmen', 'Benavides', 'Medina', 'NJhRuGQE/CqIGDl0yZkNnMQ==IP2', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('s+d1CVba7aAcZHO4z0LPaw==', 'Carlos', 'Molina', 'Martínez', 'gxLjEIaXCcvWek8lrMK0Qg==', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('s+d1CVba7aAcZHO4z0LPaw==', 'Nancy del Carmen', 'Benavides', 'Medina', 'JhRuGQE/CqIGDl0yZkNnMQ==', 'F8t128gjJIaegDAGPG//LA==');
 INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('AEd+FHe4V36Wpe7FXKWZtg==', 'Diana Marisol', 'Figueroa', 'Flores', 'MSMqLGP2jK9q59XrnJ4f+w==', 'F8t128gjJIaegDAGPG//LA==');
 INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('i7T8ZRB4ZgI/GHgQY3B6IQ==', 'Clara Gabriela', 'Garcia', 'Duran', 'QUhomydkInt//RMMHtlzNQ==', 'F8t128gjJIaegDAGPG//LA==');
 
@@ -431,7 +432,7 @@ CREATE TABLE IF NOT EXISTS storers (
     lastNameM VARCHAR (30),
     password  VARCHAR (50) 
 );
-INSERT INTO storers (storerId, name, lastNameP, lastNameM, password) VALUES ('owTkVgr0sk6DHaUug+7/SA==', 'Annel', 'Marin', 'Gutierrez', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO storers (storerId, name, lastNameP, lastNameM, password) VALUES ('kT556oT3ig6WU155xbGHTw==', 'Annel', 'Marin', 'Gutierrez', 'F8t128gjJIaegDAGPG//LA==');
 
 -- Tabla: students
 CREATE TABLE IF NOT EXISTS students (

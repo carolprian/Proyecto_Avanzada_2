@@ -12,7 +12,6 @@ public partial class Program
         // StorersPrincipal();
         //MenuStudents("20300826");
         //Hi();
-        StorersPrincipal("1234567890");
         while (true)
         {
             WriteLine("Principal Menu: ");
@@ -38,7 +37,7 @@ public partial class Program
                             break;
 
                             case "professors":
-                            ProfessorsPrincipal();
+                            ProfessorsPrincipal(logIn.username);
                             break;
 
                             case "storers":

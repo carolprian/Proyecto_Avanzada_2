@@ -30,9 +30,9 @@ public partial class Professor
     [StringLength(30)]
     public string? LastNameM { get; set; }
 
-    [Column("nip", TypeName = "VARCHAR (4)")]
+    [Column("nip", TypeName = "VARCHAR (50)")]
     [Required]
-    [StringLength(4, MinimumLength = 4)]
+    [StringLength(50)]
     public string? Nip { get; set; }
 
     [Column("password", TypeName = "VARCHAR (50)")]

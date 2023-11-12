@@ -27,7 +27,7 @@ public partial class RequestDetail
     [Required]
     public byte? StatusId { get; set; }
 
-    [Column("professorNIP")]
+    [Column("professorNIP", TypeName = "INTEGER")]
     [Required]
     public int? ProfessorNip { get; set; }
 
