@@ -281,7 +281,7 @@ CREATE TABLE IF NOT EXISTS professors (
     name        VARCHAR (30),
     lastNameP   VARCHAR (30),
     lastNameM   VARCHAR (30),
-    nip         VARCHAR (4),
+    nip         VARCHAR (50),
     password    VARCHAR (50) 
 );
 INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('owTkVgr0sk6DHaUug+7/SA==', 'Alejandra', 'Alcaraz', 'Torres', 'gxLjEIaXCcvWek8lrMK0Qg==', 'F8t128gjJIaegDAGPG//LA==');

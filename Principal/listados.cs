@@ -9,7 +9,7 @@ partial class Program
         {
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
             .Include( e => e.Equipment)
-            .Where( r => r.ProfessorNip == "1");
+            .Where( r => r.ProfessorNip == 1);
 
             if ((requestDetails is null) || !requestDetails.Any())
             {
@@ -47,7 +47,7 @@ partial class Program
             DateTime tomorrow = DateTime.Now.Date.AddDays(1);
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
             .Include( e => e.Equipment)
-            .Where( r => r.ProfessorNip == "1")
+            .Where( r => r.ProfessorNip == 1)
             .Where(r => r.DispatchTime != null && r.DispatchTime.Date == tomorrow);
             
             db.ChangeTracker.LazyLoadingEnabled = false;
@@ -121,7 +121,7 @@ partial class Program
             .Include( r => r.Request.Student.Group)
             .Include( r => r.Equipment)
             .Where( s => s.StatusId == 2)
-            .Where( r => r.ProfessorNip == "1");
+            .Where( r => r.ProfessorNip == 1);
 
             if (!requestDetails.Any() || requestDetails is null)
             {
@@ -155,7 +155,7 @@ partial class Program
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
             .Include(r => r.Request.Student.Group)
             .Include(r => r.Equipment)
-            .Where(s => s.StatusId == 2 && s.ProfessorNip == "1" && s.RequestedDate < currentDate);
+            .Where(s => s.StatusId == 2 && s.ProfessorNip == 1 && s.RequestedDate < currentDate);
 
             if (!requestDetails.Any())
             {
@@ -566,7 +566,7 @@ partial class Program
         using (bd_storage db = new())
         {
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
-            .Where( s => s.ProfessorNip == "0")
+            .Where( s => s.ProfessorNip == 0)
             .Include( r => r.Equipment)
             .Include( r => r.Request)
             .Where( s => s.Request.StudentId == username);
@@ -591,12 +591,13 @@ partial class Program
                 WriteLine("Equipment:");
                 foreach (var r in group)
                 {
-                    WriteLine($"  - Equipment Name: {r.Equipment.Name}");
+                    WriteLine($"Equipment Name: {r.Equipment.Name}");
                 }
             }
             return;
         } 
     }
+
 
     public static void LateReturningStudent(string username)
     {
@@ -608,7 +609,7 @@ partial class Program
             .Where( s => s.Request.StudentId == username)
             .Include(r => r.Request.Student.Group)
             .Include(r => r.Equipment)
-            .Where(s => s.StatusId == 2 && s.ProfessorNip == "1" && s.RequestedDate < currentDate);
+            .Where(s => s.StatusId == 2 && s.ProfessorNip == 1 && s.RequestedDate < currentDate);
 
             if (!requestDetails.Any())
             {
