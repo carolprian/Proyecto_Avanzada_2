@@ -291,25 +291,95 @@ partial class Program{
             using( bd_storage db = new())
             {
                 IQueryable<Equipment>? equipments = db.Equipments
-                .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator);
+                .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator).OrderBy(e=>e.AreaId);
 
                 db.ChangeTracker.LazyLoadingEnabled = false;
                 if((equipments is null) || !equipments.Any())
                 {
                     WriteLine("There are no status found");
                 }
-                int i=1;
-                WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
-                    "Index", "EquipmentId", "Equipment Name", "Area", "Description", "Year", "Status", "Control Number", "Coordinator ID");
-                Write("-------------------------------------------------------------------------------------------------------------------");
-                WriteLine("-------------------------------------------------------------------------------");
 
-                foreach (var e in equipments)
-                {
-                    WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22} | {4,-58} | {5,7} | {6,-13} | {7,15}",
-                        i, e.EquipmentId, e.Name, e.Area?.Name, e.Description, e.Year, e.Status?.Value, e.ControlNumber, e.Coordinator?.CoordinatorId);
-                    i++;
+                int countTotal = equipments.Count();
+                bool continueListing = true;
+                int offset = 0, batchS = 20;
+                int pages = countTotal / batchS;
+                if(countTotal/batchS != 0){pages+=1;}
+                int pp=1;
+                int i=0;
+                while (continueListing)
+                    {
+                var equips = equipments.Skip(offset).Take(batchS);
+
+    //                Console.Clear();
+                    
+                    
+                    WriteLine("| {0,-5} | {1,-15} | {2,-80} | {3,7} | {4,-22} |",
+                        "Index", "EquipmentId", "Equipment Name", "Year", "Status");
+                    WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+                    
+                    foreach( var e in equips)
+                        {
+                            i++;
+                            WriteLine("| {0,-5} | {1,-15} | {2,-80} | {3,7} | {4,-22} |",
+                            i, e.EquipmentId, e.Name, e.Year, e.Status?.Value);
+                        
+                        }
+                
+                    WriteLine();
+                    WriteLine($"Total:   {countTotal} ");
+                    WriteLine($"{pp} / {pages}");
+                    WriteLine("");
+
+                    WriteLine("Do you want to see more information about any of the equipments?(y/n)");
+                    string read = VerifyReadLengthStringExact(1);
+                    if(read == "y" || read =="Y")
+                    {
+                        WriteLine("Provide the equipment ID you want to see more info:");
+                        read = VerifyReadMaxLengthString(15);
+                        
+                        IQueryable<Equipment>  equipms = db.Equipments
+                        .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator).Where(e=>e.EquipmentId.Equals(read));
+                        if(equipms is not null)
+                        {
+                            foreach(var equip in equipms)
+                            {
+                            WriteLine($"Equipment ID:  {equip.EquipmentId}");
+                            WriteLine($"Equipment Name:  {equip.Name}");
+                            WriteLine($"Equipment Area:  {equip.Area?.Name}");
+                            WriteLine($"Equipment Description:  {equip.Description}");
+                            WriteLine($"Equipment Year of Fabrication:  {equip.Year}");
+                            WriteLine($"Equipment Status:  {equip.Status?.Value}");
+                            WriteLine($"Equipment Control Number: {equip.ControlNumber}");
+                            WriteLine($"Equipment Coordinator:  {equip.Coordinator?.Name} {equip.Coordinator?.LastNameP} {equip.Coordinator?.LastNameM}");
+                            }
+                        }
+                    }
+                    WriteLine("Presiona una tecla para cargar más resultados (o presiona 'q' para salir)...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.LeftArrow)
+                    {
+                        offset = offset - batchS;
+                        if(pp>1){
+                            pp--;
+                        }
+                        Console.Clear();
+
+                    }
+                    if(ReadKey(intercept: true).Key == ConsoleKey.RightArrow)
+                    {
+                        offset = offset + batchS;
+                        if(pp < pages)
+                        {
+                        pp ++;
+                        }
+                        Console.Clear();
+                    }
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Q)
+                    {
+                        continueListing = false;
+                        Console.Clear();
+                    }
                 }
+
             }
         } else 
         {

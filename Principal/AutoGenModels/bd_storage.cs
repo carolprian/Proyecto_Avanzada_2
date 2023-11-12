@@ -37,6 +37,10 @@ public partial class bd_storage : DbContext
 
     public virtual DbSet<MaintenanceType> MaintenanceTypes { get; set; }
 
+    public virtual DbSet<Petition> Petitions { get; set; }
+
+    public virtual DbSet<PetitionDetail> PetitionDetails { get; set; }
+
     public virtual DbSet<Professor> Professors { get; set; }
 
     public virtual DbSet<Request> Requests { get; set; }

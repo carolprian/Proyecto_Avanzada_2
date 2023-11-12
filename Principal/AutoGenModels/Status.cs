@@ -28,8 +28,13 @@ public partial class Status
     [InverseProperty("Status")]
     public virtual ICollection<RequestDetail> RequestDetails { get; set; } = new List<RequestDetail>();
 
+    
+    [InverseProperty("Status")]
+    public virtual ICollection<PetitionDetail> PetitionDetails { get; set; } = new List<PetitionDetail>();
+/*
     public static implicit operator Status(byte v)
     {
         throw new NotImplementedException();
     }
+    */
 }

@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+ using Microsoft.EntityFrameworkCore;
 using AutoGens;
 partial class Program
 {
@@ -45,7 +45,11 @@ partial class Program
                     {
                         foreach(var r in requestDetailss)
                         {
-                            WriteLine($"Id: {r.EquipmentId} . Name: {r.Equipment?.Name} . Status: {r.Status?.Value}");
+                                WriteLine($"Id: {r.EquipmentId}");
+                                WriteLine($"Name: {r.Equipment?.Name}");
+                                WriteLine($"Status: {r.Status?.Value}");
+                                WriteLine($"Description: {r.Equipment?.Description}");
+                                WriteLine();
                         }
                     }
                     
@@ -167,12 +171,16 @@ partial class Program
                     }
                 
                     WriteLine("Equipments:");
-                    IQueryable<RequestDetail> requestDetailss = db.RequestDetails.Include(e=>e.Status).Include(e=>e.Equipment).Where(e=>e.RequestId.Equals(TryParseStringaEntero(requestid)));
+                    IQueryable<PetitionDetail> requestDetailss = db.PetitionDetails.Include(e=>e.Status).Include(e=>e.Equipment).Where(e=>e.PetitionId.Equals(TryParseStringaEntero(requestid)));
                     if(requestDetailss is not null || requestDetailss.Any())
                     {
                         foreach(var r in requestDetailss)
                         {
-                            WriteLine($"Id: {r.EquipmentId} . Name: {r.Equipment?.Name} . Status: {r.Status?.Value}");
+                                WriteLine($"Id: {r.EquipmentId}");
+                                WriteLine($"Name: {r.Equipment?.Name}");
+                                WriteLine($"Status: {r.Status?.Value}");
+                                WriteLine($"Description: {r.Equipment.Description}");
+                                WriteLine();
                         }
                     }
                     
@@ -197,7 +205,7 @@ partial class Program
                 {
                     byte status = 2;
                     //update request details status where RequestId == requestid (variable)
-                    IQueryable<RequestDetail> requestDetails = db.RequestDetails.Where(r=> r.RequestId.Equals(TryParseStringaEntero(requestid)));
+                    IQueryable<PetitionDetail> requestDetails = db.PetitionDetails.Where(r=> r.PetitionId.Equals(TryParseStringaEntero(requestid)));
                     int affected = 0;
                     if(requestDetails is not null || requestDetails.Any())
                     {
@@ -220,7 +228,7 @@ partial class Program
                     .Select(r=> r.EquipmentId);
                     */
                     List<string> equipmentsid = new List<string>();
-                    IQueryable<RequestDetail> reqs = db.RequestDetails.Where(r=>r.RequestId == TryParseStringaEntero(requestid));
+                    IQueryable<PetitionDetail> reqs = db.PetitionDetails.Where(r=>r.PetitionId == TryParseStringaEntero(requestid));
                     if(reqs is not null || reqs.Any() )
                     {
                         foreach (var r in reqs)
@@ -285,8 +293,10 @@ partial class Program
                 {
                     requestsid.Add((int)r.RequestId);
                     //WriteLine($"StudentId: {register} RequestId: {r.RequestId}, Quantity: {r.Quantity}, StatusId: {r.Status?.Value}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime.Hour}, ReturnTime: {r.ReturnTime.Hour}, RequestedDate: {r.RequestedDate}, EquipmentNames: {r.Equipment?.Name}");
-                    WriteLine($"StudentId: {register} RequestId: {r.RequestId}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime}, ReturnTime: {r.ReturnTime}, RequestedDate: {r.RequestedDate.Date}");
-                    i++;
+                        WriteLine($"RequestId: {r.RequestId} ");
+                        WriteLine($"StudentId: {register} ");
+                        WriteLine($"DispatchTime: {r.DispatchTime} ");
+                        WriteLine($"ReturnTime: {r.ReturnTime}");
                 }
                 return (requestDetailsToday.Count(), requestsid.ToArray());
             }
@@ -302,12 +312,10 @@ partial class Program
         {
             DateTime today = DateTime.Now.Date;  
             
-            IQueryable<RequestDetail> requestDetailsToday = db.RequestDetails
+            IQueryable<PetitionDetail> requestDetailsToday = db.PetitionDetails
             .Include( e => e.Equipment).Include(e=> e.Status)
-            .Where( r => r.ProfessorNip == 1)
             .Where(r => r.DispatchTime != null && r.RequestedDate.Date == today)
-            .Where(r=>r.Request.ProfessorId.Equals(register)) // poner EncryptPass
-            .Where(r=>r.Request.StudentId == "11111111")
+            .Where(r=>r.Petition.ProfessorId.Equals(EncryptPass(register))) 
             .Where(r=>r.StatusId != 2)
             .OrderBy(r=>r.DispatchTime);
            
@@ -323,10 +331,12 @@ partial class Program
                 int i = 0;
                 foreach(var r in requestDetailsToday)
                 {
-                    requestsid.Add((int)r.RequestId);
-                    //WriteLine($"StudentId: {register} RequestId: {r.RequestId}, Quantity: {r.Quantity}, StatusId: {r.Status?.Value}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime.Hour}, ReturnTime: {r.ReturnTime.Hour}, RequestedDate: {r.RequestedDate}, EquipmentNames: {r.Equipment?.Name}");
-                    WriteLine($"ProfessorId: {register} RequestId: {r.RequestId}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime}, ReturnTime: {r.ReturnTime}, RequestedDate: {r.RequestedDate.Date}");
-                    i++;
+                    requestsid.Add((int)r.PetitionId);
+                    //WriteLine($"StudentId: {register} RequestId: {r.RequestId}, Quantity: {r.Quantity}, StatusId: {r.Status?.Value}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime.Hour}, ReturnTime: {r.ReturnTime.Hour}, RequestedDate: {r.RequestedDate}, EquipmentNames: {r.Equipment?.Name}"); 
+                        WriteLine($"RequestId: {r.PetitionId} ");
+                        WriteLine($"StudentId: {EncryptPass(register)} ");
+                        WriteLine($"DispatchTime: {r.DispatchTime} ");
+                        WriteLine($"ReturnTime: {r.ReturnTime}");
                 }
                 return (requestDetailsToday.Count(), requestsid.ToArray());
             }

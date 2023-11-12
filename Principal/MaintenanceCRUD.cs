@@ -15,7 +15,7 @@ partial class Program{
             WriteLine("1. All history of maintenances ordered by programmed date");
             WriteLine("2. Search for one equipment maintenance history specifically");
             WriteLine("3. All programmed maintenances that haven't been made yet (just programmed)");
-            WriteLine("3. exit");
+            WriteLine("4. exit");
   
             op = TryParseStringaEntero(VerifyReadLengthStringExact(1));
             switch(op){
@@ -27,6 +27,8 @@ partial class Program{
                 break;
                 case 3:
                     ViewMaintenanceNotMade();
+                return;
+                case 4:
                 return;
                 default:
                     WriteLine("Sorry, that is not an option.");            
@@ -75,7 +77,7 @@ partial class Program{
                     WriteLine("|{0,-2}|{1,-15}|{2,-20}|{3,-11}|{4,-40}|{5, -40}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
                 "ID", "ID Equipment", "Equipment", "Maintenance", "Instructions for maintenance", "Description of the made maintenance", "Started", "Returned", "Storer", "",  "Used Materials" );
             WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    foreach( var m in maintain)
+                    foreach( var m in maintainn)
                     {
                          if(m.Maintenance.ExitDate.Date == dateTime || m.Maintenance.MaintenanceMaterialsDescription == "0" || m.Maintenance.MaintenanceDescription == "0")
                          {

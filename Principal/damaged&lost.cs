@@ -66,10 +66,11 @@ partial class Program{
         WriteLine();
         //git cambié
         IQueryable<Coordinator>? coordinators = db.Coordinators;
-        if(coordinators is null || !coordinators.Any())
+        if(coordinators is not null || coordinators.Any())
         {
             coordi = coordinators?.First().CoordinatorId;
         }
+
         WriteLine("What is the debt of the student? What will he/she have to bring to replace the damage?");
         WriteLine("Explain, with quantities, models and especifications if it is the case.");
         string returndescription = VerifyReadMaxLengthString(100);
@@ -118,9 +119,9 @@ partial class Program{
                 Description = description,
                 DateOfEvent = dateofevent,
                 StudentId = studentid,
-                CoordinatorId = EncryptPass(coordinatorid),
-                //DateOfReturn = returnDate,
-                //ObjectReturn = returndescrip
+                CoordinatorId = coordinatorid,
+                DateOfReturn = returnDate,
+                objectReturn = returndescrip
             };            
 
             EntityEntry<DyLequipment> entity = db.DyLequipments.Add(dl);
@@ -139,7 +140,7 @@ partial class Program{
             IQueryable<Equipment> equipments = db.Equipments
             .Where(e=> e.EquipmentId == equipmentId);
 
-            equipments.First().Status = newStatus;
+            equipments.First().StatusId = newStatus;
             affected = db.SaveChanges();
         }
         return affected;
@@ -173,9 +174,9 @@ partial class Program{
 
                     foreach (var dyLequipment in dyLequipments)
                     {
-                        WriteLine($"Student:{dyLequipment.StudentId}, {dyLequipment.Student.Name} {dyLequipment.Student.LastNameP}");
-                        WriteLine($"Name: {dyLequipment.Equipment.Name}");
-                        WriteLine($"Description: {dyLequipment.Equipment.Description}");
+                        WriteLine($"Student:{dyLequipment.StudentId}, {dyLequipment.Student?.Name} {dyLequipment.Student?.LastNameP}");
+                        WriteLine($"Name: {dyLequipment.Equipment?.Name}");
+                        WriteLine($"Description: {dyLequipment.Equipment?.Description}");
                         WriteLine($"Description: {dyLequipment.Description}");
                         WriteLine($"Status: {dyLequipment.StatusId}");
                         WriteLine("-----------------------------------------------------------------");
