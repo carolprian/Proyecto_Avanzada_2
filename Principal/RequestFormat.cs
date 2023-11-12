@@ -4,12 +4,12 @@ using System.Globalization;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Net;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Intrinsics.Arm;
 
 partial class Program
 {
     public static void RequestFormat(string username)
     {
-        
         string plantel = AddPlantel();
         DateTime currentDate = DateTime.Now;
         var student = AddStudent(username);
@@ -30,7 +30,7 @@ partial class Program
         List<string> equipmentsId = new List<string>();
         List<byte?> statusEquipments = new List<byte?>();
         var request = AddRequest(classroomId, professorId, studentId, storerId, subjectId);
-        var equipments = SearchEquipmentsRecursive(equipmentsId, statusEquipments, requestDate, times.Item1, times.Item2, request.requestId);
+        var equipments = SearchEquipmentsRecursive(equipmentsId, statusEquipments, requestDate, times.Item1, times.Item2, request.requestId, 4);
         int professorNip = 0;
         if(equipments.i == 1){
             return;
@@ -122,7 +122,6 @@ partial class Program
     public static int AddClassroom(){
         int i=0, classId=0;
         bool ban=true;
-        Console.Clear();
         do{
             using (bd_storage db = new()){
                 IQueryable<Classroom> classrooms = db.Classrooms;
@@ -156,8 +155,8 @@ partial class Program
         int i = 0;
         if(op==1){
         WriteLine("Insert the name start of the subject WITHOUT accents");
-        } 
         searchTerm = ReadNonEmptyLine();
+        } 
         using (bd_storage db = new())
         {
             IQueryable<Subject>? subjects = db.Subjects.Where(s => s.Name.ToLower().StartsWith(searchTerm.ToLower()));
@@ -353,7 +352,8 @@ partial class Program
         DateTime initTimeValue=DateTime.MinValue, endTimeValue=DateTime.MinValue;
         DayOfWeek day = dateValue.DayOfWeek;
         string dayString = day.ToString(), scheduleIdInit, scheduleIdEnd;
-        bool valideHours = false, initEnd=false; //falso para init, true para end
+        bool valideHours = false;
+        bool initEnd=false; //falso para init, true para end
         while(valideHours==false){
             using (bd_storage db = new()){
                 IQueryable<Schedule> schedules = db.Schedules;
@@ -543,16 +543,25 @@ partial class Program
         return (initTimeValue, endTimeValue);
     }
 
-    public static (List<string> equipmentsId, List<byte?> statusEquipments, int i) SearchEquipmentsRecursive(List<string> selectedEquipments, List<byte?> statusEquipments, DateTime requested, DateTime init, DateTime end, int requestId)
+    public static (List<string>? equipmentsId, List<byte?>? statusEquipments, int i) SearchEquipmentsRecursive(List<string>? selectedEquipments, List<byte?>? statusEquipments, DateTime requested, DateTime init, DateTime end, int? requestId, int op)
     {
-        const int maxEquipment = 4;
+        int maxEquipment = 0;
+        if(op==4){
+            maxEquipment = 4;
+        } else if(op==1){
+            maxEquipment = 1;
+        }
         string response = "h", response2 = "hi";
         using (bd_storage db = new())
         {
             WriteLine("Insert the start of the name of equipment without accents: ");
             string searchTerm = ReadNonEmptyLine().ToLower();
 
-            var equipmentIdsInUse = db.RequestDetails
+            var equipmentIdsInUseStud = db.RequestDetails
+            .Where(rd => rd.RequestedDate.Date == requested &&
+                         (init >= rd.ReturnTime)).Select(rd => rd.EquipmentId).ToList();
+            
+            var equipmentIdsInUseProf = db.PetitionDetails
             .Where(rd => rd.RequestedDate.Date == requested &&
                          (init >= rd.ReturnTime)).Select(rd => rd.EquipmentId).ToList();
 
@@ -567,7 +576,7 @@ partial class Program
             if (!equipments.Any() || equipments.Count() < 1 || equipments is null)
             {
                 WriteLine("No equipment found matching the search term: " + searchTerm + " Try again.");
-                SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end, requestId);
+                SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end, requestId, 4);
             }
             else if (equipments.Count() > 1)
             {
@@ -595,7 +604,7 @@ partial class Program
                     }
                     if (response == "3")
                     {
-                        SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end, requestId);
+                        SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end, requestId, 4);
                     }
                     if (response == "4")
                     {
@@ -612,7 +621,7 @@ partial class Program
                             }
                             if(response2== "2")
                             {
-                                SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end, requestId);
+                                SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end, requestId, 4);
                             }
                         }
                     }
@@ -645,7 +654,7 @@ partial class Program
             response = ReadNonEmptyLine().ToLower();
             if (response == "y")
             {
-                SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end, requestId);
+                SearchEquipmentsRecursive(selectedEquipments, statusEquipments, requested, init, end, requestId, 4);
             }
             else if(response == "n")
             {
@@ -660,7 +669,7 @@ partial class Program
         return (selectedEquipments, statusEquipments, 0);
     }
 
-    public static void DeleteRequest(int requestId)
+    public static void DeleteRequest(int? requestId)
     {
         using(bd_storage db = new()){
             var request = db.Requests
@@ -671,7 +680,6 @@ partial class Program
                     int affected = db.SaveChanges();
         }
     }
-
 
     public static void DeleteRequestFormat(string username)
     {
@@ -745,17 +753,97 @@ partial class Program
     }
 
     public static void UpdateRequestFormat(string username){
-       /* WriteLine("Here's a list of all the request format that has not been accepted yet. ");
+        int i=1;
+        DateTime request=DateTime.Today;
+        WriteLine("Here's a list of all the request format that has not been accepted yet. ");
         ViewRequestFormatNotAcceptedYet(username);
         WriteLine();
         WriteLine("Provide the ID of the request that you want to modify (check the list): ");
         int requestID = Convert.ToInt32(ReadNonEmptyLine());
         using(bd_storage db = new bd_storage()){
-            var 
-        }
-        switch(op){
+            IQueryable<Request> requestss = db.Requests
+            .Include(rd => rd.Classroom)
+            .Include(rd => rd.Professor)
+            .Include(rd => rd.Subject)
+            .Include(rd => rd.Student);
+            IQueryable<RequestDetail> requestDetailss = db.RequestDetails
+            .Include(rd => rd.Status)
+            .Include(rd=> rd.Equipment)
+            .Where(r => r.RequestId==requestID).Where(r=> r.ProfessorNip==0);
+            WriteLine("These are the fields you can update:");
+            WriteLine($"{i}. Classroom: {requestss.First().Classroom.Name}");
+            WriteLine($"{i+1}. Professor: {requestss.First().Professor.Name} {requestss.First().Professor.LastNameP}");
+            WriteLine($"{i+2}. Subject: {requestss.First().Subject.Name}");
+            WriteLine($"{i+3}. Date of the request: {requestDetailss.First().RequestedDate}");
+            WriteLine($"{i+4}. Dispatch time: {requestDetailss.First().DispatchTime} and Return time: {requestDetailss.First().ReturnTime}");
+            WriteLine($"{i+5}. Equipment(s) in the request:");
+            var requestList = requestDetailss.ToList();
+            List <Equipment> listEquipments= new List<Equipment>();
+            foreach (var requestDetail in requestDetailss)
+            {
+                WriteLine($"     -{requestDetail.Equipment.EquipmentId} ({requestDetail.Equipment.Name})");
+                listEquipments.Add(requestDetail.Equipment);
+                i++;
+            }
+            int op = Convert.ToInt32(ReadNonEmptyLine());
+            switch(op)
+            {
+                case 1:
+                {
+                    int classroomId = AddClassroom();
+                }break;
+                case 2:
+                {
+                    string professorId = SearchProfessorByName("xyz", 0, 0);
+                }break;
+                case 3:
+                {
+                    string subjectId = SearchSubjectsByName("xyz", 1);
+                }break;
+                case 4:
+                {
+                    request = AddDate(DateTime.Now.Date);
+                }break;
+                case 5:
+                {
+                    var times = AddTimes(request);
+                }break;
+                case 6:
+                {
+                    i=1;
+                    int equipId = 0;
+                    foreach(var e in listEquipments){
+                        WriteLine($"{i}. {e.EquipmentId}-{e.Name}");
+                    }
+                    WriteLine("Select the number of the equipment");
 
-        }*/
-        
+                    while(equipId == 0 || equipId <= listEquipments.Count())
+                    {
+                        try
+                        {
+                            equipId = Convert.ToInt32(ReadNonEmptyLine());
+                        }
+                        catch (FormatException)
+                        {
+                            WriteLine("That is not a correct option, try again.");
+                            equipId = 0;
+                        }
+                        catch (OverflowException)
+                        {
+                            WriteLine("That is not a correct option, try again.");
+                            equipId = 0;
+                        }
+                    }
+                    var equipments = SearchEquipmentsRecursive(null, null, requestDetailss.First().RequestedDate, requestDetailss.First().DispatchTime, requestDetailss.First().ReturnTime, requestDetailss.First().RequestId, 1);
+                }break;
+                case 7:
+                {
+                    return;
+                }
+                default:{
+                    WriteLine("Not a valide option. Try again.");
+                }break;
+            }
+        }
     }
 }

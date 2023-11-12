@@ -49,7 +49,7 @@ partial class Program
 
                 foreach (var element in requests)
                 {
-                            WriteLine("| {0,-1} | {1,-23} | {2,-12} | {3,-10} | {4,-3} | {5,-41} | {6,-22} | {7, -22}",
+                    WriteLine("| {0,-1} | {1,-23} | {2,-12} | {3,-10} | {4,-3} | {5,-41} | {6,-22} | {7, -22}",
                         i, element.Request.Student.Name,element.Request.Student.LastNameP, 
                         element.Request.Student.LastNameM,element.Request.Student.Group.Name, element.Equipment.Name,
                         element.DispatchTime,element.ReturnTime);
@@ -130,7 +130,7 @@ partial class Program
     }
     public static void Hi()
     {
-        List<int> valuesToEncrypt = new List<int> { 1000, 2000, 3000, 4000, 5000 };
+        List<int> valuesToEncrypt = new List<int> { 1111111111 };
 
         foreach (int value in valuesToEncrypt)
         {

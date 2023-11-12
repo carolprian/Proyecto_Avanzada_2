@@ -513,6 +513,7 @@ partial class Program
             {
                 WriteLine("Enter the ID of the storer you want to remove:");
                 string storerId = VerifyReadMaxLengthString(10);
+                storerId= EncryptPass(storerId);
                 using (bd_storage db = new())
                 {
                     var storer = db.Storers
