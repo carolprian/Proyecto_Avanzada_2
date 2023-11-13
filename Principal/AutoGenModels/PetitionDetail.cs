@@ -16,7 +16,7 @@ public partial class PetitionDetail
 
     [Column("petitionId")]
     [Required]
-    public int? PetitionId { get; set; }
+    public int PetitionId { get; set; }
 
     [Column("equipmentId", TypeName = "VARCHAR (15)")]
     [Required]
@@ -29,7 +29,7 @@ public partial class PetitionDetail
 
     [Column("dispatchTime", TypeName = "TIME")]
     [Required]
-    public DateTime? DispatchTime { get; set; }
+    public DateTime DispatchTime { get; set; }
 
     [Column("returnTime", TypeName = "TIME")]
     [Required]

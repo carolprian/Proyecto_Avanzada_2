@@ -516,6 +516,7 @@ partial class Program
             {
                 WriteLine("Enter the ID of the storer you want to remove:");
                 string storerId = VerifyReadMaxLengthString(10);
+                storerId= EncryptPass(storerId);
                 using (bd_storage db = new())
                 {
                     var storer = db.Storers
@@ -673,34 +674,9 @@ partial class Program
                         }
                     }
                 }
-            }
-            else if (op == "3")
+            }else if (op == "3")
             {
-                WriteLine("Enter the ID of the student you want to remove:");
-                string studentId = VerifyReadMaxLengthString(8);
-                using (bd_storage db = new())
-                {
-                    var student = db.Students
-                        .FirstOrDefault(s => s.StudentId.Equals(studentId));
-
-                    if (student == null)
-                    {
-                        WriteLine("Student with that ID is not registered");
-                    }
-                    else
-                    {
-                        db.Students.Remove(student);
-                        int affected = db.SaveChanges();
-                        if (affected == 0)
-                        {
-                            WriteLine("The student was not removed, sorry");
-                        }
-                        else
-                        {
-                            WriteLine("The student was removed successfully");
-                        }
-                    }
-                }
+                WriteLine("It is not posible to remove a student");
             }
         }
     }

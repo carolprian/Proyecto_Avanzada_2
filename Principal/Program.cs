@@ -10,7 +10,7 @@ public partial class Program
         WriteLine();
         // ApprovePermissions();
         // StorersPrincipal();
-        //MenuStudents("20300826");
+        MenuStudents("20300826");
         //Hi();
         StudentsPrincipal("20300679");
         Hi3Storer();

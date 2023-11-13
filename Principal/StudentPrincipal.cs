@@ -28,7 +28,7 @@ partial class Program{
             switch(op){
                 case 1:
                     validate = ValidateAddRequest(username);
-                    if(validate == true){
+                    if(validate == false){//CAmbiar a true
                         RequestFormat(username);
                     }
                     else {
@@ -60,7 +60,7 @@ partial class Program{
                     }
                 break;
                 case 4:
-
+                    UpdateRequestFormat(username);
                 break;
                 case 5:
                     DeleteRequestFormat(username);
