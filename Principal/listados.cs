@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using AutoGens;
+using ConsoleTables;
 partial class Program
 {
     
@@ -9,6 +10,7 @@ partial class Program
         {
             IQueryable<RequestDetail>? requestDetails = db.RequestDetails
             .Include( e => e.Equipment)
+            .Include( s => s.Status)
             .Where( r => r.ProfessorNip == 1)
             .OrderByDescending( f  => f.RequestedDate);
 
@@ -25,20 +27,37 @@ partial class Program
             foreach (var group in groupedRequests)
             {
                 i++;
+                string count = i + "";
+                string nip = "";
                 var firstRequest = group.First();
-                WriteLine();
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, Return Time: {firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}, RequestedDate: {firstRequest.RequestedDate}");
+                if(firstRequest.ProfessorNip == 1)
+                {
+                    nip = "aceptado";
+                }
+                else if (firstRequest.ProfessorNip == 0 )
+                {
+                    nip = "Pendiente";
+                }
 
-                WriteLine("Equipment:");
+                var table = new ConsoleTable("Request Details", count);
+
+                table.AddRow("RequestId", firstRequest.RequestId);
+                table.AddRow("StatusId", $"{firstRequest.Status.Value}");
+                table.AddRow("ProfessorNip", nip);
+                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.Hour}:{firstRequest.DispatchTime.Minute}");
+                table.AddRow("Return Time", $"{firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}");
+                table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
+                table.AddRow("", "");
                 foreach (var r in group)
                 {
-                    WriteLine($"  - Equipment Name: {r.Equipment.Name}");
+                    // Adding an empty string as the first column to match the table structure
+                    table.AddRow("Equipment Name", r.Equipment.Name);
                 }
+
+                table.Write();
                 WriteLine();
             }
-
             return "";
-
         }
     }
 
@@ -61,6 +80,7 @@ partial class Program
 
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
             .Include( e => e.Equipment)
+            .Include( s => s.Status)
             .Where( r => r.ProfessorNip == 1)
             .Where(r => r.DispatchTime.Date == tomorrow);
             
@@ -78,15 +98,35 @@ partial class Program
             foreach (var group in groupedRequests)
             {
                 i++;
+                string count = i + "";
+                string nip = "";
                 var firstRequest = group.First();
+                if(firstRequest.ProfessorNip == 1)
+                {
+                    nip = "aceptado";
+                }
+                else if (firstRequest.ProfessorNip == 0 )
+                {
+                    nip = "Pendiente";
+                }
 
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, Return Time: {firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}, RequestedDate: {firstRequest.RequestedDate}");
+                var table = new ConsoleTable("Request Details", count);
 
-                WriteLine("Equipments:");
+                table.AddRow("RequestId", firstRequest.RequestId);
+                table.AddRow("StatusId", $"{firstRequest.Status.Value}");
+                table.AddRow("ProfessorNip", nip);
+                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.Hour}:{firstRequest.DispatchTime.Minute}");
+                table.AddRow("Return Time", $"{firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}");
+                table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
+                table.AddRow("", "");
                 foreach (var r in group)
                 {
-                    WriteLine($" Equipment Name: {r.Equipment.Name}");
+                    // Adding an empty string as the first column to match the table structure
+                    table.AddRow("Equipment Name", r.Equipment.Name);
                 }
+
+                table.Write();
+                WriteLine();
             }
 
             return "";
@@ -110,19 +150,23 @@ partial class Program
                 aux = true;
             }
 
-            int i = 0;
             foreach (var use in dyLequipments)
             {
-                i++;
+                var table = new ConsoleTable("Student Information", " ");
+
+                table.AddRow("ID of Damage or Lost Report", use.DyLequipmentId);
+                table.AddRow("Name", use.Student.Name);
+                table.AddRow("Last Name", use.Student.LastNameP);
+                table.AddRow("Group", use.Student.Group.Name);
+                table.AddRow("Equipment Information", "" );
+                table.AddRow("Status", use.Status.Value);
+                table.AddRow("Equipment Name", use.Equipment.Name);
+                table.AddRow("Description", use.Description);
+                table.AddRow("Date of event", $"{use.DateOfEvent.Day}/{use.DateOfEvent.Month}/{use.DateOfEvent.Year}");
+                table.AddRow("Debt", use.objectReturn);
+
                 WriteLine();
-                WriteLine($"Student {i} Information: ");
-                WriteLine($"ID of Damage or Lost Report: {use.DyLequipmentId} ");
-                WriteLine($"Name: {use.Student.Name}, Last Name: {use.Student.LastNameP}, Group: {use.Student.Group.Name}");
-                WriteLine("Equipment Information");
-                WriteLine($"status: {use.Status.Value}");
-                WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                WriteLine($"Description: {use.Description}");
-                WriteLine($"Date of event: {use.DateOfEvent}");
+                table.Write();   
                 WriteLine();
             } 
         }
@@ -291,6 +335,7 @@ partial class Program
             return studentsid;
         }
     }
+    
     public static void ViewAllEquipmentsCoord()
     {
         using (bd_storage db = new())
@@ -306,7 +351,8 @@ partial class Program
                 WriteLine("There are no equipments found");
                 return;
             }
-            else{
+            else
+            {
                 
                 int countTotal = equipments.Count();
                 bool continueListing = true;
@@ -316,23 +362,20 @@ partial class Program
                 int pp=1;
                 int i=0;
                 while (continueListing)
-                    {
-                var equips = equipments.Skip(offset).Take(batchS);
-
-    //                Console.Clear();
-                    
-                    
+                {
+                    var equips = equipments.Skip(offset).Take(batchS);
+                        
                     WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
                         "EquipmentId", "Equipment Name", "Year", "Status");
                     WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
-                    
-                    foreach( var e in equips)
-                        {
-                            WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
-                             e.EquipmentId, e.Name, e.Year, e.Status?.Value);
                         
-                        }
-                
+                    foreach( var e in equips)
+                    {
+                        WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                            e.EquipmentId, e.Name, e.Year, e.Status?.Value);
+                            
+                    }
+                    
                     WriteLine();
                     WriteLine($"Total:   {countTotal} ");
                     WriteLine($"{pp} / {pages}");
@@ -340,98 +383,53 @@ partial class Program
 
                     WriteLine("Do you want to see more information about any of the equipments?(y/n)");
                     string read = VerifyReadLengthStringExact(1);
+
                     if(read == "y" || read =="Y")
                     {
                         WriteLine("Provide the equipment ID you want to see more info:");
                         read = VerifyReadMaxLengthString(15);
                         int found = ShowEquipmentBylookigForEquipmentId(read);   
-                        if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );}
-                        
+
+                        if(found == 0)
+                        {
+                            WriteLine($"There are no equipments that match the id:  {read}" );
+                        }
+                            
                     }
+
                     WriteLine("Press the left or right arrow key to see more results (press 'q' to exit)...");
+
                     if(ReadKey(intercept: true).Key == ConsoleKey.LeftArrow)
                     {
                         offset = offset - batchS;
-                        if(pp>1){
+
+                        if(pp>1)
+                        {
                             pp--;
                         }
+
                         Console.Clear();
 
                     }
+
                     if(ReadKey(intercept: true).Key == ConsoleKey.RightArrow)
                     {
                         offset = offset + batchS;
+
                         if(pp < pages)
                         {
-                        pp ++;
+                            pp ++;
                         }
+
                         Console.Clear();
                     }
+
                     if(ReadKey(intercept: true).Key == ConsoleKey.Q)
                     {
                         continueListing = false;
                         Console.Clear();
                     }
                 }
-            }
-            
-        }
-    }
-
-    public static void SearchEquipmentsById(string? searchTerm)
-    {
-        if (string.IsNullOrEmpty(searchTerm))
-        {
-            throw new InvalidOperationException();
-        }
-        using (bd_storage db = new())
-        {
-            IQueryable<Equipment>? equipments = db.Equipments
-                .Include(e => e.Area)
-                .Include(e => e.Status)
-                .Include(e => e.Coordinator)
-                .Where(e => e.EquipmentId.StartsWith(searchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
-
-            db.ChangeTracker.LazyLoadingEnabled = false;
-
-            if (!equipments.Any())
-            {
-                WriteLine("No equipment found matching the search term: " + searchTerm);
-                return;
-            }
-            else
-            {
-                WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
-                        "EquipmentId", "Equipment Name", "Year", "Status");
-                    WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
-                    
-                    foreach( var e in equipments)
-                    {
-                            WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
-                             e.EquipmentId, e.Name, e.Year, e.Status?.Value); 
-                    }
-                    
-                    WriteLine("Do you want to see more information about any of the equipments?(y/n)");
-                    string read = VerifyReadLengthStringExact(1);
-                    if(read == "y" || read =="Y")
-                    {
-                        WriteLine("Provide the equipment ID you want to see more info:");
-                        read = VerifyReadMaxLengthString(15);
-                        int found = ShowEquipmentBylookigForEquipmentId(read);   
-                        if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );}
-                        
-                    }
-
-/*
-            WriteLine("| {0,-11} | {1,-15} | {2,-26} | {3,-80} | {4,4} | {5,17} | {6,20} | {7,6}",
-                "EquipmentId", "Name", "Area", "Description", "Year", "Status", "ControlNumber", "Coordinator");
-
-            foreach (var e in equipments)
-            {
-                WriteLine($"| {e.EquipmentId,-11} | {e.Name,-15} | {e.Area?.Name,-26} | {e.Description,-80} | {e.Year,4} | {e.Status?.Value,17} | {e.ControlNumber,20} | {e.Coordinator?.Name,6}");
-            }
-
-            */
             }
         }
     }
@@ -856,6 +854,29 @@ partial class Program
             {
                 WriteLine("| {0:0000000000000} | {1,-55} | {2,-7} |", subject.SubjectId, subject.Name, subject.Academy?.Name);
             }
+        }
+    }
+
+    public static void WatchPermissions(string user)
+    {
+        int i = 1;
+        using (bd_storage db = new bd_storage())
+        {
+            IQueryable<RequestDetail> requests = db.RequestDetails
+                .Include(r => r.Request).ThenInclude(s=>s.Student).ThenInclude(g=>g.Group)
+                .Include(e=>e.Equipment).Where(d =>d.Request.ProfessorId == EncryptPass(user));
+                WriteLine("| {0,-1} | {1,-15} | {2,-26} | {3,-10} | {4,-3} | {5,-22} | {6,-22} | {7, -15}",
+                        "Number of permission | "," Students Name | ","Students Paternal Last Name | ",
+                         "Students Maternal Last Name | ", "Students Group | ","Equipments Name | ", "Dispatch Time | ", "Return Time");
+
+                foreach (var element in requests)
+                {
+                    WriteLine("| {0,-1} | {1,-23} | {2,-12} | {3,-10} | {4,-3} | {5,-41} | {6,-22} | {7, -22}",
+                        i, element.Request.Student.Name,element.Request.Student.LastNameP, 
+                        element.Request.Student.LastNameM,element.Request.Student.Group.Name, element.Equipment.Name,
+                        element.DispatchTime,element.ReturnTime);
+                        i++;
+                }
         }
     }
 

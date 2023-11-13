@@ -30,7 +30,7 @@ public partial class DyLequipment
 
     [Column("dateOfEvent", TypeName = "DATE")]
     [Required]
-    public DateTime? DateOfEvent { get; set; }
+    public DateTime DateOfEvent { get; set; }
 
     [Column ("dateOfReturn", TypeName = "DATE")]
     [Required]

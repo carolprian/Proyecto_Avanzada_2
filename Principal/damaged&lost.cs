@@ -1,94 +1,131 @@
 using AutoGens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 partial class Program{
+    // Crear un reporte de un material dañado o perdido (esta funcion es para llenar el formulario)
     public static void DamagedLostReportInit()
     {
+        // Inicialización de variables
         WriteLine("Create a Report of Damaged or Lost Equipment");
         byte status =0;
-        string? descrip ="", student="", coordi="", equipment ="";
+        string? student="", coordi="", equipment ="";
         DateTime eventdate = DateTime.Today;
-
         byte opi=0;
+
         using(bd_storage db = new())
         {
-                while(opi==0)
-                {   
-                    WriteLine("What was the damaged or lost equipment ID ?");
-                    equipment = VerifyReadMaxLengthString(15);
-                    IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.EquipmentId == equipment);
+            // Validación del ID del equipo
+            while(opi==0)
+            {   
+                WriteLine("What was the damaged or lost equipment ID ?");
+                equipment = VerifyReadMaxLengthString(15);
+                IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.EquipmentId == equipment);
                     
-                    if(equipments is null || !equipments.Any())
-                    { 
-                        WriteLine("That equipment id doesn't exist, try again.");
-                    }
-                    else{ opi = 1;}
-                }                
+                if(equipments is null || !equipments.Any())
+                { 
+                    WriteLine("That equipment id doesn't exist, try again.");
+                }
+                else{ opi = 1;}
+            }                
         
-        WriteLine();
-        WriteLine("Was the equipment 'Lost' or 'Damaged' ?");
-        WriteLine("1. Lost");
-        WriteLine("2. Damaged");
-        status = Convert.ToByte(VerifyReadLengthStringExact(1));
-        if(status == 1){ status = 3;}
-        else if(status == 2){ status = 4;} // this is the status in the statusId table Statuses
-        /*IQueryable<Status> statuses = db.Statuses.Where(s => s.StatusId == status);
-        if(statuses is null || !statuses.Any())
-        {
-            
-        }*/
+            // Fue dañado o perdido?
+            WriteLine();
+            WriteLine("Was the equipment 'Lost' or 'Damaged'?");
+            WriteLine("1. Lost");
+            WriteLine("2. Damaged");
 
-        WriteLine("How did it happened?");
-        descrip = VerifyReadMaxLengthString(200);
-        WriteLine();
+            status = Convert.ToByte(VerifyReadLengthStringExact(1));
 
-        opi = 0;
-        while(opi==0)
-        {     
-            WriteLine("When did it happened? (format: yyyy-MM-dd)");
-            string date = VerifyReadLengthStringExact(10);
-            if (DateTime.TryParseExact(date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out eventdate)) { opi = 1; }
-            else{ WriteLine("That is not a correct date, try again."); }
-        }
+            if (status == 1)
+            { 
+                status = 3; // Estado de 'Perdido' en la tabla de estados
+            }
+            else if (status == 2)
+            { 
+                status = 4; // Estado de 'Dañado' en la tabla de estados
+            }
 
-        WriteLine();
+            // Descripción del evento
+            WriteLine("How did it happened?");
 
-        WriteLine("Which student was responsible for the equipment in the time of the accident?");
-        string[]? students = ListStudents();
-        WriteLine();
-        WriteLine("Write the choosen option:");
-        int studId = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+            string? descrip = VerifyReadMaxLengthString(200);
+
+            WriteLine();
+
+            opi = 0;
+
+            // Validación de la fecha del evento
+            while(opi==0)
+            {     
+                // Cuando sucedio 
+                WriteLine("When did it happened? (format: yyyy-MM-dd)");
+                //verificacion de el formato de la fecha
+                string date = VerifyReadLengthStringExact(10);
+
+                if (DateTime.TryParseExact(date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out eventdate)) 
+                { 
+                    opi = 1; 
+                }
+                else
+                {
+                    WriteLine("That is not a correct date, try again."); 
+                }
+                WriteLine();
+            }
+
+            // Obtención del estudiante responsable y del coordinador
+            WriteLine("Which student was responsible for the equipment in the time of the accident?");
+            // Ver listas de estudiantes para poder buscar su registro sabiendo el nombre.
+            string[]? students = ListStudents();
+            WriteLine();
+
+            // Ingresa el ID del estudiante
+            WriteLine("Write the choosen option:");
+            int studId = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+
             if(students is not null)
             {
                 student = students[studId -1];
             }
-        WriteLine();
-        //git cambié
-        IQueryable<Coordinator>? coordinators = db.Coordinators;
-        if(coordinators is not null || coordinators.Any())
-        {
-            coordi = coordinators?.First().CoordinatorId;
-        }
+            WriteLine();
 
-        WriteLine("What is the debt of the student? What will he/she have to bring to replace the damage?");
-        WriteLine("Explain, with quantities, models and especifications if it is the case.");
-        string returndescription = VerifyReadMaxLengthString(100);
-        
-        DateTime returnDate = DateTime.Now;
-        opi = 0;
-        while(opi==0)
-        {     
-            WriteLine("When is the maximum date that the student has to return the equipment? (format: yyyy-MM-dd)");
-            string date = VerifyReadLengthStringExact(10);
-            if (DateTime.TryParseExact(date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out returnDate)) { opi = 1; }
-            else{ WriteLine("That is not a correct date, try again."); }
-        }
-        
+            // Escoger automaticamente al coordinador ya que solo pueda existir uno en la division
+            IQueryable<Coordinator>? coordinators = db.Coordinators;
 
-        var resultCreate = CreateReportDamagedLost( status,  equipment,  descrip,  eventdate,  student,  coordi, returndescription, returnDate );
+            if(coordinators is not null || coordinators.Any())
+            {
+                coordi = coordinators?.First().CoordinatorId;
+            }
+
+            // El alumno va a tener una "deuda" hasta que no sea traido el material que se le pidio para reponer el daño.
+            WriteLine("What is the debt of the student? What will he/she have to bring to replace the damage?");
+            WriteLine("Explain, with quantities, models and especifications if it is the case.");
+            string returndescription = VerifyReadMaxLengthString(100);
             
-            if(resultCreate.affected == 1)
+            DateTime returnDate = DateTime.Now;
+            opi = 0;
+            while(opi==0)
+            {     
+                //Le asignaremos un dia maximo para poder traer y pagar su "deuda", normalmente se le asigna 1 semana
+                WriteLine("When is the maximum date that the student has to return the equipment? (format: yyyy-MM-dd)");
+                string date = VerifyReadLengthStringExact(10);
+                if (DateTime.TryParseExact(date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out returnDate)) 
+                { 
+                    opi = 1; 
+                }
+                else
+                { 
+                    // Tienes que seguir el formato de ingreso de la fecha
+                    WriteLine("That is not a correct date, try again."); 
+                }
+            }
+            
+            // Llama a la funcion para crear el reporte y se le asignan todos los valores llenados del formulario
+            var resultCreate = CreateReportDamagedLost( status,  equipment,  descrip,  eventdate,  student,  coordi, returndescription, returnDate );
+                
+            if (resultCreate.affected == 1)
             {
                 WriteLine($"The Damaged Or Lost Report of the equipment, of Report ID {resultCreate.DyLequipmentId} was created succesfully");
                 int affected = UpdateEquipmentStatus(status, equipment);
@@ -96,10 +133,14 @@ partial class Program{
                 {
                     WriteLine("Status of the equipment was changed to lost or damaged");
                 }
-                else{ WriteLine("Status was not changed");}
-    
+                else
+                { 
+                    WriteLine("Status was not changed");
+                }
+        
             }
-            else{
+            else
+            {
                 WriteLine("The Report was not registered.");
             }
         
@@ -107,6 +148,7 @@ partial class Program{
                 
     }
 
+    // Aqui se guarda el formulario en la base de datos
     static (int affected, int DyLequipmentId) CreateReportDamagedLost(byte statusid, string equipmentid, string description, DateTime dateofevent, string studentid, string? coordinatorid, string returndescrip, DateTime returnDate)
     {
         using(bd_storage db = new())
@@ -130,20 +172,6 @@ partial class Program{
             
             return (affected, dl.DyLequipmentId);
         }
-    }
-
-    public static int UpdateEquipmentStatus(byte newStatus, string equipmentId )
-    {
-        int affected = 0;
-        using(bd_storage db = new())
-        {
-            IQueryable<Equipment> equipments = db.Equipments
-            .Where(e=> e.EquipmentId == equipmentId);
-
-            equipments.First().StatusId = newStatus;
-            affected = db.SaveChanges();
-        }
-        return affected;
     }
 
     public static void StudentDebtLostDamagedEquipment()
@@ -195,16 +223,7 @@ partial class Program{
                             equipment.First().StatusId = 1;
 
                             int affected = db.SaveChanges();
-                            /*
-                            dyLequipment.StatusId = 1;
-
-                            Equipment? equipment = dyLequipment.Equipment;
-                            equipment.StatusId = 1;
-
-                            db.Update(dyLequipment);
-                            db.Update(equipment);
-                            db.SaveChanges();
-                            */
+    
                             if(affected==2)
                             {
                             WriteLine("Equipment status updated successfully.");

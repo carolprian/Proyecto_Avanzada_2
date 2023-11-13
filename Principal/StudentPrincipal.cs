@@ -1,95 +1,59 @@
 using AutoGens;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 partial class Program{
-    public static void StudentsPrincipal(string username){
-       MenuStudents(username);
-    } 
+    public static void StudentsPrincipal(string username)
+    {
+        // menu del estudiante
+        bool exitRequested = false;
+        bool validate = false;
+        WriteLine("Welcome Student!");
 
-    public static void MenuStudents(string username){ 
-        bool validate = true, continued=true;
-        while(continued)
+        while (!exitRequested)
         {
+            string op = MenuStudents();
             WriteLine();
-            WriteLine("Welcome Student!");
-            WriteLine("********Menu********");
-            WriteLine("1. Fill a request format"); //SI
-            WriteLine("2. View equipments"); //SI
-            WriteLine("3. View request formats"); //sam SI
-            WriteLine("4. Edit request formats that aren't signed yet"); //CARO
-            WriteLine("5. Delete request formats that aren't signed yet"); //SAM SI
-            WriteLine("6. See a list of equipments that are late for returning"); //SAM ver sus request tardios Si
-            WriteLine("7. Sign out");
-            string opString = ReadNonEmptyLine();
-            int op = TryParseStringaEntero(opString);
-            Console.Clear();
             switch(op){
-                case 1:
+                case "1":
                     validate = ValidateAddRequest(username);
-                    if(validate == false){//CAmbiar a true
+                    if(validate == false)
+                    {
                         RequestFormat(username);
                     }
-                    else {
+                    else 
+                    {
                         WriteLine("You are only allow to fill a request format per day.");
-                        continued=true;
+                        return;
                     }
-                    WriteLine("Press enter to come back to the menu...");
-                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
-                    {
-                        Console.Clear();
-                    }
+                    BackToMenu();
                 break;
-                case 2:
+                case "2":
                     ViewAllEquipments(2);
-                    continued=true;
-                    WriteLine("Press enter to come back to the menu...");
-                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
-                    {
-                        Console.Clear();
-                    }
+                    BackToMenu();
                 break;
-                case 3:
+                case "3":
                     ListEquipmentsRequestsStudent(username);
-                    continued=true;
-                    WriteLine("Press enter to come back to the menu...");
-                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
-                    {
-                        Console.Clear();
-                    }
+                    BackToMenu();
                 break;
-                case 4:
+                case "4":
                     UpdateRequestFormat(username);
                 break;
-                case 5:
+                case "5":
                     DeleteRequestFormat(username);
-                    continued=true;
-                    WriteLine("Press enter to come back to the menu...");
-                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
-                    {
-                        Console.Clear();
-                    }
+                    BackToMenu();
                 break;
-                case 6:
+                case "6":
                     LateReturningStudent(username);
-                    continued=true;
-                    WriteLine("Press enter to come back to the menu...");
-                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
-                    {
-                        Console.Clear();
-                    }
+                    BackToMenu();
                 break;
-                case 7:
-                    Console.Clear();
-                    continued=false;
-                break;
+                case "7":
+                    return;
 
                 default:
                 break;
             }
         }
-    }
+    } 
 
     public static bool ValidateAddRequest(string username)
     {

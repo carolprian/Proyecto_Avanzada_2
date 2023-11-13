@@ -29,8 +29,6 @@ partial class Program{
             return (affected, e.EquipmentId);
         }
     }
-
-    // UPDATE
     public static void UpdateEquipment()
     {
         //WriteLine("Here's a list of all registered equipment");
@@ -246,7 +244,6 @@ partial class Program{
         } while (true);
     }
 
-    // DELETE
     public static void DeleteEquipment()
     {
         //WriteLine("Here's a list of all registered equipment");
@@ -286,7 +283,6 @@ partial class Program{
         } while (true);            
     }
 
-    // READ
     public static void ViewAllEquipments(int op)
     {
         if (op==1){
@@ -497,107 +493,19 @@ partial class Program{
             }
         }
     }
-    
-/*
-    public static void ViewAEquipments()
-{
-        using (bd_storage db = new())
-        {
-        IQueryable<Equipment>? equipments = (IQueryable<Equipment>?)db.Equipments
-    .Join(
-        db.Areas,
-        equipment => equipment.AreaId,
-        area => area.AreaId,
-        (equipment, area) => new { Equipment = equipment, Area = area }
-    )
-    .Join(
-        db.Statuses,
-        combined => combined.Equipment.StatusId,
-        status => status.StatusId,
-        (combined, status) => new 
-        {
-            EquipmentId = combined.Equipment.EquipmentId,
-            Name = combined.Equipment.Name,
-            AreaName = combined.Area.Name,
-            Description = combined.Equipment.Description,
-            Year = combined.Equipment.Year,
-            StatusName = status.Value,
-            ControlNumber = combined.Equipment.ControlNumber
-        }   
-    );
 
-
-                if (equipments == null || !equipments.Any())
-                {
-                    WriteLine("There are no equipments found");
-                }
-                else
-                {
-                    foreach (var equipment in equipments)
-                    {
-                        string? areaName = equipment.Area != null ? equipment.Area.Name : "N/A";
-                        string? statusValue = equipment.Status != null ? equipment.Status.Value : "N/A";
-                        WriteLine($"{equipment.EquipmentId} . {areaName} . {statusValue}");
-                    }
-                }
-
-        }
-    }
-
-    public static void ViewAlEquipments()
-{
-    using (bd_storage db = new())
+    public static int UpdateEquipmentStatus(byte newStatus, string equipmentId )
     {
-        var query = db.Equipments
-            .Join(
-                db.Areas,
-                equipment => equipment.AreaId,
-                area => area.AreaId,
-                (equipment, area) => new { Equipment = equipment, AreaName = area.Name }
-            )
-            .Join(
-                db.Statuses,
-                combined => combined.Equipment.StatusId,
-                status => status.StatusId,
-                (combined, status) => new
-                {
-                    combined.Equipment.EquipmentId,
-                    combined.Equipment.Name,
-                    combined.AreaName,
-                    combined.Equipment.Description,
-                    combined.Equipment.Year,
-                    StatusValue = status.Value,
-                    combined.Equipment.ControlNumber,
-                    combined.Equipment.CoordinatorId
-                }
-            )
-            .Take(20);
-
-        WriteLine($"ToQueryString: {query.ToQueryString()}");
-
-        if (query is null || !query.Any())
+        int affected = 0;
+        using(bd_storage db = new())
         {
-            WriteLine("No hay resultados.");
-        }
-        else
-        {
-            foreach (var equipment in query)
-            {
-                WriteLine($"Equipment ID: {equipment.EquipmentId}");
-                WriteLine($"Name: {equipment.Name}");
-                WriteLine($"Area: {equipment.AreaName}");
-                WriteLine($"Description: {equipment.Description}");
-                WriteLine($"Year: {equipment.Year}");
-                WriteLine($"Status ID: {equipment.StatusValue}");
-                WriteLine($"Control Number: {equipment.ControlNumber}");
-                WriteLine($"Coordinator ID: {equipment.CoordinatorId}");
-                WriteLine();
-            }
+            IQueryable<Equipment> equipments = db.Equipments
+            .Where(e=> e.EquipmentId == equipmentId);
 
-            WriteLine("Presiona una tecla para cargar más resultados...");
-            ReadKey();
+            equipments.First().StatusId = newStatus;
+            affected = db.SaveChanges();
         }
+        return affected;
     }
-}
-*/    
+    
 }

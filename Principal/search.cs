@@ -122,5 +122,52 @@ partial class Program
             } 
         }
     }
+
+    public static void SearchEquipmentsById(string? searchTerm)
+    {
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            throw new InvalidOperationException();
+        }
+        using (bd_storage db = new())
+        {
+            IQueryable<Equipment>? equipments = db.Equipments
+                .Include(e => e.Area)
+                .Include(e => e.Status)
+                .Include(e => e.Coordinator)
+                .Where(e => e.EquipmentId.StartsWith(searchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
+
+            db.ChangeTracker.LazyLoadingEnabled = false;
+
+            if (!equipments.Any())
+            {
+                WriteLine("No equipment found matching the search term: " + searchTerm);
+                return;
+            }
+            else
+            {
+                WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                        "EquipmentId", "Equipment Name", "Year", "Status");
+                WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+                    
+                foreach( var e in equipments)
+                {
+                    WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                        e.EquipmentId, e.Name, e.Year, e.Status?.Value); 
+                }
+                    
+                WriteLine("Do you want to see more information about any of the equipments?(y/n)");
+                string read = VerifyReadLengthStringExact(1);
+                if(read == "y" || read =="Y")
+                {
+                    WriteLine("Provide the equipment ID you want to see more info:");
+                    read = VerifyReadMaxLengthString(15);
+                    int found = ShowEquipmentBylookigForEquipmentId(read);   
+                    if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );}
+                        
+                }
+            }
+        }
+    }
 }
 

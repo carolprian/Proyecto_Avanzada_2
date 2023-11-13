@@ -858,3 +858,4 @@ D:\Valeria\Documents\.ceti\7mo\prograAvanzada\ProyUnitTestingEmpezando\Proyecto_
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\ProyUnitTestingEmpezando\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.csproj.CopyComplete
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\ProyUnitTestingEmpezando\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.genruntimeconfig.cache
 D:\Valeria\Documents\.ceti\7mo\prograAvanzada\ProyUnitTestingEmpezando\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\ref\Principal.dll
+C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\ConsoleTables.dll
