@@ -775,4 +775,88 @@ partial class Program
         }
     }
 
+    public static void ListGroups()
+    {
+        using (bd_storage db = new())
+        {
+            IQueryable<Group> groups = db.Groups;
+
+            if ((groups is null) || !groups.Any())
+            {
+                WriteLine("There are no groups");
+                return;
+            }
+
+            WriteLine("| {0,-3} | {1,-10} |", "Id", "Group Name");
+
+            foreach (var group in groups)
+            {
+                WriteLine("| {0:000} | {1,-10} |", group.GroupId, group.Name);
+            }
+        }
+    }
+
+    public static void ListProfessors()
+    {
+        using (bd_storage db = new())
+        {
+            IQueryable<Professor> professors = db.Professors;
+
+            if ((professors is null) || !professors.Any())
+            {
+                WriteLine("There are no professors");
+                return;
+            }
+
+            WriteLine("| {0,-10} | {1,-30} | {2,-30} | {3,-30} | {4,-4} | {5,-50} |", "Id", "Name", "Last Name P", "Last Name M", "NIP", "Password");
+
+            foreach (var professor in professors)
+            {
+                WriteLine("| {0:0000000000} | {1,-30} | {2,-30} | {3,-30} | {4,-4} | {5,-50} |", professor.ProfessorId, professor.Name, professor.LastNameP, professor.LastNameM, Decrypt(professor.Nip), Decrypt(professor.Password));
+            }
+        }
+    }
+
+    public static void ListStorers()
+    {
+        using (bd_storage db = new())
+        {
+            IQueryable<Storer> storers = db.Storers;
+
+            if ((storers is null) || !storers.Any())
+            {
+                WriteLine("There are no storers");
+                return;
+            }
+
+            WriteLine("| {0,-10} | {1,-30} | {2,-30} | {3,-30} | {4,-50} |", "Id", "Name", "Last Name P", "Last Name M", "Password");
+
+            foreach (var storer in storers)
+            {
+                WriteLine("| {0:0000000000} | {1,-30} | {2,-30} | {3,-30} | {4,-50} |", storer.StorerId, storer.Name, storer.LastNameP, storer.LastNameM, Decrypt(storer.Password));
+            }
+        }
+    }
+
+    public static void ListSubjects()
+    {
+        using (bd_storage db = new())
+        {
+            IQueryable<Subject> subjects = db.Subjects
+                .Include(su => su.Academy);
+            if ((subjects is null) || !subjects.Any())
+            {
+                WriteLine("There are no subjects");
+                return;
+            }
+
+            WriteLine("| {0,-13} | {1,-55} | {2,-7} |", "Id", "Name", "Academy");
+
+            foreach (var subject in subjects)
+            {
+                WriteLine("| {0:0000000000000} | {1,-55} | {2,-7} |", subject.SubjectId, subject.Name, subject.Academy?.Name);
+            }
+        }
+    }
+
 }
