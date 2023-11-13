@@ -20,7 +20,7 @@ partial class Program
                     break;
                 case "2":
                     WriteLine("Provide the number: ");
-                    string searchTerm = ReadLine();
+                    string? searchTerm = ReadLine();
                     SearchEquipmentsById(searchTerm);
                     break;
                 case "3":
@@ -28,22 +28,22 @@ partial class Program
                     break;
                 case "4":
                     WriteLine("Provide the equipment ID to search:");
-                    string equipmentIdToFind = ReadLine();
+                    string? equipmentIdToFind = ReadLine();
                     FindDandLequipmentById(equipmentIdToFind);
                     break;
                 case "5":
                     WriteLine("Provide the equipment name to search:");
-                    string equipmentNameToFind = ReadLine();
+                    string? equipmentNameToFind = ReadLine();
                     FindDandLequipmentByName(equipmentNameToFind);
                     break;
                 case "6":
                     WriteLine("Provide the date (yyyy) to search:");
-                    string dateToFind = ReadLine();
+                    string? dateToFind = ReadLine();
                     FindDandLequipmentByDate(dateToFind);
                     break;
                 case "7":
                     WriteLine("Provide the student name to search:");
-                    string studentNameToFind = ReadLine();
+                    string? studentNameToFind = ReadLine();
                     FindDandLequipmentByStudentName(studentNameToFind);
                     break;
                 case "8":
@@ -134,7 +134,7 @@ partial class Program
             else if (op == "2")
             {
                 WriteLine("Enter the ID of the group you want to update:");
-                string groupIdString = ReadLine();
+                string? groupIdString = ReadLine();
 
                 int groupId = TryParseStringaEntero(groupIdString);
 
@@ -195,7 +195,7 @@ partial class Program
             else if (op == "3")
             {
                 WriteLine("Enter the ID of the group you want to remove:");
-                string groupIdString = ReadLine();
+                string? groupIdString = ReadLine();
 
                 int groupId = TryParseStringaEntero(groupIdString);
 
@@ -564,7 +564,7 @@ partial class Program
 
     public static void StudentCRUD()
     {
-        string op = "";
+        string? op = "";
         bool b = false;
 
         while (!b)
@@ -647,7 +647,7 @@ partial class Program
                                 case "6":
                                     Write("Write the new Group ID: ");
                                     WriteLine("Enter the ID of the group you want to remove:");
-                                    string groupIdString = ReadLine();
+                                    string? groupIdString = ReadLine();
                                     int newGroupId = TryParseStringaEntero(groupIdString);
                                     students.First().GroupId = newGroupId;
                                     break;
@@ -775,7 +775,7 @@ partial class Program
                                         WriteLine("Search for a academy by it's name: ");
                                         string academy = VerifyReadMaxLengthString(55);
                                         IQueryable<Academy> academies = db.Academies
-                                        .Where(a => a.Name.StartsWith(academy));
+                                        .Where(a => a.Name != null && a.Name.StartsWith(academy));
                                         if (academies is null || !academies.Any())
                                         {
                                             WriteLine("There are no matching academies registered.");
@@ -828,7 +828,7 @@ partial class Program
                 {
                     IQueryable<Subject> subjects = db.Subjects
                     .Include(s => s.Academy)
-                    .Where(s => s.Name.StartsWith(subjectid));
+                    .Where(s => s.Name != null && s.Name.StartsWith(subjectid));
                     if (subjects is null || !subjects.Any())
                     {
                         WriteLine("That subject id is not registered");

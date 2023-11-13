@@ -248,7 +248,7 @@ partial class Program
         while(op==0)
         {
             WriteLine("Provide your group:");
-            string group = VerifyReadLengthStringExact(3);
+            string? group = VerifyReadLengthStringExact(3);
             using(bd_storage db = new())
             {
                 IQueryable<Group> groups = db.Groups.Where(g=> g.Name == group);
@@ -263,7 +263,7 @@ partial class Program
                     EntityEntry<Group> entity = db.Groups.Add(g);
                     int changed = db.SaveChanges();  
                 }
-                IQueryable<Group> groupsid = db.Groups.Where(g=> g.Name == group);
+                IQueryable<Group>? groupsid = db.Groups.Where(g=> g.Name == group);
                 if(groupsid is not null && groupsid.Any())
                 {
                     var groupfirst = groupsid.FirstOrDefault();
@@ -275,7 +275,7 @@ partial class Program
         }
 
         WriteLine("Create your password: ");
-        string encryptedPassword = EncryptPass(VerifyReadLengthString(8));
+        string? encryptedPassword = EncryptPass(VerifyReadLengthString(8));
         int affected = 0;
         bool changes;
         using (bd_storage db = new())
@@ -503,7 +503,7 @@ partial class Program
                 }
                 else if (idUser == "storerId")
                 {
-                    IQueryable<Storer> storers = db.Storers.Where(s => s.StorerId == EncryptPass(username));
+                    IQueryable<Storer>? storers = db.Storers.Where(s => s.StorerId == EncryptPass(username));
 
                     if (storers is not null || storers.Any())
                     {
@@ -515,7 +515,7 @@ partial class Program
                 }
                 else if (idUser == "coordinatorId")
                 {
-                    IQueryable<Coordinator> coordinators = db.Coordinators.Where(c => c.CoordinatorId == EncryptPass(username));
+                    IQueryable<Coordinator>? coordinators = db.Coordinators.Where(c => c.CoordinatorId == EncryptPass(username));
                     if (coordinators is not null || coordinators.Any())
                     {
                         foreach (var coordinator in coordinators)

@@ -92,7 +92,7 @@ partial class Program
 
             List<int> requestIds = requests.Select(r => r.RequestId).ToList();
             
-            IQueryable<RequestDetail> RequestDetails = db.RequestDetails
+            IQueryable<RequestDetail>? RequestDetails = db.RequestDetails
             .Where(rd => requestIds.Contains((int)rd.RequestId) && rd.StatusId == 2)
             .Include(rd => rd.Equipment);
 

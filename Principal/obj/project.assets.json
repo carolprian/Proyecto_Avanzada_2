@@ -1266,16 +1266,11 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
     "C:\\Users\\Samantha\\.nuget\\packages\\": {}
-=======
-    "C:\\Users\\aacar\\.nuget\\packages\\": {}
->>>>>>> 3bee3892ef81d04e33c0b5a11f986261ac9f87e2
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
       "projectName": "Principal",
       "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
@@ -1284,16 +1279,6 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
-=======
-      "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
-      "projectName": "Principal",
-      "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
-      "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\obj\\",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
->>>>>>> 3bee3892ef81d04e33c0b5a11f986261ac9f87e2
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -1357,11 +1342,7 @@
       "code": "Undefined",
       "level": "Warning",
       "warningLevel": 1,
-<<<<<<< HEAD
       "message": "Problem reading the cache file C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-=======
-      "message": "Problema al leer el archivo de caché C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
->>>>>>> 3bee3892ef81d04e33c0b5a11f986261ac9f87e2
     }
   ]
 }

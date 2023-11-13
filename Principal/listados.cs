@@ -61,7 +61,7 @@ partial class Program
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
             .Include( e => e.Equipment)
             .Where( r => r.ProfessorNip == 1)
-            .Where(r => r.DispatchTime != null && r.DispatchTime.Date == tomorrow);
+            .Where(r => r.DispatchTime.Date == tomorrow);
             
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((requestDetails is null) || !requestDetails.Any())
@@ -97,7 +97,7 @@ partial class Program
         bool aux = false;
         using (bd_storage db = new())
         {
-            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
+            IQueryable<DyLequipment>? dyLequipments = db.DyLequipments
             .Include( s => s.Student.Group)
             .Include( e => e.Equipment)
             .Include( t => t.Status);
@@ -312,7 +312,7 @@ partial class Program
         }
     }
 
-    public static void SearchEquipmentsById(string searchTerm)
+    public static void SearchEquipmentsById(string? searchTerm)
     {
         if (string.IsNullOrEmpty(searchTerm))
         {
@@ -397,11 +397,11 @@ partial class Program
         }
     }
 
-     public static void FindDandLequipmentById(string equipmentIdToFind)
+     public static void FindDandLequipmentById(string? equipmentIdToFind)
     {
         using (bd_storage db = new())
         {
-            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
+            IQueryable<DyLequipment>? dyLequipments = db.DyLequipments
                 .Include(dal => dal.Status)
                 .Include(dal => dal.Equipment)
                 .Include(dal => dal.Student)
@@ -426,11 +426,11 @@ partial class Program
         }
     }
 
-    public static void FindDandLequipmentByName(string equipmentNameToFind)
+    public static void FindDandLequipmentByName(string? equipmentNameToFind)
     {
         using (bd_storage db = new())
         {
-            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
+            IQueryable<DyLequipment>? dyLequipments = db.DyLequipments
                 .Include(dal => dal.Status)
                 .Include(dal => dal.Equipment)
                 .Include(dal => dal.Student)
@@ -455,7 +455,7 @@ partial class Program
         }
     }
 
-    public static void FindDandLequipmentByDate(string dateToFind)
+    public static void FindDandLequipmentByDate(string? dateToFind)
     {
         using (bd_storage db = new())
         {
@@ -484,7 +484,7 @@ partial class Program
         }
     }
 
-    public static void FindDandLequipmentByStudentName(string studentNameToFind)
+    public static void FindDandLequipmentByStudentName(string? studentNameToFind)
     {
         using (bd_storage db = new())
         {
@@ -539,7 +539,7 @@ partial class Program
     {
         using (bd_storage db = new())
         {
-            IQueryable<RequestDetail> requestDetails = db.RequestDetails
+            IQueryable<RequestDetail>? requestDetails = db.RequestDetails
             .Include( r => r.Equipment)
             .Include( r => r.Request)
             .Where( s => s.Request.StudentId == username);
@@ -651,7 +651,7 @@ partial class Program
         {
             var currentDate = DateTime.Now;
 
-            IQueryable<RequestDetail> requestDetails = db.RequestDetails
+            IQueryable<RequestDetail>? requestDetails = db.RequestDetails
             .Where( s => s.Request.StudentId == username)
             .Include(r => r.Request.Student.Group)
             .Include(r => r.Equipment)
