@@ -8,10 +8,12 @@ partial class Program
     public static void CoordinatorsPrincipal()
     {
         bool exitRequested = false;
+        WriteLine("Welcome Coordinator!");
 
         while (!exitRequested)
         {
             string op = MenuCoordinators();
+            Console.Clear();
             WriteLine();
             switch (op)
             {
@@ -66,6 +68,7 @@ partial class Program
                     break;
                 case "14":
                     exitRequested = true;
+                    Console.Clear();
                     break;
                 default:
                     WriteLine("Invalid option. Please try again.");

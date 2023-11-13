@@ -24,6 +24,7 @@ partial class Program{
             WriteLine("7. Sign out");
             string opString = ReadNonEmptyLine();
             int op = TryParseStringaEntero(opString);
+            Console.Clear();
             switch(op){
                 case 1:
                     validate = ValidateAddRequest(username);
@@ -32,29 +33,55 @@ partial class Program{
                     }
                     else {
                         WriteLine("You are only allow to fill a request format per day.");
-                        continued=false;
+                        continued=true;
+                    }
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
                     }
                 break;
                 case 2:
                     ViewAllEquipments(2);
-                    continued=false;
+                    continued=true;
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
                 case 3:
                     ListEquipmentsRequestsStudent(username);
-                    continued=false;
+                    continued=true;
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
                 case 4:
 
                 break;
                 case 5:
                     DeleteRequestFormat(username);
-                    continued=false;
+                    continued=true;
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
                 case 6:
                     LateReturningStudent(username);
-                    continued=false;
+                    continued=true;
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
                 case 7:
+                    Console.Clear();
                     continued=false;
                 break;
 

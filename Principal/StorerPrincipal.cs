@@ -13,6 +13,7 @@ partial class Program{
         while (true)
         {
             string op = MenuStorer();
+            Console.Clear();
             WriteLine();
             switch(op)
             {

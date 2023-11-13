@@ -23,7 +23,6 @@ partial class Program{
                 ControlNumber = controlnumber,
                 CoordinatorId = EncryptPass(coordinatorid)
             };
-            
 
             EntityEntry<Equipment> entity = db.Equipments.Add(e);
             int affected = db.SaveChanges();
@@ -34,8 +33,9 @@ partial class Program{
     // UPDATE
     public static void UpdateEquipment()
     {
-        WriteLine("Here's a list of all registered equipment, please enter the ID of the equipment you wish to change");
-        ViewAllEquipments(1);
+        //WriteLine("Here's a list of all registered equipment");
+        WriteLine("Please enter the ID of the equipment you wish to change");
+        //ViewAllEquipments(1);
         do
         {
             WriteLine();
@@ -232,7 +232,8 @@ partial class Program{
                                 break;
 
                             case "8": // exit equipment info editor
-                                return;
+                            Console.Clear();
+                            return;
 
                             default:
                                 WriteLine("Not a valid option");
@@ -248,8 +249,9 @@ partial class Program{
     // DELETE
     public static void DeleteEquipment()
     {
-        WriteLine("Here's a list of all registered equipment, please enter the ID of the equipment you wish to change");
-        ViewAllEquipments(1);
+        //WriteLine("Here's a list of all registered equipment");
+        WriteLine("Please enter the ID of the equipment you wish to change");
+        //ViewAllEquipments(1);
         do
         {
             WriteLine();
@@ -313,15 +315,14 @@ partial class Program{
     //                Console.Clear();
                     
                     
-                    WriteLine("| {0,-5} | {1,-15} | {2,-80} | {3,7} | {4,-22} |",
-                        "Index", "EquipmentId", "Equipment Name", "Year", "Status");
+                    WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                        "EquipmentId", "Equipment Name", "Year", "Status");
                     WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
                     
                     foreach( var e in equips)
                         {
-                            i++;
-                            WriteLine("| {0,-5} | {1,-15} | {2,-80} | {3,7} | {4,-22} |",
-                            i, e.EquipmentId, e.Name, e.Year, e.Status?.Value);
+                            WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                             e.EquipmentId, e.Name, e.Year, e.Status?.Value);
                         
                         }
                 
@@ -380,12 +381,12 @@ partial class Program{
                     WriteLine("There are no status found");
                 }
                 int i=1;
-                WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22}", "Index", "EquipmentId", "Equipment Name", "Description");
+                WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3}", "Index", "EquipmentId", "Equipment Name", "Description");
                 WriteLine("-------------------------------------------------------------------------------");
 
                 foreach (var e in equipments)
                 {
-                    WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3,-22}",
+                    WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3}",
                         i, e.EquipmentId, e.Name, e.Description);
                     i++;
                 }

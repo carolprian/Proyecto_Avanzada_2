@@ -12,9 +12,11 @@ public partial class Program
         // StorersPrincipal();
         //MenuStudents("20300826");
         //Hi();
+        StudentsPrincipal("20300679");
         Hi3Storer();
         while (true)
         {
+            Console.Clear();
             WriteLine("Principal Menu: ");
             WriteLine("1.Log In");
             WriteLine("2.Sign up ");
@@ -30,6 +32,7 @@ public partial class Program
                     var logIn = IniciarSesion(out rol);
                     if (rol!=null)
                     {
+                        Console.Clear();
                         WriteLine($"Congratulations {rol}, you logged in succesfully!"); 
                         switch(rol)
                         {

@@ -6,13 +6,17 @@ partial class Program
 {
     public static void ProfessorsPrincipal(string username)
     {
+        Console.Clear();
+        WriteLine("Welcome Professor!");
         while(true){
             WriteLine("Type the option you want to do");
             WriteLine("1.- Watch permissions");
             WriteLine("2.- Approve or Deny Permissions");
-            WriteLine("3.- Rquest for Material");
+            WriteLine("3.- Request for Material");
             WriteLine("4.- Exit");
             string op = VerifyReadLengthStringExact(1);
+            Console.Clear();
+            
             switch (op)
             {
                 case "1":
@@ -25,6 +29,7 @@ partial class Program
                     AddPetition(username);
                     break;
                 case "4":
+                    Console.Clear();
                     return;
                 default:
                     WriteLine("Please type a correct option");

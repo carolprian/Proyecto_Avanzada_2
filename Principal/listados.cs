@@ -553,8 +553,14 @@ partial class Program
             {
                 i++;
                 var firstRequest = group.First();
-
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, ReturnTime: {firstRequest.ReturnTime}, RequestedDate: {firstRequest.RequestedDate}");
+                WriteLine();
+                WriteLine($"{i}. RequestId: {firstRequest.RequestId}");
+                WriteLine($"StatusId: {firstRequest.StatusId}");
+                WriteLine($"ProfessorNip: {firstRequest.ProfessorNip}");
+                WriteLine($"DispatchTime: {firstRequest.DispatchTime}");
+                WriteLine($"ReturnTime: {firstRequest.ReturnTime}");
+                WriteLine($"RequestedDate: {firstRequest.RequestedDate}");
+                WriteLine();
 
                 WriteLine("Equipment:");
                 foreach (var r in group)
