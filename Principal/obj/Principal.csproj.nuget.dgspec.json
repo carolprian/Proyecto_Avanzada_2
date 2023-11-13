@@ -1,11 +1,7 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
     "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\ProyUnitTestingEmpezando\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {}
-=======
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {}
->>>>>>> 36c8f409f2c93927f1652c74aa3767970e2bcbfc
   },
   "projects": {
     "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\ProyUnitTestingEmpezando\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {
@@ -21,13 +17,9 @@
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-<<<<<<< HEAD
           "C:\\Users\\Valeria\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-=======
-          "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
->>>>>>> 36c8f409f2c93927f1652c74aa3767970e2bcbfc
         ],
         "originalTargetFrameworks": [
           "net7.0"

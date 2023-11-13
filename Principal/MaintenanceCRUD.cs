@@ -18,7 +18,7 @@ partial class Program
             WriteLine(
                 "3. All programmed maintenances that haven't been made yet (just programmed)"
             );
-            WriteLine("3. exit");
+            WriteLine("4. exit");
 
             op = TryParseStringaEntero(VerifyReadLengthStringExact(1));
             switch (op)
@@ -31,7 +31,9 @@ partial class Program
                     break;
                 case 3:
                     ViewMaintenanceNotMade();
-                    return;
+                    break;
+                case 4:
+                return;
                 default:
                     WriteLine("Sorry, that is not an option.");
                     break;
@@ -79,13 +81,13 @@ partial class Program
                 //                Console.Clear();
 
                 WriteLine(
-                    "|{0,-2}|{1,-15}|{2,-20}|{3,-11}|{4,-40}|{5, -40}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
+                    "|{0,-2}|{1,-10}|{2,-45}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
                     "ID",
                     "ID Equipment",
                     "Equipment",
                     "Maintenance",
                     "Instructions for maintenance",
-                    "Description of the made maintenance",
+                    "Description of the maintenance",
                     "Started",
                     "Returned",
                     "Storer",
@@ -104,7 +106,7 @@ partial class Program
                     )
                     {
                         WriteLine(
-                            "|{0,-2}|{1,-15}|{2,-20}|{3,-11}|{4,-40}|{5, -40}|{6, -10}|{7,-10}|{8, 10} {9,-10}|{10}",
+                            "|{0,-2}|{1,-10}|{2,-50}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
                             m.MaintenanceId,
                             m.Equipment?.EquipmentId,
                             m.Equipment?.Name,
@@ -121,7 +123,7 @@ partial class Program
                     else
                     {
                         WriteLine(
-                            "|{0,-2}|{1,-15}|{2,-20}|{3,-11}|{4,-40}|{5, -40}|{6, -10}|{7,-10}|{8, 10} {9,-10}|{10}",
+                            "|{0,-2}|{1,-10}|{2,-50}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
                             m.MaintenanceId,
                             m.Equipment?.EquipmentId,
                             m.Equipment?.Name,
@@ -197,7 +199,7 @@ partial class Program
             }
 
             WriteLine(
-                "|{0,-3}|{1,-12}|{2,-50}|{3,-11}|{4,-80}|{5, -15}|{6, -15}|",
+                "|{0,-3}|{1,-12}|{2,-55}|{3,-11}|{4,-50}|{5, -15}|{6, -15}|",
                 "ID",
                 "ID Equipment",
                 "Equipment",
@@ -207,12 +209,12 @@ partial class Program
                 "Storer ID"
             );
             WriteLine(
-                "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+                "-------------------------------------------------------------------------------------------------------------------------------------------------------"
             );
             foreach (var m in maintain)
             {
                 WriteLine(
-                    "|{0,-3}|{1,-12}|{2,-50}|{3,-11}|{4,-80}|{5, -15}|{6, -15}|",
+                "|{0,-3}|{1,-12}|{2,-55}|{3,-11}|{4,-50}|{5, -15}|{6, -15}|",
                     m.Maintenance?.MaintenanceId,
                     m.Equipment?.EquipmentId,
                     m.Equipment?.Name,
@@ -255,7 +257,7 @@ partial class Program
                 Console.Clear();
 
                 WriteLine(
-                    "|{0,-2}|{1,-15}|{2,-20}|{3,-11}|{4,-40}|{5, -40}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
+                    "|{0,-2}|{1,-10}|{2,-35}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
                     "ID",
                     "ID Equipment",
                     "Equipment",
@@ -280,7 +282,7 @@ partial class Program
                     )
                     {
                         WriteLine(
-                            "|{0,-2}|{1,-15}|{2,-20}|{3,-11}|{4,-40}|{5, -40}|{6, -10}|{7,-10}|{8, 10} {9,-10}|{10}",
+                            "|{0,-2}|{1,-10}|{2,-35}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
                             m.MaintenanceId,
                             m.Equipment?.EquipmentId,
                             m.Equipment?.Name,
@@ -297,7 +299,7 @@ partial class Program
                     else
                     {
                         WriteLine(
-                            "|{0,-2}|{1,-15}|{2,-20}|{3,-11}|{4,-40}|{5, -40}|{6, -10}|{7,-10}|{8, 10} {9,-10}|{10}",
+                            "|{0,-2}|{1,-10}|{2,-35}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
                             m.MaintenanceId,
                             m.Equipment?.EquipmentId,
                             m.Equipment?.Name,

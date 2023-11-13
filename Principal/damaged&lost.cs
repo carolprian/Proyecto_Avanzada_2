@@ -150,23 +150,22 @@ partial class Program{
     {
         using(bd_storage db = new())
         {
-            studentsLostDamage();
 
             if (studentsLostDamage() == true){
                 return;
             } else {
 
-                WriteLine("Provide the ID of the student who want to discharge their debt:");
-                string studentId = ReadNonEmptyLine();
+                WriteLine("Provide the ID of the damage and lost report to discharge their debt:");
+                string reportid = ReadNonEmptyLine();
 
                 IQueryable<DyLequipment> dyLequipments = db.DyLequipments
-                .Where( dl => dl.StudentId == studentId)
+                .Where( dl => dl.DyLequipmentId.Equals(TryParseStringaEntero(reportid)))
                 .Include( e => e.Equipment)
                 .Include( s => s.Student);
 
                 if (dyLequipments == null || !dyLequipments.Any())
                 {
-                    WriteLine("No student found");
+                    WriteLine("No reports found");
                     MenuStorer();
                 }
                 else
@@ -174,18 +173,29 @@ partial class Program{
 
                     foreach (var dyLequipment in dyLequipments)
                     {
+                        WriteLine($"Report ID: {dyLequipment.DyLequipmentId}");
                         WriteLine($"Student:{dyLequipment.StudentId}, {dyLequipment.Student?.Name} {dyLequipment.Student?.LastNameP}");
                         WriteLine($"Name: {dyLequipment.Equipment?.Name}");
-                        WriteLine($"Description: {dyLequipment.Equipment?.Description}");
-                        WriteLine($"Description: {dyLequipment.Description}");
+                        WriteLine($"Equipment id: {dyLequipment.EquipmentId}");
+                        WriteLine($"Description of what happened to the Equipment: {dyLequipment.Equipment?.Description}");
+                        WriteLine($"Description on what to return: {dyLequipment.Description}");
                         WriteLine($"Status: {dyLequipment.StatusId}");
                         WriteLine("-----------------------------------------------------------------");
 
-                        WriteLine("Is the information correct? (y/n)");
+                        WriteLine("Is the information correct? (y/n)(e to exit)");
                         string response = ReadNonEmptyLine().ToLower();
 
                         if (response == "y")
                         {
+                            
+                            dyLequipments.First().StatusId = 1;
+
+                            IQueryable<Equipment> equipment = db.Equipments
+                            .Where(e=>e.EquipmentId.Equals(dyLequipment.EquipmentId));
+                            equipment.First().StatusId = 1;
+
+                            int affected = db.SaveChanges();
+                            /*
                             dyLequipment.StatusId = 1;
 
                             Equipment? equipment = dyLequipment.Equipment;
@@ -194,8 +204,11 @@ partial class Program{
                             db.Update(dyLequipment);
                             db.Update(equipment);
                             db.SaveChanges();
-
+                            */
+                            if(affected==2)
+                            {
                             WriteLine("Equipment status updated successfully.");
+                            }
                         }
                         else if (response == "n")
                         {
@@ -206,9 +219,13 @@ partial class Program{
                             db.Update(dyLequipment);
                             db.SaveChanges();
                         }
+                        else if (response == "e")
+                        {
+                            return;
+                        }
                         else
                         {
-                            WriteLine("Invalid response. Please enter 'y' or 'n'.");
+                            WriteLine("Invalid response. Please enter 'y', 'n' or 'e'.");
                         }
                     }    
                 }

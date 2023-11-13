@@ -124,7 +124,7 @@ partial class Program
         return dateValue;
     }
 
-    public static DateTime? ReturnMaintenanceDate(DateTime currentDate)
+    public static DateTime ReturnMaintenanceDate(DateTime currentDate)
     {
         DateTime dateValue = new();
         bool valideDate = false;

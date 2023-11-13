@@ -26,7 +26,7 @@ partial class Program
             {
                 i++;
                 var firstRequest = group.First();
-
+                WriteLine();
                 WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, Return Time: {firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}, RequestedDate: {firstRequest.RequestedDate}");
 
                 WriteLine("Equipment:");
@@ -34,6 +34,7 @@ partial class Program
                 {
                     WriteLine($"  - Equipment Name: {r.Equipment.Name}");
                 }
+                WriteLine();
             }
 
             return "";
@@ -100,7 +101,8 @@ partial class Program
             IQueryable<DyLequipment>? dyLequipments = db.DyLequipments
             .Include( s => s.Student.Group)
             .Include( e => e.Equipment)
-            .Include( t => t.Status);
+            .Include( t => t.Status)
+            .Where(d=>d.StatusId != 1);
 
             if (!dyLequipments.Any() || dyLequipments is null)
             {
@@ -114,6 +116,7 @@ partial class Program
                 i++;
                 WriteLine();
                 WriteLine($"Student {i} Information: ");
+                WriteLine($"ID of Damage or Lost Report: {use.DyLequipmentId} ");
                 WriteLine($"Name: {use.Student.Name}, Last Name: {use.Student.LastNameP}, Group: {use.Student.Group.Name}");
                 WriteLine("Equipment Information");
                 WriteLine($"status: {use.Status.Value}");
@@ -303,14 +306,75 @@ partial class Program
                 WriteLine("There are no equipments found");
                 return;
             }
+            else{
+                
+                int countTotal = equipments.Count();
+                bool continueListing = true;
+                int offset = 0, batchS = 20;
+                int pages = countTotal / batchS;
+                if(countTotal/batchS != 0){pages+=1;}
+                int pp=1;
+                int i=0;
+                while (continueListing)
+                    {
+                var equips = equipments.Skip(offset).Take(batchS);
 
-            WriteLine("| {0,-11} | {1,-15} | {2,-26} | {3,-80} | {4,-4} | {5,-17} | {6,-20} | {7,-6}",
-                "EquipmentId", "Name", "Area", "Description", "Year", "Status", "ControlNumber", "Coordinator");
+    //                Console.Clear();
+                    
+                    
+                    WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                        "EquipmentId", "Equipment Name", "Year", "Status");
+                    WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+                    
+                    foreach( var e in equips)
+                        {
+                            WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                             e.EquipmentId, e.Name, e.Year, e.Status?.Value);
+                        
+                        }
+                
+                    WriteLine();
+                    WriteLine($"Total:   {countTotal} ");
+                    WriteLine($"{pp} / {pages}");
+                    WriteLine("");
 
-            foreach (var e in equipments)
-            {
-                WriteLine($"| {e.EquipmentId,-11} | {e.Name,-15} | {e.Area?.Name,-26} | {e.Description,-80} | {e.Year,-4} | {e.Status?.Value,-17} | {e.ControlNumber,-20} | {e.Coordinator?.Name,-6}");
+                    WriteLine("Do you want to see more information about any of the equipments?(y/n)");
+                    string read = VerifyReadLengthStringExact(1);
+                    if(read == "y" || read =="Y")
+                    {
+                        WriteLine("Provide the equipment ID you want to see more info:");
+                        read = VerifyReadMaxLengthString(15);
+                        int found = ShowEquipmentBylookigForEquipmentId(read);   
+                        if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );}
+                        
+                    }
+                    WriteLine("Press the left or right arrow key to see more results (press 'q' to exit)...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.LeftArrow)
+                    {
+                        offset = offset - batchS;
+                        if(pp>1){
+                            pp--;
+                        }
+                        Console.Clear();
+
+                    }
+                    if(ReadKey(intercept: true).Key == ConsoleKey.RightArrow)
+                    {
+                        offset = offset + batchS;
+                        if(pp < pages)
+                        {
+                        pp ++;
+                        }
+                        Console.Clear();
+                    }
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Q)
+                    {
+                        continueListing = false;
+                        Console.Clear();
+                    }
+                }
             }
+            
         }
     }
 
@@ -414,13 +478,13 @@ partial class Program
                 return;
             }
 
-            WriteLine("| {0,12} | {1,13} | {2,30} | {3,25} | {4,21} | {5,10} | {6,7} |",
+            WriteLine("| {0,12} | {1,13} | {2,45} | {3,25} | {4,21} | {5,10} | {6,7} |",
                 "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
 
             // Use the data
             foreach (var dal in dyLequipments)
             {
-                WriteLine($"| {dal.DyLequipmentId,12} | {dal.Status?.Value,13} | {dal.Equipment?.Name,30} | {dal.Description,25} | {dal.DateOfEvent,21} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,7}");
+                WriteLine($"| {dal.DyLequipmentId,12} | {dal.Status?.Value,13} | {dal.Equipment?.Name,45} | {dal.Description,25} | {dal.DateOfEvent,21} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,7}");
             }
         }
     }
