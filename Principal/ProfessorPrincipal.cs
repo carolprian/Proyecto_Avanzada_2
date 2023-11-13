@@ -42,7 +42,6 @@ partial class Program
             IQueryable<RequestDetail> requests = db.RequestDetails
                 .Include(r => r.Request).ThenInclude(s=>s.Student).ThenInclude(g=>g.Group)
                 .Include(e=>e.Equipment).Where(d =>d.Request.ProfessorId == EncryptPass(user));
-                WriteLine($"ToQueryString: {requests.ToQueryString()}");
                 WriteLine("| {0,-1} | {1,-15} | {2,-26} | {3,-10} | {4,-3} | {5,-22} | {6,-22} | {7, -15}",
                         "Number of permission | "," Students Name | ","Students Paternal Last Name | ",
                          "Students Maternal Last Name | ", "Students Group | ","Equipments Name | ", "Dispatch Time | ", "Return Time");

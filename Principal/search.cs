@@ -107,7 +107,7 @@ partial class Program
                 i++;
                 var firstRequest = group.First();
 
-                WriteLine("Student {i} Information: ");
+                WriteLine($"Student {i} Information: ");
                 WriteLine("");
                 WriteLine($"Name: {student.Name}, Last Name: {student.LastNameP}, Group: {student.Group.Name}");
                 WriteLine("Equipment:");

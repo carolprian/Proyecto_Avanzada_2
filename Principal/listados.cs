@@ -27,7 +27,7 @@ partial class Program
                 i++;
                 var firstRequest = group.First();
 
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, ReturnTime: {firstRequest.ReturnTime}, RequestedDate: {firstRequest.RequestedDate}");
+                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, Return Time: {firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}, RequestedDate: {firstRequest.RequestedDate}");
 
                 WriteLine("Equipment:");
                 foreach (var r in group)
@@ -79,7 +79,7 @@ partial class Program
                 i++;
                 var firstRequest = group.First();
 
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, ReturnTime: {firstRequest.ReturnTime}, RequestedDate: {firstRequest.RequestedDate}");
+                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, Return Time: {firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}, RequestedDate: {firstRequest.RequestedDate}");
 
                 WriteLine("Equipments:");
                 foreach (var r in group)
@@ -151,7 +151,7 @@ partial class Program
                 WriteLine("");
                 WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
                 WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                WriteLine($"Return Time: {use.ReturnTime}");
+                WriteLine($"Return Time: {use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
                 WriteLine($"Date: {use.RequestedDate}");
 
             } 
@@ -179,16 +179,13 @@ partial class Program
             int i = 0;
             foreach (var use in requestDetails)
             {
-                if (use.ReturnTime < currentDate)
-                {
                     i++;
                     WriteLine($"Student {i} Information: ");
                     WriteLine("");
                     WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
-                    WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                    WriteLine($"Return Time: {use.ReturnTime}");
+                    WriteLine($"Equipment Name: {use.Equipment.Name}");
+                    WriteLine($"Return Time: {use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
                     WriteLine($"Date: {use.RequestedDate}");
-                }
             }
         }
     }
@@ -386,13 +383,13 @@ partial class Program
                 return;
             }
 
-            WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-100} | {4,-4} | {5,-10} | {6,-6}",
+            WriteLine("| {0,12} | {1,13} | {2,30} | {3,25} | {4,21} | {5,10} | {6,7} |",
                 "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
 
             // Use the data
             foreach (var dal in dyLequipments)
             {
-                WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-100} | {dal.DateOfEvent,-4} | {dal.Student?.Name,-10} | {dal.Coordinator?.Name,-6}");
+                WriteLine($"| {dal.DyLequipmentId,12} | {dal.Status?.Value,13} | {dal.Equipment?.Name,30} | {dal.Description,25} | {dal.DateOfEvent,21} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,7}");
             }
         }
     }
@@ -559,7 +556,7 @@ partial class Program
                 i++;
                 var firstRequest = group.First();
 
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, ReturnTime: {firstRequest.ReturnTime}, RequestedDate: {firstRequest.RequestedDate}");
+                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, Return Time: {firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}, RequestedDate: {firstRequest.RequestedDate}");
 
                 WriteLine("Equipment:");
                 foreach (var r in group)
@@ -670,7 +667,7 @@ partial class Program
                 {
                     i++;
                     WriteLine($"{i}. Equipment Name: {use.Equipment.Name} ");
-                    WriteLine($"Return Time: {use.ReturnTime}");
+                    WriteLine($"Return Time: {use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
                     WriteLine($"Date: {use.RequestedDate}");
                 }
             }
