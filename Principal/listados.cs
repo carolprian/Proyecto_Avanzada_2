@@ -571,6 +571,42 @@ partial class Program
         }
     }
 
+    public static void ViewPetition(string username)
+    {
+        using (bd_storage db = new())
+        {
+            IQueryable<PetitionDetail> petitionDetails = db.PetitionDetails
+            .Include( r => r.Equipment)
+            .Include( r => r.Petition)
+            .Where( s => s.Petition.ProfessorId.Equals(EncryptPass(username)));
+
+            if (!petitionDetails.Any() || petitionDetails is null)
+            {
+                WriteLine("No results found.");
+                return;
+            }
+
+            var groupedPetitions = petitionDetails.GroupBy(r => r.PetitionId);
+
+            int i = 0;
+
+            foreach (var group in groupedPetitions)
+            {
+                i++;
+                var firstRequest = group.First();
+
+                WriteLine($"PetitionId: {firstRequest.PetitionId}, PetitionDId: {firstRequest.PetitionDetailsId}, StatusId: {firstRequest.StatusId}, DispatchTime: {firstRequest.DispatchTime.TimeOfDay}, ReturnTime: {firstRequest.ReturnTime.TimeOfDay}, RequestedDate: {firstRequest.RequestedDate}");
+
+                WriteLine("Equipment:");
+                foreach (var r in group)
+                {
+                    WriteLine($"Equipment Name: {r.Equipment.Name}");
+                }
+            }
+            return;
+        } 
+    }
+
     public static void ViewRequestFormatNotAcceptedYet(string username)
     {
         using (bd_storage db = new())
@@ -596,7 +632,7 @@ partial class Program
                 i++;
                 var firstRequest = group.First();
 
-                WriteLine($"{i}. RequestId: {firstRequest.RequestDetailsId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime}, ReturnTime: {firstRequest.ReturnTime}, RequestedDate: {firstRequest.RequestedDate}");
+                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, RequestDId: {firstRequest.RequestDetailsId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime.TimeOfDay}, ReturnTime: {firstRequest.ReturnTime.TimeOfDay}, RequestedDate: {firstRequest.RequestedDate}");
 
                 WriteLine("Equipment:");
                 foreach (var r in group)

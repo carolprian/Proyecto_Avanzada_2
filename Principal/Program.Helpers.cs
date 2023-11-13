@@ -1,6 +1,9 @@
+using System.Globalization;
+
 partial class Program
 {
-   public static string VerifyReadLengthStringExact(int characters){
+    public static string VerifyReadLengthStringExact(int characters)
+    {
         string? text;
         do
         {
@@ -9,12 +12,12 @@ partial class Program
             {
                 WriteLine($"The input must have {characters} caracteres. Try again:");
             }
-
         } while (text.Length < characters || text.Length > characters);
         return text;
     }
 
-    public static string VerifyReadLengthString(int characters){
+    public static string VerifyReadLengthString(int characters)
+    {
         string? text;
         do
         {
@@ -23,12 +26,12 @@ partial class Program
             {
                 WriteLine($"The input must have minimum {characters} caracteres. Try again:");
             }
-
         } while (text.Length < characters);
         return text;
     }
 
-    public static string VerifyReadMaxLengthString(int characters){
+    public static string VerifyReadMaxLengthString(int characters)
+    {
         string? text;
         do
         {
@@ -37,22 +40,19 @@ partial class Program
             {
                 WriteLine($"The input must have maximum {characters} caracteres. Try again:");
             }
-
         } while (text.Length > characters);
         return text;
     }
 
-   
     public static string ReadNonEmptyLine()
     {
-        string? input= "";
-        while(string.IsNullOrWhiteSpace(input) || string.IsNullOrEmpty(input) || input == "" ){
-        input = ReadLine();
+        string? input = "";
+        while (string.IsNullOrWhiteSpace(input) || string.IsNullOrEmpty(input) || input == "")
+        {
+            input = ReadLine();
         }
         return input;
     }
-
-    
 
     public static int TryParseStringaEntero(string op)
     {
@@ -60,7 +60,7 @@ partial class Program
         while (true) // Infinite loop until there is a return, that there is a valid number
         {
             if (int.TryParse(op, out input))
-            {                
+            {
                 return input;
             }
             else
@@ -71,11 +71,13 @@ partial class Program
         }
     }
 
-    public static string ReadPassword(){
+    public static string ReadPassword()
+    {
         string password = "";
         ConsoleKeyInfo key;
 
-        do{
+        do
+        {
             key = ReadKey(true);
 
             if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Backspace)
@@ -89,10 +91,76 @@ partial class Program
                 password = password.Substring(0, password.Length - 1);
                 Write("\b \b"); // Borra el último asterisco mostrado
             }
-        }
-        while (key.Key != ConsoleKey.Enter);
+        } while (key.Key != ConsoleKey.Enter);
 
         WriteLine(); // Agrega una nueva línea después de ingresar la contraseña
         return password;
+    }
+
+    public static DateTime ProgrammedMaintenanceDate()
+    {
+        DateTime dateValue = new();
+        bool valideDate = false;
+        while (!valideDate)
+        {
+            string dateInput = ReadNonEmptyLine();
+            if (
+                DateTime.TryParseExact(
+                    dateInput,
+                    "yyyy/MM/dd",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out dateValue
+                )
+            )
+            {
+                valideDate = true;
+            }
+            else
+            {
+                WriteLine("The format must be yyyy/mm/dd. Try again.");
+            }
+        }
+        return dateValue;
+    }
+
+    public static DateTime? ReturnMaintenanceDate(DateTime currentDate)
+    {
+        DateTime dateValue = new();
+        bool valideDate = false;
+        while (!valideDate)
+        {
+            string dateInput = ReadNonEmptyLine();
+            if (
+                DateTime.TryParseExact(
+                    dateInput,
+                    "yyyy/MM/dd",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out dateValue
+                )
+            )
+            {
+                if (dateValue > currentDate.Date)
+                {
+                    if (
+                        dateValue.DayOfWeek != DayOfWeek.Saturday
+                        && dateValue.DayOfWeek != DayOfWeek.Sunday
+                    )
+                    {
+                        valideDate = true;
+                    }
+                }
+                else
+                {
+                    WriteLine("It must be after the programmed date. Try again");
+                }
+            }
+            else
+            {
+                WriteLine("The format must be yyyy/mm/dd. Try again.");
+            }
+        }
+        return dateValue;
     }
 }

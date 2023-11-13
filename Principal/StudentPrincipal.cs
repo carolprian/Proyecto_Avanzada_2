@@ -27,32 +27,27 @@ partial class Program{
             switch(op){
                 case 1:
                     validate = ValidateAddRequest(username);
-                    if(validate == true){
+                    if(validate == false){//CAmbiar a true
                         RequestFormat(username);
                     }
                     else {
                         WriteLine("You are only allow to fill a request format per day.");
-                        continued=false;
                     }
                 break;
                 case 2:
                     ViewAllEquipments(2);
-                    continued=false;
                 break;
                 case 3:
                     ListEquipmentsRequestsStudent(username);
-                    continued=false;
                 break;
                 case 4:
-
+                    UpdateRequestFormat(username);
                 break;
                 case 5:
                     DeleteRequestFormat(username);
-                    continued=false;
                 break;
                 case 6:
                     LateReturningStudent(username);
-                    continued=false;
                 break;
                 case 7:
                     continued=false;

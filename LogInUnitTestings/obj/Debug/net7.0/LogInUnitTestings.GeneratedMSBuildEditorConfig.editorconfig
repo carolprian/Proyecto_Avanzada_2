@@ -8,4 +8,8 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LogInUnitTestings
+<<<<<<< HEAD
 build_property.ProjectDir = C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\LogInUnitTestings\
+=======
+build_property.ProjectDir = C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\LogInUnitTestings\
+>>>>>>> 3bee3892ef81d04e33c0b5a11f986261ac9f87e2

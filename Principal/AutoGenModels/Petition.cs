@@ -12,7 +12,7 @@ public partial class Petition
     [Key]
     [Column("petitionId")]
     [Required]
-    public int? PetitionId { get; set; }
+    public int PetitionId { get; set; }
 
     [Column("classroomId")]
     [Required]

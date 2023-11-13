@@ -10,7 +10,7 @@ partial class Program
             WriteLine("Type the option you want to do");
             WriteLine("1.- Watch permissions");
             WriteLine("2.- Approve or Deny Permissions");
-            WriteLine("3.- Rquest for Material");
+            WriteLine("3.- Request for Material");
             WriteLine("4.- Exit");
             string op = VerifyReadLengthStringExact(1);
             switch (op)
@@ -22,7 +22,7 @@ partial class Program
                     ApprovePermissions(username);
                     break;
                 case "3":
-                    AddPetition(username);
+                    PetitionFormat(username);
                     break;
                 case "4":
                     return;
@@ -49,7 +49,7 @@ partial class Program
 
                 foreach (var element in requests)
                 {
-                            WriteLine("| {0,-1} | {1,-23} | {2,-12} | {3,-10} | {4,-3} | {5,-41} | {6,-22} | {7, -22}",
+                    WriteLine("| {0,-1} | {1,-23} | {2,-12} | {3,-10} | {4,-3} | {5,-41} | {6,-22} | {7, -22}",
                         i, element.Request.Student.Name,element.Request.Student.LastNameP, 
                         element.Request.Student.LastNameM,element.Request.Student.Group.Name, element.Equipment.Name,
                         element.DispatchTime,element.ReturnTime);
@@ -130,7 +130,7 @@ partial class Program
     }
     public static void Hi()
     {
-        List<int> valuesToEncrypt = new List<int> { 1000, 2000, 3000, 4000, 5000 };
+        List<int> valuesToEncrypt = new List<int> { 1111111111 };
 
         foreach (int value in valuesToEncrypt)
         {
@@ -139,10 +139,6 @@ partial class Program
 
             Console.WriteLine($"Original Value: {value}, Encrypted Value: {encryptedValue}");
         }
-    }
-    public static void AddPetition(string username)
-    {
-
     }
     public static void Hi2(){
         using (bd_storage db = new bd_storage()){

@@ -1,9 +1,7 @@
 namespace LogInUnitTestings;
 using AutoGens;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Moq;
-using Xunit.Sdk;
 
 public class LogInUnitTest
 {
@@ -14,10 +12,10 @@ public class LogInUnitTest
         string username = "000000000";
 
         // Act
-        var ex = Assert.Throws<Microsoft.Data.Sqlite.SqliteException>(() => Program.DeleteRequestFormat(username));
+        var ex = Assert.Throws<SqliteException>(() => Program.DeleteRequestFormat(username));
 
         // Assert
-        Assert.IsType<Microsoft.Data.Sqlite.SqliteException>(ex);
+        Assert.IsType<SqliteException>(ex);
     }
 
     [Fact]
