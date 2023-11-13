@@ -336,25 +336,11 @@ partial class Program{
                     {
                         WriteLine("Provide the equipment ID you want to see more info:");
                         read = VerifyReadMaxLengthString(15);
+                        int found = ShowEquipmentBylookigForEquipmentId(read);   
+                        if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );}
                         
-                        IQueryable<Equipment>  equipms = db.Equipments
-                        .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator).Where(e=>e.EquipmentId.Equals(read));
-                        if(equipms is not null)
-                        {
-                            foreach(var equip in equipms)
-                            {
-                            WriteLine($"Equipment ID:  {equip.EquipmentId}");
-                            WriteLine($"Equipment Name:  {equip.Name}");
-                            WriteLine($"Equipment Area:  {equip.Area?.Name}");
-                            WriteLine($"Equipment Description:  {equip.Description}");
-                            WriteLine($"Equipment Year of Fabrication:  {equip.Year}");
-                            WriteLine($"Equipment Status:  {equip.Status?.Value}");
-                            WriteLine($"Equipment Control Number: {equip.ControlNumber}");
-                            WriteLine($"Equipment Coordinator:  {equip.Coordinator?.Name} {equip.Coordinator?.LastNameP} {equip.Coordinator?.LastNameM}");
-                            }
-                        }
                     }
-                    WriteLine("Presiona una tecla para cargar más resultados (o presiona 'q' para salir)...");
+                    WriteLine("Press the left or right arrow key to see more results (press 'q' to exit)...");
                     if(ReadKey(intercept: true).Key == ConsoleKey.LeftArrow)
                     {
                         offset = offset - batchS;
@@ -421,19 +407,67 @@ partial class Program{
 
             if (!equipments.Any())
             {
-                WriteLine("No equipment found matching the search term: " + searchTerm);
+                WriteLine("No equipment found matching the search term:  " + searchTerm);
                 return;
             }
-
-            WriteLine("| {0,-11} | {1,-15} | {2,-26} | {3,-80} | {4,4} | {5,17} | {6,20} | {7,6}",
-                "EquipmentId", "Name", "Area", "Description", "Year", "Status", "ControlNumber", "Coordinator");
-
-            foreach (var e in equipments)
+            else
             {
-                WriteLine($"| {e.EquipmentId,-11} | {e.Name,-15} | {e.Area?.Name,-26} | {e.Description,-80} | {e.Year,4} | {e.Status?.Value,17} | {e.ControlNumber,20} | {e.Coordinator?.Name,6}");
+
+                WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                        "EquipmentId", "Equipment Name", "Year", "Status");
+                    WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+                    
+                    foreach( var e in equipments)
+                    {
+                            WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                             e.EquipmentId, e.Name, e.Year, e.Status?.Value); 
+                    }
+                    
+                    WriteLine("Do you want to see more information about any of the equipments?(y/n)");
+                    string read = VerifyReadLengthStringExact(1);
+                    if(read == "y" || read =="Y")
+                    {
+                        WriteLine("Provide the equipment ID you want to see more info:");
+                        read = VerifyReadMaxLengthString(15);
+                        int found = ShowEquipmentBylookigForEquipmentId(read);   
+                        if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );}
+                        
+                    }
             }
         }
         
+    }
+
+    public static int ShowEquipmentBylookigForEquipmentId(string id)
+    {
+        using(bd_storage db = new())
+        {
+        IQueryable<Equipment>  equipms = db.Equipments
+            .Include(e => e.Area)
+            .Include(e => e.Status)
+            .Include(e => e.Coordinator)
+            .Where(e=>e.EquipmentId.Equals(id));
+
+            if(equipms is not null)
+            {
+                foreach(var equip in equipms)
+                {
+                    WriteLine($"Equipment ID:  {equip.EquipmentId}");
+                    WriteLine($"Equipment Name:  {equip.Name}");
+                    WriteLine($"Equipment Area:  {equip.Area?.Name}");
+                    WriteLine($"Equipment Description:  {equip.Description}");
+                    WriteLine($"Equipment Year of Fabrication:  {equip.Year}");
+                    WriteLine($"Equipment Status:  {equip.Status?.Value}");
+                    WriteLine($"Equipment Control Number: {equip.ControlNumber}");
+                    WriteLine($"Equipment Coordinator:  {equip.Coordinator?.Name} {equip.Coordinator?.LastNameP} {equip.Coordinator?.LastNameM}");
+                }
+                return equipms.Count();
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 
     public static void ViewAllEquipmentsForMaintenance()

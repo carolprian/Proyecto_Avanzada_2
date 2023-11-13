@@ -1,5 +1,6 @@
  using Microsoft.EntityFrameworkCore;
 using AutoGens;
+using Microsoft.EntityFrameworkCore.Update;
 partial class Program
 {
     public static void DeliveryEquipmentsStudents()
@@ -45,11 +46,56 @@ partial class Program
                     {
                         foreach(var r in requestDetailss)
                         {
+                            if(r.StatusId == 1)
+                            {
+                                WriteLine();
                                 WriteLine($"Id: {r.EquipmentId}");
                                 WriteLine($"Name: {r.Equipment?.Name}");
                                 WriteLine($"Status: {r.Status?.Value}");
                                 WriteLine($"Description: {r.Equipment?.Description}");
                                 WriteLine();
+                            }
+                            else
+                            {
+                                WriteLine($"I'm sorry to inform you that the equipment {r.EquipmentId} you were going to use is not available anymore");
+                                WriteLine("Would you like to choose another one instead? (y/n)");
+                                string option = VerifyReadLengthStringExact(1);
+                                if(option=="y" || option == "Y")
+                                {
+                                    WriteLine("This are the equipments in the same area yours was:");
+                                    IQueryable<Equipment> equipmentsAvailableNow = db.Equipments
+                                    .Include(e=>e.RequestDetails)
+                                    .Where(e=>e.StatusId.Equals(1))
+                                    .Where(e=>e.AreaId.Equals(r.Equipment.AreaId));
+
+                                    WriteLine("{0,-15} | {1,-80} | {2,7} | {3} |",
+                                    "EquipmentId", "Equipment Name", "Year", "Description");
+                                    WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+                                    List<string> eqAvailableId = new List<string>();
+                                    foreach(var eq in equipmentsAvailableNow)
+                                    {
+                                        eqAvailableId.Add(eq.EquipmentId);
+                                        WriteLine("{0,-15} | {1,-80} | {2,7} | {3}",
+                                        eq.EquipmentId, eq.Name, eq.Year, eq.Description);                                      
+                                    }   
+                                    WriteLine("Write the equipment id you would like to use:");
+                                    string equipmnew = VerifyReadMaxLengthString(15);
+                                    if(eqAvailableId.Contains(equipmnew))
+                                    {
+                                        // modificar en request details donde estaba el primer id equip por el nuevo
+                                        IQueryable<RequestDetail> requestDetailsnew = db.RequestDetails
+                                        .Where(r=>r.RequestId.Equals(TryParseStringaEntero(requestid)))
+                                        .Where(r=>r.EquipmentId.Equals(r.EquipmentId));
+                                        requestDetailsnew.First().EquipmentId= equipmnew;
+                                        int affected = db.SaveChanges();
+                                        //modificar status equipo en equipment del nuevo
+                                        IQueryable<Equipment> equipmentnew = db.Equipments
+                                        .Where(e=>e.EquipmentId.Equals(equipmnew));
+                                        equipmentnew.First().StatusId = 2;
+                                        affected= db.SaveChanges();
+                                    }
+                                }    
+                            }
                         }
                     }
                     
@@ -129,9 +175,17 @@ partial class Program
                     }
                     }
                 }
+                WriteLine("Press the enter key to return to the menu:");
+                if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                {
+                    Console.Clear();
+                    return;
+                }
             }
     
     }
+
+
 
     public static void DeliveryEquipmentsProfessors()
     {
@@ -176,11 +230,56 @@ partial class Program
                     {
                         foreach(var r in requestDetailss)
                         {
+                            if(r.StatusId == 1)
+                            {
+                                WriteLine();
                                 WriteLine($"Id: {r.EquipmentId}");
                                 WriteLine($"Name: {r.Equipment?.Name}");
                                 WriteLine($"Status: {r.Status?.Value}");
-                                WriteLine($"Description: {r.Equipment.Description}");
+                                WriteLine($"Description: {r.Equipment?.Description}");
                                 WriteLine();
+                            }
+                            else
+                            {
+                                WriteLine($"I'm sorry to inform you that the equipment {r.EquipmentId} you were going to use is not available anymore");
+                                WriteLine("Would you like to choose another one instead? (y/n)");
+                                string option = VerifyReadLengthStringExact(1);
+                                if(option=="y" || option == "Y")
+                                {
+                                    WriteLine("This are the equipments in the same area yours was:");
+                                    IQueryable<Equipment> equipmentsAvailableNow = db.Equipments
+                                    .Include(e=>e.RequestDetails)
+                                    .Where(e=>e.StatusId.Equals(1))
+                                    .Where(e=>e.AreaId.Equals(r.Equipment.AreaId));
+
+                                    WriteLine("{0,-15} | {1,-80} | {2,7} | {3} |",
+                                    "EquipmentId", "Equipment Name", "Year", "Description");
+                                    WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+                                    List<string> eqAvailableId = new List<string>();
+                                    foreach(var eq in equipmentsAvailableNow)
+                                    {
+                                        eqAvailableId.Add(eq.EquipmentId);
+                                        WriteLine("{0,-15} | {1,-80} | {2,7} | {3}",
+                                        eq.EquipmentId, eq.Name, eq.Year, eq.Description);                                      
+                                    }   
+                                    WriteLine("Write the equipment id you would like to use:");
+                                    string equipmnew = VerifyReadMaxLengthString(15);
+                                    if(eqAvailableId.Contains(equipmnew))
+                                    {
+                                        // modificar en request details donde estaba el primer id equip por el nuevo
+                                        IQueryable<PetitionDetail> requestDetailsnew = db.PetitionDetails
+                                        .Where(r=>r.PetitionId.Equals(TryParseStringaEntero(requestid)))
+                                        .Where(r=>r.EquipmentId.Equals(r.EquipmentId));
+                                        requestDetailsnew.First().EquipmentId= equipmnew;
+                                        int affected = db.SaveChanges();
+                                        //modificar status equipo en equipment del nuevo
+                                        IQueryable<Equipment> equipmentnew = db.Equipments
+                                        .Where(e=>e.EquipmentId.Equals(equipmnew));
+                                        equipmentnew.First().StatusId = 2;
+                                        affected= db.SaveChanges();
+                                    }
+                                }    
+                            }
                         }
                     }
                     

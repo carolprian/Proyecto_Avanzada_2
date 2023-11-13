@@ -12,6 +12,7 @@ public partial class Program
         // StorersPrincipal();
         //MenuStudents("20300826");
         //Hi();
+        Hi3Storer();
         while (true)
         {
             WriteLine("Principal Menu: ");

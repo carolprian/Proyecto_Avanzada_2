@@ -155,5 +155,15 @@ partial class Program
             }
         }
     }
+    public static void Hi3Storer(){
+        using (bd_storage db = new bd_storage()){
+            IQueryable<Storer> professors = db.Storers;
+            foreach (var item in professors)
+            {
+                WriteLine(Decrypt(item.StorerId));
+                WriteLine(Decrypt(item.Password));
+            }
+        }
+    }
 
 }

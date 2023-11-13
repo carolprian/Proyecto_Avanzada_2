@@ -42,7 +42,8 @@ partial class Program{
 
                     WriteLine();
                     WriteLine("Provide the equipment name:");
-                    string name = VerifyReadMaxLengthString(40);
+                    string name = "";
+                    name = VerifyReadMaxLengthString(40);
                     WriteLine();
                     short areaid=-1;
                         
@@ -68,10 +69,12 @@ partial class Program{
                     
                     WriteLine();
                     WriteLine("Provide the description of the equipment:");
-                    string description = VerifyReadMaxLengthString(200);
+                    string description = "";
+                    description = VerifyReadMaxLengthString(200);
                     WriteLine();
                     WriteLine("Insert the year of fabrication of the equipment:");
-                    int year = TryParseStringaEntero(ReadNonEmptyLine());
+                    int year = 0;
+                    year = TryParseStringaEntero(ReadNonEmptyLine());
                     WriteLine();
                     WriteLine("Choose and write the option of the current status of the equipment:");
                     int statusCount = ListStatus();
@@ -127,13 +130,19 @@ partial class Program{
                     {
                         coordinatorid = coordinators[coordid - 1];
                     }
-                    var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid);
-                    if(resultAdd.affected == 1)
+                    if(equipmentid!="" && name !="" && areaid !=-1 && description !="" && year !=0 && statusid != 0 && controlnumber !="" && coordinatorid !="")
                     {
-                        WriteLine($"The equipment {resultAdd.EquipmentId} was created succesfully");
+                        var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid);
+                        if(resultAdd.affected == 1)
+                        {
+                            WriteLine($"The equipment {resultAdd.EquipmentId} was created succesfully");
+                        }
+                        else{
+                            WriteLine("The equipment was not registered.");
+                        }
                     }
                     else{
-                        WriteLine("The equipment was not registered.");
+                        WriteLine("The was en error introducing the values for the equipment, the equipment was not created!");
                     }
 
                 break;
