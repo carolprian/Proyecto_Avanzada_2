@@ -1,5 +1,10 @@
 namespace LogInUnitTestings;
 using AutoGens;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using Xunit.Sdk;
+
 public class LogInUnitTest
 {
     [Fact]
@@ -25,8 +30,6 @@ public class LogInUnitTest
         Assert.Throws<OutOfMemoryException>(() => Program.EncryptPass(longPlainText));
     }
 
-    public class CryptoTests
-{
     [Fact]
     public void TestDecrypt_InvalidCipherText()
     {
@@ -36,7 +39,29 @@ public class LogInUnitTest
         // Act & Assert
         Assert.Throws<FormatException>(() => Program.Decrypt(invalidCipherText));
     }
+
+    [Fact]
+    public void TestSearchEquipmentsById()
+    {
+        // Arrange
+        string searchTerm = string.Empty;
+
+        var dbContextMock = new Mock<bd_storage>();
+
+        dbContextMock.Setup(db => db.Equipments).Throws<InvalidOperationException>();
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => Program.SearchEquipmentsById(searchTerm));
+    }
+
+    [Fact]
+    public void DeleteRequest_WithInvalidId()
+    {
+        // Arrange
+        int invalidRequestId = unchecked(int.MaxValue + 1);
+
+        // Act & Assert
+        Assert.Throws<SqliteException>(() => Program.DeleteRequest(invalidRequestId));
+    }
 }
 
-
-}
