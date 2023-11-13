@@ -54,7 +54,7 @@ partial class Program
         return input;
     }
 
-    public static int TryParseStringaEntero(string op)
+    public static int TryParseStringaEntero(string? op)
     {
         int input;
         while (true) // Infinite loop until there is a return, that there is a valid number

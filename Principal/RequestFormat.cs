@@ -49,7 +49,7 @@ partial class Program
             }
         }
     }
-    public static (List<int> affected, List<int> requestDetailsId) AddRequestDetails(int requestId, List<string> equipmentsId, int professorNip, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments){
+    public static (List<int> affected, List<int> requestDetailsId) AddRequestDetails(int requestId, List<string>? equipmentsId, int professorNip, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?>? statusEquipments){
         int i=0;
         List<int>? requestDetailsId = new List<int>();
         List<int>? affecteds = new List<int>();
@@ -746,49 +746,48 @@ partial class Program
 
             using (bd_storage db = new())
             {
-                // Verifica si existe el RequestDetail con el ID proporcionado
                 var requestDetail = db.RequestDetails
-                    .FirstOrDefault(e => e.RequestDetailsId == detailsId);
+                .FirstOrDefault(e => e.RequestDetailsId == detailsId);
+
+                // Obtén el RequestId asociado
+                int? requestId = requestDetail.RequestId;
+
+                var request = db.Requests
+                .FirstOrDefault(r => r.RequestId == requestId);
+
 
                 if (requestDetail == null)
                 {
                     WriteLine("That request ID doesn't exist in the database, try again");
                     continue; // Vuelve al inicio del bucle
                 }
-
-                // Elimina el registro de RequestDetails
-                db.RequestDetails.Remove(requestDetail);
-                int affectedDetails = db.SaveChanges();
-
-                if (affectedDetails > 0)
-                {
-                    WriteLine("RequestDetail successfully deleted");
-                }
                 else
                 {
-                    WriteLine("RequestDetail couldn't be deleted");
-                }
+                    // Elimina el registro de RequestDetails
+                    db.RequestDetails.Remove(requestDetail);
+                    int affectedDetails = db.SaveChanges();
 
-                // Obtén el RequestId asociado
-                int? requestId = requestDetail.RequestId;
-
-                // Elimina el registro de Requests
-                var request = db.Requests
-                    .FirstOrDefault(r => r.RequestId == requestId);
-
-                if (request != null)
-                {
-                    db.Requests.Remove(request);
-                    int affectedRequests = db.SaveChanges();
-
-                    if (affectedRequests > 0)
+                    if (affectedDetails > 0)
                     {
-                        WriteLine("Request successfully deleted");
+                        WriteLine("RequestDetail successfully deleted");
+                        db.Requests.Remove(request);
+                        int affectedRquest= db.SaveChanges();
+
+                        if (affectedRquest == 1)
+                        {
+                            WriteLine("Request successfully deleted");
+                        }
+                        else
+                        {
+                            WriteLine("Request couldn't be deleted");
+                        }
+                        
                     }
                     else
                     {
-                        WriteLine("Request couldn't be deleted");
+                        WriteLine("RequestDetail couldn't be deleted");
                     }
+
                 }
             }
 

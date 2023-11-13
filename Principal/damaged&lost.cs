@@ -107,7 +107,7 @@ partial class Program{
                 
     }
 
-    static (int affected, int DyLequipmentId) CreateReportDamagedLost(byte statusid, string equipmentid, string description, DateTime dateofevent, string studentid, string coordinatorid, string returndescrip, DateTime returnDate)
+    static (int affected, int DyLequipmentId) CreateReportDamagedLost(byte statusid, string equipmentid, string description, DateTime dateofevent, string studentid, string? coordinatorid, string returndescrip, DateTime returnDate)
     {
         using(bd_storage db = new())
         {
@@ -188,7 +188,7 @@ partial class Program{
                         {
                             dyLequipment.StatusId = 1;
 
-                            Equipment equipment = dyLequipment.Equipment;
+                            Equipment? equipment = dyLequipment.Equipment;
                             equipment.StatusId = 1;
 
                             db.Update(dyLequipment);

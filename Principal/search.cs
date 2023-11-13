@@ -92,7 +92,7 @@ partial class Program
 
             List<int> requestIds = requests.Select(r => r.RequestId).ToList();
             
-            IQueryable<RequestDetail> RequestDetails = db.RequestDetails
+            IQueryable<RequestDetail>? RequestDetails = db.RequestDetails
             .Where(rd => requestIds.Contains((int)rd.RequestId) && rd.StatusId == 2)
             .Include(rd => rd.Equipment);
 
@@ -107,7 +107,7 @@ partial class Program
                 i++;
                 var firstRequest = group.First();
 
-                WriteLine("Student {i} Information: ");
+                WriteLine($"Student {i} Information: ");
                 WriteLine("");
                 WriteLine($"Name: {student.Name}, Last Name: {student.LastNameP}, Group: {student.Group.Name}");
                 WriteLine("Equipment(s):");

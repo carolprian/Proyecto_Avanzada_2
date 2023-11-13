@@ -11,7 +11,6 @@ public partial class Program
         ForegroundColor = ConsoleColor.Gray;
         // ApprovePermissions();
         // StorersPrincipal();
-        Hi3Storer();
         while (true)
         {
             Console.Clear();
