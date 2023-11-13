@@ -132,7 +132,7 @@ partial class Program{
         }
     }
 
-    static int UpdateEquipmentStatus(byte newStatus, string equipmentId )
+    public static int UpdateEquipmentStatus(byte newStatus, string equipmentId )
     {
         int affected = 0;
         using(bd_storage db = new())

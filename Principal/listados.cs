@@ -314,6 +314,10 @@ partial class Program
 
     public static void SearchEquipmentsById(string searchTerm)
     {
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            throw new InvalidOperationException();
+        }
         using (bd_storage db = new())
         {
             IQueryable<Equipment>? equipments = db.Equipments
@@ -366,6 +370,7 @@ partial class Program
 
     public static void ListDandLequipment()
     {
+        
         using (bd_storage db = new())
         {
             IQueryable<DyLequipment> dyLequipments = db.DyLequipments
