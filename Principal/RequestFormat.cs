@@ -10,11 +10,16 @@ partial class Program
 {
     public static void RequestFormat(string username)
     {
+
+    //pide plantel si no es colomos no lo deja continuar
         string plantel = AddPlantel();
+        //la fecha en la que pide el permiso
         DateTime currentDate = DateTime.Now;
+        //saca el grupo y el Id del student
         var student = AddStudent(username);
         string studentId = student.Item1;
         int groupId = student.Item2;
+        
         int classroomId = AddClassroom();
         string subjectId = SearchSubjectsByName("a", 1);
         string professorId = SearchProfessorByName("A", 0, 0);
@@ -519,20 +524,20 @@ partial class Program
                 } else if((scheduleIdEndI - scheduleIdInitI) < 1 || (scheduleIdEndI - scheduleIdInitI) > 5 ) {
                     WriteLine($"The bare minium of loans are 50 min and maximun are 3 hours and 20 minuts"); 
                 } else {
-                    IQueryable<Schedule> startHour = db.Schedules.Where(s => s.ScheduleId == scheduleIdInitI);
+                    IQueryable<Schedule>? startHour = db.Schedules.Where(s => s.ScheduleId == scheduleIdInitI);
                     if(startHour is null || !startHour.Any()){
                         WriteLine("Wrong start hour. Try again");
                         initEnd=false;
                     } else 
                     {
-                        initTimeValue = startHour.FirstOrDefault()?.InitTime ?? dateValue.Date;
+                        initTimeValue = dateValue.Date + startHour.FirstOrDefault().InitTime.TimeOfDay;
 
                         IQueryable<Schedule> finHour = db.Schedules.Where(s => s.ScheduleId == scheduleIdEndI);
                         if(finHour is null || !finHour.Any()){
                             WriteLine("Wrong end hour. Try again");
                             initEnd=false;
                         } else {
-                            endTimeValue = finHour.FirstOrDefault()?.InitTime ?? dateValue.Date;
+                            endTimeValue = dateValue.Date + finHour.FirstOrDefault().InitTime.TimeOfDay;
                             valideHours=true;
                         }
                     }

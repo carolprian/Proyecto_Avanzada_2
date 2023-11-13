@@ -13,6 +13,7 @@ partial class Program
         string tableName;
         while (true)
         {
+            //menu de para registrar
             WriteLine("Welcome to the register ");
             WriteLine("What kind of user are you?");
             WriteLine("1.Student");
@@ -32,10 +33,12 @@ partial class Program
                     return;
 
                 case "2":
+                //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     WriteLine("Please enter the safecode in order to create a new Professor");
                     safecode = ReadNonEmptyLine();
                     if(safecode == "Brambi12345")
                     {
+                        //si es correcto deja registrarlo
                         bdquery = RegistroProf();
                     }
                     else
@@ -46,11 +49,13 @@ partial class Program
                     return;
 
                 case "3":
+                //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     tableName = "Coordinator";
                     WriteLine("Please enter the safecode in order to create a new Coordinator");
                     safecode = ReadNonEmptyLine();
                     if(safecode == "Brambi12345")
                     {
+                        //si es correcto deja registrarlo
                         bdquery = RegistroStorerCoord(tableName);
                     }
                     else
@@ -61,11 +66,13 @@ partial class Program
                     return;
 
                 case "4":
+                //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     tableName = "Storer";
                     WriteLine("Please enter the safecode in order to create a new Storer");
                     safecode = ReadNonEmptyLine();
                     if(safecode == "Brambi12345")
                     {
+                        //si es correcto deja registrarlo
                         bdquery = RegistroStorerCoord(tableName);
                     }
                     else
@@ -88,6 +95,7 @@ partial class Program
 
     public static bool RegistroProf()
     {
+        //pide datos para registro, ReadNonEmptyLine() poara que se regustren datos
         WriteLine("Provide your payroll number, this will be your ID: ");
         string username = EncryptPass(VerifyReadLengthStringExact(10));
 
@@ -108,13 +116,14 @@ partial class Program
 
         while (op == 0)
         {
+            //mientras no sea valido lo pide todo el rato
             WriteLine("Create your confirmation NIP for your students requests (4 digits): ");
             nip = VerifyReadLengthStringExact(4);
 
             using (bd_storage db = new())
             {
                 IQueryable<Professor> professors = db.Professors.Where(p => p.Nip == nip);
-                if (((professors is null) || professors.Any()))
+                if (((professors is null) || !professors.Any()))
                 {
                     op = 1;
                 }
@@ -159,6 +168,8 @@ partial class Program
 
     public static bool RegistroStorerCoord(string tableName)
     {
+        //pide datos para registr, ReadNonEmptyLine() poara que se regustren datos
+        //es el mismo 
         WriteLine("Provide your payroll number, this will be your ID: ");
         string username = EncryptPass(VerifyReadLengthStringExact(10));
         WriteLine("Provide your name: ");
@@ -175,11 +186,12 @@ partial class Program
 
         // add to the database the register
         int affected = 0;
-
+        
         if (tableName == "Storer")
         {
             using (bd_storage db = new())
             {
+                //agrega a la bd
                 Storer s = new()
                 {
                     StorerId = username,
