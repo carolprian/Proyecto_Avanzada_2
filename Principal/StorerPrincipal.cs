@@ -145,6 +145,12 @@ partial class Program{
                     else{
                         WriteLine("The was en error introducing the values for the equipment, the equipment was not created!");
                     }
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
 
                 break;
 
@@ -182,46 +188,113 @@ partial class Program{
                     {
                         WriteLine("Sorry, that is not an option.");
                     }
+                    
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "6": // LIst Equipment Requests
                     ListEquipmentsRequests();
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "7": // LIst Equipment Requests only for tomorrow
                     TomorrowsEquipmentRequests();
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "8":    
-                    SubMenuStudentsHistory();            
+                    SubMenuStudentsHistory();   
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }        
                 break;
 
                 case "9":
                     SubMenuStudentsusingEquipment();
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "10":
                     DeliveryEquipment(); 
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "11":
                     ReturnEquipment();
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "12":
                     DamagedLostReportInit();
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "13": // Student debt of lost or damaged
                     StudentDebtLostDamagedEquipment();
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "14":// Program maintenance for a equipment
                     MaintenanceRegisterSubMenu(username);
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "15": 
                     ViewMaintenanceHistory();
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                 break;
 
                 case "16":// change storer password
@@ -229,6 +302,12 @@ partial class Program{
                     if(resultChangeStorerPsw.affected == 1)
                     {
                         WriteLine($"Password was successfully changed for {Decrypt(resultChangeStorerPsw.storerId)}");
+                    }
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
                     }
                 break;
 

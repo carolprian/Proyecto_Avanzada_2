@@ -8,11 +8,9 @@ public partial class Program
         bd_storage db = new();
         WriteLine($"Provider : {db.Database.ProviderName}"); 
         WriteLine();
+        ForegroundColor = ConsoleColor.Gray;
         // ApprovePermissions();
         // StorersPrincipal();
-        MenuStudents("20300826");
-        //Hi();
-        StudentsPrincipal("20300679");
         Hi3Storer();
         while (true)
         {

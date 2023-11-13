@@ -110,14 +110,14 @@ partial class Program
                 WriteLine("Student {i} Information: ");
                 WriteLine("");
                 WriteLine($"Name: {student.Name}, Last Name: {student.LastNameP}, Group: {student.Group.Name}");
-                WriteLine("Equipment:");
+                WriteLine("Equipment(s):");
                 foreach (var r in group)
                 {
                     WriteLine($" Equipment Name: {r.Equipment.Name}");
                 }
 
-                WriteLine($"Return Time: {firstRequest.ReturnTime}");
-                WriteLine($"Date: {firstRequest.RequestedDate}");
+                WriteLine($"Return Time: {firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}");
+                WriteLine($"Date: {firstRequest.RequestedDate.Date}");
 
             } 
         }

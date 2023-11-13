@@ -377,7 +377,6 @@ partial class Program
             .Where(r=>r.StatusId != 2)
             .Where(r=>r.Request.StudentId.Equals(register));
            
-            WriteLine($"Query: {requestDetailsToday.ToQueryString()}");
             List<int> requestsid = new List<int>();
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((requestDetailsToday is null) || !requestDetailsToday.Any())

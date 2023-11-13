@@ -112,6 +112,7 @@ partial class Program
             foreach (var use in dyLequipments)
             {
                 i++;
+                WriteLine();
                 WriteLine($"Student {i} Information: ");
                 WriteLine($"Name: {use.Student.Name}, Last Name: {use.Student.LastNameP}, Group: {use.Student.Group.Name}");
                 WriteLine("Equipment Information");
@@ -119,6 +120,7 @@ partial class Program
                 WriteLine($"Equipment Name: {use.Equipment.Name} ");
                 WriteLine($"Description: {use.Description}");
                 WriteLine($"Date of event: {use.DateOfEvent}");
+                WriteLine();
             } 
         }
         return aux;
@@ -147,12 +149,14 @@ partial class Program
             {
 
                 i++;
+                WriteLine();
                 WriteLine($"Student {i} Information: ");
                 WriteLine("");
                 WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
                 WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                WriteLine($"Return Time: {use.ReturnTime}");
-                WriteLine($"Date: {use.RequestedDate}");
+                WriteLine($"Return Time: {use.ReturnTime.Hour} : {use.ReturnTime.Minute}");
+                WriteLine($"Date: {use.RequestedDate.Date}");
+                WriteLine();
 
             } 
         }
@@ -182,12 +186,14 @@ partial class Program
                 if (use.ReturnTime < currentDate)
                 {
                     i++;
+                    WriteLine();
                     WriteLine($"Student {i} Information: ");
                     WriteLine("");
                     WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
                     WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                    WriteLine($"Return Time: {use.ReturnTime}");
-                    WriteLine($"Date: {use.RequestedDate}");
+                    WriteLine($"Return Time: {use.ReturnTime.Hour} : {use.ReturnTime.Minute}");
+                    WriteLine($"Date: {use.RequestedDate.Date}");
+                    WriteLine();
                 }
             }
         }
@@ -333,13 +339,39 @@ partial class Program
                 WriteLine("No equipment found matching the search term: " + searchTerm);
                 return;
             }
+            else
+            {
+                WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                        "EquipmentId", "Equipment Name", "Year", "Status");
+                    WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+                    
+                    foreach( var e in equipments)
+                    {
+                            WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                             e.EquipmentId, e.Name, e.Year, e.Status?.Value); 
+                    }
+                    
+                    WriteLine("Do you want to see more information about any of the equipments?(y/n)");
+                    string read = VerifyReadLengthStringExact(1);
+                    if(read == "y" || read =="Y")
+                    {
+                        WriteLine("Provide the equipment ID you want to see more info:");
+                        read = VerifyReadMaxLengthString(15);
+                        int found = ShowEquipmentBylookigForEquipmentId(read);   
+                        if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );}
+                        
+                    }
 
+/*
             WriteLine("| {0,-11} | {1,-15} | {2,-26} | {3,-80} | {4,4} | {5,17} | {6,20} | {7,6}",
                 "EquipmentId", "Name", "Area", "Description", "Year", "Status", "ControlNumber", "Coordinator");
 
             foreach (var e in equipments)
             {
                 WriteLine($"| {e.EquipmentId,-11} | {e.Name,-15} | {e.Area?.Name,-26} | {e.Description,-80} | {e.Year,4} | {e.Status?.Value,17} | {e.ControlNumber,20} | {e.Coordinator?.Name,6}");
+            }
+
+            */
             }
         }
     }

@@ -92,9 +92,9 @@ partial class Program{
             }
             else
             {// decrpt professors.First().ProfessorId
-                WriteLine($"This are the due to return request(s) for today by the teacher: {professors.First().ProfessorId} - {professors.First().Name} {professors.First().LastNameP} {professors.First().LastNameM} ");
+                WriteLine($"This are the due to return request(s) for today by the teacher:  {professors.First().Name} {professors.First().LastNameP} {professors.First().LastNameM} ");
                 //IQueryable<RequestDetail> requestDetails = db.RequestDetails;
-                var result = DueToReturnRequestsByStudent(profid);
+                var result = DueToReturnRequestsByProfessor(profid);
                 string requestid = "0";
                 if(result.count >= 1)
                 {
@@ -210,7 +210,7 @@ partial class Program{
         using(bd_storage db = new())
         {            
             IQueryable<PetitionDetail>? requestDetailsToReturn = db.PetitionDetails?
-            .Include( e => e.Equipment).Include(e=> e.Status)
+            .Include( e => e.Equipment).Include(e=> e.Status).Include(e=>e.Petition.Professor)
             .Where(r=>r.StatusId == 2)
             .Where(r=>r.Petition.ProfessorId.Equals(EncryptPass(register)));
            
@@ -218,7 +218,7 @@ partial class Program{
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((requestDetailsToReturn is null) || !requestDetailsToReturn.Any())
             {
-                WriteLine($"There are no requests due to return by the professor {Decrypt(register)}.");
+                WriteLine($"There are no requests due to return by the professor.");
                 return (0,requestsid.ToArray());
             }
             else
@@ -231,7 +231,7 @@ partial class Program{
                         ConsoleColor backGroundColor = ForegroundColor;
                         ForegroundColor = ConsoleColor.Red;  
                         WriteLine($"RequestId: {r.PetitionId} ");
-                        WriteLine($"ProfessorId: {Decrypt(register)} ");
+                        WriteLine($"ProfessorId: {r.Petition.Professor.Name} {r.Petition.Professor.LastNameP} {r.Petition.Professor.LastNameM} ");
                         WriteLine($"RequestedDate: {r.RequestedDate.Date}"); 
                         WriteLine($"DispatchTime: {r.DispatchTime} ");
                         WriteLine($"ReturnTime: {r.ReturnTime}");
@@ -241,7 +241,7 @@ partial class Program{
                     {
                     //WriteLine($"StudentId: {register} RequestId: {r.RequestId}, Quantity: {r.Quantity}, StatusId: {r.Status?.Value}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime.Hour}, ReturnTime: {r.ReturnTime.Hour}, RequestedDate: {r.RequestedDate}, EquipmentNames: {r.Equipment?.Name}");
                         WriteLine($"RequestId: {r.PetitionId} ");
-                        WriteLine($"ProfessorId: {Decrypt(register)} ");
+                        WriteLine($"ProfessorId: {r.Petition.Professor.Name} {r.Petition.Professor.LastNameP} {r.Petition.Professor.LastNameM} ");
                         WriteLine($"RequestedDate: {r.RequestedDate.Date}"); 
                         WriteLine($"DispatchTime: {r.DispatchTime} ");
                         WriteLine($"ReturnTime: {r.ReturnTime}");

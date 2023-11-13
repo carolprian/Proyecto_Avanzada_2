@@ -90,7 +90,7 @@ partial class Program{
             
             if(resultCreate.affected == 1)
             {
-                WriteLine($"The Damaged Or Lost Report of the equipment of ID {resultCreate.DyLequipmentId} was created succesfully");
+                WriteLine($"The Damaged Or Lost Report of the equipment, of Report ID {resultCreate.DyLequipmentId} was created succesfully");
                 int affected = UpdateEquipmentStatus(status, equipment);
                 if(affected == 1)
                 {
