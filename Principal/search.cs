@@ -123,9 +123,9 @@ partial class Program
         }
     }
 
-    public static void SearchEquipmentsById(string? searchTerm)
+    public static void SearchEquipmentsById(string? SearchTerm)
     {
-        if (string.IsNullOrEmpty(searchTerm))
+        if (string.IsNullOrEmpty(SearchTerm))
         {
             throw new InvalidOperationException();
         }
@@ -135,13 +135,13 @@ partial class Program
                 .Include(e => e.Area)
                 .Include(e => e.Status)
                 .Include(e => e.Coordinator)
-                .Where(e => e.EquipmentId.StartsWith(searchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
+                .Where(e => e.EquipmentId.StartsWith(SearchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
 
             db.ChangeTracker.LazyLoadingEnabled = false;
 
             if (!equipments.Any())
             {
-                WriteLine("No equipment found matching the search term: " + searchTerm);
+                WriteLine("No equipment found matching the search term: " + SearchTerm);
                 return;
             }
             else

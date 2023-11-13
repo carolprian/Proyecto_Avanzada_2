@@ -1,11 +1,6 @@
 using AutoGens;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Net;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Intrinsics.Arm;
-
 partial class Program
 {
     public static void PetitionFormat(string username)
@@ -28,40 +23,56 @@ partial class Program
         List<byte?> statusEquipments = new List<byte?>();
         var petition = AddPetition(classroomId, professorId, storerId, subjectId);
         var equipments = SearchEquipmentsRecursive(equipmentsId, statusEquipments, requestDate, times.Item1, times.Item2, petition.petitionId, 4);
-        if(equipments.i == 1){
+
+        if(equipments.i == 1)
+        {
             return;
-        } else {
-            if(petition.affected > 0){
+        } 
+        else 
+        {
+            if(petition.affected > 0)
+            {
                 var petitionDetailsId = AddPetitionDetails(petition.petitionId, equipments.equipmentsId, times.Item1, times.Item2, requestDate, currentDate, equipments.statusEquipments);
-                if(petitionDetailsId.affected.Count() >= 1){
+                if(petitionDetailsId.affected.Count() >= 1)
+                {
                     WriteLine("Petition added");
                 } else
                 {
                     WriteLine("The Petition was not added. Try again");
                 }
             }
-            else {
-                WriteLine("The Petition couldnt be added. Try again.");
+            else
+            {
+                WriteLine("The Petition couldn't be added. Try again.");
             }
         }
     }
 
-    public static (List<int> affected, List<int> petitionDetailsId) AddPetitionDetails(int petitionId, List<string> equipmentsId, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments){
+    public static (List<int> affected, List<int> petitionDetailsId) AddPetitionDetails(int petitionId, List<string> equipmentsId, DateTime initTime, DateTime endTime, DateTime requestedDate, DateTime currentDate, List<byte?> statusEquipments)
+    {
         int i=0;
         List<int>? petitionDetailsId = new List<int>();
         List<int>? affecteds = new List<int>();
+        
         if (equipmentsId == null || statusEquipments == null || equipmentsId.Count != statusEquipments.Count)
         {
             // Manejar el caso donde las listas no son válidas
             WriteLine("entro el if donde valida que las listas son nulas");
             return (affecteds, petitionDetailsId);
         }
-        using (bd_storage db = new()){
-            if(db.PetitionDetails is null){ 
+
+        using (bd_storage db = new())
+        {
+            if(db.PetitionDetails is null)
+            { 
                 WriteLine("Table not created");
-                return(affecteds, petitionDetailsId);}
-            foreach(var e in equipmentsId){
-                PetitionDetail pD = new() {
+                return(affecteds, petitionDetailsId);
+            }
+
+            foreach(var e in equipmentsId)
+            {
+                PetitionDetail pD = new() 
+                {
                     PetitionId = petitionId,
                     EquipmentId = equipmentsId[i],
                     StatusId = statusEquipments[i],
@@ -70,6 +81,7 @@ partial class Program
                     RequestedDate = requestedDate,
                     CurrentDate = currentDate
                 };
+
                 EntityEntry<PetitionDetail> entity = db.PetitionDetails.Add(pD);
                 affecteds.Add(db.SaveChanges());
                 petitionDetailsId.Add(pD.PetitionDetailsId);
@@ -79,9 +91,15 @@ partial class Program
         return (affecteds, petitionDetailsId);
     }
 
-    public static (int affected, int petitionId) AddPetition(int classroomId, string professorId, string storerId, string subjectId){
-        using(bd_storage db = new()){
-            if(db.Petitions is null){ return(0, -1);}
+    public static (int affected, int petitionId) AddPetition(int classroomId, string professorId, string storerId, string subjectId)
+    {
+        using(bd_storage db = new())
+        {
+            if(db.Petitions is null)
+            { 
+                return(0, -1);            
+            }
+
             Petition p  = new Petition()
             {
                 ClassroomId = classroomId,
@@ -89,37 +107,10 @@ partial class Program
                 StorerId = storerId,
                 SubjectId = subjectId
             };
+
             EntityEntry<Petition> entity = db.Petitions.Add(p);
             int affected = db.SaveChanges();
             return (affected, p.PetitionId);
-        }
-    }
-    public static void DeletePetition(int? petitionId)
-    {
-        using (bd_storage db = new())
-        {
-            var petitions = db.Petitions
-                    .Where(r => r.PetitionId == petitionId)
-                    .FirstOrDefault();
-
-            if (petitions != null)
-            {
-                db.Petitions.Remove(petitions);
-                int affected = db.SaveChanges();
-
-                if (affected > 0)
-                {
-                    WriteLine("Petition successfully deleted");
-                }
-                else
-                {
-                    WriteLine("Petition couldn't be deleted");
-                }
-            }
-            else
-            {
-                WriteLine("Petition ID not found in the database");
-            }
         }
     }
 
@@ -186,108 +177,131 @@ partial class Program
         }
     }
 
-    public static void UpdatePetitionFormat(string username){
+    public static void UpdatePetitionFormat(string username)
+    {
         int i=1, affected = 0, op=0;
         bool validateRequest=false;
         DateTime request=DateTime.Today;
+
         WriteLine("Here's a list of all the petition format that has not been accepted yet. ");
         ViewPetition(username);
         WriteLine();
+
         WriteLine("Provide the ID of the petition that you want to modify (check the list): ");
         int petitionID = Convert.ToInt32(ReadNonEmptyLine());
-        using(bd_storage db = new bd_storage()){
+
+        using (bd_storage db = new bd_storage())
+        {
+
             IQueryable<Petition> petitionss = db.Petitions
                 .Include(rd => rd.Classroom)
                 .Include(rd => rd.Professor)
                 .Include(rd => rd.Subject).Where( rd => rd.PetitionId==petitionID);
+
+
             IQueryable<PetitionDetail> petitionDetailss = db.PetitionDetails
                 .Include(rd => rd.Status)
                 .Include(rd=> rd.Equipment)
                 .Where(r => r.PetitionId==petitionID);
+
             var petitionList = petitionDetailss.ToList();
+
             List <Equipment> listEquipments= new List<Equipment>();
-            do{
+
+            do
+            {
                 if(petitionss is not null && petitionss.Any() && 
-                petitionDetailss is not null && petitionDetailss.Any() ){
+                petitionDetailss is not null && petitionDetailss.Any())
+                {
                     WriteLine("These are the fields you can update:");
                     WriteLine($"{i}. Classroom: {petitionss.First().Classroom.Name}");
                     WriteLine($"{i+1}. Subject: {petitionss.First().Subject.Name}");
                     WriteLine($"{i+2}. Date of the request: {petitionDetailss.First().RequestedDate.Date}");
                     WriteLine($"{i+3}. Dispatch time: {petitionDetailss.First().DispatchTime.TimeOfDay} and Return time: {petitionDetailss.First().ReturnTime.TimeOfDay}");
                     WriteLine($"{i+4}. Equipment(s) in the request:");
+
                     foreach (var petitionDetail in petitionDetailss)
                     {
                         WriteLine($"     -{petitionDetail.Equipment.EquipmentId} ({petitionDetail.Equipment.Name})");
                         listEquipments.Add(petitionDetail.Equipment);
                         i++;
                     }
+
                     WriteLine("Select an option to modify");
                     op = Convert.ToInt32(ReadNonEmptyLine());
                     validateRequest=true;
                 }
-                else {
-                    Console.Clear();
+                else 
+                {
+                    Clear();
                     WriteLine("Request not found. Try again.");
                     WriteLine("Here's a list of all the petition format that has not been accepted yet. ");
                     ViewRequestFormatNotAcceptedYet(username);
                     WriteLine();
+
                     WriteLine("Provide the ID of the petition that you want to modify (check the list): ");
                     petitionID = Convert.ToInt32(ReadNonEmptyLine());
+
                     petitionss = db.Petitions
                     .Include(rd => rd.Classroom)
                     .Include(rd => rd.Professor)
                     .Include(rd => rd.Subject)
                     .Where( rd => rd.PetitionId==petitionID);
+
                     petitionDetailss = db.PetitionDetails
                     .Include(rd => rd.Status)
                     .Include(rd=> rd.Equipment)
                     .Where( rd => rd.PetitionId==petitionID);
-                        petitionList = petitionDetailss.ToList();
-                        listEquipments= new List<Equipment>();
+
+                    petitionList = petitionDetailss.ToList();
+                    listEquipments= new List<Equipment>();
                 }
             } while (validateRequest==false);
+
             switch(op)
             {
                 case 1:
-                {
                     int classroomId = AddClassroom();
                     petitionss.First().ClassroomId=classroomId;
                     affected = db.SaveChanges();
-                    if(affected>0){
+                    if (affected>0)
+                    {
                         WriteLine("Request changed");
                     }
-                    else {
+                    else 
+                    {
                         WriteLine("Request not changed");
                     }
-                }break;
+                break;
                 case 2:
-                {
                     string subjectId = SearchSubjectsByName("xyz", 1);
                     petitionss.First().SubjectId = subjectId;
-                    if(affected>0){
+                    if (affected>0)
+                    {
                         WriteLine("Request changed");
                     }
-                    else {
+                    else 
+                    {
                         WriteLine("Request not changed");
                     }
-                } break;
+                break;
                 case 3:
-                {
                     DateTime newDate = AddDate(DateTime.Now.Date);
                     foreach (var requestDetail in petitionDetailss)
                     {
                         requestDetail.RequestedDate = newDate;
                     }
                     affected = db.SaveChanges();
-                    if(affected>0){
+                    if(affected>0)
+                    {
                         WriteLine("Request changed");
                     }
-                    else {
+                    else 
+                    {
                         WriteLine("Request not changed");
                     }
-                }break;
+                break;
                 case 4:
-                {
                     var times = AddTimes(request);
                     foreach (var requestDetail in petitionDetailss)
                     {
@@ -295,15 +309,16 @@ partial class Program
                         requestDetail.ReturnTime = times.Item2;
                     }
                     affected = db.SaveChanges();
-                    if(affected>0){
+                    if (affected>0)
+                    {
                         WriteLine("Request changed");
                     }
-                    else {
+                    else
+                    {
                         WriteLine("Request not changed");
                     }   
-                }break;
+                break;
                 case 5:
-                {
                     i = 1;
                     int equipId = 0;
                     foreach (var e in listEquipments)
@@ -329,11 +344,13 @@ partial class Program
                         {
                             WriteLine("That is not a correct option, try again.");
                         }
-                    }while (validateEq==false);
+                    } while (validateEq==false);
 
                     var selectedEquipment = listEquipments[equipId - 1];
+
                     List<string> equipmentsId = new List<string>();
                     List<byte?> statusIds = new List<byte?>();
+                    
                     var updatedEquipments = SearchEquipmentsRecursive(
                         equipmentsId,
                         statusIds,
@@ -345,7 +362,6 @@ partial class Program
                     );
 
                     // Obtener los valores del nuevo equipo seleccionado
-
                     foreach (var requestDetail in petitionDetailss)
                     {
                         // Cambiar el equipo en la tabla de la base de datos
@@ -355,20 +371,20 @@ partial class Program
                     }
 
                     affected = db.SaveChanges();
-                    if(affected>0){
+                    if(affected>0)
+                    {
                         WriteLine("Request changed");
                     }
-                    else {
+                    else 
+                    {
                         WriteLine("Request not changed");
                     }
-                }break;
+                break;
                 case 6:
-                {
                     return;
-                }
-                default:{
+                default:
                     WriteLine("Not a valide option. Try again.");
-                }break;
+                break;
             }
         }
     }

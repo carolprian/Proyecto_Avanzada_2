@@ -7,8 +7,6 @@ public partial class Program
         WriteLine($"Provider : {db.Database.ProviderName}"); 
         WriteLine();
         ForegroundColor = ConsoleColor.Gray;
-        // ApprovePermissions();
-        // StorersPrincipal();
         while (true)
         {
             //menu principal para usar el sistema
@@ -23,12 +21,12 @@ public partial class Program
             switch (opcion)
             {
                 case "1":
-                    string? rol;
-                    var logIn = IniciarSesion(out rol);
-                    if (rol!=null)
+                    string? Rol;
+                    var logIn = IniciarSesion(out Rol);
+                    if (Rol!=null)
                     {
-                        WriteLine($"Congratulations {rol}, you logged in succesfully!"); 
-                        switch(rol)
+                        WriteLine($"Congratulations {Rol}, you logged in succesfully!"); 
+                        switch(Rol)
                         {
                             case "students":
                             StudentsPrincipal(logIn.username);
@@ -55,7 +53,7 @@ public partial class Program
                 break;
                 
                 case "2":
-                    MenuRegistro();
+                    Registro();
                 break;
 
                 case "3":

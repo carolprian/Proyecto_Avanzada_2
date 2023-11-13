@@ -487,7 +487,7 @@ partial class Program
         }
     }
 
-     public static void FindDandLequipmentById(string? equipmentIdToFind)
+     public static void FindDandLequipmentById(string? EquipmentIdToFind)
     {
         using (bd_storage db = new())
         {
@@ -496,13 +496,13 @@ partial class Program
                 .Include(dal => dal.Equipment)
                 .Include(dal => dal.Student)
                 .Include(dal => dal.Coordinator)
-                .Where(dal => dal.DyLequipmentId.ToString().StartsWith(equipmentIdToFind));
+                .Where(dal => dal.DyLequipmentId.ToString().StartsWith(EquipmentIdToFind));
 
             db.ChangeTracker.LazyLoadingEnabled = false;
 
             if (!dyLequipments.Any())
             {
-                WriteLine("No damaged or lost equipment found with ID: " + equipmentIdToFind);
+                WriteLine("No damaged or lost equipment found with ID: " + EquipmentIdToFind);
                 return;
             }
 
@@ -516,7 +516,7 @@ partial class Program
         }
     }
 
-    public static void FindDandLequipmentByName(string? equipmentNameToFind)
+    public static void FindDandLequipmentByName(string? EquipmentNameToFind)
     {
         using (bd_storage db = new())
         {
@@ -525,13 +525,13 @@ partial class Program
                 .Include(dal => dal.Equipment)
                 .Include(dal => dal.Student)
                 .Include(dal => dal.Coordinator)
-                .Where(dal => dal.Equipment.Name.StartsWith(equipmentNameToFind)); // Utiliza StartsWith para buscar coincidencias parciales en el nombre del equipo
+                .Where(dal => dal.Equipment.Name.StartsWith(EquipmentNameToFind)); // Utiliza StartsWith para buscar coincidencias parciales en el nombre del equipo
 
             db.ChangeTracker.LazyLoadingEnabled = false;
 
             if (!dyLequipments.Any())
             {
-                WriteLine("No damaged or lost equipment found matching the equipment name: " + equipmentNameToFind);
+                WriteLine("No damaged or lost equipment found matching the equipment name: " + EquipmentNameToFind);
                 return;
             }
 
@@ -545,7 +545,7 @@ partial class Program
         }
     }
 
-    public static void FindDandLequipmentByDate(string? dateToFind)
+    public static void FindDandLequipmentByDate(string? DateToFind)
     {
         using (bd_storage db = new())
         {
@@ -554,13 +554,13 @@ partial class Program
                 .Include(dal => dal.Equipment)
                 .Include(dal => dal.Student)
                 .Include(dal => dal.Coordinator)
-                .Where(dal => dal.DateOfEvent.ToString().StartsWith(dateToFind));
+                .Where(dal => dal.DateOfEvent.ToString().StartsWith(DateToFind));
 
             db.ChangeTracker.LazyLoadingEnabled = false;
 
             if (!dyLequipments.Any())
             {
-                WriteLine("No damaged or lost equipment found with Date of Event: " + dateToFind);
+                WriteLine("No damaged or lost equipment found with Date of Event: " + DateToFind);
                 return;
             }
 
@@ -574,7 +574,7 @@ partial class Program
         }
     }
 
-    public static void FindDandLequipmentByStudentName(string? studentNameToFind)
+    public static void FindDandLequipmentByStudentName(string? StudentNameToFind)
     {
         using (bd_storage db = new())
         {
@@ -583,13 +583,13 @@ partial class Program
                 .Include(dal => dal.Equipment)
                 .Include(dal => dal.Student)
                 .Include(dal => dal.Coordinator)
-                .Where(dal => dal.Student.Name.StartsWith(studentNameToFind)); // Utiliza StartsWith para buscar coincidencias parciales en el nombre del alumno
+                .Where(dal => dal.Student.Name.StartsWith(StudentNameToFind)); // Utiliza StartsWith para buscar coincidencias parciales en el nombre del alumno
 
             db.ChangeTracker.LazyLoadingEnabled = false;
 
             if (!dyLequipments.Any())
             {
-                WriteLine("No damaged or lost equipment found with Student Name: " + studentNameToFind);
+                WriteLine("No damaged or lost equipment found with Student Name: " + StudentNameToFind);
                 return;
             }
 
@@ -625,14 +625,14 @@ partial class Program
         }
     }
 
-    public static void ListEquipmentsRequestsStudent(string username)
+    public static void ListEquipmentsRequestsStudent(string Username)
     {
         using (bd_storage db = new())
         {
             IQueryable<RequestDetail>? requestDetails = db.RequestDetails
             .Include( r => r.Equipment)
             .Include( r => r.Request)
-            .Where( s => s.Request.StudentId == username);
+            .Where( s => s.Request.StudentId == Username);
 
             if (!requestDetails.Any() || requestDetails is null)
             {
@@ -667,14 +667,14 @@ partial class Program
         }
     }
 
-    public static void ViewPetition(string username)
+    public static void ViewPetition(string Username)
     {
         using (bd_storage db = new())
         {
             IQueryable<PetitionDetail> petitionDetails = db.PetitionDetails
             .Include( r => r.Equipment)
             .Include( r => r.Petition)
-            .Where( s => s.Petition.ProfessorId.Equals(EncryptPass(username)));
+            .Where( s => s.Petition.ProfessorId.Equals(EncryptPass(Username)));
 
             if (!petitionDetails.Any() || petitionDetails is null)
             {
@@ -703,7 +703,7 @@ partial class Program
         } 
     }
 
-    public static void ViewRequestFormatNotAcceptedYet(string username)
+    public static void ViewRequestFormatNotAcceptedYet(string Username)
     {
         using (bd_storage db = new())
         {
@@ -711,7 +711,7 @@ partial class Program
             .Where( s => s.ProfessorNip == 0)
             .Include( r => r.Equipment)
             .Include( r => r.Request)
-            .Where( s => s.Request.StudentId == username);
+            .Where( s => s.Request.StudentId == Username);
 
             if (!requestDetails.Any() || requestDetails is null)
             {
@@ -741,14 +741,14 @@ partial class Program
     }
 
 
-    public static void LateReturningStudent(string username)
+    public static void LateReturningStudent(string Username)
     {
         using (bd_storage db = new())
         {
             var currentDate = DateTime.Now;
 
             IQueryable<RequestDetail>? requestDetails = db.RequestDetails
-            .Where( s => s.Request.StudentId == username)
+            .Where( s => s.Request.StudentId == Username)
             .Include(r => r.Request.Student.Group)
             .Include(r => r.Equipment)
             .Where(s => s.StatusId == 2 && s.ProfessorNip == 1 && s.RequestedDate < currentDate);
@@ -857,14 +857,14 @@ partial class Program
         }
     }
 
-    public static void WatchPermissions(string user)
+    public static void WatchPermissions(string User)
     {
         int i = 1;
         using (bd_storage db = new bd_storage())
         {
             IQueryable<RequestDetail> requests = db.RequestDetails
                 .Include(r => r.Request).ThenInclude(s=>s.Student).ThenInclude(g=>g.Group)
-                .Include(e=>e.Equipment).Where(d =>d.Request.ProfessorId == EncryptPass(user));
+                .Include(e=>e.Equipment).Where(d =>d.Request.ProfessorId == EncryptPass(User));
                 WriteLine("| {0,-1} | {1,-15} | {2,-26} | {3,-10} | {4,-3} | {5,-22} | {6,-22} | {7, -15}",
                         "Number of permission | "," Students Name | ","Students Paternal Last Name | ",
                          "Students Maternal Last Name | ", "Students Group | ","Equipments Name | ", "Dispatch Time | ", "Return Time");

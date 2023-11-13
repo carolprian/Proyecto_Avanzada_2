@@ -1,7 +1,6 @@
 using AutoGens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 partial class Program{
     // Crear un reporte de un material dañado o perdido (esta funcion es para llenar el formulario)
@@ -125,7 +124,7 @@ partial class Program{
             // Llama a la funcion para crear el reporte y se le asignan todos los valores llenados del formulario
             var resultCreate = CreateReportDamagedLost( status,  equipment,  descrip,  eventdate,  student,  coordi, returndescription, returnDate );
                 
-            if (resultCreate.affected == 1)
+            if (resultCreate.Affected == 1)
             {
                 WriteLine($"The Damaged Or Lost Report of the equipment, of Report ID {resultCreate.DyLequipmentId} was created succesfully");
                 int affected = UpdateEquipmentStatus(status, equipment);
@@ -149,21 +148,21 @@ partial class Program{
     }
 
     // Aqui se guarda el formulario en la base de datos
-    static (int affected, int DyLequipmentId) CreateReportDamagedLost(byte statusid, string equipmentid, string description, DateTime dateofevent, string studentid, string? coordinatorid, string returndescrip, DateTime returnDate)
+    static (int Affected, int DyLequipmentId) CreateReportDamagedLost(byte StatusId, string EquipmentId, string Description, DateTime DateOfEvent, string StudentId, string? CoordinatorId, string ReturnDescrip, DateTime ReturnDate)
     {
         using(bd_storage db = new())
         {
             if(db.DyLequipments is null){ return(0,0);}
             DyLequipment dl = new() 
             {
-                StatusId = statusid,
-                EquipmentId = equipmentid, 
-                Description = description,
-                DateOfEvent = dateofevent,
-                StudentId = studentid,
-                CoordinatorId = coordinatorid,
-                DateOfReturn = returnDate,
-                objectReturn = returndescrip
+                StatusId = StatusId,
+                EquipmentId = EquipmentId, 
+                Description = Description,
+                DateOfEvent = DateOfEvent,
+                StudentId = StudentId,
+                CoordinatorId = CoordinatorId,
+                DateOfReturn = ReturnDate,
+                objectReturn = ReturnDescrip
             };            
 
             EntityEntry<DyLequipment> entity = db.DyLequipments.Add(dl);

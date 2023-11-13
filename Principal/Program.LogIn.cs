@@ -2,7 +2,7 @@ using AutoGens;
 
 partial class Program
 {
-    public static (bool logged, string? username) IniciarSesion(out string? rol)
+    public static (bool logged, string? username) IniciarSesion(out string? Rol)
     {
         using (bd_storage db = new())
         {
@@ -24,11 +24,11 @@ partial class Program
                     if (students is null || !students.Any())
                     {
                         idUser = "professorId";
-                        rol = null;
+                        Rol = null;
                     }
                     else
                     {
-                        rol = "students";
+                        Rol = "students";
                         return (true, username);
                     }
 
@@ -41,11 +41,11 @@ partial class Program
                     if (professors is null || !professors.Any())
                     {
                         idUser = "storerId";
-                        rol = null;
+                        Rol = null;
                     }
                     else
                     {
-                        rol = "professors";
+                        Rol = "professors";
                         return (true, username);
                     }
                 }
@@ -56,11 +56,11 @@ partial class Program
                     if (storers is null || !storers.Any())
                     {
                         idUser = "coordinatorId";
-                        rol = null;
+                        Rol = null;
                     }
                     else
                     {
-                        rol = "storers";
+                        Rol = "storers";
                         return (true, username);
                     }
                 }
@@ -70,13 +70,13 @@ partial class Program
                     .Where(s => s.CoordinatorId == encyptUsr && s.Password == pass);
                     if (coordinators is null || !coordinators.Any())
                     {
-                        rol = null;
+                        Rol = null;
                         idUser = "none";
                         break;
                     }
                     else
                     {
-                        rol = "coordinators";
+                        Rol = "coordinators";
                         return (true, username);
                     }
                 }

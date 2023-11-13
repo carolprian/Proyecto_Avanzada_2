@@ -5,45 +5,45 @@ using System.Text;
 
 partial class Program
 {
-    public static string VerifyReadLengthStringExact(int characters)
+    public static string VerifyReadLengthStringExact(int Characters)
     {
         string? text;
         do
         {
             text = ReadLine();
-            if (text.Length < characters || text.Length > characters)
+            if (text.Length < Characters || text.Length > Characters)
             {
-                WriteLine($"The input must have {characters} caracteres. Try again:");
+                WriteLine($"The input must have {Characters} caracteres. Try again:");
             }
-        } while (text.Length < characters || text.Length > characters);
+        } while (text.Length < Characters || text.Length > Characters);
         return text;
     }
 
-    public static string VerifyReadLengthString(int characters)
+    public static string VerifyReadLengthString(int Characters)
     {
         string? text;
         do
         {
             text = ReadLine();
-            if (text.Length < characters)
+            if (text.Length < Characters)
             {
-                WriteLine($"The input must have minimum {characters} caracteres. Try again:");
+                WriteLine($"The input must have minimum {Characters} caracteres. Try again:");
             }
-        } while (text.Length < characters);
+        } while (text.Length < Characters);
         return text;
     }
 
-    public static string VerifyReadMaxLengthString(int characters)
+    public static string VerifyReadMaxLengthString(int Characters)
     {
         string? text;
         do
         {
             text = ReadLine();
-            if (text.Length > characters)
+            if (text.Length > Characters)
             {
-                WriteLine($"The input must have maximum {characters} caracteres. Try again:");
+                WriteLine($"The input must have maximum {Characters} caracteres. Try again:");
             }
-        } while (text.Length > characters);
+        } while (text.Length > Characters);
         return text;
     }
 
@@ -57,19 +57,19 @@ partial class Program
         return input;
     }
 
-    public static int TryParseStringaEntero(string? op)
+    public static int TryParseStringaEntero(string? Op)
     {
         int input;
         while (true) // Infinite loop until there is a return, that there is a valid number
         {
-            if (int.TryParse(op, out input))
+            if (int.TryParse(Op, out input))
             {
                 return input;
             }
             else
             {
                 WriteLine("That's not a correct form of number. Try again:");
-                op = ReadNonEmptyLine();
+                Op = ReadNonEmptyLine();
             }
         }
     }
@@ -127,7 +127,7 @@ partial class Program
         return dateValue;
     }
 
-    public static DateTime ReturnMaintenanceDate(DateTime currentDate)
+    public static DateTime ReturnMaintenanceDate(DateTime CurrentDate)
     {
         DateTime dateValue = new();
         bool valideDate = false;
@@ -144,7 +144,7 @@ partial class Program
                 )
             )
             {
-                if (dateValue > currentDate.Date)
+                if (dateValue > CurrentDate.Date)
                 {
                     if (
                         dateValue.DayOfWeek != DayOfWeek.Saturday
@@ -178,7 +178,7 @@ partial class Program
         }
     }
 
-    public static string EncryptPass(string plainText)
+    public static string EncryptPass(string PlainText)
     {
         using (Aes aesAlg = Aes.Create())
         {
@@ -193,7 +193,7 @@ partial class Program
                 {
                     using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                     {
-                        swEncrypt.Write(plainText);
+                        swEncrypt.Write(PlainText);
                     }
                 }
                 return Convert.ToBase64String(msEncrypt.ToArray());
@@ -201,7 +201,7 @@ partial class Program
         }
     }
 
-    public static string Decrypt(string? cipherText)
+    public static string Decrypt(string? CipherText)
     {
         using (Aes aesAlg = Aes.Create())
         {
@@ -210,7 +210,7 @@ partial class Program
 
             ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
-            using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
+            using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(CipherText)))
             {
                 using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                 {

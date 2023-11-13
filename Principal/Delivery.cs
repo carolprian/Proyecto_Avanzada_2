@@ -1,6 +1,5 @@
  using Microsoft.EntityFrameworkCore;
 using AutoGens;
-using Microsoft.EntityFrameworkCore.Update;
 partial class Program
 {
     public static void DeliveryEquipmentsStudents()
@@ -363,7 +362,7 @@ partial class Program
     
     }
 
-    public static (int count, int[] requestId) TodaysEquipmentRequestsByStudentId(string register)
+    public static (int count, int[] requestId) TodaysEquipmentRequestsByStudentId(string Register)
     {
         using(bd_storage db = new())
         {
@@ -375,13 +374,13 @@ partial class Program
             .Where( r => r.ProfessorNip == 1)
             .Where(r => r.DispatchTime != null && r.RequestedDate.Date == today)
             .Where(r=>r.StatusId != 2)
-            .Where(r=>r.Request.StudentId.Equals(register));
+            .Where(r=>r.Request.StudentId.Equals(Register));
            
             List<int> requestsid = new List<int>();
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((requestDetailsToday is null) || !requestDetailsToday.Any())
             {
-                WriteLine($"There are no requests for today of the student {register}.");
+                WriteLine($"There are no requests for today of the student {Register}.");
                 return (0,requestsid.ToArray());
             }
             else
@@ -390,9 +389,8 @@ partial class Program
                 foreach(var r in requestDetailsToday)
                 {
                     requestsid.Add((int)r.RequestId);
-                    //WriteLine($"StudentId: {register} RequestId: {r.RequestId}, Quantity: {r.Quantity}, StatusId: {r.Status?.Value}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime.Hour}, ReturnTime: {r.ReturnTime.Hour}, RequestedDate: {r.RequestedDate}, EquipmentNames: {r.Equipment?.Name}");
                         WriteLine($"RequestId: {r.RequestId} ");
-                        WriteLine($"StudentId: {register} ");
+                        WriteLine($"StudentId: {Register} ");
                         WriteLine($"DispatchTime: {r.DispatchTime} ");
                         WriteLine($"ReturnTime: {r.ReturnTime}");
                 }
@@ -404,7 +402,7 @@ partial class Program
         }
     }
 
-    public static (int count, int[] requestId) TodaysEquipmentRequestsByProfessorId(string register)
+    public static (int count, int[] requestId) TodaysEquipmentRequestsByProfessorId(string Register)
     {
         using(bd_storage db = new())
         {
@@ -413,7 +411,7 @@ partial class Program
             IQueryable<PetitionDetail> requestDetailsToday = db.PetitionDetails
             .Include( e => e.Equipment).Include(e=> e.Status)
             .Where(r => r.DispatchTime != null && r.RequestedDate.Date == today)
-            .Where(r=>r.Petition.ProfessorId.Equals(EncryptPass(register))) 
+            .Where(r=>r.Petition.ProfessorId.Equals(EncryptPass(Register))) 
             .Where(r=>r.StatusId != 2)
             .OrderBy(r=>r.DispatchTime);
            
@@ -421,7 +419,7 @@ partial class Program
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((requestDetailsToday is null) || !requestDetailsToday.Any())
             {
-                WriteLine($"There are no requests for today of the professor ({register}).");
+                WriteLine($"There are no requests for today of the professor ({Register}).");
                 return (0,requestsid.ToArray());
             }
             else
@@ -432,7 +430,7 @@ partial class Program
                     requestsid.Add((int)r.PetitionId);
                     //WriteLine($"StudentId: {register} RequestId: {r.RequestId}, Quantity: {r.Quantity}, StatusId: {r.Status?.Value}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime.Hour}, ReturnTime: {r.ReturnTime.Hour}, RequestedDate: {r.RequestedDate}, EquipmentNames: {r.Equipment?.Name}"); 
                         WriteLine($"RequestId: {r.PetitionId} ");
-                        WriteLine($"StudentId: {EncryptPass(register)} ");
+                        WriteLine($"StudentId: {EncryptPass(Register)} ");
                         WriteLine($"DispatchTime: {r.DispatchTime} ");
                         WriteLine($"ReturnTime: {r.ReturnTime}");
                 }

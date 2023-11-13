@@ -10,6 +10,7 @@ partial class Program
         {
             string op = MenuCoordinators();
             WriteLine();
+            
             switch (op)
             {
                 case "1":

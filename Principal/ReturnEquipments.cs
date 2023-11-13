@@ -19,14 +19,14 @@ partial class Program{
                     WriteLine("This are the due to return request(s) by the student:");
                     var result = DueToReturnRequestsByStudent(register);
                     string requestid = "0";
-                    if(result.count >= 1)
+                    if(result.Count >= 1)
                     {
                         bool opp = false;
                         while(opp==false)
                         {
                             WriteLine("Provide the RequestId of the request you will deliver:");
                             requestid = VerifyReadMaxLengthString(2); 
-                            foreach(var rid in result.requestId)
+                            foreach(var rid in result.RequestId)
                             {
                                 if(requestid == rid.ToString())
                                 {
@@ -51,7 +51,7 @@ partial class Program{
                             WriteLine();
                         }
                     } // fin del if  
-                    else if(result.count == 0)
+                    else if(result.Count == 0)
                     {
                         WriteLine("There are no due to return equipments.");
                         return;
@@ -96,14 +96,14 @@ partial class Program{
                 //IQueryable<RequestDetail> requestDetails = db.RequestDetails;
                 var result = DueToReturnRequestsByProfessor(profid);
                 string requestid = "0";
-                if(result.count >= 1)
+                if(result.Count >= 1)
                 {
                     bool opp = false;
                     while(opp==false)
                     {
                         WriteLine("Provide the RequestId of the request is being returned:");
                         requestid = VerifyReadMaxLengthString(2); 
-                        foreach(var rid in result.requestId)
+                        foreach(var rid in result.RequestId)
                         {
                             if(requestid == rid.ToString())
                             {
@@ -130,7 +130,7 @@ partial class Program{
                     }
                     
                 }
-                else if(result.count == 0)
+                else if(result.Count == 0)
                 {
                     return;
                 }
@@ -155,7 +155,7 @@ partial class Program{
         }
    }
 
-    public static (int count, int[] requestId) DueToReturnRequestsByStudent(string register)
+    public static (int Count, int[] RequestId) DueToReturnRequestsByStudent(string Register)
     {
         DateTime now = DateTime.Now.Date;
         using(bd_storage db = new())
@@ -164,13 +164,13 @@ partial class Program{
             .Include( e => e.Equipment).Include(e=> e.Status)
             .Where( r => r.ProfessorNip == 1)
             .Where(r=>r.StatusId == 2)
-            .Where(r=>r.Request.StudentId.Equals(register));
+            .Where(r=>r.Request.StudentId.Equals(Register));
            
             List<int> requestsid = new List<int>();
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((requestDetailsToReturn is null) || !requestDetailsToReturn.Any())
             {
-                WriteLine($"There are no requests due to return by the student {register}.");
+                WriteLine($"There are no requests due to return by the student {Register}.");
                 return (0,requestsid.ToArray());
             }
             else
@@ -184,16 +184,15 @@ partial class Program{
                         ConsoleColor backGroundColor = ForegroundColor;
                         ForegroundColor = ConsoleColor.Red;  
                         WriteLine($"RequestId: {r.RequestId} ");
-                        WriteLine($"StudentId: {register} ");
+                        WriteLine($"StudentId: {Register} ");
                         WriteLine($"DispatchTime: {r.DispatchTime} ");
                         WriteLine($"ReturnTime: {r.ReturnTime}");
                         ForegroundColor = backGroundColor;
                     }
                     else
                     {
-                    //WriteLine($"StudentId: {register} RequestId: {r.RequestId}, Quantity: {r.Quantity}, StatusId: {r.Status?.Value}, ProfessorNip: {r.ProfessorNip}, DispatchTime: {r.DispatchTime.Hour}, ReturnTime: {r.ReturnTime.Hour}, RequestedDate: {r.RequestedDate}, EquipmentNames: {r.Equipment?.Name}");
                         WriteLine($"RequestId: {r.RequestId} ");
-                        WriteLine($"StudentId: {register} "); 
+                        WriteLine($"StudentId: {Register} "); 
                         WriteLine($"DispatchTime: {r.DispatchTime} ");
                         WriteLine($"ReturnTime: {r.ReturnTime}");
                     }   
@@ -204,7 +203,7 @@ partial class Program{
         }
     }
 
-    public static (int count, int[] requestId) DueToReturnRequestsByProfessor(string register)
+    public static (int Count, int[] RequestId) DueToReturnRequestsByProfessor(string Register)
     {
         DateTime now = DateTime.Now.Date;
         using(bd_storage db = new())
@@ -212,7 +211,7 @@ partial class Program{
             IQueryable<PetitionDetail>? requestDetailsToReturn = db.PetitionDetails?
             .Include( e => e.Equipment).Include(e=> e.Status).Include(e=>e.Petition.Professor)
             .Where(r=>r.StatusId == 2)
-            .Where(r=>r.Petition.ProfessorId.Equals(EncryptPass(register)));
+            .Where(r=>r.Petition.ProfessorId.Equals(EncryptPass(Register)));
            
             List<int> requestsid = new List<int>();
             db.ChangeTracker.LazyLoadingEnabled = false;
@@ -253,13 +252,13 @@ partial class Program{
         }
     }
 
-    public static void ChangeStatusRequestToReturned(string requestid)
+    public static void ChangeStatusRequestToReturned(string RequestId)
     {
         using(bd_storage db = new()) 
         {
             byte status = 6;
                     //update request details status where RequestId == requestid (variable)
-                    IQueryable<RequestDetail> requestDetails = db.RequestDetails.Where(r=> r.RequestId.Equals(TryParseStringaEntero(requestid)));
+                    IQueryable<RequestDetail> requestDetails = db.RequestDetails.Where(r=> r.RequestId.Equals(TryParseStringaEntero(RequestId)));
                     int affected = 0;
                     if(requestDetails is not null || requestDetails.Any())
                     {
@@ -279,13 +278,13 @@ partial class Program{
         }
     }
     
-    public static void ChangeStatusRequestToReturnedProf(string requestid)
+    public static void ChangeStatusRequestToReturnedProf(string RequestId)
     {
         using(bd_storage db = new()) 
         {
             byte status = 6;
                     //update request details status where RequestId == requestid (variable)
-                    IQueryable<PetitionDetail> requestDetails = db.PetitionDetails.Where(r=> r.PetitionId.Equals(TryParseStringaEntero(requestid)));
+                    IQueryable<PetitionDetail> requestDetails = db.PetitionDetails.Where(r=> r.PetitionId.Equals(TryParseStringaEntero(RequestId)));
                     int affected = 0;
                     if(requestDetails is not null || requestDetails.Any())
                     {
@@ -305,12 +304,12 @@ partial class Program{
         }
     }
 
-    public static void ChangeStatusEquipment(string requestid)
+    public static void ChangeStatusEquipment(string RequestId)
     {
         using(bd_storage db = new())
         {
             List<string> equipmentsid = new List<string>();
-                    IQueryable<RequestDetail> reqs = db.RequestDetails.Where(r=>r.RequestId == TryParseStringaEntero(requestid));
+                    IQueryable<RequestDetail> reqs = db.RequestDetails.Where(r=>r.RequestId == TryParseStringaEntero(RequestId));
                     if(reqs is not null || reqs.Any() )
                     {
                         foreach (var r in reqs)
@@ -344,12 +343,12 @@ partial class Program{
     }
 
     
-    public static void ChangeStatusEquipmentProf(string requestid)
+    public static void ChangeStatusEquipmentProf(string RequestId)
     {
         using(bd_storage db = new())
         {
             List<string> equipmentsid = new List<string>();
-                    IQueryable<PetitionDetail> reqs = db.PetitionDetails.Where(r=>r.PetitionId == TryParseStringaEntero(requestid));
+                    IQueryable<PetitionDetail> reqs = db.PetitionDetails.Where(r=>r.PetitionId == TryParseStringaEntero(RequestId));
                     if(reqs is not null || reqs.Any() )
                     {
                         foreach (var r in reqs)

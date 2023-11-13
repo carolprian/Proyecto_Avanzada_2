@@ -151,7 +151,7 @@ partial class Program
 
     }
 
-    public static bool RegistroStorerCoord(string tableName)
+    public static bool RegistroStorerCoord(string TableName)
     {
         //pide datos para registr, ReadNonEmptyLine() poara que se regustren datos
         //es el mismo 
@@ -172,7 +172,7 @@ partial class Program
         // add to the database the register
         int affected = 0;
         
-        if (tableName == "Storer")
+        if (TableName == "Storer")
         {
             using (bd_storage db = new())
             {
@@ -192,7 +192,7 @@ partial class Program
                 affected = db.SaveChanges();
             }
         }
-        else if (tableName == "Coordinator")
+        else if (TableName == "Coordinator")
         {
             using (bd_storage db = new())
             {
@@ -215,12 +215,12 @@ partial class Program
         bool changes;
         if (affected == 1)
         {
-            WriteLine($"Congratulations {tableName}, you were added succesfully!");
+            WriteLine($"Congratulations {TableName}, you were added succesfully!");
             changes = true;
         }
         else
         {
-            WriteLine($"{tableName} was not registered");
+            WriteLine($"{TableName} was not registered");
             changes = false;
         }
         return changes;
