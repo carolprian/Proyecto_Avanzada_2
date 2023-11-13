@@ -7,6 +7,7 @@ partial class Program
 {
     public static void CoordinatorsPrincipal()
     {
+        //menu del coordinador
         bool exitRequested = false;
         WriteLine("Welcome Coordinator!");
 
@@ -18,6 +19,7 @@ partial class Program
             switch (op)
             {
                 case "1":
+                //ver todos los equipos en el inventario
                     ViewAllEquipmentsCoord();
                     WriteLine();
                     WriteLine("Press enter to come back to the menu...");
@@ -27,6 +29,7 @@ partial class Program
                     }
                     break;
                 case "2":
+                //buscar equipo por su Id
                     WriteLine("Provide the number: ");
                     string? searchTerm = ReadLine();
                     SearchEquipmentsById(searchTerm);
@@ -38,6 +41,7 @@ partial class Program
                     }
                     break;
                 case "3":
+                //ver la lista de materiales dañados y perdidos
                     ListDandLequipment();
                     WriteLine();
                     WriteLine("Press enter to come back to the menu...");
@@ -47,6 +51,7 @@ partial class Program
                     }
                     break;
                 case "4":
+                //buscar en la lista de dañados o perdidos equipos por su iD
                     WriteLine("Provide the equipment ID to search:");
                     string? equipmentIdToFind = ReadLine();
                     FindDandLequipmentById(equipmentIdToFind);
@@ -58,6 +63,7 @@ partial class Program
                     }
                     break;
                 case "5":
+                //buscar en la lista de dañados o perdidos equipos por su nombre
                     WriteLine("Provide the equipment name to search:");
                     string? equipmentNameToFind = ReadLine();
                     FindDandLequipmentByName(equipmentNameToFind);
@@ -69,6 +75,7 @@ partial class Program
                     }
                     break;
                 case "6":
+                //buscar en la lista de dañados o perdidos equipos por su fecha
                     WriteLine("Provide the date (yyyy) to search:");
                     string? dateToFind = ReadLine();
                     FindDandLequipmentByDate(dateToFind);
@@ -80,6 +87,7 @@ partial class Program
                     }
                     break;
                 case "7":
+                //buscar en la lista de dañados o perdidos equipos por el estudiante que lo daÑO
                     WriteLine("Provide the student name to search:");
                     string? studentNameToFind = ReadLine();
                     FindDandLequipmentByStudentName(studentNameToFind);
@@ -91,6 +99,7 @@ partial class Program
                     }
                     break;
                 case "8":
+                //ver la lista de request
                     ListEquipmentsRequests();
                     WriteLine();
                     WriteLine("Press enter to come back to the menu...");
@@ -100,6 +109,7 @@ partial class Program
                     }
                     break;
                 case "9":
+                //añade, ve, modifica grupos
                     GroupsCRUD();
                     WriteLine();
                     WriteLine("Press enter to come back to the menu...");
@@ -109,7 +119,7 @@ partial class Program
                     }
                     break;
                 case "10":
-                    ProfessorCRUD(); // Listar grupos
+                    ProfessorCRUD(); // Hace que que pueda hacer el crud en un perfil de profesor
                     WriteLine();
                     WriteLine("Press enter to come back to the menu...");
                     if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
@@ -118,7 +128,7 @@ partial class Program
                     }
                     break;
                 case "11":
-                    StorerCRUD();
+                    StorerCRUD(); // Hace que que pueda hacer el crud en un perfil de storer
                     WriteLine();
                     WriteLine("Press enter to come back to the menu...");
                     if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
@@ -127,7 +137,7 @@ partial class Program
                     }
                     break;
                 case "12":
-                    StudentCRUD();
+                    StudentCRUD(); // Hace que que pueda hacer el crud en un perfil de estudiantes
                     WriteLine();
                     WriteLine("Press enter to come back to the menu...");
                     if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
@@ -136,7 +146,7 @@ partial class Program
                     }
                     break;
                 case "13":
-                    SubjectCRUD();
+                    SubjectCRUD(); // Hace que que pueda hacer el crud en un perfil de profesor
                     WriteLine();
                     WriteLine("Press enter to come back to the menu...");
                     if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
@@ -479,11 +489,11 @@ partial class Program
                 return;
             }
 
-            WriteLine("| {0,-10} | {1,-30} | {2,-30} | {3,-30} | {4,-4} | {5,-50} |", "Id", "Name", "Last Name P", "Last Name M", "NIP", "Password");
+            WriteLine("| {0,-10} | {1,-30} | {2,-30} | {3,-30} | {4,-50} |", "Id", "Name", "Last Name P", "Last Name M", "Password");
 
             foreach (var professor in professors)
             {
-                WriteLine("| {0:0000000000} | {1,-30} | {2,-30} | {3,-30} | {4,-4} | {5,-50} |", professor.ProfessorId, professor.Name, professor.LastNameP, professor.LastNameM, Decrypt(professor.Nip), Decrypt(professor.Password));
+                WriteLine("| {0:0000000000} | {1,-30} | {2,-30} | {3,-30} | {4,-50} |", Decrypt(professor.ProfessorId), professor.Name, professor.LastNameP, professor.LastNameM, Decrypt(professor.Password));
             }
         }
     }

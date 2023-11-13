@@ -13,7 +13,7 @@ public partial class Program
         // StorersPrincipal();
         while (true)
         {
-            Console.Clear();
+            //menu principal para usar el sistema
             WriteLine("Principal Menu: ");
             WriteLine("1.Log In");
             WriteLine("2.Sign up ");
@@ -29,7 +29,6 @@ public partial class Program
                     var logIn = IniciarSesion(out rol);
                     if (rol!=null)
                     {
-                        Console.Clear();
                         WriteLine($"Congratulations {rol}, you logged in succesfully!"); 
                         switch(rol)
                         {

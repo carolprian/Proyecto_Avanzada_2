@@ -89,7 +89,6 @@ partial class Program
                 StorerId = storerId,
                 SubjectId = subjectId
             };
-
             EntityEntry<Petition> entity = db.Petitions.Add(p);
             int affected = db.SaveChanges();
             return (affected, p.PetitionId);

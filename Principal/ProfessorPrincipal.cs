@@ -13,7 +13,10 @@ partial class Program
             WriteLine("1.- Watch permissions");
             WriteLine("2.- Approve or Deny Permissions");
             WriteLine("3.- Request for Material");
-            WriteLine("4.- Exit");
+            WriteLine("4.- Edit Request for Material");
+            WriteLine("5.- Delete Request for Material");
+            WriteLine("6. View All materials of the storage");
+            WriteLine("7.- Exit");
             string op = VerifyReadLengthStringExact(1);
             Console.Clear();
             
@@ -21,14 +24,59 @@ partial class Program
             {
                 case "1":
                     WatchPermissions(username);
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                     break;
                 case "2":
                     ApprovePermissions(username);
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                     break;
                 case "3":
                     PetitionFormat(username);
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
                     break;
                 case "4":
+                    UpdatePetitionFormat(username);
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
+                break;
+                case "5":
+                DeletePetitionFormat(username);
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
+                break;
+                case "6":
+                    ViewAllEquipments(1);
+                    WriteLine();
+                    WriteLine("Press enter to come back to the menu...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                    }
+                    break;
+                case "7":
                     Console.Clear();
                     return;
                 default:
@@ -41,6 +89,7 @@ partial class Program
 
     public static void WatchPermissions(string user)
     {
+        //funcion para ver los permisos pendientes dependiendo del usuario que inicio sesion
         int i = 1;
         using (bd_storage db = new bd_storage())
         {
@@ -64,6 +113,7 @@ partial class Program
 
     public static void ApprovePermissions(string? user)
     {
+        //funcion para aprobar o denegar permisos pendientes 
         using (bd_storage db = new bd_storage())
         {
             int index; // Índice para realizar un seguimiento de la solicitud actual
@@ -72,7 +122,8 @@ partial class Program
             {
                 int i = 1;
                 IQueryable<RequestDetail> requests = db.RequestDetails
-                .Include(r => r.Request).ThenInclude(s=>s.Student).ThenInclude(g=>g.Group).Include(e=>e.Equipment).Where(d => d.ProfessorNip == 0);
+                .Include(r => r.Request).ThenInclude(s=>s.Student).ThenInclude(g=>g.Group).Include(e=>e.Equipment).Where(d => d.ProfessorNip == 0)
+                .Where(d =>d.Request.ProfessorId == EncryptPass(user));
                // WriteLine($"ToQueryString: {requests.ToQueryString()}");
                 if (requests == null || !requests.Any())
                 {

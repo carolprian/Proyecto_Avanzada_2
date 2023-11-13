@@ -8,6 +8,7 @@ partial class Program
 {
     public static void ViewMaintenanceHistory() //order by equipments
     {
+        //ver el historia de mantenimiento
         int op = 0;
         while (op != 1 || op != 2)
         {
@@ -48,6 +49,7 @@ partial class Program
     */
     public static void ViewMaintenanceHistoryByEquipment()
     {
+        //ver historial de mantienimiento de solo un equipo
         Console.Clear();
         using (bd_storage db = new())
         {
