@@ -40,4 +40,7 @@ public partial class Storer
 
     [InverseProperty("Storer")]
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
+    
+    [InverseProperty("Storer")]
+    public virtual ICollection<Petition> Petitions { get; set; } = new List<Petition>();
 }

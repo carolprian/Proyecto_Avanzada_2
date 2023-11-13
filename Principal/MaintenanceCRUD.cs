@@ -472,13 +472,7 @@ partial class Program
 
         WriteLine();
         WriteLine("Programmed date for Maintenance: ");
-        Write("Day: ");
-        int day = TryParseStringaEntero(ReadNonEmptyLine());
-        Write("Month: ");
-        int month = TryParseStringaEntero(ReadNonEmptyLine());
-        Write("Year: ");
-        int year = TryParseStringaEntero(ReadNonEmptyLine());
-        DateTime initialDate = new(year, month, day);
+        DateTime initialDate = ProgrammedMaintenanceDate();
         List<DateTime> dateList = new();
         dateList.Add(initialDate);
         DateTime date;
@@ -596,7 +590,7 @@ partial class Program
     {
         using (bd_storage db = new())
         {
-            DateTime endDate = new();
+            DateTime? endDate = new();
             DateTime startDate = new();
             string maintenanceDesc = "";
             string maintenanceMatsDesc = "";
@@ -620,14 +614,7 @@ partial class Program
 
                 WriteLine();
                 WriteLine("Date : ");
-                Write("Day: ");
-                int sDay = TryParseStringaEntero(ReadNonEmptyLine());
-                Write("Month: ");
-                int sMonth = TryParseStringaEntero(ReadNonEmptyLine());
-                Write("Year: ");
-                int sYear = TryParseStringaEntero(ReadNonEmptyLine());
-                DateTime sDate = new(sYear, sMonth, sDay);
-                startDate = sDate;
+                startDate = ProgrammedMaintenanceDate();
 
                 IQueryable<Maintain>? mRegisters = db.Maintain
                     .Include(m => m.Maintenance)
@@ -652,22 +639,11 @@ partial class Program
                         {
                             valid = true;
 
-                            //! A CHAMBEAR
-                            // TODO: Valid date protections (not a date in the past or before programmed date, a day between 1 and 31, a month between 1 and 12, and if the day exists on that month)
-                            //! A CHAMBEAR
-
                             WriteLine();
                             WriteLine(
                                 "Enter the date when the equipment(s) was(were) returned after maintenance"
                             );
-                            Write("Day: ");
-                            int day = TryParseStringaEntero(ReadNonEmptyLine());
-                            Write("Month: ");
-                            int month = TryParseStringaEntero(ReadNonEmptyLine());
-                            Write("Year: ");
-                            int year = TryParseStringaEntero(ReadNonEmptyLine());
-                            DateTime eDate = new(year, month, day);
-                            endDate = eDate;
+                            endDate = ReturnMaintenanceDate(mRegisters.First().Maintenance.ProgrammedDate);
 
                             WriteLine();
                             WriteLine("Please describe what was done to the equipment");

@@ -63,6 +63,10 @@ public partial class Equipment
     [InverseProperty("Equipment")]
     public virtual ICollection<RequestDetail> RequestDetails { get; set; } = new List<RequestDetail>();
 
+    
+    [InverseProperty("Equipment")]
+    public virtual ICollection<PetitionDetail> PetitionDetails { get; set; } = new List<PetitionDetail>();
+
     [ForeignKey("StatusId")]
     [InverseProperty("Equipment")]
     public virtual Status? Status { get; set; }

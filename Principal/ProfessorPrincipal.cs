@@ -10,7 +10,7 @@ partial class Program
             WriteLine("Type the option you want to do");
             WriteLine("1.- Watch permissions");
             WriteLine("2.- Approve or Deny Permissions");
-            WriteLine("3.- Rquest for Material");
+            WriteLine("3.- Request for Material");
             WriteLine("4.- Exit");
             string op = VerifyReadLengthStringExact(1);
             switch (op)
@@ -22,7 +22,7 @@ partial class Program
                     ApprovePermissions(username);
                     break;
                 case "3":
-                    AddPetition(username);
+                    PetitionFormat(username);
                     break;
                 case "4":
                     return;
@@ -139,10 +139,6 @@ partial class Program
 
             Console.WriteLine($"Original Value: {value}, Encrypted Value: {encryptedValue}");
         }
-    }
-    public static void AddPetition(string username)
-    {
-
     }
     public static void Hi2(){
         using (bd_storage db = new bd_storage()){

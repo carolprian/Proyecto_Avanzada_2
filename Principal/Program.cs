@@ -10,9 +10,8 @@ public partial class Program
         WriteLine();
         // ApprovePermissions();
         // StorersPrincipal();
-    //MenuStudents("20300826");
-        Hi();
-        RequestFormat("20300826");
+        MenuStudents("20300826");
+        //Hi();
         while (true)
         {
             WriteLine("Principal Menu: ");

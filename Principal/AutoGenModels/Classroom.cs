@@ -37,4 +37,7 @@ public partial class Classroom
 
     [InverseProperty("Classroom")]
     public virtual ICollection<Teach> Teaches { get; set; } = new List<Teach>();
+    
+    [InverseProperty("Classroom")]
+    public virtual ICollection<Petition> Petitions { get; set; } = new List<Petition>();
 }
