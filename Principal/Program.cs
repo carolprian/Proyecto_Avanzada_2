@@ -1,6 +1,4 @@
-﻿// namespace LogInPrincipal;
-//using Principal.AutoGens;
-using AutoGens;
+﻿using AutoGens;
 public partial class Program
 {
     public static void Main()
