@@ -303,21 +303,20 @@ partial class Program{
     public static void AuxAddEquipmentStorer()
     {
         WriteLine("Adding a new equipment:");
-        string equipmentid = "";
-        string controlnumber = "";
+        string EquipmentIdUser = "";
+        string ControlNumberUser = "";
         int opi=0;        
-        using(bd_storage db = new())
+        using(bd_storage db = new()) 
         {
-            while(opi==0)
+            while(opi==0) 
             {   
                 WriteLine("Provide the equipment ID for the inventory:");
 
-                equipmentid = VerifyReadMaxLengthString(15);
-
-                IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.EquipmentId == equipmentid);
-                            
+                EquipmentIdUser = VerifyReadMaxLengthString(15); 
+                IQueryable<Equipment> equipments = db.Equipments.Where(e=> e.EquipmentId == EquipmentIdUser); 
+                
                 if(equipments is null || !equipments.Any())
-                {
+                { 
                     opi = 1;
                 }
                 else
@@ -328,18 +327,18 @@ partial class Program{
         }
 
         WriteLine();
-        WriteLine("Provide the equipment name:");
-        string name = VerifyReadMaxLengthString(40);
+        WriteLine("Provide the equipment name:"); 
+        string name = VerifyReadMaxLengthString(40); 
         WriteLine();
         short areaid=-1;
                         
-        int areasCount = ListAreas();
+        int areasCount = ListAreas(); 
         WriteLine("Choose the area of the equipment:");
-        while(areaid <= 0 || areaid > areasCount )
+        while(areaid <= 0 || areaid > areasCount ) 
         {
             try
             {
-                areaid = Convert.ToInt16(VerifyReadMaxLengthString(2));
+                areaid = Convert.ToInt16(VerifyReadMaxLengthString(2)); 
             }
             catch (FormatException)
             {
@@ -390,10 +389,10 @@ partial class Program{
             while(opi==0)
             {   
                 WriteLine("Insert the control Number provided by the equipments's manufacturer:");
-                controlnumber = VerifyReadMaxLengthString(20);
+                ControlNumberUser = VerifyReadMaxLengthString(20);
 
                 IQueryable<Equipment> equipments = db.Equipments
-                .Where(e=> e.ControlNumber == controlnumber);
+                .Where(e=> e.ControlNumber == ControlNumberUser);
                                 
                 if(equipments is null || !equipments.Any())
                 {
@@ -418,9 +417,9 @@ partial class Program{
             coordinatorid = coordinators[coordid - 1];
         }
 
-        if(equipmentid!="" && name !="" && areaid !=-1 && description !="" && year !=0 && statusid != 0 && controlnumber !="" && coordinatorid !="")
+        if(EquipmentIdUser!="" && name !="" && areaid !=-1 && description !="" && year !=0 && statusid != 0 && ControlNumberUser !="" && coordinatorid !="")
         {
-            var resultAdd = AddEquipment(equipmentid, name, areaid, description, year, statusid, controlnumber, coordinatorid);
+            var resultAdd = AddEquipment(EquipmentIdUser, name, areaid, description, year, statusid, ControlNumberUser, coordinatorid);
             if (resultAdd.affected == 1)
             {
                 WriteLine($"The equipment {resultAdd.EquipmentId} was created succesfully");
