@@ -161,7 +161,8 @@ partial class Program
                 }
                 else if (idUser == "coordinatorId")
                 {
-                    IQueryable<Coordinator>? coordinators = db.Coordinators.Where(c => c.CoordinatorId == EncryptPass(username));
+                    IQueryable<Coordinator>? coordinators = db.Coordinators
+                    .Where(c => c.CoordinatorId == EncryptPass(username));
                     if (coordinators is not null || coordinators.Any())
                     {
                         foreach (var coordinator in coordinators)

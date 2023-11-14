@@ -21,7 +21,9 @@ partial class Program
                 case "2":
                 //buscar equipo por su Id
                     WriteLine("Provide the number: ");
-                    string? searchTerm = ReadLine();
+                    // Vamos a verificar que solo se esten ingresando caracteres alfanumericos y sin espacios
+                    // Verificamos que sean excactamente 6 caracteres
+                    string? searchTerm = VerifyAlphanumericInput(VerifyReadLengthStringExact(6));
                     SearchEquipmentsById(searchTerm);
                     BackToMenu();
                     break;

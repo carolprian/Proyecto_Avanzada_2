@@ -48,6 +48,7 @@ public partial class Program
                     else
                     {
                         WriteLine("Log in unsuccesful.");
+                        WriteLine("Invalid password or username");
                     }
 
                 break;

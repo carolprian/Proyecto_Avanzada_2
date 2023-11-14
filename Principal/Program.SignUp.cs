@@ -20,7 +20,7 @@ partial class Program
                 case "2":
                 //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     WriteLine("Please enter the safecode in order to create a new Professor");
-                    safecode = ReadNonEmptyLine();
+                    safecode = ReadPassword();
                     if(safecode == "Brambi12345")
                     {
                         //si es correcto deja registrarlo
@@ -37,7 +37,7 @@ partial class Program
                 //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     tableName = "Coordinator";
                     WriteLine("Please enter the safecode in order to create a new Coordinator");
-                    safecode = ReadNonEmptyLine();
+                    safecode = ReadPassword();
                     if(safecode == "Brambi12345")
                     {
                         //si es correcto deja registrarlo
@@ -54,7 +54,7 @@ partial class Program
                 //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     tableName = "Storer";
                     WriteLine("Please enter the safecode in order to create a new Storer");
-                    safecode = ReadNonEmptyLine();
+                    safecode = ReadPassword();
                     if(safecode == "Brambi12345")
                     {
                         //si es correcto deja registrarlo
@@ -156,18 +156,19 @@ partial class Program
         //pide datos para registr, ReadNonEmptyLine() poara que se regustren datos
         //es el mismo 
         WriteLine("Provide your payroll number, this will be your ID: ");
-        string username = EncryptPass(VerifyReadLengthStringExact(10));
+        string username = EncryptPass(VerifyNumericInput());
+ 
         WriteLine("Provide your name: ");
-        string firstname = ReadNonEmptyLine();
+        string firstname = VerifyAlphabeticInput();
 
         WriteLine("Provide your paternal last name: ");
-        string lastnameP = ReadNonEmptyLine();
+        string lastnameP = VerifyAlphabeticInput();
 
         WriteLine("Provide your maternal last name: ");
-        string lastnameM = ReadNonEmptyLine();
+        string lastnameM = VerifyAlphabeticInput();
 
         WriteLine("Create your password: ");
-        string encryptedPassword = EncryptPass(VerifyReadLengthString(8));
+        string encryptedPassword = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
 
         // add to the database the register
         int affected = 0;

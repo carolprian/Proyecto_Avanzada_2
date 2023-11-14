@@ -5,6 +5,92 @@ using System.Text;
 
 partial class Program
 {
+    public static string VerifyAlphabeticInput()
+    {
+        string? input;
+        do
+        {
+            input = ReadLine();
+
+            if (!IsAlphabetic(input))
+            {
+                WriteLine("Invalid input. Please enter alphabetic characters and ensure it's not empty. Try again:");
+            }
+
+        } while (!IsAlphabetic(input));
+
+        return input;
+    }
+
+    public static string VerifyAlphanumericInput(string input)
+    {
+        while (string.IsNullOrWhiteSpace(input) || !input.All(char.IsLetterOrDigit))
+        {
+            WriteLine("Invalid input. Please enter a valid alphanumeric string without spaces or special characters:");
+            input = ReadLine();
+        }
+
+        return input;
+    }
+
+
+
+
+    public static bool IsAlphabetic(string? input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return false;
+        }
+
+        foreach (char c in input)
+        {
+            if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static string VerifyNumericInput()
+    {
+        string? text;
+        do
+        {
+            text = ReadLine();
+            if (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || text.Length < 10)
+            {
+                WriteLine("Invalid input. Please enter numeric characters only. Try again:");
+            }
+        } while (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || text.Length < 10);
+        return text;
+    }
+
+    public static string VerifyUpperCaseAndNumeric(string text)
+    {
+        while (true)
+        {
+            // Verifica si el texto contiene al menos una letra mayúscula
+            bool hasUpperCase = text.Any(char.IsUpper);
+
+            // Verifica si el texto contiene al menos un carácter numérico
+            bool hasNumeric = text.Any(char.IsDigit);
+
+            // Si cumple con los requisitos, devuelve el texto
+            if (hasUpperCase && hasNumeric)
+            {
+                return text;
+            }
+            else
+            {
+                WriteLine("El texto no cumple con los requisitos. Debe tener al menos una letra mayúscula y al menos un carácter numérico.");
+                WriteLine("Try again:");
+                text = ReadLine();
+            }
+        }
+    }
     public static string VerifyReadLengthStringExact(int Characters)
     {
         string? text;
