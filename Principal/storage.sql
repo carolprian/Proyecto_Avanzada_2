@@ -283,10 +283,6 @@ CREATE TABLE IF NOT EXISTS professors (
     nip         VARCHAR (50),
     password    VARCHAR (50) 
 );
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('s+d1CVba7aAcZHO4z0LPaw==', 'Carlos', 'Molina', 'Martínez', 'gxLjEIaXCcvWek8lrMK0Qg==', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('s+d1CVba7aAcZHO4z0LPaw==', 'Nancy del Carmen', 'Benavides', 'Medina', 'JhRuGQE/CqIGDl0yZkNnMQ==', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('AEd+FHe4V36Wpe7FXKWZtg==', 'Diana Marisol', 'Figueroa', 'Flores', 'MSMqLGP2jK9q59XrnJ4f+w==', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('i7T8ZRB4ZgI/GHgQY3B6IQ==', 'Clara Gabriela', 'Garcia', 'Duran', 'QUhomydkInt//RMMHtlzNQ==', 'F8t128gjJIaegDAGPG//LA==');
 
 -- Tabla: requestDetails
 CREATE TABLE IF NOT EXISTS requestDetails (

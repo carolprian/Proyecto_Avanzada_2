@@ -18,7 +18,7 @@ partial class Program
                     return;
 
                 case "2":
-                //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
+                //pide safecode para que se pueda registrar un profesor, un storer y un coordinador
                     WriteLine("Please enter the safecode in order to create a new Professor");
                     safecode = ReadPassword();
                     if(safecode == "Brambi12345")
@@ -82,19 +82,19 @@ partial class Program
     {
         //pide datos para registro, ReadNonEmptyLine() poara que se regustren datos
         WriteLine("Provide your payroll number, this will be your ID: ");
-        string username = EncryptPass(VerifyReadLengthStringExact(10));
+        string username = EncryptPass(VerifyNumericInput());
 
         WriteLine("Provide your name: ");
-        string firstname = ReadNonEmptyLine();
+        string firstname = VerifyAlphabeticInput();
 
         WriteLine("Provide your paternal last name: ");
-        string lastnameP = ReadNonEmptyLine();
+        string lastnameP = VerifyAlphabeticInput();
 
         WriteLine("Provide your maternal last name: ");
-        string lastnameM = ReadNonEmptyLine();
+        string lastnameM = VerifyAlphabeticInput();
 
         WriteLine("Create your password: ");
-        string encryptedPassword = EncryptPass(VerifyReadLengthString(8));
+        string encryptedPassword = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
         
         string nip = "";
         int op = 0;
@@ -103,7 +103,7 @@ partial class Program
         {
             //mientras no sea valido lo pide todo el rato
             WriteLine("Create your confirmation NIP for your students requests (4 digits): ");
-            nip = VerifyReadLengthStringExact(4);
+            nip = EncryptPass(VerifyReadLengthStringExact(4));
 
             using (bd_storage db = new())
             {

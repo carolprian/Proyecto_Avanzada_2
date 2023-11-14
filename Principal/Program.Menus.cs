@@ -83,16 +83,17 @@ partial class Program
         WriteLine(" 4. Edit Request for Material");
         WriteLine(" 5. Delete Request for Material");
         WriteLine(" 6. View All materials of the storage");
-        WriteLine(" 7. Exit");
+        WriteLine(" 7. Update my info");
+        WriteLine(" 8. Exit");
 
         do
         {
             WriteLine();
             Write("Option : ");
             op = ReadNonEmptyLine();
-            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7")
+            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8")
             {
-                WriteLine("Please choose a valid option (1 - 7)");
+                WriteLine("Please choose a valid option (1 - 8)");
                 op = ReadNonEmptyLine();
             }
             else

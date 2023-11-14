@@ -7,7 +7,7 @@ partial class Program
         using (bd_storage db = new())
         {
             WriteLine("Write your ID: ");
-            string? username = ReadNonEmptyLine();
+            string? username = VerifyNumericInput();
             string encyptUsr = EncryptPass(username);
 
             WriteLine("Write your password: ");
@@ -137,7 +137,8 @@ partial class Program
                 }
                 else if (idUser == "professorId")
                 {
-                    IQueryable<Professor>? professors = db.Professors.Where(p => p.ProfessorId == EncryptPass(username));
+                    IQueryable<Professor>? professors = db.Professors
+                    .Where(p => p.ProfessorId == EncryptPass(username));
 
                     if (professors is not null || professors.Any())
                     {

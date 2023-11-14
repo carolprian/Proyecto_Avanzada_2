@@ -97,7 +97,7 @@ partial class Program
         do
         {
             text = ReadLine();
-            if (text.Length < Characters || text.Length > Characters)
+            if (text.Length < Characters || text.Length > Characters || string.IsNullOrEmpty(text))
             {
                 WriteLine($"The input must have {Characters} caracteres. Try again:");
             }
@@ -125,7 +125,7 @@ partial class Program
         do
         {
             text = ReadLine();
-            if (text.Length > Characters)
+            if (text.Length > Characters || string.IsNullOrEmpty(text))
             {
                 WriteLine($"The input must have maximum {Characters} caracteres. Try again:");
             }

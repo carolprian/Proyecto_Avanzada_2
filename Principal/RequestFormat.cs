@@ -124,191 +124,71 @@ partial class Program
     }
 
     public static int AddClassroom(){
-        int i=0, classId=0;
-        bool ban=true;
+        int i = 0, classId = 0;
+        bool ban = true;
         do{
             using (bd_storage db = new()){
+
                 IQueryable<Classroom> classrooms = db.Classrooms;
+                
                 var result = classrooms; 
-                i=0;
+                i = 1;
+
                 foreach (var cl in result)
                 {
                     WriteLine($"{i}. {cl.Clave}");
                     i++;
                 }
+
                 WriteLine("Select the number of the classroom: ");
                 string classroom = ReadNonEmptyLine();
+                
                 classId = TryParseStringaEntero(classroom);
+                
                 IQueryable<Classroom> classroomsId = db.Classrooms.Where(c => c.ClassroomId==classId);
+                
                 if(classroomsId is null || !classroomsId.Any())
                 {
                     WriteLine("Not a valid key. Try again");
-                } else {
-                    //WriteLine($"Classroom {classroomsId.Clave}");
+                } 
+                else 
+                {
                     ban=false;
                     return classId;
                 }
             }
-        }while(ban==true);
+        } while(ban==true);
+
         return classId;
     }
 
-    public static string SearchSubjectsByName(string SearchTerm, int Op)
+    public static string? AddStorer()
     {
-       // Console.Clear();
-        int i = 0;
-        if(Op==1){
-        WriteLine("Insert the name start of the subject WITHOUT accents");
-        SearchTerm = ReadNonEmptyLine();
-        } 
-        using (bd_storage db = new())
-        {
-            IQueryable<Subject>? subjects = db.Subjects.Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
-            if (!subjects.Any() || subjects is null)
-            {
-                WriteLine("No subjects found matching the search term: " + SearchTerm + "Try again.");
-                return SearchSubjectsByName(SearchTerm, 1);
-            } else {
-                i=1;
-                if (subjects.Count() == 1)
-                {
-                    // Si encontramos una única materia, la retornamos
-                    return subjects.FirstOrDefault().SubjectId;
-                }
-                else if(subjects.Count() >1){
-                    foreach(var s in subjects){
-                        WriteLine($"{i}. {s.Name}");
-                        i++;
-                    }
-                    // Si hay más de una materia que coincide, pedimos el nombre completo
-                    WriteLine("Insert the whole name of the subject to confirm");
-                    return SearchSubjectsByName(SearchTerm, 2);
-                }
-                else {
-                    // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
-                    WriteLine("Subject not found. Try again.");
-                    return SearchSubjectsByName(SearchTerm, 1);
-                }
-            }
-        }
-    }
-
-    public static string SearchProfessorByName(string SearchTerm, int Op, int Recursive){
-        int i = 1;
-        if (Op==0){
-            WriteLine("Insert the names of the professor WITHOUT accents");
-            SearchTerm = ReadNonEmptyLine();
-            using (bd_storage db = new())
-            {
-                IQueryable<Professor>? professors = db.Professors.Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
-                if (!professors.Any())
-                {
-                    WriteLine($"No professors found matching the search term: {SearchTerm}. Try again");
-                    return SearchProfessorByName(SearchTerm, 0, 0);
-                } else {
-                    if (professors.Count() == 1)
-                    {
-                        // Si encontramos una única materia, la retornamos
-                        return professors.FirstOrDefault().ProfessorId;
-                    }
-                    else if(professors.Count() >1){
-                        foreach(var s in professors){
-                            WriteLine($"{i}. {s.Name} {s.LastNameP} {s.LastNameM}");
-                            i++;
-                        }
-                        // Si hay más de una materia que coincide, pedimos el nombre completo
-                        WriteLine("Insert the PATERN last name of the teacher WITHOUT accents");
-                        string searchTermNew = ReadNonEmptyLine();
-                        return SearchProfessorByName(searchTermNew, 1, 0);
-                    }
-                    else {
-                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
-                        WriteLine("Professor not found. Try again");
-                        return SearchProfessorByName(SearchTerm, 0, 0);
-                    }
-                }
-            }
-        } else if(Op==1) {
-            if(Recursive==0){
-                WriteLine("Insert the PATERN last name of the teacher WITHOUT accents");
-            }
-            SearchTerm = ReadNonEmptyLine();
-            using (bd_storage db = new())
-            {
-                IQueryable<Professor>? professors = db.Professors.Where(s => s.LastNameP.StartsWith(SearchTerm));
-                if (!professors.Any() || professors is null)
-                {
-                    WriteLine($"No professors found matching the patern last name: {SearchTerm}. Try again");
-                    return SearchProfessorByName(SearchTerm, 1, 0);
-                } else {
-                    if (professors.Count() == 1)
-                    {
-                        // Si encontramos un único profesor, lo retornamos
-                        return professors.FirstOrDefault().ProfessorId;
-                    }
-                    else if(professors.Count() > 1){
-                        foreach(var s in professors){
-                            WriteLine($"{i}. {s.Name} {s.LastNameP} {s.LastNameM}");
-                            i++;
-                        }
-                        // Si hay más de una materia que coincide, pedimos el apellido
-                        WriteLine("Insert the MATERN last name of the teacher WITHOUT accents");
-                        string searchTermNew = ReadNonEmptyLine();
-                        return SearchProfessorByName(searchTermNew, 2, 0);
-                    }
-                    else {
-                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
-                        WriteLine("Professor not found. Try again");
-                        return SearchProfessorByName(SearchTerm, 0, 0);
-                    }
-                }
-            }
-        } else
-        {
-            if(Recursive==0){
-                WriteLine("Insert the MATERN last name of the teacher WITHOUT accents");
-            }
-            using (bd_storage db = new())
-            {
-                IQueryable<Professor>? professors = db.Professors
-                    .Where(s => s.LastNameM.StartsWith(SearchTerm));
-                db.ChangeTracker.LazyLoadingEnabled = false;
-                if (!professors.Any())
-                {
-                    WriteLine($"No professors found matching the matern last name: {SearchTerm}. Try again");
-                    return SearchProfessorByName(SearchTerm, 2, 0);
-                } else {
-                    if (professors.Count() == 1)
-                    {
-                        // Si encontramos un único profesor, lo retornamos
-                        return professors.FirstOrDefault().ProfessorId;
-                    }
-                    else {
-                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
-                        WriteLine("Professor not found. Try again");
-                        return SearchProfessorByName(SearchTerm, 0, 0);
-                    }
-                }
-            }
-        }
-    }
-
-    public static string? AddStorer(){
         string? storerId = "";
-        using(bd_storage db= new()){
+        using(bd_storage db= new())
+        {
             IQueryable<Storer> storers = db.Storers;
-            if(storers is not null && storers.Any()){
+            
+            if(storers is not null && storers.Any())
+            {
                 storerId = storers.First().StorerId;
-            } else {
+            } 
+            else
+            {
                 storerId = null;
             }
         }
         return storerId;
     }
 
-    public static (int affected, int requestId) AddRequest(int ClassroomId, string ProfessorId, string StudentId, string StorerId, string SubjectId){
-        using(bd_storage db = new()){
-            if(db.Requests is null){ return(0, -1);}
+    public static (int affected, int requestId) AddRequest(int ClassroomId, string ProfessorId, string StudentId, string StorerId, string SubjectId)
+    {
+        using(bd_storage db = new())
+        {
+            if(db.Requests is null)
+            { 
+                return(0, -1);
+            }
             Request r  = new Request()
             {
                 ClassroomId = ClassroomId,
@@ -319,6 +199,7 @@ partial class Program
             };
 
             EntityEntry<Request> entity = db.Requests.Add(r);
+            
             int affected = db.SaveChanges();
             return (affected, r.RequestId);
         }
@@ -364,13 +245,20 @@ partial class Program
                 while(initEnd==false){
                     switch(day){
                         case DayOfWeek.Monday:{
+
                             offset=0;
                             var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{sch.ScheduleId.ToString()}. {sch.InitTime.ToString("HH:mm")}");
+
+                            foreach(var sch in saltos)
+                            {
+                                int hour = sch.InitTime.Hour;
+                                int minute = sch.InitTime.Minute;
+                                WriteLine($"{sch.ScheduleId}. {hour:D2}:{minute:D2}");
                             }
+
                             WriteLine($"Select the number to choose the class start hour");
                             scheduleIdInit = ReadNonEmptyLine();
+
                             scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
                             scheduleIdInitI += offset;
                             if(scheduleIdInitI >= offset && (offset+10) >= scheduleIdInitI){

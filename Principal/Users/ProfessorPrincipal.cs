@@ -34,6 +34,9 @@ partial class Program
                     ViewAllEquipments(1);
                     break;
                 case "7":
+                    UpdateProfessorFields(username);
+                    break;
+                case "8":
                     exitRequested = true;
                     break;
                 default:
