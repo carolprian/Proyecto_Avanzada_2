@@ -156,18 +156,19 @@ partial class Program
         //pide datos para registr, ReadNonEmptyLine() poara que se regustren datos
         //es el mismo 
         WriteLine("Provide your payroll number, this will be your ID: ");
-        string username = EncryptPass(VerifyReadLengthStringExact(10));
+        string username = EncryptPass(VerifyNumericInput());
+ 
         WriteLine("Provide your name: ");
-        string firstname = ReadNonEmptyLine();
+        string firstname = VerifyAlphabeticInput();
 
         WriteLine("Provide your paternal last name: ");
-        string lastnameP = ReadNonEmptyLine();
+        string lastnameP = VerifyAlphabeticInput();
 
         WriteLine("Provide your maternal last name: ");
-        string lastnameM = ReadNonEmptyLine();
+        string lastnameM = VerifyAlphabeticInput();
 
         WriteLine("Create your password: ");
-        string encryptedPassword = EncryptPass(VerifyReadLengthString(8));
+        string encryptedPassword = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
 
         // add to the database the register
         int affected = 0;

@@ -5,7 +5,7 @@ partial class Program
 {
     public static void PetitionFormat(string username)
     {
-        string plantel = AddPlantel();
+        string plantel = WritePlantel();
         DateTime currentDate = DateTime.Now;
         string professorId = EncryptPass(username);
         int classroomId = AddClassroom();

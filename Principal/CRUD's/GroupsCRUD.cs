@@ -70,7 +70,7 @@ partial class Program
         string op = "a";
         while (op != "3")
         {
-            WriteLine("What field do you want to update? (except ID):");
+            WriteLine("What field do you want to update? (except ID)");
             WriteLine($"1. Group ID: {groups.First().GroupId}");
             WriteLine($"2. Name: {groups.First().Name}");
             WriteLine($"3. None. Exit the Update of the Group");

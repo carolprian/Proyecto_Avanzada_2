@@ -21,7 +21,9 @@ partial class Program
                 case 2:
                 //buscar equipo por su Id
                     WriteLine("Provide the number: ");
-                    string? searchTerm = ReadLine();
+                    // Vamos a verificar que solo se esten ingresando caracteres alfanumericos y sin espacios
+                    // Verificamos que sean excactamente 6 caracteres
+                    string? searchTerm = VerifyAlphanumericInput(VerifyReadLengthStringExact(6));
                     SearchEquipmentsById(searchTerm);
                     BackToMenu();
                     break;
@@ -33,28 +35,28 @@ partial class Program
                 case 4:
                 //buscar en la lista de dañados o perdidos equipos por su iD
                     WriteLine("Provide the equipment ID to search:");
-                    string? equipmentIdToFind = ReadLine();
+                    string? equipmentIdToFind = ReadNonEmptyLine();
                     FindDandLequipmentById(equipmentIdToFind);
                     BackToMenu();
                     break;
                 case 5:
                 //buscar en la lista de dañados o perdidos equipos por su nombre
                     WriteLine("Provide the equipment name to search:");
-                    string? equipmentNameToFind = ReadLine();
+                    string? equipmentNameToFind = ReadNonEmptyLine();
                     FindDandLequipmentByName(equipmentNameToFind);
                     BackToMenu();
                     break;
                 case 6:
                 //buscar en la lista de dañados o perdidos equipos por su fecha
                     WriteLine("Provide the date (yyyy) to search:");
-                    string? dateToFind = ReadLine();
+                    string? dateToFind = ReadNonEmptyLine();
                     FindDandLequipmentByDate(dateToFind);
                     BackToMenu();
                     break;
                 case 7:
                 //buscar en la lista de dañados o perdidos equipos por el estudiante que lo daÑO
                     WriteLine("Provide the student name to search:");
-                    string? studentNameToFind = ReadLine();
+                    string? studentNameToFind = ReadNonEmptyLine();
                     FindDandLequipmentByStudentName(studentNameToFind);
                     BackToMenu();
                     break;
