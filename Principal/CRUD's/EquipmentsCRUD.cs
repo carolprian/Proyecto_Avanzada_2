@@ -293,8 +293,7 @@ partial class Program{
             if((equipments is null) || !equipments.Any())
             {
                 WriteLine("There are no status found");
-            }
-
+            } else {
                 int countTotal = equipments.Count();
                 bool continueListing = true;
                 int offset = 0, batchS = 20;
@@ -305,10 +304,6 @@ partial class Program{
                 while (continueListing)
                     {
                 var equips = equipments.Skip(offset).Take(batchS);
-
-    //                Console.Clear();
-                    
-                    
                     WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
                         "EquipmentId", "Equipment Name", "Year", "Status");
                     WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
@@ -359,30 +354,6 @@ partial class Program{
                         continueListing = false;
                         Console.Clear();
                     }
-                }
-
-            }
-        } else 
-        {
-            using( bd_storage db = new())
-            {
-                IQueryable<Equipment>? equipments = db.Equipments
-                .Include(e => e.Status).Where(s => s.Status.StatusId==1 || s.Status.StatusId==2);
-
-                db.ChangeTracker.LazyLoadingEnabled = false;
-                if((equipments is null) || !equipments.Any())
-                {
-                    WriteLine("There are no status found");
-                }
-                int i=1;
-                WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3}", "Index", "EquipmentId", "Equipment Name", "Description");
-                WriteLine("-------------------------------------------------------------------------------");
-
-                foreach (var e in equipments)
-                {
-                    WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3}",
-                        i, e.EquipmentId, e.Name, e.Description);
-                    i++;
                 }
             }
         }
@@ -441,7 +412,7 @@ partial class Program{
             .Include(e => e.Area)
             .Include(e => e.Status)
             .Include(e => e.Coordinator)
-            .Where(e=>e.EquipmentId.Equals(id));
+            .Where(e=>e.EquipmentId.Equals(Id));
 
             if(equipms is not null)
             {

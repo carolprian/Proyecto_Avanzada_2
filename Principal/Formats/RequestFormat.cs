@@ -11,7 +11,7 @@ partial class Program
     public static void RequestFormat(string StudentID)
     {
         // Pide plantel si no es colomos no lo deja continuar
-        string Plantel = AddPlantel();
+        string Plantel = WritePlantel();
         // La fecha en la que pide el permiso
         DateTime CurrentDate = DateTime.Now;
         // Regresa el ID del classroom seleccionado
@@ -68,72 +68,97 @@ partial class Program
         // Variable para establecer el índice de las listas de los nombres de los equipos y los status de estos
         int i=0;
         // Lista que almacena los requestDetails Id de los registros nuevos agregados en la tabla
-        List<int>? requestDetailsId = new List<int>();
+        List<int>? RequestDetailsId = new List<int>();
         // Lista que almacena cuantas filas fueron afectadas en la tabla de Request Details al momento de re
-        List<int>? affecteds = new List<int>();
+        List<int>? Affecteds = new List<int>();
+        // Verifica que la lista de equipmentId y statusId sean del mismo tamaño y no tengan valores nulos para poder usarlos
         if (EquipmentsId == null || StatusEquipments == null || EquipmentsId.Count != StatusEquipments.Count)
         {
             // Manejar el caso donde las listas no son válidas
-            WriteLine("entro el if donde valida que las listas son nulas");
-            return (affecteds, requestDetailsId);
-        }
-        using (bd_storage db = new()){
-            if(db.RequestDetails is null){ 
-                WriteLine("Table not created");
-                return(affecteds, requestDetailsId);}
-            foreach(var e in EquipmentsId){
-                RequestDetail rD = new() {
-                    RequestId = RequestId,
-                    EquipmentId = EquipmentsId[i],
-                    StatusId = StatusEquipments[i],
-                    ProfessorNip = ProfessorNip,
-                    DispatchTime = InitTime,
-                    ReturnTime = EndTime,
-                    RequestedDate = RequestedDate,
-                    CurrentDate = CurrentDate
-                };
-                EntityEntry<RequestDetail> entity = db.RequestDetails.Add(rD);
-                affecteds.Add(db.SaveChanges());
-                requestDetailsId.Add(rD.RequestDetailsId);
-                i++;
-            }
-        }
-        return (affecteds, requestDetailsId);
-    }
-
-    public static string AddPlantel(){
-        bool ban=false;
-        string? plantel = "nada";
-        do{
-            WriteLine("Insert the plantel: ");
-            plantel = ReadNonEmptyLine();
-            if(plantel.ToLower()=="colomos"){
-                ban=true;
-                return plantel;
-            } else 
-            {
-                WriteLine("Plantel not registered. Try again");
-            }
-        }while(ban==false);
-        return plantel;
-    }
-
-    public static int AddClassroom(){
-        int i=0, classId=0;
-        bool ban=true;
-        do{
+            // Si no son validas muestra el mensaje y retorna los valores
+            WriteLine("The equipment selected was not correctly added. Try again.");
+            DeleteRequest(RequestId);
+            return (Affecteds, RequestDetailsId);
+        } else {
             using (bd_storage db = new()){
-                IQueryable<Classroom> classrooms = db.Classrooms;
-                var result = classrooms; 
-                i=0;
-                foreach (var cl in result)
+                // Si la tabla no existe se lanza una excepcion
+                if(db.RequestDetails is null){ 
+                    throw new InvalidOperationException ("The table Request Details does not exist. Verify it");
+                }
+                // Por cada equipo registrado en la tabla se genera una fila de datos en Request Details, donde se llenan los campos 
+                //con los datos recibidos por los parametros
+                foreach(var e in EquipmentsId){
+                    RequestDetail rD = new() {
+                        RequestId = RequestId,
+                        EquipmentId = EquipmentsId[i],
+                        StatusId = StatusEquipments[i],
+                        ProfessorNip = ProfessorNip,
+                        DispatchTime = InitTime,
+                        ReturnTime = EndTime,
+                        RequestedDate = RequestedDate,
+                        CurrentDate = CurrentDate
+                    };
+                    // Se añaden los datos a la tabla
+                    EntityEntry<RequestDetail> entity = db.RequestDetails.Add(rD);
+                    // Se guardan los datos en la bd y el valor de las filas affectadas se guarda en la lista de affecteds
+                    Affecteds.Add(db.SaveChanges());
+                    // Se guardan los ID generados en la lista de ID's
+                    RequestDetailsId.Add(rD.RequestDetailsId);
+                    // Aumenta el indice de las listas
+                    i++;
+                }
+            }
+        }
+        return (Affecteds, RequestDetailsId);
+    }
+
+    public static string WritePlantel()
+    {
+        WriteLine("Insert the plantel: ");
+        string Plantel = ReadNonEmptyLine();
+        bool Ban = false;
+        do{
+            Ban = VerifyPlantel(Plantel);
+        }while(Ban==false);
+        return Plantel;
+    }
+
+    public static bool VerifyPlantel(string Plantel){
+        if(Plantel.ToLower()=="colomos"){
+            return true;
+        } else 
+        {
+            WriteLine("Plantel not registered. Try again");
+            return false;
+        }
+    }
+
+    public static int ListClassrooms(){
+        // Indice de la lista
+        int i = 0;
+        using (bd_storage db = new()){
+            // verifica que exista la tabla de Classroom
+            if( db.Classrooms is null){
+                throw new InvalidOperationException("The table does not exist.");
+            } else {
+                IQueryable<Classroom> Classrooms = db.Classrooms;
+                foreach (var cl in Classrooms)
                 {
                     WriteLine($"{i}. {cl.Clave}");
                     i++;
                 }
+                return Classrooms.Count();
+            }
+        }
+    }
+    public static int AddClassroom(){
+        int classId=0;
+        bool ban=true;
+        do{
+            using (bd_storage db = new()){
+                int Count = ListClassrooms();
                 WriteLine("Select the number of the classroom: ");
-                string classroom = ReadNonEmptyLine();
-                classId = TryParseStringaEntero(classroom);
+                classId = TryParseStringaEntero(ReadNonEmptyLine());
                 IQueryable<Classroom> classroomsId = db.Classrooms.Where(c => c.ClassroomId==classId);
                 if(classroomsId is null || !classroomsId.Any())
                 {
@@ -402,8 +427,6 @@ partial class Program
         return (initTimeValue, endTimeValue);
     }
 
-
-
     public static void DeleteRequest(int? requestId)
     {
         using (bd_storage db = new())
@@ -432,7 +455,6 @@ partial class Program
             }
         }
     }
-
 
     public static void DeleteRequestFormat(string Username)
     {
@@ -495,7 +517,6 @@ partial class Program
             return;
         }
     }
-
 
     public static void UpdateRequestFormat(string Username){
         int i=1, affected = 0, op=0;
