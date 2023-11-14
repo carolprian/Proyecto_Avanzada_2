@@ -10,16 +10,10 @@ partial class Program
 {
     public static void RequestFormat(string Username)
     {
-
-    //pide plantel si no es colomos no lo deja continuar
-        string plantel = AddPlantel();
+        //pide plantel si no es colomos no lo deja continuar
+        string plantel = WritePlantel();
         //la fecha en la que pide el permiso
         DateTime currentDate = DateTime.Now;
-        //saca el grupo y el Id del student
-        var student = AddStudent(Username);
-        string studentId = student.Item1;
-        int groupId = student.Item2;
-        
         int classroomId = AddClassroom();
         string subjectId = SearchSubjectsByName("a", 1);
         string professorId = SearchProfessorByName("A", 0, 0);
@@ -34,7 +28,8 @@ partial class Program
         var times = AddTimes(requestDate);
         List<string> equipmentsId = new List<string>();
         List<byte?> statusEquipments = new List<byte?>();
-        var request = AddRequest(classroomId, professorId, studentId, storerId, subjectId);
+        //lo que dice Username lo cambié, antes decía studentId (volley)
+        var request = AddRequest(classroomId, professorId, Username, storerId, subjectId);
         var equipments = SearchEquipmentsRecursive(equipmentsId, statusEquipments, requestDate, times.Item1, times.Item2, request.requestId, 4);
         int professorNip = 0;
         if(equipments.i == 1){
@@ -56,11 +51,13 @@ partial class Program
     }
     public static (List<int> Affected, List<int> RequestDetailsId) AddRequestDetails(int RequestId, List<string>? EquipmentsId, int ProfessorNip, DateTime InitTime, DateTime EndTime, DateTime RequestedDate, DateTime CurrentDate, List<byte?>? StatusEquipments){
         int i=0;
-        List<int>? requestDetailsId = new List<int>();
-        List<int>? affecteds = new List<int>();
+        List<int>? RequestDetailsId = new List<int>();
+        List<int>? Affecteds = new List<int>();
+        // Verifica que la lista de equipmentId y statusId sean del mismo tamaño y no tengan valores nulos para poder usarlos
         if (EquipmentsId == null || StatusEquipments == null || EquipmentsId.Count != StatusEquipments.Count)
         {
             // Manejar el caso donde las listas no son válidas
+<<<<<<< HEAD
             WriteLine("entro el if donde valida que las listas son nulas");
             return (affecteds, requestDetailsId);
         }
@@ -135,16 +132,102 @@ partial class Program
                 i = 1;
 
                 foreach (var cl in result)
+=======
+            // Si no son validas muestra el mensaje y retorna los valores
+            WriteLine("The equipment selected was not correctly added. Try again.");
+            return (Affecteds, RequestDetailsId);
+        } else {
+            using (bd_storage db = new()){
+                // Si la tabla no existe se retorna mencionando el valor 
+                if(db.RequestDetails is null){ 
+                    throw new InvalidOperationException("The table does not exist.");
+                    return(Affecteds, RequestDetailsId);
+                } else {
+                    // Por cada equipo registrado en la tabla se genera una fila de datos en Request Details, donde se llenan los campos 
+                    //con los datos recibidos por los parametros
+                    foreach(var e in EquipmentsId){
+                        RequestDetail rD = new() {
+                            RequestId = RequestId,
+                            EquipmentId = EquipmentsId[i],
+                            StatusId = StatusEquipments[i],
+                            ProfessorNip = ProfessorNip,
+                            DispatchTime = InitTime,
+                            ReturnTime = EndTime,
+                            RequestedDate = RequestedDate,
+                            CurrentDate = CurrentDate
+                        };
+                        // Se añaden los datos a la tabla
+                        EntityEntry<RequestDetail> entity = db.RequestDetails.Add(rD);
+                        // Se guardan los datos en la bd y el valor de las filas affectadas se guarda en la lista de affecteds
+                        Affecteds.Add(db.SaveChanges());
+                        // Se guardan los ID generados en la lista de ID's
+                        RequestDetailsId.Add(rD.RequestDetailsId);
+                        // Aumenta el indice de las listas
+                        i++;
+                    }
+                }
+            }
+        }
+        return (Affecteds, RequestDetailsId);
+    }
+
+    public static string WritePlantel()
+    {
+        WriteLine("Insert the plantel: ");
+        string Plantel = ReadNonEmptyLine();
+        bool Ban = false;
+        do{
+            Ban = VerifyPlantel(Plantel);
+        }while(Ban==false);
+        return Plantel;
+    }
+
+    public static bool VerifyPlantel(string Plantel){
+        if(Plantel.ToLower()=="colomos"){
+            return true;
+        } else 
+        {
+            WriteLine("Plantel not registered. Try again");
+            return false;
+        }
+    }
+
+    public static int ListClassrooms(){
+        // Indice de la lista
+        int i = 0;
+        using (bd_storage db = new()){
+            // verifica que exista la tabla de Classroom
+            if( db.Classrooms is null){
+                throw new InvalidOperationException("The table does not exist.");
+            } else {
+                IQueryable<Classroom> Classrooms = db.Classrooms;
+                foreach (var cl in Classrooms)
+>>>>>>> 2d45cb606e7a454b1ffbdb4c6f4a49652b110427
                 {
                     WriteLine($"{i}. {cl.Clave}");
                     i++;
                 }
+<<<<<<< HEAD
 
                 WriteLine("Select the number of the classroom: ");
                 string classroom = ReadNonEmptyLine();
                 
                 classId = TryParseStringaEntero(classroom);
                 
+=======
+                return Classrooms.Count();
+            }
+        }
+    }
+    public static int AddClassroom(){
+        int classId=0;
+        bool ban=true;
+        do{
+            using (bd_storage db = new()){
+                int Count = ListClassrooms();
+                WriteLine("Select the number of the classroom: ");
+                classId = TryParseStringaEntero(ReadNonEmptyLine());
+>>>>>>> 2d45cb606e7a454b1ffbdb4c6f4a49652b110427
                 IQueryable<Classroom> classroomsId = db.Classrooms.Where(c => c.ClassroomId==classId);
                 
                 if(classroomsId is null || !classroomsId.Any())
