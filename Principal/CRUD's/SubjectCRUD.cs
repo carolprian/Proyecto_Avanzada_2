@@ -69,7 +69,7 @@ partial class Program
         string op = "a";
         while (op != "4")
         {
-            WriteLine("This are the fields you can update:");
+            WriteLine("What field do you want to update? (except ID)");
             WriteLine($"1. Subject id : {subject.SubjectId}");
             WriteLine($"2. Name: {subject.Name}");
             WriteLine($"3. Academy: {subject.Academy?.Name}");
@@ -81,7 +81,7 @@ partial class Program
             switch (op)
             {
                 case "1":
-                    UpdateSubjectField("Subject id", value => subject.SubjectId = value);
+                    WriteLine("Updating Subject ID is not allowed.");
                     break;
                 case "2":
                     UpdateSubjectField("Name", value => subject.Name = value);

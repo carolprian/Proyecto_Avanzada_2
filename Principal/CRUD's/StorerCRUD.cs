@@ -68,7 +68,7 @@ partial class Program
         string op = "a";
         while (op != "6")
         {
-            WriteLine("These are the fields you can update:");
+            WriteLine("What field do you want to update? (except ID)");
             WriteLine($"1. Storer ID: {storers.First().StorerId}");
             WriteLine($"2. Name: {storers.First().Name}");
             WriteLine($"3. Last Name (Paternal): {storers.First().LastNameP}");
@@ -82,7 +82,7 @@ partial class Program
             switch (op)
             {
                 case "1":
-                    UpdateStorerField("Storer ID", value => storers.First().StorerId = value);
+                    WriteLine("Updating Storer ID is not allowed.");
                     break;
                 case "2":
                     UpdateStorerField("Name", value => storers.First().Name = value);

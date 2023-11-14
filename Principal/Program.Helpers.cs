@@ -136,8 +136,10 @@ partial class Program
     public static string ReadNonEmptyLine()
     {
         string? input = "";
+        input = ReadLine();
         while (string.IsNullOrWhiteSpace(input) || string.IsNullOrEmpty(input) || input == "")
         {
+            WriteLine(" It cant be empty. ");
             input = ReadLine();
         }
         return input;

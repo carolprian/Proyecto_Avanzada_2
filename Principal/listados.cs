@@ -467,7 +467,8 @@ partial class Program
                 .Include(dal => dal.Status)
                 .Include(dal => dal.Equipment)
                 .Include(dal => dal.Student)
-                .Include(dal => dal.Coordinator);
+                .Include(dal => dal.Coordinator)
+                .OrderBy( dal => dal.DateOfEvent);
 
             db.ChangeTracker.LazyLoadingEnabled = false;
             if ((dyLequipments is null) || !dyLequipments.Any())
@@ -476,13 +477,13 @@ partial class Program
                 return;
             }
 
-            WriteLine("| {0,12} | {1,13} | {2,45} | {3,25} | {4,21} | {5,10} | {6,7} |",
-                "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
+            WriteLine("|{0,12} | {1,9} | {2,40} | {3,35} | {4,11} | {5,10} | {6,7} |",
+                "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordi");
 
             // Use the data
             foreach (var dal in dyLequipments)
             {
-                WriteLine($"| {dal.DyLequipmentId,12} | {dal.Status?.Value,13} | {dal.Equipment?.Name,45} | {dal.Description,25} | {dal.DateOfEvent,21} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,7}");
+               WriteLine($"|{dal.DyLequipmentId,12} | {dal.Status?.Value,9} | {dal.Equipment?.Name,40} | {dal.Description,35} | {dal.DateOfEvent.ToString("dd/MM/yyyy"),11} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,7} |");
             }
         }
     }
