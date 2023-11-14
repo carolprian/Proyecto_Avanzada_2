@@ -205,7 +205,7 @@ partial class Program
             return;
         }
     }
-
+    
     public static void UpdatePetitionFormat(string username)
     {
         int i=1, affected = 0, op=0;

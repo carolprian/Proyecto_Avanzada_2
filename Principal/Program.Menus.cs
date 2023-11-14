@@ -85,7 +85,8 @@ partial class Program
         WriteLine(" 4. Edit Request for Material");
         WriteLine(" 5. Delete Request for Material");
         WriteLine(" 6. View All materials of the storage");
-        WriteLine(" 7. Exit");
+        WriteLine(" 7. Update my info");
+        WriteLine(" 8. Exit");
 
         do
         {

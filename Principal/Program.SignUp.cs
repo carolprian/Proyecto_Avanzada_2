@@ -82,19 +82,19 @@ partial class Program
     {
         //pide datos para registro, ReadNonEmptyLine() para que no se dejen campos vacios
         WriteLine("Provide your payroll number, this will be your ID: ");
-        string username = EncryptPass(VerifyReadLengthStringExact(10));
+        string username = EncryptPass(VerifyNumericInput());
 
         WriteLine("Provide your name: ");
-        string firstname = ReadNonEmptyLine();
+        string firstname = VerifyAlphabeticInput();
 
         WriteLine("Provide your paternal last name: ");
-        string lastnameP = ReadNonEmptyLine();
+        string lastnameP = VerifyAlphabeticInput();
 
         WriteLine("Provide your maternal last name: ");
-        string lastnameM = ReadNonEmptyLine();
+        string lastnameM = VerifyAlphabeticInput();
 
         WriteLine("Create your password: ");
-        string encryptedPassword = EncryptPass(VerifyReadLengthString(8));
+        string encryptedPassword = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
         
         string nip = "";
         int op = 0;
@@ -103,7 +103,7 @@ partial class Program
         {
             //mientras no sea valido lo pide todo el rato
             WriteLine("Create your confirmation NIP for your students requests (4 digits): ");
-            nip = VerifyReadLengthStringExact(4);
+            nip = EncryptPass(VerifyReadLengthStringExact(4));
 
             using (bd_storage db = new())
             {

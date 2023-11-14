@@ -44,80 +44,81 @@ partial class Program
     private static void UpdateProfessor()
     {
         WriteLine("Enter the ID of the professor you want to update:");
-        string professorId = VerifyReadMaxLengthString(10);
+        string ProfessorId = VerifyReadMaxLengthString(10);
+        UpdateProfessorFields(ProfessorId);
+    }
+
+    private static void UpdateProfessorFields(string ProfessorId)
+    {
+        string UserName = EncryptPass(ProfessorId);
 
         using (bd_storage db = new())
         {
-            var professors = db.Professors
-                .Where(p => p.ProfessorId.Equals(professorId))
-                .ToList();
+            var professor = db.Professors
+                .FirstOrDefault(p => p.ProfessorId.Equals(UserName));
 
-            if (professors.Count == 0)
+            if (professor == null)
             {
                 WriteLine("Professor with that ID is not registered");
             }
             else
             {
-                UpdateProfessorFields(professors);
-            }
-        }
-    }
-
-    private static void UpdateProfessorFields(List<Professor> professors)
-    {
-        string op = "a";
-        while (op != "7")
-        {
-            WriteLine("What field do you want to update? (except ID):");
-            WriteLine($"1. Professor ID: {professors.First().ProfessorId}");
-            WriteLine($"2. Name: {professors.First().Name}");
-            WriteLine($"3. Last Name (Paternal): {professors.First().LastNameP}");
-            WriteLine($"4. Last Name (Maternal): {professors.First().LastNameM}");
-            WriteLine($"5. NIP: {professors.First().Nip}");
-            WriteLine($"6. Password: {professors.First().Password}");
-            WriteLine($"7. None. Exit the Update of the Professor");
-            Write("Choose the option:");
-
-            op = VerifyReadLengthStringExact(1);
-
-            switch (op)
-            {
-                case "1":
-                    WriteLine("Updating Professor ID is not allowed.");
-                    break;
-                case "2":
-                    UpdateProfessorField("Name", value => professors.First().Name = value);
-                    break;
-                case "3":
-                    UpdateProfessorField("Paternal Last Name", value => professors.First().LastNameP = value);
-                    break;
-                case "4":
-                    UpdateProfessorField("Maternal Last Name", value => professors.First().LastNameM = value);
-                    break;
-                case "5":
-                    UpdateProfessorField("NIP", value => professors.First().Nip = value);
-                    break;
-                case "6":
-                    UpdateProfessorField("Password",  value => professors.First().Password = value);
-                    break;
-                case "7":
-                    return;
-                default:
-                    WriteLine("Not a viable option");
-                    break;
-            }
-
-            using (bd_storage db = new())
-            {
-                int affected = db.SaveChanges();
-
-                if (affected == 1)
+                string DescryptPass = Decrypt(professor.Password);
+                string DescryptNip = Decrypt(professor.Nip);
+                string op = "";
+                while (op != "7")
                 {
-                    WriteLine("Professor information updated successfully!");
-                }
-                else
-                {
-                    WriteLine("Update was not successful, sorry.");
+                    WriteLine();
+                    WriteLine("What field do you want to update? (except ID):");
+                    WriteLine($"1. Professor ID: {ProfessorId}");
+                    WriteLine($"2. Name: {professor.Name}");
+                    WriteLine($"3. Last Name (Paternal): {professor.LastNameP}");
+                    WriteLine($"4. Last Name (Maternal): {professor.LastNameM}");
+                    WriteLine($"5. NIP: {DescryptNip}");
+                    WriteLine($"6. Password: {DescryptPass}");
+                    WriteLine($"7. None. Exit the Update of the Professor");
+                    Write("Choose the option:");
+
+                    op = VerifyReadLengthStringExact(1);
+                    WriteLine();
+
+                    switch (op)
+                    {
+                        case "1":
+                            WriteLine("Updating Professor ID is not allowed.");
+                            break;
+                        case "2":
+                            UpdateProfessorField("Name", value => professor.Name = value);
+                            break;
+                        case "3":
+                            UpdateProfessorField("Paternal Last Name", value => professor.LastNameP = value);
+                            break;
+                        case "4":
+                            UpdateProfessorField("Maternal Last Name", value => professor.LastNameM = value);
+                            break;
+                        case "5":
+                            UpdateProfessorNIP("NIP", value => professor.Nip = value);
+                            break;
+                        case "6":
+                            UpdateProfessorPass("Password",  value => professor.Password = value);
+                            break;
+                        case "7":
+                            return;
+                        default:
+                            WriteLine("Not a viable option");
+                            break;
+                    }
+
+                    int affected = db.SaveChanges();
+
+                    if (affected == 1)
+                    {
+                        WriteLine("Professor information updated successfully!");
+                    }
+                    else
+                    {
+                        WriteLine("Update was not successful, sorry.");
+                    }
                 }
             }
         }
@@ -126,7 +127,21 @@ partial class Program
     private static void UpdateProfessorField(string fieldName, Action<string> updateAction)
     {
         Write($"Write the new {fieldName}: ");
-        string newValue = VerifyReadMaxLengthString(30);
+        string newValue = VerifyAlphabeticInput();
+        updateAction(newValue);
+    }
+
+    private static void UpdateProfessorNIP(string fieldName, Action<string> updateAction)
+    {
+        Write($"Write the new {fieldName}: ");
+        string newValue = EncryptPass(VerifyReadLengthStringExact(4));
+        updateAction(newValue);
+    }
+
+    private static void UpdateProfessorPass(string fieldName, Action<string> updateAction)
+    {
+        Write($"Write the new {fieldName}: ");
+        string newValue = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
         updateAction(newValue);
     }
 
