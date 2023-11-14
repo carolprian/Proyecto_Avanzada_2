@@ -9,85 +9,85 @@ partial class Program{
 
         while (true)
         {
-            string op = MenuStorer();
+            int op = MenuStorer();
+
             WriteLine();
             switch(op)
             {
-                case "1": //  Añadir un equipo usando la funcion dentro de EquipmentsCRUD
+                case 1: //  Añadir un equipo usando la funcion dentro de EquipmentsCRUD
                     //Aux porque es un auxiliar para hacer el formulario y validacion y ya despues llamar al CRUD
                     AuxAddEquipmentStorer();
                 break;
 
-                case "2": // Actualizar informacion de algun equipo
+                case 2: // Actualizar informacion de algun equipo
                     UpdateEquipment();
                 break;
 
-                case "3": // Ver una lista de todos los equipos
-                    ViewAllEquipments(1);
+                case 3: // Ver una lista de todos los equipos
+                    ViewAllEquipments();
                     BackToMenu();
                 break;
 
-                case "4": // Eliminar un equipo
+                case 4: // Eliminar un equipo
                     DeleteEquipment();
                 break;
 
-                case "5":  // Buscar un equipo ya sea por su nombre o por su ID
+                case 5:  // Buscar un equipo ya sea por su nombre o por su ID
                     //Aux porque es un auxiliar para hacer el formulario y validacion y ya despues llamar al CRUD
                     AuxSearchEquipment();
                     BackToMenu();
                 break;
 
-                case "6": // Lista de todos los Request que YA hayan sido aceptados por un maestro
+                case 6: // Lista de todos los Request que YA hayan sido aceptados por un maestro
                     ListEquipmentsRequests();
                     BackToMenu();
                 break;
 
-                case "7": // Lista de los equipos de los Request de mañana
+                case 7: // Lista de los equipos de los Request de mañana
                     TomorrowsEquipmentRequests();
                     BackToMenu();
                 break;
 
-                case "8": // Submenu para poder ver a todos los estudiantes, buscar uno en especifico o ver los que han roto o dañado
+                case 8: // Submenu para poder ver a todos los estudiantes, buscar uno en especifico o ver los que han roto o dañado
                     StudentsHistory();   
                     BackToMenu();       
                 break;
 
-                case "9": // Submenu para poder ver a todos los estudiantes que esten usando un material, buscar uno en especifico o los que esten tarde de entregar
-                    StudentsusingEquipment();
+                case 9: // Submenu para poder ver a todos los estudiantes que esten usando un material, buscar uno en especifico o los que esten tarde de entregar
+                    StudentsUsingEquipment();
                     BackToMenu();
                 break;
 
-                case "10": // Entrega del material de parte de la almacenista
+                case 10: // Entrega del material de parte de la almacenista
                     DeliveryEquipment(); 
                     BackToMenu();
                 break;
 
-                case "11": //Regreso del material por parte del alumno
+                case 11: //Regreso del material por parte del alumno
                     ReturnEquipment();
                     BackToMenu();
                 break;
 
-                case "12": //Hacer un reporte de material dañado o perdido
+                case 12: //Hacer un reporte de material dañado o perdido
                     DamagedLostReportInit();
                     BackToMenu();
                 break;
 
-                case "13": // El estudiante vino a pagar du "deuda" por haber dañado o perdido un equipo
+                case 13: // El estudiante vino a pagar du "deuda" por haber dañado o perdido un equipo
                     StudentDebtLostDamagedEquipment();
                     BackToMenu();
                 break;
 
-                case "14": //Reporte para programar mantenimiento de un equipo
+                case 14: //Reporte para programar mantenimiento de un equipo
                     MaintenanceRegister(username);
                     BackToMenu();
                 break;
 
-                case "15": // Ver el historial de mantenimiento
+                case 15: // Ver el historial de mantenimiento
                     ViewMaintenanceHistory();
                     BackToMenu();
                 break;
-
-                case "16":// Cambiar la contraseña
+                case 16:// Cambiar la contraseña
                     var resultChangeStorerPsw = ChangeStorerPsw(username);
                     if(resultChangeStorerPsw.affected == 1)
                     {
@@ -96,7 +96,7 @@ partial class Program{
                     BackToMenu();
                 break;
 
-                case "17": // Salir de la cuenta
+                case 17: // Salir de la cuenta
                 return;
 
                 default:
@@ -188,9 +188,9 @@ partial class Program{
         }   
     }
 
-    public static void StudentsusingEquipment()
+    public static void StudentsUsingEquipment()
     {   
-        string op = SubMenuStudentsusingEquipment();
+        string op = SubMenuStudentsUsingEquipment();
         switch(op)
         {
             case "a":

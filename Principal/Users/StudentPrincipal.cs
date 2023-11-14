@@ -2,23 +2,28 @@ using AutoGens;
 using Microsoft.EntityFrameworkCore;
 
 partial class Program{
-    public static void StudentsPrincipal(string username)
+    public static void StudentsPrincipal(string UserName)
     {
-        // menu del estudiante
-        bool exitRequested = false;
-        bool validate = false;
+        // Menu del estudiante
+        // Bandera para que se repita el menú hasta que el usuario elija salir
+        bool ExitRequested = false;
+        // Bandera para decir si el usuario puede o no llenar un Request Format
+        bool Validate = false;
         WriteLine("Welcome Student!");
-
-        while (!exitRequested)
+        // Ciclo para que se repita el menu
+        while (!ExitRequested)
         {
-            string op = MenuStudents();
+            // Lee la opcion que selecciona el usuario en el menu del estudiante
+            int op = MenuStudents();
             WriteLine();
             switch(op){
-                case "1":
-                    validate = ValidateAddRequest(username);
-                    if(validate == false)
+                case 1:
+                    Validate = ValidateAddRequest(UserName);
+                    // Si retorna un valor true si es valido que inserte un RequestFormat
+                    //Si retorna false no puede llenar más permisos por el día
+                    if(Validate == true)
                     {
-                        RequestFormat(username);
+                        RequestFormat(UserName);
                     }
                     else 
                     {
@@ -27,43 +32,49 @@ partial class Program{
                     }
                     BackToMenu();
                 break;
-                case "2":
-                    ViewAllEquipments(2);
+                case 2:
+                // Opcion para ver todos los equipos del almacen
+                    ViewAllEquipments();
                     BackToMenu();
                 break;
-                case "3":
-                    ListEquipmentsRequestsStudent(username);
+                case 3:
+                // Opción para ver todos los Request Formats que el usuario ha llenado
+                    ListEquipmentsRequestsStudent(UserName);
                     BackToMenu();
                 break;
-                case "4":
-                    UpdateRequestFormat(username);
+                case 4:
+                // Opción para modificar campos de los Request Formats
+                    UpdateRequestFormat(UserName);
                 break;
-                case "5":
-                    DeleteRequestFormat(username);
+                case 5:
+                // Opción para borrar permisos no aprobados
+                    DeleteRequestFormat(UserName);
                     BackToMenu();
                 break;
-                case "6":
-                    LateReturningStudent(username);
+                case 6:
+                // Opción para ver los equipos de almacén que no han sido regresados
+                    LateReturningStudent(UserName);
                     BackToMenu();
                 break;
-                case "7":
+                case 7:
+                // Opción para salir del menu de estudiantes
                     return;
-
                 default:
+                    WriteLine("Invalid option. Please try again.");
                 break;
             }
         }
     } 
 
-    public static bool ValidateAddRequest(string username)
+    public static bool ValidateAddRequest(string UserName)
     {
-        DateTime currentDate = DateTime.Now.Date;  // Solo obtenemos la parte de la fecha sin la hora
+        DateTime currentDate = DateTime.Now.Date;  // Solo obtenemos la parte de la fecha con la hora 12:00 am
 
         using (bd_storage db = new())
         {
             // Verificar si existe algún RequestDetail asociado al usuario y con la misma fecha
             bool requestExists = db.RequestDetails.Include(r => r.Request).Include(r => r.Request.Student)
-                .Any(rd => rd.Request.StudentId.Equals(username) && rd.CurrentDate.Date == currentDate);
+                .Any(rd => rd.Request.StudentId.Equals(UserName) && rd.CurrentDate.Date == currentDate);
 
             return !requestExists;  // Devolvemos true si no existe la solicitud, false si existe
         }

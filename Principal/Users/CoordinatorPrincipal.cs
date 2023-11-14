@@ -8,86 +8,86 @@ partial class Program
 
         while (!exitRequested)
         {
-            string op = MenuCoordinators();
+            int op = MenuCoordinators();
             WriteLine();
             
             switch (op)
             {
-                case "1":
+                case 1:
                 //ver todos los equipos en el inventario
                     ViewAllEquipmentsCoord();
                     BackToMenu();
                     break;
-                case "2":
+                case 2:
                 //buscar equipo por su Id
                     WriteLine("Provide the number: ");
                     string? searchTerm = ReadLine();
                     SearchEquipmentsById(searchTerm);
                     BackToMenu();
                     break;
-                case "3":
+                case 3:
                 //ver la lista de materiales dañados y perdidos
                     ListDandLequipment();
                     BackToMenu();
                     break;
-                case "4":
+                case 4:
                 //buscar en la lista de dañados o perdidos equipos por su iD
                     WriteLine("Provide the equipment ID to search:");
                     string? equipmentIdToFind = ReadLine();
                     FindDandLequipmentById(equipmentIdToFind);
                     BackToMenu();
                     break;
-                case "5":
+                case 5:
                 //buscar en la lista de dañados o perdidos equipos por su nombre
                     WriteLine("Provide the equipment name to search:");
                     string? equipmentNameToFind = ReadLine();
                     FindDandLequipmentByName(equipmentNameToFind);
                     BackToMenu();
                     break;
-                case "6":
+                case 6:
                 //buscar en la lista de dañados o perdidos equipos por su fecha
                     WriteLine("Provide the date (yyyy) to search:");
                     string? dateToFind = ReadLine();
                     FindDandLequipmentByDate(dateToFind);
                     BackToMenu();
                     break;
-                case "7":
+                case 7:
                 //buscar en la lista de dañados o perdidos equipos por el estudiante que lo daÑO
                     WriteLine("Provide the student name to search:");
                     string? studentNameToFind = ReadLine();
                     FindDandLequipmentByStudentName(studentNameToFind);
                     BackToMenu();
                     break;
-                case "8":
+                case 8:
                 //ver la lista de request
                     ListEquipmentsRequests();
                     BackToMenu();
                     break;
-                case "9": // añade, ve, modifica grupos
+                case 9: // añade, ve, modifica grupos
                     GroupsCRUD();
                     BackToMenu();
                     break;
-                case "10": // ver, actualizar y borrar un profesor
+                case 10: // ver, actualizar y borrar un profesor
                     ProfessorCRUD(); 
                     BackToMenu();
                     break;
-                case "11": // ver, actualizar y borrar un storer
+                case 11: // ver, actualizar y borrar un storer
                     StorerCRUD();
                     BackToMenu();
                     break;
-                case "12": // ver, actualizar y borrar un estudiante
+                case 12: // ver, actualizar y borrar un estudiante
                     StudentCRUD();
                     BackToMenu();
                     break;
-                case "13": // ver, actualizar y borrar una materia
+                case 13: // ver, actualizar y borrar una materia
                     SubjectCRUD();
                     BackToMenu();
                     break;
-                case "14": // Salir de la cuenta
+                case 14: // Salir de la cuenta
                     return;
                 default:
                     WriteLine("Invalid option. Please try again.");
-                    break;
+                break;
             }
         }
     }

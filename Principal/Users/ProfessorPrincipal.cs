@@ -10,30 +10,30 @@ partial class Program
 
         while (!exitRequested)
         {
-            string op = MenuProfessors();
+            int op = MenuProfessors();
             Console.Clear();
             WriteLine();
             switch (op)
             {
-                case "1":
+                case 1:
                     WatchPermissions(username);
                     break;
-                case "2":
+                case 2:
                     ApprovePermissions(username);
                     break;
-                case "3":
+                case 3:
                     PetitionFormat(username);
                     break;
-                case "4":
+                case 4:
                     UpdatePetitionFormat(username);
                     break;
-                case "5":
+                case 5:
                     DeletePetitionFormat(username);
                     break;
-                case "6":
-                    ViewAllEquipments(1);
+                case 6:
+                    ViewAllEquipments();
                     break;
-                case "7":
+                case 7:
                     exitRequested = true;
                     break;
                 default:
@@ -76,10 +76,10 @@ partial class Program
 
                 foreach (var element in requests)
                 {
-                            WriteLine("| {0,-2} | {1,-15} | {2,-13} | {3,-13} | {4,-3} | {5,-41} | {6,-23} | {7, -23}",
+                            WriteLine("| {0,-2} | {1,-15} | {2,-13} | {3,-13} | {4,-3} | {5,-41} | {6,-23} | {7, -23} | {8, -23}",
                         i, element.Request.Student.Name,element.Request.Student.LastNameP, 
                         element.Request.Student.LastNameM,element.Request.Student.Group.Name, element.Equipment.Name,
-                        element.DispatchTime,element.ReturnTime);
+                        element.DispatchTime, element.ReturnTime, element.RequestedDate);
                         i++;
                 }
                 WriteLine("Type the number of the permission you want to modify");

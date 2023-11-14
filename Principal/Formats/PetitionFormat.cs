@@ -22,7 +22,7 @@ partial class Program
         List<string> equipmentsId = new List<string>();
         List<byte?> statusEquipments = new List<byte?>();
         var petition = AddPetition(classroomId, professorId, storerId, subjectId);
-        var equipments = SearchEquipmentsRecursive(equipmentsId, statusEquipments, requestDate, times.Item1, times.Item2, petition.petitionId, 4);
+        var equipments = SearchEquipmentsRecursive(equipmentsId, statusEquipments, requestDate, times.Item1, times.Item2, petition.petitionId, 4, false);
 
         if(equipments.i == 1)
         {
@@ -114,6 +114,35 @@ partial class Program
         }
     }
 
+    public static void DeletePetition(int? PetitionID)
+    {
+        using (bd_storage db = new())
+        {
+            var Petition = db.Petitions
+                    .Where(r => r.PetitionId == PetitionID)
+                    .FirstOrDefault();
+
+            if (Petition != null)
+            {
+                db.Petitions.Remove(Petition);
+                int affected = db.SaveChanges();
+
+                if (affected > 0)
+                {
+                    WriteLine("Petition successfully deleted");
+                }
+                else
+                {
+                    WriteLine("Petition couldn't be deleted");
+                }
+            }
+            else
+            {
+                WriteLine("Petition ID not found in the database");
+            }
+        }
+    }
+
     public static void DeletePetitionFormat(string username)
     {
         WriteLine("Here's a list of all the petition format that has not been accepted yet. ");
@@ -202,7 +231,7 @@ partial class Program
             IQueryable<PetitionDetail> petitionDetailss = db.PetitionDetails
                 .Include(rd => rd.Status)
                 .Include(rd=> rd.Equipment)
-                .Where(r => r.PetitionId==petitionID);
+                .Where(r => r.PetitionId==petitionID).Where( r => r.RequestedDate > DateTime.Today);
 
             var petitionList = petitionDetailss.ToList();
 
@@ -358,7 +387,8 @@ partial class Program
                         petitionDetailss.First().DispatchTime,
                         petitionDetailss.First().ReturnTime,
                         petitionDetailss.First().PetitionId,
-                        1
+                        1,
+                        false
                     );
 
                     // Obtener los valores del nuevo equipo seleccionado

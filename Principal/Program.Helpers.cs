@@ -182,8 +182,12 @@ partial class Program
     {
         using (Aes aesAlg = Aes.Create())
         {
-            aesAlg.Key = Encoding.UTF8.GetBytes("llave secreta".PadRight(32));
-            aesAlg.IV = new byte[16];
+
+            aesAlg.Key = Encoding.UTF8.GetBytes("llave secreta".PadRight(32));//32 caracteres hexadecimales
+            //cada byte esta representado por 2 hex, cada hex son 4 bytes
+            //con esta cantidad de bytes se tienen 32 digitos (0-9 y A-F)
+            //32 caracteres hex * 4 bytes que recordemos que cada hex son 4 bytes=128
+            aesAlg.IV = new byte[16]; 
 
             ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 

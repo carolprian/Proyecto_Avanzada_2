@@ -1,9 +1,9 @@
 partial class Program
 {
 
-    public static string MenuSignUp()
+    public static int MenuSignUp()
     {
-        string op = "";
+        int option = 0;
         bool valid = false;
         //menu de para registrar
         WriteLine("Welcome to the register ");
@@ -18,11 +18,11 @@ partial class Program
         {
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >5)
             {
                 WriteLine("Please choose a valid option (1 - 5)");
-                op = ReadNonEmptyLine();
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else
             {
@@ -30,14 +30,15 @@ partial class Program
             }
         } while (!valid);
 
-        return op;
+        return option;
     }
 
-    public static string MenuCoordinators()
+    public static int MenuCoordinators()
     {
-        string op = "";
+        int option = 0;
         bool valid = false;
-
+        WriteLine();
+        WriteLine("**********************************MENU**********************************");
         WriteLine(" 1. View inventory");
         WriteLine(" 2. Search equipment by serial number");
         WriteLine(" 3. View damaged and lost equipment");
@@ -57,11 +58,11 @@ partial class Program
         {
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8" && op != "9" && op != "10" && op != "11" && op != "12" && op != "13" && op != "14")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >14)
             {
                 WriteLine("Please choose a valid option (1 - 14)");
-                op = ReadNonEmptyLine();
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else
             {
@@ -69,14 +70,15 @@ partial class Program
             }
         } while (!valid);
 
-        return op;
+        return option;
     }
 
-    public static string MenuProfessors()
+    public static int MenuProfessors()
     {
-        string op = "";
+        int option = 0;
         bool valid = false;
-
+        WriteLine();
+        WriteLine("**********************************MENU**********************************");
         WriteLine(" 1. Watch permissions");
         WriteLine(" 2. Approve or Deny Permissions");
         WriteLine(" 3. Request for Material");
@@ -89,11 +91,11 @@ partial class Program
         {
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >7)
             {
                 WriteLine("Please choose a valid option (1 - 7)");
-                op = ReadNonEmptyLine();
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else
             {
@@ -101,14 +103,13 @@ partial class Program
             }
         } while (!valid);
 
-        return op;
+        return option;
     }
 
-    public static string MenuStorer()
+    public static int MenuStorer()
     {
-        string op = "";
         bool valid = false;
-
+        int option;
         WriteLine();
         WriteLine("**********************************MENU**********************************");
         WriteLine("Please choose an option, a number between 1 and 14");
@@ -144,16 +145,16 @@ partial class Program
         {
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "1"  &&  op != "2" &&  op != "3" &&  op != "4" &&  op != "5" &&  op != "6" &&  op != "7" &&  op != "8" &&  op != "9" &&  op != "10" &&  op != "11" &&  op != "12" &&  op != "13" &&  op != "14" && op!="15" && op!="16" && op!="17")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >17)
             {
                 WriteLine("Please choose a valid option (1 - 17)");
-                op = ReadNonEmptyLine(); 
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else valid = true;
         } while (!valid);
 
-        return op;
+        return option;
     }
 
     public static string SubMenuMantenance()
@@ -211,7 +212,7 @@ partial class Program
         return op;
     }
 
-    public static string SubMenuStudentsusingEquipment()
+    public static string SubMenuStudentsUsingEquipment()
     {
         string op = "";
         bool valid = false;
@@ -292,34 +293,32 @@ partial class Program
         return op;
     }
 
-    public static string MenuStudents()
+    public static int MenuStudents()
     { 
-        string op = "";
+        int option = 0;
         bool valid = false;
         WriteLine();
         WriteLine("********Menu********");
-        WriteLine("1. Fill a request format"); //SI
-        WriteLine("2. View equipments"); //SI
-        WriteLine("3. View request formats"); //sam SI
-        WriteLine("4. Edit request formats that aren't signed yet"); //CARO
-        WriteLine("5. Delete request formats that aren't signed yet"); //SAM SI
-        WriteLine("6. See a list of equipments that are late for returning"); //SAM ver sus request tardios Si
+        WriteLine("1. Fill a request format"); 
+        WriteLine("2. View equipments"); 
+        WriteLine("3. View request formats"); 
+        WriteLine("4. Edit request formats that aren't signed yet"); 
+        WriteLine("5. Delete request formats that aren't signed yet"); 
+        WriteLine("6. See a list of equipments that are late for returning"); 
         WriteLine("7. Sign out");
 
         do{
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "a"  &&  op != "b" &&  op != "c")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >7)
             {
-                WriteLine("Please choose a valid option (a, b or c)");
-                op = ReadNonEmptyLine(); 
+                WriteLine("Please choose a valid option (1 - 7)");
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
-            else
-            {
-                valid = true;
-            }
+            else valid = true;
         } while (!valid);
-        return op;
+
+        return option;
     }
 }

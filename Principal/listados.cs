@@ -32,11 +32,7 @@ partial class Program
                 var firstRequest = group.First();
                 if(firstRequest.ProfessorNip == 1)
                 {
-                    nip = "aceptado";
-                }
-                else if (firstRequest.ProfessorNip == 0 )
-                {
-                    nip = "Pendiente";
+                    nip = "Aceptado";
                 }
 
                 var table = new ConsoleTable("Request Details", count);
@@ -44,8 +40,8 @@ partial class Program
                 table.AddRow("RequestId", firstRequest.RequestId);
                 table.AddRow("StatusId", $"{firstRequest.Status.Value}");
                 table.AddRow("ProfessorNip", nip);
-                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.Hour}:{firstRequest.DispatchTime.Minute}");
-                table.AddRow("Return Time", $"{firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}");
+                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
+                table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
                 table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
                 table.AddRow("", "");
                 foreach (var r in group)
@@ -115,8 +111,8 @@ partial class Program
                 table.AddRow("RequestId", firstRequest.RequestId);
                 table.AddRow("StatusId", $"{firstRequest.Status.Value}");
                 table.AddRow("ProfessorNip", nip);
-                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.Hour}:{firstRequest.DispatchTime.Minute}");
-                table.AddRow("Return Time", $"{firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}");
+                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
+                table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
                 table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
                 table.AddRow("", "");
                 foreach (var r in group)
@@ -187,7 +183,7 @@ partial class Program
             if (!requestDetails.Any() || requestDetails is null)
             {
                 WriteLine("No students found.");
-                SubMenuStudentsusingEquipment();
+                SubMenuStudentsUsingEquipment();
                 return;
             }
 
@@ -223,7 +219,7 @@ partial class Program
             if (!requestDetails.Any())
             {
                 WriteLine("No students found with overdue equipment.");
-                SubMenuStudentsusingEquipment();
+                SubMenuStudentsUsingEquipment();
                 return;
             }
 
@@ -631,7 +627,8 @@ partial class Program
         {
             IQueryable<RequestDetail>? requestDetails = db.RequestDetails
             .Include( r => r.Equipment)
-            .Include( r => r.Request)
+            .Include( r => r.Request).
+            Include ( r => r.Status)
             .Where( s => s.Request.StudentId == Username);
 
             if (!requestDetails.Any() || requestDetails is null)
@@ -650,8 +647,7 @@ partial class Program
                 var firstRequest = group.First();
                 WriteLine();
                 WriteLine($"{i}. RequestId: {firstRequest.RequestId}");
-                WriteLine($"StatusId: {firstRequest.StatusId}");
-                WriteLine($"ProfessorNip: {firstRequest.ProfessorNip}");
+                WriteLine($"Status: {firstRequest.Status.Value}");
                 WriteLine($"DispatchTime: {firstRequest.DispatchTime}");
                 WriteLine($"ReturnTime: {firstRequest.ReturnTime}");
                 WriteLine($"RequestedDate: {firstRequest.RequestedDate}");
@@ -740,7 +736,6 @@ partial class Program
         } 
     }
 
-
     public static void LateReturningStudent(string Username)
     {
         using (bd_storage db = new())
@@ -766,7 +761,8 @@ partial class Program
                 {
                     i++;
                     WriteLine($"{i}. Equipment Name: {use.Equipment?.Name} ");
-                    WriteLine($"Return Time: {use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
+                    WriteLine($" Equipment ID: {use.Equipment?.EquipmentId} ");
+                    WriteLine($"Return Time: {use.ReturnTime.TimeOfDay}");
                     WriteLine($"Date: {use.RequestedDate}");
                 }
             }

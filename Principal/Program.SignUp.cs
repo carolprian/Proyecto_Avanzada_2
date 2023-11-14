@@ -8,19 +8,19 @@ partial class Program
         string tableName;
         while (true)
         {
-            string opcion = MenuSignUp();
+            int opcion = MenuSignUp();
             bool bdquery = false;
             string safecode;
             switch (opcion)
             {
-                case "1":
+                case 1:
                     bdquery = RegistroStudent();
                     return;
 
-                case "2":
-                //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
+                case 2:
+                //pide safecode para que se pueda registrar un profesor, un storer y un coordinator
                     WriteLine("Please enter the safecode in order to create a new Professor");
-                    safecode = ReadNonEmptyLine();
+                    safecode = ReadPassword();
                     if(safecode == "Brambi12345")
                     {
                         //si es correcto deja registrarlo
@@ -33,11 +33,11 @@ partial class Program
                     }
                     return;
 
-                case "3":
+                case 3:
                 //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     tableName = "Coordinator";
                     WriteLine("Please enter the safecode in order to create a new Coordinator");
-                    safecode = ReadNonEmptyLine();
+                    safecode = ReadPassword();
                     if(safecode == "Brambi12345")
                     {
                         //si es correcto deja registrarlo
@@ -50,11 +50,11 @@ partial class Program
                     }                    
                     return;
 
-                case "4":
+                case 4:
                 //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     tableName = "Storer";
                     WriteLine("Please enter the safecode in order to create a new Storer");
-                    safecode = ReadNonEmptyLine();
+                    safecode = ReadPassword();
                     if(safecode == "Brambi12345")
                     {
                         //si es correcto deja registrarlo
@@ -67,7 +67,7 @@ partial class Program
                     }                    
                     return;
                     
-                case "5":
+                case 5:
                     return;
 
                 default:
@@ -80,7 +80,7 @@ partial class Program
 
     public static bool RegistroProf()
     {
-        //pide datos para registro, ReadNonEmptyLine() poara que se regustren datos
+        //pide datos para registro, ReadNonEmptyLine() para que no se dejen campos vacios
         WriteLine("Provide your payroll number, this will be your ID: ");
         string username = EncryptPass(VerifyReadLengthStringExact(10));
 
