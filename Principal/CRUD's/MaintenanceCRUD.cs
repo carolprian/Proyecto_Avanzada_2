@@ -327,7 +327,7 @@ partial class Program
                         availableEquipment.First().StatusId != 2
                         && availableEquipment.First().StatusId != 3
                         && availableEquipment.First().StatusId != 5
-                    )
+                    ) // verifies the equipment chosen has a valid status in order to add it to the report
                     {
                         bool repeated = false;
                         foreach (var eq in equipmentIdList)
