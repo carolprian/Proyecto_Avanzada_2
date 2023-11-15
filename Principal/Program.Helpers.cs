@@ -33,9 +33,6 @@ partial class Program
         return input;
     }
 
-
-
-
     public static bool IsAlphabetic(string? input)
     {
         if (string.IsNullOrEmpty(input))

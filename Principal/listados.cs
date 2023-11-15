@@ -101,10 +101,6 @@ partial class Program
                 {
                     nip = "aceptado";
                 }
-                else if (firstRequest.ProfessorNip == 0 )
-                {
-                    nip = "Pendiente";
-                }
 
                 var table = new ConsoleTable("Request Details", count);
 
@@ -192,13 +188,15 @@ partial class Program
             {
 
                 i++;
-                WriteLine();
-                WriteLine($"Student {i} Information: ");
-                WriteLine("");
-                WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
-                WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                WriteLine($"Return Time: {use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
-                WriteLine($"Date: {use.RequestedDate.Date}");
+                string count = i + "";
+                var table = new ConsoleTable("Students Using Equipments", count);
+
+                table.AddRow("Student Information", $"{use.Request.Student.Name} {use.Request.Student.LastNameP} {use.Request.Student.Group.Name}");
+                table.AddRow("Equipment Name", use.Equipment.Name);
+                table.AddRow("Return Time", $"{use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
+                table.AddRow("Date:", use.RequestedDate.Date);
+
+                table.Write();
                 WriteLine();
 
             } 

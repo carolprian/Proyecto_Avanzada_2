@@ -255,7 +255,7 @@ partial class Program
         if(Op==1)
         {
             WriteLine("Insert the name start of the subject WITHOUT accents");
-            SearchTerm = ReadNonEmptyLine();
+            SearchTerm = VerifyAlphabeticInput();
         } 
     
         using (bd_storage db = new())
@@ -353,26 +353,24 @@ partial class Program
             string searchTerm = ReadNonEmptyLine().ToLower();
 
             var equipmentIdsInUseStud = db.RequestDetails
-            .Where(rd => rd.RequestedDate.Date == Requested &&
-                        rd.DispatchTime < End && rd.ReturnTime > Init)
+            .Where(rd => rd.RequestedDate.Date == Requested && rd.DispatchTime < End && rd.ReturnTime > Init)
             .Select(rd => rd.EquipmentId)
             .ToList();
 
             var equipmentIdsInUseProf = db.PetitionDetails
-                .Where(rd => rd.RequestedDate.Date == Requested &&
-                            rd.DispatchTime < End && rd.ReturnTime > Init)
-                .Select(rd => rd.EquipmentId)
-                .ToList();
+            .Where(rd => rd.RequestedDate.Date == Requested && rd.DispatchTime < End && rd.ReturnTime > Init)
+            .Select(rd => rd.EquipmentId)
+            .ToList();
 
             IQueryable<Equipment>? equipments = db.Equipments
-                .Include(s => s.Status)
-                .Where(e => e.Name.ToLower().StartsWith(searchTerm) &&
+            .Include(s => s.Status)
+            .Where(e => e.Name.ToLower().StartsWith(searchTerm) &&
                             !(equipmentIdsInUseStud.Contains(e.EquipmentId) ||
                             equipmentIdsInUseProf.Contains(e.EquipmentId) ||
                             e.StatusId == 3 || e.StatusId == 4 || e.StatusId == 5))
-                .AsEnumerable()
-                .OrderBy(e => Guid.NewGuid())
-                .AsQueryable();
+            .AsEnumerable()
+            .OrderBy(e => Guid.NewGuid())
+            .AsQueryable();
 
             if (!equipments.Any() || equipments.Count() < 1 || equipments is null)
             {

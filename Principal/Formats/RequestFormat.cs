@@ -114,10 +114,11 @@ partial class Program
 
     public static string WritePlantel()
     {
-        WriteLine("Insert the plantel: ");
-        string Plantel = ReadNonEmptyLine();
+        string Plantel="";
         bool Ban = false;
         do{
+            WriteLine("Insert the plantel: ");
+            Plantel = ReadNonEmptyLine();
             Ban = VerifyPlantel(Plantel);
         }while(Ban==false);
         return Plantel;
@@ -133,20 +134,28 @@ partial class Program
         }
     }
 
-    public static int ListClassrooms(){
+    public static int ListClassrooms()
+    {
         // Indice de la lista
-        int i = 0;
-        using (bd_storage db = new()){
+        int i = 1;
+
+        using (bd_storage db = new())
+        {
             // verifica que exista la tabla de Classroom
-            if( db.Classrooms is null){
+            if( db.Classrooms is null)
+            {
                 throw new InvalidOperationException("The table does not exist.");
-            } else {
+            } 
+            else
+            {
                 IQueryable<Classroom> Classrooms = db.Classrooms;
+                
                 foreach (var cl in Classrooms)
                 {
                     WriteLine($"{i}. {cl.Clave}");
                     i++;
                 }
+                
                 return Classrooms.Count();
             }
         }
@@ -155,9 +164,11 @@ partial class Program
         int classId=0;
         bool ban=true;
         do{
-            using (bd_storage db = new()){
+            using (bd_storage db = new())
+            {
                 int Count = ListClassrooms();
                 WriteLine("Select the number of the classroom: ");
+                
                 classId = TryParseStringaEntero(ReadNonEmptyLine());
                 IQueryable<Classroom> classroomsId = db.Classrooms.Where(c => c.ClassroomId==classId);
                 if(classroomsId is null || !classroomsId.Any())
@@ -231,200 +242,157 @@ partial class Program
         return dateValue;
     }
 
-    public static (DateTime, DateTime) AddTimes(DateTime DateValue){
-        int scheduleIdInitI = 0, scheduleIdEndI = 0, offset=0, take=9;
-        DateTime initTimeValue=DateTime.MinValue, endTimeValue=DateTime.MinValue;
-        DayOfWeek day = DateValue.DayOfWeek;
-        string dayString = day.ToString(), scheduleIdInit, scheduleIdEnd;
-        bool valideHours = false;
-        bool initEnd=false; //falso para init, true para end
-        while(valideHours==false){
-            using (bd_storage db = new()){
+    public static (DateTime, DateTime) AddTimes(DateTime dateValue)
+    {
+        // Variables para almacenar los identificadores de las horas de inicio y fin,
+        // así como las horas de inicio y fin reales.
+        int scheduleIdInit = 0, scheduleIdEnd = 0, take = 9;
+        DateTime initTimeValue = DateTime.MinValue, endTimeValue = DateTime.MinValue;
+
+        // Obtener el día de la semana de la fecha proporcionada.
+        DayOfWeek day = dateValue.DayOfWeek;
+
+        // Indicador para saber si estamos seleccionando la hora de inicio o fin.
+        bool validHours = false;
+        bool selectingInit = true;
+
+        // Bucle principal para la selección de horas.
+        while (!validHours)
+        {
+            // Se utiliza el contexto de base de datos con una declaración 'using' para
+            // asegurar que se libere correctamente después de su uso.
+            using (bd_storage db = new())
+            {
                 IQueryable<Schedule> schedules = db.Schedules;
-                while(initEnd==false){
-                    switch(day){
-                        case DayOfWeek.Monday:{
-                            offset=0;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{sch.ScheduleId.ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if(scheduleIdInitI >= offset && (offset+10) >= scheduleIdInitI){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            } else {
-                                WriteLine("Option not valide. Try again.");
-                            }
-                        }break;
-                        case DayOfWeek.Tuesday:{
-                            offset=10;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if((scheduleIdInitI >= offset) && ((offset+10) >= scheduleIdInitI)){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            }
-                        }break;
-                        case DayOfWeek.Wednesday:{
-                            offset=20;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if(scheduleIdInitI >= offset && (offset+10) >= scheduleIdInitI){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            }
-                        }break;
-                        case DayOfWeek.Thursday:{
-                            offset=30;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if(scheduleIdInitI >= offset && (offset+10) >= scheduleIdInitI){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            }
-                        }break;
-                        case DayOfWeek.Friday:{
-                            offset=40;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if(scheduleIdInitI >= offset && (offset+10) >= scheduleIdInitI){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            }
-                        }break;
-                    }
-                }
-                while(initEnd==true){
-                    switch(day){
-                        case DayOfWeek.Monday:{
-                            offset = 1;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{sch.ScheduleId.ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI = TryParseStringaEntero(scheduleIdEnd);
-                            scheduleIdEndI += offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                        case DayOfWeek.Tuesday:{
-                            offset=11;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI = TryParseStringaEntero(scheduleIdEnd);
-                            scheduleIdEndI += offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                        case DayOfWeek.Wednesday:{
-                            offset=21;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI= TryParseStringaEntero(scheduleIdEnd) + offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                        case DayOfWeek.Thursday:{
-                            offset=31;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI= TryParseStringaEntero(scheduleIdEnd) + offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                        case DayOfWeek.Friday:{
-                            offset=41;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI= TryParseStringaEntero(scheduleIdEnd) + offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                    }
-                }
 
-                if (scheduleIdInitI > scheduleIdEndI){
-                    WriteLine($"It can't be first the end of the class. Try again.");
-                } else if((scheduleIdEndI - scheduleIdInitI) < 1 || (scheduleIdEndI - scheduleIdInitI) > 5 ) {
-                    WriteLine($"The bare minium of loans are 50 min and maximun are 3 hours and 20 minuts"); 
-                } else {
-                    IQueryable<Schedule>? startHour = db.Schedules.Where(s => s.ScheduleId == scheduleIdInitI);
-                    if(startHour is null || !startHour.Any()){
-                        WriteLine("Wrong start hour. Try again");
-                        initEnd=false;
-                    } else 
+                // Obtener todas las horas de inicio o fin disponibles para el día y la fase de selección.
+                int offset = GetOffset(day, selectingInit);
+                var selectedSchedules = schedules.Skip(offset).Take(take);
+
+                // Mostrar las opciones de horas de inicio/fin disponibles.
+                // Le paso el horario del inicio de la clase para que no le muestre horas menores para elegir el final de la clase
+                ShowScheduleOptions(selectedSchedules, offset, scheduleIdInit);
+
+                // Leer la entrada del usuario para seleccionar una opción.
+                string scheduleIdInput = ReadNonEmptyLine();
+                int selectedScheduleId = TryParseStringaEntero(scheduleIdInput) + offset;
+
+                // Validar la opción seleccionada.
+                if (IsValidScheduleId(selectedScheduleId, offset, offset + take) && 
+                    (selectingInit || selectedScheduleId > scheduleIdInit))
+                {
+                    // Procesar la opción seleccionada.
+                    if (selectingInit)
                     {
-                        initTimeValue = DateValue.Date + startHour.FirstOrDefault().InitTime.TimeOfDay;
+                        WriteLine("Class start hour added");
+                        scheduleIdInit = selectedScheduleId;
+                    }
+                    else
+                    {
+                        WriteLine("Class end hour added");
+                        scheduleIdEnd = selectedScheduleId;
+                    }
 
-                        IQueryable<Schedule> finHour = db.Schedules.Where(s => s.ScheduleId == scheduleIdEndI);
-                        if(finHour is null || !finHour.Any()){
-                            WriteLine("Wrong end hour. Try again");
-                            initEnd=false;
-                        } else {
-                            endTimeValue = DateValue.Date + finHour.FirstOrDefault().InitTime.TimeOfDay;
-                            valideHours=true;
+                    // Cambiar a la fase de selección opuesta.
+                    selectingInit = !selectingInit;
+
+                    // Si se han seleccionado ambas horas, verificar y calcular las horas de inicio y fin.
+                    if (scheduleIdInit > 0 && scheduleIdEnd > 0)
+                    {
+                        if (scheduleIdInit < scheduleIdEnd)
+                        {
+                            validHours = true;
+                            InitAndEndTimesFromIds(scheduleIdInit, scheduleIdEnd, dateValue, out initTimeValue, out endTimeValue);
+                        }
+                        else
+                        {
+                            WriteLine("It can't be first the end of the class. Try again.");
                         }
                     }
                 }
+                else
+                {
+                    WriteLine("Invalid option. Try again.");
+                }
             }
         }
+
+        // Devolver las horas de inicio y fin seleccionadas.
         return (initTimeValue, endTimeValue);
+    }
+
+
+
+    private static int GetOffset(DayOfWeek day, bool selectingInit)
+    {
+        // Método para determinar el desplazamiento (offset) en función del día de la semana y
+        // de si estamos seleccionando la hora de inicio o fin.
+        int offset = 0;
+
+        switch (day)
+        {
+            // Los números específicos son asignados para evitar superposiciones y garantizar la coherencia
+            // "condición ? expresión_si_verdadero : expresión_si_falso"
+            case DayOfWeek.Monday:
+                offset = selectingInit ? 0 : 1; 
+            break;
+
+            case DayOfWeek.Tuesday:
+                offset = selectingInit ? 10 : 11; 
+            break;
+            
+            case DayOfWeek.Wednesday:
+                offset = selectingInit ? 20 : 21; 
+            break;
+
+            case DayOfWeek.Thursday: 
+                offset = selectingInit ? 30 : 31;
+            break;
+
+            case DayOfWeek.Friday: 
+                offset = selectingInit ? 40 : 41; 
+            break;
+        }
+
+        return offset;
+    }
+
+    private static void ShowScheduleOptions(IQueryable<Schedule> schedules, int offset, int startHourId)
+    {
+        // Filtrar las opciones de horario para mostrar solo aquellas que sean mayores que la hora de inicio seleccionada.
+        var filteredSchedules = schedules.Where(s => s.ScheduleId > startHourId);
+
+        foreach (var sch in filteredSchedules)
+        {
+            int hour = sch.InitTime.Hour;
+            int minute = sch.InitTime.Minute;
+            WriteLine($"{sch.ScheduleId - offset}. {hour:D2}:{minute:D2}");
+        }
+
+        string prompt = "Select the number to choose the class end hour";
+        WriteLine(prompt);
+    }
+
+
+    private static bool IsValidScheduleId(int selectedScheduleId, int min, int max)
+    {
+        // Método para validar si el identificador de la hora seleccionada es válido.
+        return selectedScheduleId >= min && selectedScheduleId <= max;
+    }
+
+    private static void InitAndEndTimesFromIds(int initId, int endId, DateTime dateValue, out DateTime initTime, out DateTime endTime)
+    {
+        // Método para obtener las horas de inicio y fin reales a partir de los identificadores seleccionados.
+        using (bd_storage db = new())
+        {
+            var initSchedule = db.Schedules.FirstOrDefault(s => s.ScheduleId == initId);
+            var endSchedule = db.Schedules.FirstOrDefault(s => s.ScheduleId == endId);
+
+            // Calcular las horas de inicio y fin basadas en las horas de inicio de la base de datos.
+            initTime = dateValue.Date + (initSchedule?.InitTime ?? DateTime.MinValue).TimeOfDay;
+            endTime = dateValue.Date + (endSchedule?.InitTime ?? DateTime.MinValue).TimeOfDay;
+
+        }
     }
 
     public static void DeleteRequest(int? requestId)
