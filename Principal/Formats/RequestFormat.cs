@@ -49,7 +49,7 @@ partial class Program
             // Si se agrego el registro en Request
             if(request.affected > 0){
                 // Agrega los datos a la tabla Request Details
-                var requestDetailsId = AddRequestDetails(request.requestId, equipments.EquipmentsId, professorNip, Times.Item1, Times.Item2, RequestDate, CurrentDate, equipments.StatusEquipments);
+                var requestDetailsId = AddRequestDetails(request.requestId, EquipmentsId, professorNip, Times.Item1, Times.Item2, RequestDate, CurrentDate, StatusEquipments);
                 // Verifica que se haya agregado correctamente
                 if(requestDetailsId.Affected.Count() >= 1){
                     WriteLine("Request added");

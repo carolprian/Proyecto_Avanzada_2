@@ -52,7 +52,7 @@ partial class Program{
                 break;
                 case 6:
                 // Opción para ver los equipos de almacén que no han sido regresados
-                    LateReturningStudent(UserName);
+                    bool aux = LateReturningStudent(UserName);
                     BackToMenu();
                 break;
                 case 7:

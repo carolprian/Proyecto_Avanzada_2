@@ -173,8 +173,9 @@ partial class Program
         return aux;
     }
 
-    public static void StudentsUsingEquipments()
+    public static bool StudentsUsingEquipments()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
@@ -187,7 +188,7 @@ partial class Program
             {
                 WriteLine("No students found.");
                 SubMenuStudentsUsingEquipment();
-                return;
+                aux = true;
             }
 
             int i = 0;
@@ -208,10 +209,12 @@ partial class Program
 
             } 
         }
+        return aux;
     }
 
-    public static void StudentsLateReturn()
+    public static bool StudentsLateReturn()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             var currentDate = DateTime.Now;
@@ -225,22 +228,24 @@ partial class Program
             {
                 WriteLine("No students found with overdue equipment.");
                 SubMenuStudentsUsingEquipment();
-                return;
+                aux = true;
+                return aux;
             }
 
+            var table = new ConsoleTable("Id", "Name", "LastName P", "Group", "Equipment", "Return Time", "Return Date");
             int i = 0;
             foreach (var use in requestDetails)
             {
                     i++;
-                    WriteLine();
-                    WriteLine($"Student {i} Information: ");
-                    WriteLine("");
-                    WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
-                    WriteLine($"Equipment Name: {use.Equipment.Name}");
-                    WriteLine($"Return Time: {use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
-                    WriteLine($"Date: {use.RequestedDate}");
+
+                    table.AddRow(use.Request.Student.StudentId, use.Request.Student.Name, use.Request.Student.LastNameP, 
+                    use.Request.Student.Group.Name, use.Equipment.Name, $"{use.ReturnTime.Hour}:{use.ReturnTime.Minute}", use.RequestedDate);
             }
+
+            table.Write();
+            WriteLine();
         }
+        return aux;
     }
 
     public static int ListAreas()
@@ -248,7 +253,6 @@ partial class Program
         using( bd_storage db = new())
         {
         IQueryable<Area> areas = db.Areas;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((areas is null) || !areas.Any())
             {
                 WriteLine("There are no areas found");
@@ -268,7 +272,6 @@ partial class Program
         using( bd_storage db = new())
         {
         IQueryable<Status> status = db.Statuses;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((status is null) || !status.Any())
             {
                 WriteLine("There are no status found");
@@ -289,7 +292,6 @@ partial class Program
         using (bd_storage db = new())
         {
             IQueryable<Coordinator> coordinators = db.Coordinators;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((coordinators is null) || !coordinators.Any())
             {
                 WriteLine("There are no registered coordinators found");
@@ -348,7 +350,9 @@ partial class Program
             if( db.Classrooms is null)
             {
                 throw new InvalidOperationException("The table does not exist.");
-            } else {
+            } 
+            else 
+            {
                 // Muestra toda la lista de classrooms con un indice y la clave de este
                 IQueryable<Classroom> Classrooms = db.Classrooms;
                 
@@ -364,6 +368,7 @@ partial class Program
     
     private static void ShowScheduleOptions(IQueryable<Schedule> schedules, int offset, int startHourId)
     {
+        bool aux = false;
         // Filtrar las opciones de horario para mostrar solo aquellas que sean mayores que la hora de inicio seleccionada.
         var filteredSchedules = schedules.Where(s => s.ScheduleId > startHourId);
 
@@ -378,8 +383,9 @@ partial class Program
         WriteLine(prompt);
     }
 
-    public static void ViewAllEquipmentsCoord()
+    public static bool ViewAllEquipmentsCoord()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<Equipment>? equipments = db.Equipments
@@ -391,7 +397,8 @@ partial class Program
             if ((equipments is null) || !equipments.Any())
             {
                 WriteLine("There are no equipments found");
-                return;
+                aux = true;
+                return aux;
             }
             else
             {
@@ -474,10 +481,12 @@ partial class Program
                 }
             }
         }
+        return aux;
     }
 
-    public static void ListStudentsforCoord()
+    public static bool ListStudentsforCoord()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<Student> students = db.Students
@@ -486,7 +495,8 @@ partial class Program
             if ((students is null) || !students.Any())
             {
                 WriteLine("There are no registered students found");
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("| {0,-9} | {1,-30} | {2,-30} | {3,-30} | {4,50} | {5,7}",
@@ -498,11 +508,12 @@ partial class Program
                 WriteLine($"| {s.StudentId,-9} | {s.Name,-30} | {s.LastNameP,-30} | {s.LastNameM,-30} | {Decrypt(s.Password),50} | {s.Group?.Name,7}");
             }
         }
+        return aux;
     }
 
-    public static void ListDandLequipment()
+    public static bool ListDandLequipment()
     {
-        
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<DyLequipment> dyLequipments = db.DyLequipments
@@ -516,7 +527,8 @@ partial class Program
             if ((dyLequipments is null) || !dyLequipments.Any())
             {
                 WriteLine("There are no registered damaged or lost equipments found");
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("|{0,12} | {1,9} | {2,40} | {3,35} | {4,11} | {5,10} | {6,7} |",
@@ -528,10 +540,12 @@ partial class Program
                WriteLine($"|{dal.DyLequipmentId,12} | {dal.Status?.Value,9} | {dal.Equipment?.Name,40} | {dal.Description,35} | {dal.DateOfEvent.ToString("dd/MM/yyyy"),11} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,7} |");
             }
         }
+        return aux;
     }
 
-     public static void FindDandLequipmentById(string? EquipmentIdToFind)
+     public static bool FindDandLequipmentById(string? EquipmentIdToFind)
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<DyLequipment>? dyLequipments = db.DyLequipments
@@ -546,7 +560,8 @@ partial class Program
             if (!dyLequipments.Any())
             {
                 WriteLine("No damaged or lost equipment found with ID: " + EquipmentIdToFind);
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
@@ -557,10 +572,12 @@ partial class Program
                 WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
             }
         }
+        return aux;
     }
 
-    public static void FindDandLequipmentByName(string? EquipmentNameToFind)
+    public static bool FindDandLequipmentByName(string? EquipmentNameToFind)
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<DyLequipment>? dyLequipments = db.DyLequipments
@@ -575,7 +592,8 @@ partial class Program
             if (!dyLequipments.Any())
             {
                 WriteLine("No damaged or lost equipment found matching the equipment name: " + EquipmentNameToFind);
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
@@ -586,10 +604,12 @@ partial class Program
                 WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
             }
         }
+        return aux;
     }
 
-    public static void FindDandLequipmentByDate(string? DateToFind)
+    public static bool FindDandLequipmentByDate(string? DateToFind)
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<DyLequipment> dyLequipments = db.DyLequipments
@@ -604,7 +624,8 @@ partial class Program
             if (!dyLequipments.Any())
             {
                 WriteLine("No damaged or lost equipment found with Date of Event: " + DateToFind);
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
@@ -615,12 +636,19 @@ partial class Program
                 WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
             }
         }
+        return aux;
     }
 
-    public static void FindDandLequipmentByStudentName(string? StudentNameToFind)
+    public static bool FindDandLequipmentByStudentName(string? StudentNameToFind)
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
+            if(db.DyLequipments == null)
+            {
+                aux=false;
+                return aux;
+            }
             IQueryable<DyLequipment> dyLequipments = db.DyLequipments
                 .Include(dal => dal.Status)
                 .Include(dal => dal.Equipment)
@@ -633,15 +661,18 @@ partial class Program
             if (!dyLequipments.Any())
             {
                 WriteLine("No damaged or lost equipment found with Student Name: " + StudentNameToFind);
-                return;
-            }
+                aux = true;
+                return aux;
+            }else {
+                WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
+                    "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
 
-            WriteLine("| {0,-11} | {1,-17} | {2,-15} | {3,-80} | {4,4} | {5,10} | {6,6}",
-                "EquipmentId", "Status", "Name", "Description", "Date", "Student", "Coordinator");
-
-            foreach (var dal in dyLequipments)
-            {
-                WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
+                foreach (var dal in dyLequipments)
+                {
+                    WriteLine($"| {dal.DyLequipmentId,-11} | {dal.Status?.Value,-17} | {dal.Equipment?.Name,-15} | {dal.Description,-80} | {dal.DateOfEvent,4} | {dal.Student?.Name,10} | {dal.Coordinator?.Name,6}");
+                } 
+                aux = true;
+                return aux;
             }
         }
     }
@@ -676,8 +707,9 @@ partial class Program
         }
     }
     
-    public static void ListMaintenanceTypes()
+    public static bool ListMaintenanceTypes()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<MaintenanceType> mTypes = db.MaintenanceTypes; 
@@ -685,7 +717,8 @@ partial class Program
             if (!mTypes.Any() || mTypes is null)
             {
                 WriteLine("No Maintenance Types were found");
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("| {0,-8} | {1,-15} |",
@@ -696,10 +729,12 @@ partial class Program
                 WriteLine($"| {type.MaintenanceTypeId,-8} | {type.Name,-15} |");
             }
         }
+        return aux;
     }
 
-    public static void ListEquipmentsRequestsStudent(string Username)
+    public static bool ListEquipmentsRequestsStudent(string Username)
     {
+        bool aux = false;
         int i = 0;
         using (bd_storage db = new())
         {
@@ -711,11 +746,30 @@ partial class Program
             if (requestDetails == null || !requestDetails.Any())
             {
                 WriteLine("No results found.");
-                MenuProfessors();
-                return;
-            } else {
-                var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
+                aux = true;
+                return aux;
+            }
 
+            var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
+
+            foreach (var group in groupedRequests)
+            {
+                i++;
+                var firstRequest = group.First();
+                WriteLine();
+                WriteLine($"RequestId: {firstRequest.RequestId}");
+                WriteLine($"Status: {firstRequest.Status.Value}");
+                WriteLine($"DispatchTime: {firstRequest.DispatchTime}");
+                WriteLine($"ReturnTime: {firstRequest.ReturnTime}");
+                WriteLine($"RequestedDate: {firstRequest.RequestedDate}");
+                WriteLine();
+
+                WriteLine("Equipment:");
+                foreach (var r in group)
+                {
+                    WriteLine($"  - Equipment Name: {r.Equipment.Name}");
+                }
+            }
                 foreach (var group in groupedRequests)
                 {
                     i++;
@@ -746,13 +800,13 @@ partial class Program
                     table.Write();
                     WriteLine();
                 }
-                return;
-            }
+                return aux;
         }
-    }
+    }  
 
-    public static void ViewPetition(string Username)
+    public static bool ViewPetition(string Username)
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<PetitionDetail> petitionDetails = db.PetitionDetails
@@ -764,7 +818,8 @@ partial class Program
             if (!petitionDetails.Any() || petitionDetails is null)
             {
                 WriteLine("No results found.");
-                return;
+                aux = true;
+                return aux;
             }
 
             var groupedPetitions = petitionDetails.GroupBy(r => r.PetitionId);
@@ -793,13 +848,14 @@ partial class Program
                 table1.Write();
                 WriteLine();
             }
-            return;
         } 
+        return aux;
     }
 
-    public static void ViewRequestFormatNotAcceptedYet(string Username)
+    public static bool ViewRequestFormatNotAcceptedYet(string Username)
     {
         int i = 0;
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
@@ -811,9 +867,11 @@ partial class Program
             {
                 WriteLine("No results found.");
                 MenuProfessors();
-                return;
-            } else {
-                var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
+                aux = true;
+                return aux;
+            }
+
+            var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
 
                 foreach (var group in groupedRequests)
                 {
@@ -842,17 +900,16 @@ partial class Program
                         table.AddRow("Equipment Name", r.Equipment.Name);
                     }
 
-                    table.Write();
-                    WriteLine();
-                }
-                return;
+                table.Write();
+                WriteLine();
             }
-        }
+        } 
+        return aux;
     }
 
-
-    public static void LateReturningStudent(string Username)
+    public static bool LateReturningStudent(string Username)
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             var currentDate = DateTime.Now;
@@ -866,7 +923,8 @@ partial class Program
             if (!requestDetails.Any())
             {
                 WriteLine("You dont have overdue equipment.");
-                return;
+                aux = true;
+                return aux;
             }
 
             foreach (var use in requestDetails)
@@ -882,10 +940,12 @@ partial class Program
                 }
             }
         }
+        return aux;
     }
 
-    public static void ListGroups()
+    public static bool ListGroups()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<Group> groups = db.Groups;
@@ -893,7 +953,8 @@ partial class Program
             if ((groups is null) || !groups.Any())
             {
                 WriteLine("There are no groups");
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("| {0,-3} | {1,-10} |", "Id", "Group Name");
@@ -903,10 +964,12 @@ partial class Program
                 WriteLine("| {0:000} | {1,-10} |", group.GroupId, group.Name);
             }
         }
+        return aux;
     }
 
-    public static void ListProfessors()
+    public static bool ListProfessors()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<Professor> professors = db.Professors;
@@ -914,7 +977,8 @@ partial class Program
             if ((professors is null) || !professors.Any())
             {
                 WriteLine("There are no professors");
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("| {0,-10} | {1,-30} | {2,-30} | {3,-30} | {4,-4} | {5,-50} |", "Id", "Name", "Last Name P", "Last Name M", "NIP", "Password");
@@ -924,10 +988,12 @@ partial class Program
                 WriteLine("| {0:0000000000} | {1,-30} | {2,-30} | {3,-30} | {4,-4} | {5,-50} |", professor.ProfessorId, professor.Name, professor.LastNameP, professor.LastNameM, Decrypt(professor.Nip), Decrypt(professor.Password));
             }
         }
+        return aux;
     }
 
-    public static void ListStorers()
+    public static bool ListStorers()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<Storer> storers = db.Storers;
@@ -935,7 +1001,8 @@ partial class Program
             if ((storers is null) || !storers.Any())
             {
                 WriteLine("There are no storers");
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("| {0,-10} | {1,-30} | {2,-30} | {3,-30} | {4,-50} |", "Id", "Name", "Last Name P", "Last Name M", "Password");
@@ -945,10 +1012,12 @@ partial class Program
                 WriteLine("| {0:0000000000} | {1,-30} | {2,-30} | {3,-30} | {4,-50} |", storer.StorerId, storer.Name, storer.LastNameP, storer.LastNameM, Decrypt(storer.Password));
             }
         }
+        return aux;
     }
 
-    public static void ListSubjects()
+    public static bool ListSubjects()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             IQueryable<Subject> subjects = db.Subjects
@@ -956,7 +1025,8 @@ partial class Program
             if ((subjects is null) || !subjects.Any())
             {
                 WriteLine("There are no subjects");
-                return;
+                aux = true;
+                return aux;
             }
 
             WriteLine("| {0,-13} | {1,-55} | {2,-7} |", "Id", "Name", "Academy");
@@ -966,11 +1036,14 @@ partial class Program
                 WriteLine("| {0:0000000000000} | {1,-55} | {2,-7} |", subject.SubjectId, subject.Name, subject.Academy?.Name);
             }
         }
+        return aux;
     }
 
-    public static void WatchPermissions(string User)
+    public static bool WatchPermissions(string User)
     {
+        bool aux = false;
         int i = 1;
+
         using (bd_storage db = new bd_storage())
         {
             IQueryable<RequestDetail> requests = db.RequestDetails
@@ -981,7 +1054,8 @@ partial class Program
                 {
                     WriteLine("There are no permissions");
                     WriteLine();
-                    return;
+                    aux = true;
+                    return aux;
                 }
                 var table = new ConsoleTable("NO. ", "Student Name", 
                 "Last Name P","Last Name M", "Group", 
@@ -999,5 +1073,6 @@ partial class Program
                 table.Write();
                 WriteLine();
         }
+        return aux;
     }
 }

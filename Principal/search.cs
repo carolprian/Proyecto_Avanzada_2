@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using AutoGens;
 using System.Linq;
+using ConsoleTables;
 partial class Program
 {
-    public static void SearchStudentGeneral()
+    public static bool SearchStudentGeneral()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             // Se le pide el registro del usuario
@@ -20,13 +22,19 @@ partial class Program
                 // No se encontro ningun estudiante
                 WriteLine("No student found");
                 // Se vuelve a mandar al menu
-                SubMenuStudentsHistory();
+                aux = true;
+                return aux;
             } else
             {
                 // Se muestra la información encontrada del estudiante y los permisos que ha solicitado
+
                 WriteLine("Student Information: ");
+                var table = new ConsoleTable("Id", "Name", "LastName P", "LasName M", "Group");
                 
-                WriteLine($"Name: {student.Name}, Paternal Last Name: {student.LastNameP}, Maternal Last Name: {student.LastNameM}, Group: {student.Group.Name}");
+                table.AddRow(student.StudentId, student.Name, student.LastNameP, student.LastNameM, student.Group.Name);
+
+                table.Write();
+                WriteLine();
                 // Se realiza una lista de los permisos que ha solicitado el estudiante
                 var requests = db.Requests.Where(r => r.StudentId == student.StudentId).ToList();
                 // Si no hay se manda de nuevo al menu y se muestra el mensaje explicativo
@@ -45,33 +53,33 @@ partial class Program
                 var groupedRequests = RequestDetails.GroupBy(r => r.RequestId);
 
                 int i = 0;
-                WriteLine("");
-                WriteLine("Student History: ");
-
                 foreach (var group in groupedRequests)
                 {
                     i++;
                     var firstRequest = group.First();
 
-                    WriteLine($"Request {i}: ");
-                    WriteLine($"Request Detail: {firstRequest.RequestId}");
-                    WriteLine($"Dispatch Time: {firstRequest.DispatchTime}");
-                    WriteLine($"Return Time: {firstRequest.ReturnTime}");
-                    WriteLine($"Requested Date: {firstRequest.RequestedDate}");
-                    WriteLine($"Current Date: {firstRequest.CurrentDate}");
+                    var table1 = new ConsoleTable("No.", "Request Detail Id", "Dispatch Time", "Return Time", "Request Date", "Current Date");
+                
+                    table1.AddRow(i, firstRequest.RequestId, firstRequest.DispatchTime.TimeOfDay, firstRequest.ReturnTime.TimeOfDay, 
+                    $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}", $"{firstRequest.CurrentDate.Day}/{firstRequest.CurrentDate.Month}/{firstRequest.CurrentDate.Year}");
 
-                    WriteLine("Equipment:");
                     foreach (var r in group)
                     {
-                        WriteLine($"Equipment Name: {r.Equipment.Name}");
+                        // Adding an empty string as the first column to match the table structure
+                        table1.AddRow("Equipment Name", r.Equipment.Name, "", "", "", "");
                     }
+
+                    table1.Write();
+                    WriteLine();
                 } 
             }
         }
+        return aux;
     }
 
-    public static void SearchStudentUsingEquipment()
+    public static bool SearchStudentUsingEquipment()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             WriteLine("Provide the ID of the student you want to search:");
@@ -85,6 +93,8 @@ partial class Program
             {
                 WriteLine("No student found");
                 SubMenuStudentsUsingEquipment();
+                aux = true;
+                return aux;
             }
 
             var requests = db.Requests.Where(r => r.StudentId == student.StudentId).ToList();
@@ -126,6 +136,7 @@ partial class Program
 
             } 
         }
+        return aux;
     }
 
      public static string SearchProfessorByName(string SearchTerm, int Op, int Recursive){
@@ -315,8 +326,9 @@ partial class Program
         }
     }
 
-    public static void SearchEquipmentsById(string? SearchTerm)
+    public static bool SearchEquipmentsById(string? SearchTerm)
     {
+        bool aux = false;
         if (string.IsNullOrEmpty(SearchTerm))
         {
             throw new InvalidOperationException();
@@ -334,7 +346,8 @@ partial class Program
             if (!equipments.Any())
             {
                 WriteLine("No equipment found matching the search term: " + SearchTerm);
-                return;
+                aux = true;
+                return aux;
             }
             else
             {
@@ -360,6 +373,7 @@ partial class Program
                 }
             }
         }
+        return aux;
     }
 
     public static (List<string>? EquipmentsId, List<byte?>? StatusEquipments, int i) SearchEquipmentsRecursive(List<string>? SelectedEquipments, List<byte?>? StatusEquipments, DateTime Requested, DateTime Init, DateTime End, int RequestId, int MaxEquipment, bool IsStudent)
