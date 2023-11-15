@@ -298,26 +298,26 @@ partial class Program
         }
     }
 
-    public static int RegisterNewMaintenance(string username) // asks for all info requiered to create a new maintenance register, creates one, and connects it with all equipments related to it through a maintains table
+    public static int RegisterNewMaintenance(string username) // asks for all info required to create a new maintenance register, creates one, and connects it with all equipments related to it through a maintains table
     {
         WriteLine(
             "Here's a list of all the available equipment for maintenance (Only Available or Damaged Equipment)"
         );
-        ViewAllEquipmentsForMaintenance();
-        List<string> equipmentIdList = new();
-        List<byte?> statusList = new();
+        ViewAllEquipmentsForMaintenance(); // lists all equipments available for maintenance (available or damaged equipment)
+        List<string> equipmentIdList = new(); // creates a list that will store every equipment id added to the maintenance register
+        List<byte?> statusList = new(); // creates a list that will store a status for each of the equipments added to the maintenance register
         bool valid = false;
         string equipmentId = "";
         do
         {
             WriteLine("Please select the ID of the Equipment you wish to add");
-            equipmentId = ReadNonEmptyLine();
-            using (bd_storage db = new())
+            equipmentId = ReadNonEmptyLine(); // reads a string from the user which is not empty, a whitespace or null
+            using (bd_storage db = new()) // creates connection to the database
             {
-                IQueryable<Equipment>? availableEquipment = db.Equipments.Where(
+                IQueryable<Equipment>? availableEquipment = db.Equipments.Where( // searches for the id inside the equipment table
                     e => e.EquipmentId == equipmentId
                 ); // checks if the user selected a valid id from the table
-                if (availableEquipment is null || !availableEquipment.Any())
+                if (availableEquipment is null || !availableEquipment.Any()) // checks if the query returner anything
                 {
                     WriteLine($"Equipment ID : {equipmentId} is not-existent");
                 }

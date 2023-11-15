@@ -28,7 +28,6 @@ partial class Program{
                     else 
                     {
                         WriteLine("You are only allow to fill a request format per day.");
-                        return;
                     }
                     BackToMenu();
                 break;

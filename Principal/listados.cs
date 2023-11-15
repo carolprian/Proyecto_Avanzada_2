@@ -249,7 +249,6 @@ partial class Program
         using( bd_storage db = new())
         {
         IQueryable<Area> areas = db.Areas;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((areas is null) || !areas.Any())
             {
                 WriteLine("There are no areas found");
@@ -269,7 +268,6 @@ partial class Program
         using( bd_storage db = new())
         {
         IQueryable<Status> status = db.Statuses;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((status is null) || !status.Any())
             {
                 WriteLine("There are no status found");
@@ -290,7 +288,6 @@ partial class Program
         using (bd_storage db = new())
         {
             IQueryable<Coordinator> coordinators = db.Coordinators;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((coordinators is null) || !coordinators.Any())
             {
                 WriteLine("There are no registered coordinators found");
@@ -337,7 +334,48 @@ partial class Program
             return studentsid;
         }
     }
+
+    public static int ListClassrooms()
+    {
+        // Indice de la lista
+        int i = 1;
+
+        using (bd_storage db = new())
+        {
+            // verifica que exista la tabla de Classroom
+            if( db.Classrooms is null)
+            {
+                throw new InvalidOperationException("The table does not exist.");
+            } else {
+                // Muestra toda la lista de classrooms con un indice y la clave de este
+                IQueryable<Classroom> Classrooms = db.Classrooms;
+                
+                foreach (var cl in Classrooms)
+                {
+                    WriteLine($"{i}. {cl.Clave}");
+                    i++;
+                }
+                return Classrooms.Count();
+            }
+        }
+    }
     
+    private static void ShowScheduleOptions(IQueryable<Schedule> schedules, int offset, int startHourId)
+    {
+        // Filtrar las opciones de horario para mostrar solo aquellas que sean mayores que la hora de inicio seleccionada.
+        var filteredSchedules = schedules.Where(s => s.ScheduleId > startHourId);
+
+        foreach (var sch in filteredSchedules)
+        {
+            int hour = sch.InitTime.Hour;
+            int minute = sch.InitTime.Minute;
+            WriteLine($"{sch.ScheduleId - offset}. {hour:D2}:{minute:D2}");
+        }
+
+        string prompt = "Select the number to choose the class end hour";
+        WriteLine(prompt);
+    }
+
     public static void ViewAllEquipmentsCoord()
     {
         using (bd_storage db = new())
@@ -718,6 +756,7 @@ partial class Program
 
     public static void ViewRequestFormatNotAcceptedYet(string Username)
     {
+        int i =0;
         using (bd_storage db = new())
         {
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
@@ -726,6 +765,11 @@ partial class Program
             .Include( r => r.Request)
             .Where( s => s.Request.StudentId == Username);
 
+            IQueryable<Request> requests = db.Requests
+            .Include( r => r.Classroom)
+            .Include (r => r.Professor)
+            .Where( s => s.RequestId == requestDetails.First().RequestId);
+
             if (!requestDetails.Any() || requestDetails is null)
             {
                 WriteLine("No results found.");
@@ -733,8 +777,6 @@ partial class Program
             }
 
             var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
-
-            int i = 0;
 
             foreach (var group in groupedRequests)
             {
