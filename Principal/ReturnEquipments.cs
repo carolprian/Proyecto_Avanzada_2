@@ -1,34 +1,39 @@
 using Microsoft.EntityFrameworkCore;
 using AutoGens;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using ConsoleTables;
 partial class Program{
-   public static void ReturnEquipmentByStudent()
+   public static void ReturnEquipmentByStudent() // function to when the storer registers the return of a equipment that was loaned to a student
    {
-        using(bd_storage db = new())
+        using(bd_storage db = new()) // connecting to the database
         {
+            
+            string requestid = "0";
             WriteLine("Return the equipments of a request.");
             WriteLine("Provide the student's register:");
-                string register = VerifyReadLengthStringExact(8);
+            string register = VerifyReadLengthStringExact(8); // verify the register is of 8 digits
+            //query that consults the table to student to se if the register provided exists
             IQueryable<Student> students = db.Students.Where(p => p.StudentId.Equals(register)); 
                 if(students is null || !students.Any())
                 {
                     WriteLine($"A student with the register {register} do not exist.");
                     return;
                 }
-                else
+                else // if the register exists
                 {
                     WriteLine("This are the due to return request(s) by the student:");
-                    var result = DueToReturnRequestsByStudent(register);
-                    string requestid = "0";
-                    if(result.Count >= 1)
+                    var result = DueToReturnRequestsByStudent(register); // shows the requests that the student has to return
+                    if(result.Count >= 1) // if there are requests
                     {
                         bool opp = false;
                         while(opp==false)
                         {
                             WriteLine("Provide the RequestId of the request you will deliver:");
-                            requestid = VerifyReadMaxLengthString(2); 
+                            requestid = VerifyReadMaxLengthString(4); 
                             foreach(var rid in result.RequestId)
                             {
-                                if(requestid == rid.ToString())
+                                if(requestid == rid.ToString()) // verify that the request ID provided exists
                                 {
                                     opp = true;
                                     break;
@@ -36,22 +41,25 @@ partial class Program{
                             }    
                         }
                         
-                        WriteLine("Equipments:");
+                        WriteLine("Equipments:"); // query to get all the request details that have the request ID provided
                         IQueryable<RequestDetail> requestDetailss = db.RequestDetails.Include(e=>e.Status).Include(e=>e.Equipment).Where(e=>e.RequestId.Equals(TryParseStringaEntero(requestid)));
                         if(requestDetailss is not null || requestDetailss.Any())
                         {
-                            foreach(var r in requestDetailss)
+                            foreach(var r in requestDetailss) // list every single one of the equipments of the request 
                             {
-                                WriteLine($"Id: {r.EquipmentId}");
-                                WriteLine($"Name: {r.Equipment?.Name}");
-                                WriteLine($"Status: {r.Status?.Value}");
-                                WriteLine($"Description: {r.Equipment.Description}");
+                                WriteLine();
+                                var table = new ConsoleTable("Equipments", ""); // a table to each one of the equipments that have to be returned
+                                table.AddRow("Id", r.EquipmentId);
+                                table.AddRow("Name", r.Equipment?.Name);
+                                table.AddRow("Status", r.Equipment?.Status?.Value);
+                                table.AddRow("Decription", r.Equipment?.Description);
+                                table.Write();
                                 WriteLine();
                             }
                             WriteLine();
                         }
                     } // fin del if  
-                    else if(result.Count == 0)
+                    else if(result.Count == 0) // if there aren't any requests to return
                     {
                         WriteLine("There are no due to return equipments.");
                         return;
@@ -60,7 +68,7 @@ partial class Program{
                     WriteLine($"Is the deliver of the equipments of the request {requestid} made succesfully?");
                     WriteLine("Remember, if you put 'n', that means that the process of delivery has been terminated, and you will have to start again");
                     WriteLine("Write the selected option y/n");
-                        string opi = "";
+                    string opi = "";
                     bool op = false;
                     while(op==false)
                     {
@@ -69,8 +77,30 @@ partial class Program{
                         else{WriteLine("That is not a valide option, try again."); }
                         if(opi=="y")
                         {
-                            ChangeStatusRequestToReturned(requestid);
-                            ChangeStatusEquipment(requestid);
+                            // change status of the requests to delivered
+                            if(ChangeStatusRequestToReturned(requestid) > 0)
+                            {
+                                WriteLine("Status of the requests have been changed!");
+                            }
+                            else{
+                                WriteLine("The status of the request was not changed");
+                            }
+
+                            // change the status of all equipents of the request to Available
+                            var Result = ChangeStatusEquipment(requestid); // returns the amount of Affected Equipments, and how many were supposed to be affected
+                            if(Result.Affected == Result.CountEquipmentsIds)
+                            {
+                                WriteLine("Status of all equipments was changed.");
+                            }
+                            else if(Result.Affected == 0)
+                            {
+                                WriteLine("Sorry, the status of the equipments wasn't changed"); 
+                            }
+                            else 
+                            {
+                                WriteLine($"The status of {Result.Affected} equipments was succesfully changed!");
+                            }
+                            
                         }
                     }
                 }
@@ -79,7 +109,7 @@ partial class Program{
 
    public static void ReturnEquipmentByProfessor()
    {
-        using(bd_storage db = new())
+        using(bd_storage db = new()) // creating connection to the database
         {
             WriteLine("Search for a professor request for today");
             WriteLine("Provide the professor's id:");
@@ -99,13 +129,13 @@ partial class Program{
                 if(result.Count >= 1)
                 {
                     bool opp = false;
-                    while(opp==false)
+                    while(opp==false) 
                     {
                         WriteLine("Provide the RequestId of the request is being returned:");
-                        requestid = VerifyReadMaxLengthString(2); 
+                        requestid = VerifyReadMaxLengthString(2);
                         foreach(var rid in result.RequestId)
                         {
-                            if(requestid == rid.ToString())
+                            if(requestid == rid.ToString()) // verify that the request provided exists
                             {
                                 opp = true;
                                 break;
@@ -114,29 +144,33 @@ partial class Program{
 
                     }
                 
-                    WriteLine("Equipments:");
+                    WriteLine("Equipments:"); // query that finds the petition details that have the same PetitionId 
                     IQueryable<PetitionDetail> requestDetailss = db.PetitionDetails.Include(e=>e.Status).Include(e=>e.Equipment).Where(e=>e.PetitionId.Equals(TryParseStringaEntero(requestid)));
-                    if(requestDetailss is not null || requestDetailss.Any())
+                    if(requestDetailss is null || !requestDetailss.Any()){}
+                    else
                     {
-                        foreach(var r in requestDetailss)
+                        foreach(var r in requestDetailss) // list every single one of the equipments of the Petition ID
                             {
-                                WriteLine($"Id: {r.EquipmentId}");
-                                WriteLine($"Name: {r.Equipment?.Name}");
-                                WriteLine($"Status: {r.Status?.Value}");
-                                WriteLine($"Description: {r.Equipment.Description}");
+                                WriteLine();
+                                var table = new ConsoleTable("Equipments", ""); // a table to each one of the equipments that have to be returned
+                                table.AddRow("Id", r.EquipmentId);
+                                table.AddRow("Name", r.Equipment?.Name);
+                                table.AddRow("Status", r.Equipment?.Status?.Value);
+                                table.AddRow("Decription", r.Equipment?.Description);
+                                table.Write();
                                 WriteLine();
                             }
                         WriteLine();
                     }
                     
                 }
-                else if(result.Count == 0)
+                else if(result.Count == 0) // if there are no pet
                 {
                     return;
                 }
 
-                WriteLine($"Is the returning of the equipments of the request {requestid} made succesfully?");
-                WriteLine("Remember, if you put 'n', that means that the process of delivery has been terminated, and you will have to start again");
+                WriteLine($"Is the returning of the equipments of the petition {requestid} made succesfully?");
+                WriteLine("Remember, if you put 'n', that means that the process of return equipment has been terminated, and you will have to start again");
                 WriteLine("Write the selected option y/n");
                     string opi = "";
                 bool op = false;
@@ -148,8 +182,29 @@ partial class Program{
                 }
                 if(opi=="y")
                 {
-                            ChangeStatusRequestToReturnedProf(requestid);
-                            ChangeStatusEquipmentProf(requestid);
+                    // change status of the requests to delivered
+                            if(ChangeStatusRequestToReturnedProf(requestid) > 0)
+                            {
+                                WriteLine("Status of the requests have been changed!");
+                            }
+                            else{
+                                WriteLine("The status of the request was not changed");
+                            }
+
+                            // change the status of all equipents of the request to Available
+                            var Result = ChangeStatusEquipmentProf(requestid); // returns the amount of Affected Equipments, and how many were supposed to be affected
+                            if(Result.Affected == Result.CountEquipmentsIds)
+                            {
+                                WriteLine("Status of all equipments was changed.");
+                            }
+                            else if(Result.Affected == 0)
+                            {
+                                WriteLine("Sorry, the status of the equipments wasn't changed"); 
+                            }
+                            else 
+                            {
+                                WriteLine($"The status of {Result.Affected} equipments was succesfully changed!");
+                            }
                 }
             }
         }
@@ -252,132 +307,110 @@ partial class Program{
         }
     }
 
-    public static void ChangeStatusRequestToReturned(string RequestId)
+    public static int ChangeStatusRequestToReturned(string RequestId)
     {
-        using(bd_storage db = new()) 
+        using(bd_storage db = new())  // creating connection to the database
         {
-            byte status = 6;
+            byte status = 6; // status of Delivered
                     //update request details status where RequestId == requestid (variable)
                     IQueryable<RequestDetail> requestDetails = db.RequestDetails.Where(r=> r.RequestId.Equals(TryParseStringaEntero(RequestId)));
-                    int affected = 0;
-                    if(requestDetails is not null || requestDetails.Any())
+                    int Affected = 0;
+                    if(requestDetails is null || !requestDetails.Any()){}
+                    else
                     {
-                        affected = requestDetails.ExecuteUpdate(u => u.SetProperty(
+                        Affected = requestDetails.ExecuteUpdate(u => u.SetProperty(
                             p => p.StatusId, // Property Selctor
                             p => status // Value to edit
                         ));
-                        db.SaveChanges();
+                        db.SaveChanges(); // save changes made to the database
                     }
-                    if(affected > 0)
-                    {
-                        WriteLine("Status of the requests have been changed!");
-                    }
-                    else{
-                        WriteLine("The status of the request was not changed");
-                    }
+                    return Affected;
         }
     }
     
-    public static void ChangeStatusRequestToReturnedProf(string RequestId)
+    public static int ChangeStatusRequestToReturnedProf(string RequestId)
     {
-        using(bd_storage db = new()) 
+        using(bd_storage db = new()) // create connection to the database
         {
             byte status = 6;
                     //update request details status where RequestId == requestid (variable)
                     IQueryable<PetitionDetail> requestDetails = db.PetitionDetails.Where(r=> r.PetitionId.Equals(TryParseStringaEntero(RequestId)));
-                    int affected = 0;
-                    if(requestDetails is not null || requestDetails.Any())
+                    int Affected = 0;
+                    if(requestDetails is null || !requestDetails.Any()){}
+                    else // if the query returns elements found
                     {
-                        affected = requestDetails.ExecuteUpdate(u => u.SetProperty(
+                        Affected = requestDetails.ExecuteUpdate(u => u.SetProperty(
                             p => p.StatusId, // Property Selctor
                             p => status // Value to edit
                         ));
-                        db.SaveChanges();
+                        db.SaveChanges(); //save changes
                     }
-                    if(affected > 0)
-                    {
-                        WriteLine("Status of the requests have been changed!");
-                    }
-                    else{
-                        WriteLine("The status of the request was not changed");
-                    }
+                    
+            return Affected;
         }
     }
 
-    public static void ChangeStatusEquipment(string RequestId)
+    public static (int Affected, int CountEquipmentsIds) ChangeStatusEquipment(string RequestId)
     {
-        using(bd_storage db = new())
+        int Affected = 0; 
+        using(bd_storage db = new()) // creating connection to the database
         {
-            List<string> equipmentsid = new List<string>();
-                    IQueryable<RequestDetail> reqs = db.RequestDetails.Where(r=>r.RequestId == TryParseStringaEntero(RequestId));
-                    if(reqs is not null || reqs.Any() )
+            List<string> EquipmentsIds = new List<string>(); // declaring list of all equipments IDs of the petition
+            //query that finds the petition details that are from one same petition
+            IQueryable<RequestDetail> RequestDetails = db.RequestDetails.Where(r=>r.RequestId == TryParseStringaEntero(RequestId));
+            if(RequestDetails is null || !RequestDetails.Any() ){}
+            else // if the query result found elements
+            {
+                foreach (var r in RequestDetails)
+                {
+                    EquipmentsIds.Add(r.EquipmentId);  // add to the list the equipments IDs
+                }
+                foreach(var eq in EquipmentsIds)
+                {   // query that finds the equipments where the equipment id is equivalent to each one of the equipments in the petition
+                    IQueryable<Equipment>? Equipments = db.Equipments?.Where(e => e.EquipmentId.Equals(eq));
+                        
+                    if (Equipments is null || !Equipments.Any()){} // if there aren't any equipments
+                    else
                     {
-                        foreach (var r in reqs)
-                        {
-                            equipmentsid.Add(r.EquipmentId);
-                        }
-                        foreach(var eq in equipmentsid)
-                        {
-                            IQueryable<Equipment>? equipments = db.Equipments?.Where(e => e.EquipmentId.Equals(eq));
-                            
-                            if (equipments is not null || equipments.Any())
-                            {
-                                equipments.First().StatusId = 1;
-                                db.SaveChanges();
-                            }
-                        } 
-                        if(reqs.Count() == equipmentsid.Count())
-                        {
-                            WriteLine("Status of all equipments was changed.");
-                        }
-                        else if(0 < equipmentsid.Count() && equipmentsid.Count() < reqs.Count())
-                        {
-                            WriteLine($"The status of {equipmentsid.Count()} was succesfully changed!");
-                        }
-                        else 
-                        {
-                            WriteLine("Sorry, the status of the equipments wasn't changed"); 
-                        }
+                        Equipments.First().StatusId = 1; // change the status to available of each equipment
+                        Affected += db.SaveChanges(); // keep track of all the changed registers in the table equipments
                     }
+                } 
+            }
+            return (Affected, EquipmentsIds.Count()); // return how many equipments status were modified, and how many were supposed to be modified
         }
     }
 
     
-    public static void ChangeStatusEquipmentProf(string RequestId)
+    public static (int Affected, int CountEquipmentsIds) ChangeStatusEquipmentProf(string RequestId)
     {
-        using(bd_storage db = new())
+        int Affected = 0; 
+        using(bd_storage db = new()) // creating connection to the database
         {
-            List<string> equipmentsid = new List<string>();
-                    IQueryable<PetitionDetail> reqs = db.PetitionDetails.Where(r=>r.PetitionId == TryParseStringaEntero(RequestId));
-                    if(reqs is not null || reqs.Any() )
+            List<string> EquipmentsIds = new List<string>(); // declaring list of all equipments IDs of the petition
+            //query that finds the petition details that are from one same petition
+                IQueryable<PetitionDetail> reqs = db.PetitionDetails.Where(r=>r.PetitionId == TryParseStringaEntero(RequestId));
+                if(reqs is null || reqs.Any()){}
+                else // if the query result found elements
+                {
+                    foreach (var r in reqs)
                     {
-                        foreach (var r in reqs)
+                        EquipmentsIds.Add(r.EquipmentId); // add to the list the equipments IDs
+                    }
+                    foreach(var eq in EquipmentsIds)
+                    {   // query that finds the equipments where the equipment id is equivalent to each one of the equipments in the petition
+                        IQueryable<Equipment>? Equipments = db.Equipments?.Where(e => e.EquipmentId.Equals(eq));
+                        
+                        if (Equipments is null || !Equipments.Any()){} // if there aren't any equipments
+                        else
                         {
-                            equipmentsid.Add(r.EquipmentId);
-                        }
-                        foreach(var eq in equipmentsid)
-                        {
-                            IQueryable<Equipment>? equipments = db.Equipments?.Where(e => e.EquipmentId.Equals(eq));
-                            
-                            if (equipments is not null || equipments.Any())
-                            {
-                                equipments.First().StatusId = 1;
-                                db.SaveChanges();
-                            }
-                        } 
-                        if(reqs.Count() == equipmentsid.Count())
-                        {
-                            WriteLine("Status of all equipments was changed.");
-                        }
-                        else if(0 < equipmentsid.Count() && equipmentsid.Count() < reqs.Count())
-                        {
-                            WriteLine($"The status of {equipmentsid.Count()} was succesfully changed!");
-                        }
-                        else 
-                        {
-                            WriteLine("Sorry, the status of the equipments wasn't changed"); 
+                            Equipments.First().StatusId = 1; // change the status to available of each equipment
+                            Affected += db.SaveChanges(); // keep track of all the changed registers in the table equipments
                         }
                     }
+                }
+                    
+            return (Affected, EquipmentsIds.Count()); // return how many equipments status were modified, and how many were supposed to be modified
         }
     }
 }

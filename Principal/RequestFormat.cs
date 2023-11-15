@@ -337,17 +337,24 @@ partial class Program
             string dateInput = ReadNonEmptyLine();
             if (DateTime.TryParseExact(dateInput, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
             {
-                if(dateValue > CurrentDate.Date && CurrentDate.AddDays(14) >= dateValue.Date){
+                if(dateValue > CurrentDate.Date && CurrentDate.AddDays(14) >= dateValue.Date)
+                {
                     if (dateValue.DayOfWeek != DayOfWeek.Saturday && dateValue.DayOfWeek != DayOfWeek.Sunday )
                     {
                         valideDate = true;
-                    } else {
+                    } 
+                    else 
+                    {
                         WriteLine("The request must be between monday to friday");
                     }
-                }else{
+                }
+                else
+                {
                     WriteLine("It must be one day appart of the minimum and 2 weeks maximum. Try again");
                 }
-            } else{
+            } 
+            else
+            {
                 WriteLine("The format must be yyyy/mm/dd. Try again.");
             }
         }

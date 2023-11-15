@@ -15,10 +15,10 @@ partial class Program{
             WriteLine();
             switch(op){
                 case "1":
-                    validate = ValidateAddRequest(username);
+                    RequestFormat(username);
                     if(validate == false)
                     {
-                        RequestFormat(username);
+                        validate = ValidateAddRequest(username);
                     }
                     else 
                     {
