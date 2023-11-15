@@ -12,11 +12,10 @@ partial class Program
         {
             WriteLine("1. List all subjects");
             WriteLine("2. Update a subject");
-            WriteLine("3. Remove permanently a subject");
-            WriteLine("4. Exit");
+            WriteLine("3. Exit");
             op = VerifyReadLengthStringExact(1);
 
-            if (op == "1" || op == "2" || op == "3" || op == "4")
+            if (op == "1" || op == "2" || op == "3")
             {
                 b = true;
             }
@@ -30,9 +29,6 @@ partial class Program
                     UpdateSubject();
                     break;
                 case "3":
-                    RemoveSubject();
-                    break;
-                case "4":
                     // Exit
                     return;
                 default:
@@ -121,49 +117,5 @@ partial class Program
         Write($"Write the new {fieldName}: ");
         string newValue = VerifyReadMaxLengthString(30);
         updateAction(newValue);
-    }
-
-    private static void RemoveSubject()
-    {
-        WriteLine("Enter the subject name of the subject you want to delete:");
-        string subjectName = VerifyReadMaxLengthString(55);
-
-        using (bd_storage db = new())
-        {
-            IQueryable<Subject> subjects = db.Subjects
-                .Include(s => s.Academy)
-                .Where(s => s.Name != null && s.Name.StartsWith(subjectName));
-
-            if (subjects is null || !subjects.Any())
-            {
-                WriteLine("That subject name is not registered");
-            }
-            else
-            {
-                List<string> idsSubjects = new List<string>();
-                foreach (var s in subjects)
-                {
-                    WriteLine($"{s.SubjectId} . {s.Name}");
-                    idsSubjects.Add(s.SubjectId);
-                }
-                string subjectId = "";
-                while (!idsSubjects.Contains(subjectId))
-                {
-                    WriteLine("Write the selected subject id :");
-                    subjectId = VerifyReadMaxLengthString(13);
-                }
-
-                db.Subjects.Remove(subjects.First());
-                int affected = db.SaveChanges();
-                if (affected == 0)
-                {
-                    WriteLine("The subject was not deleted, sorry");
-                }
-                else
-                {
-                    WriteLine("The subject was deleted successfully");
-                }
-            }
-        }
     }
 }

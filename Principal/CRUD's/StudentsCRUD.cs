@@ -11,11 +11,10 @@ partial class Program
         {
             WriteLine("1. List all students");
             WriteLine("2. Update a student");
-            WriteLine("3. Remove a student");
-            WriteLine("4. Exit");
+            WriteLine("3. Exit");
             op = VerifyReadLengthStringExact(1);
 
-            if (op == "1" || op == "2" || op == "3" || op == "4")
+            if (op == "1" || op == "2" || op == "3")
             {
                 b = true;
             }
@@ -29,9 +28,6 @@ partial class Program
                     UpdateStudent();
                     break;
                 case "3":
-                    RemoveStudent();
-                    break;
-                case "4":
                     // Exit
                     return;
                 default:
@@ -134,10 +130,5 @@ partial class Program
         Write($"Write the new {fieldName}: ");
         string newValue = VerifyReadMaxLengthString(30);
         updateAction(newValue);
-    }
-
-    private static void RemoveStudent()
-    {
-        WriteLine("It is not possible to remove a student");
     }
 }

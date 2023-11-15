@@ -1,4 +1,5 @@
 using AutoGens;
+using ConsoleTables;
 using Microsoft.EntityFrameworkCore;
 
 partial class Program
@@ -77,14 +78,23 @@ partial class Program
                     return;
                 }
 
+                var table = new ConsoleTable("NO. ", "Student Name", 
+                "Last Name P","Last Name M", "Group", 
+                "Equipment Name","Current Date", "Dispatch Time", "Return Time");
+
+
                 foreach (var element in requests)
                 {
-                            WriteLine("| {0,-2} | {1,-15} | {2,-13} | {3,-13} | {4,-3} | {5,-41} | {6,-23} | {7, -23} | {8, -23}",
-                        i, element.Request.Student.Name,element.Request.Student.LastNameP, 
-                        element.Request.Student.LastNameM,element.Request.Student.Group.Name, element.Equipment.Name,
-                        element.DispatchTime, element.ReturnTime, element.RequestedDate);
-                        i++;
+                    table.AddRow(i, element.Request.Student.Name, element.Request.Student.LastNameP, 
+                        element.Request.Student.LastNameM, element.Request.Student.Group.Name, element.Equipment.Name, $"{element.RequestedDate.Day}/{element.RequestedDate.Month}/{element.RequestedDate.Year}",
+                        element.DispatchTime.TimeOfDay, element.ReturnTime.TimeOfDay);
+
+                    i++;
                 }
+                Clear();
+                table.Write();
+                WriteLine();
+                
                 WriteLine("Type the number of the permission you want to modify");
 
                 string indexop = ReadLine();
@@ -112,7 +122,7 @@ partial class Program
 
                     if (permission.ProfessorNip == 0)
                     {
-                        WriteLine("Ingrese su NIP para poder modificar los permisos");
+                        WriteLine("Enter your PIN to be able to modify permissions: ");
                         string choice = ReadNonEmptyLine();
 
                         IQueryable<Professor> prof = db.Professors
@@ -120,7 +130,7 @@ partial class Program
 
                         if (prof is null || !prof.Any())
                         {
-                            WriteLine("Entrada no válida. Se mantendrá sin cambios.");
+                            WriteLine("Unvalid entry. It will remain unchanged.");
                             return;
                         }
                         else

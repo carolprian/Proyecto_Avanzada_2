@@ -146,7 +146,7 @@ partial class Program
     public static void DeletePetitionFormat(string username)
     {
         WriteLine("Here's a list of all the petition format that has not been accepted yet. ");
-        ViewRequestFormatNotAcceptedYet(username);
+        ViewPetition(username);
 
         while (true)
         {
@@ -208,7 +208,7 @@ partial class Program
     
     public static void UpdatePetitionFormat(string username)
     {
-        int i=1, affected = 0, op=0;
+        int affected = 0, op=0;
         bool validateRequest=false;
         DateTime request=DateTime.Today;
 
@@ -243,17 +243,16 @@ partial class Program
                 petitionDetailss is not null && petitionDetailss.Any())
                 {
                     WriteLine("These are the fields you can update:");
-                    WriteLine($"{i}. Classroom: {petitionss.First().Classroom.Name}");
-                    WriteLine($"{i+1}. Subject: {petitionss.First().Subject.Name}");
-                    WriteLine($"{i+2}. Date of the request: {petitionDetailss.First().RequestedDate.Date}");
-                    WriteLine($"{i+3}. Dispatch time: {petitionDetailss.First().DispatchTime.TimeOfDay} and Return time: {petitionDetailss.First().ReturnTime.TimeOfDay}");
-                    WriteLine($"{i+4}. Equipment(s) in the request:");
+                    WriteLine($"1. Classroom: {petitionss.First().Classroom.Name}");
+                    WriteLine($"2. Subject: {petitionss.First().Subject.Name}");
+                    WriteLine($"3. Date of the request: {petitionDetailss.First().RequestedDate.Day}/{petitionDetailss.First().RequestedDate.Month}/{petitionDetailss.First().RequestedDate.Year}");
+                    WriteLine($"4. Dispatch time: {petitionDetailss.First().DispatchTime.TimeOfDay} and Return time: {petitionDetailss.First().ReturnTime.TimeOfDay}");
+                    WriteLine($"5. Equipment(s) in the request:");
 
                     foreach (var petitionDetail in petitionDetailss)
                     {
                         WriteLine($"     -{petitionDetail.Equipment.EquipmentId} ({petitionDetail.Equipment.Name})");
                         listEquipments.Add(petitionDetail.Equipment);
-                        i++;
                     }
 
                     WriteLine("Select an option to modify");
@@ -348,11 +347,10 @@ partial class Program
                     }   
                 break;
                 case 5:
-                    i = 1;
                     int equipId = 0;
                     foreach (var e in listEquipments)
                     {
-                        WriteLine($"{i}. {e.EquipmentId}-{e.Name}");
+                        WriteLine($"1. {e.EquipmentId}-{e.Name}");
                     }
                     WriteLine("Select the number of the equipment");
                     bool validateEq = false;
