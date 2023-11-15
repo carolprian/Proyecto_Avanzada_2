@@ -59,14 +59,15 @@ partial class Program
         string? text;
         do
         {
-            text = ReadLine();
-            if (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || text.Length < 10)
+            text = ReadNonEmptyLine();
+            if (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || (text.Length < 8 || text.Length > 10))
             {
-                WriteLine("Invalid input. Please enter numeric characters only. Try again:");
+                WriteLine("Invalid input. Please enter numeric characters only, between 8 and 10 digits. Try again:");
             }
-        } while (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || text.Length < 10);
+        } while (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || (text.Length < 8 || text.Length > 10));
         return text;
     }
+
 
     public static string VerifyUpperCaseAndNumeric(string text)
     {
@@ -93,10 +94,10 @@ partial class Program
     }
     public static string VerifyReadLengthStringExact(int Characters)
     {
-        string? text;
+        string text;
         do
         {
-            text = ReadLine();
+            text = ReadNonEmptyLine();
             if (text.Length < Characters || text.Length > Characters || string.IsNullOrEmpty(text))
             {
                 WriteLine($"The input must have {Characters} caracteres. Try again:");

@@ -34,6 +34,10 @@ partial class Program
                     ViewAllEquipments();
                     break;
                 case 7:
+                    // Opcion para cambiar la información del profesor
+                    ProfessorCRUD();
+                    break;
+                case 8:
                     exitRequested = true;
                     break;
                 default:

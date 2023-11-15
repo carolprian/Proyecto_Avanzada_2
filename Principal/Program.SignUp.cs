@@ -264,7 +264,7 @@ partial class Program
                 IQueryable<Group>? groupsid = db.Groups.Where(g=> g.Name == group);
                 if(groupsid is not null && groupsid.Any())
                 {
-                    var groupfirst = groupsid.FirstOrDefault();
+                    var groupfirst = groupsid.First();
                     groupid = groupfirst.GroupId;
                     op=1; 
                 }

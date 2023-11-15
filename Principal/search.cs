@@ -343,7 +343,6 @@ partial class Program
         }
     }
 
-    
     public static (List<string>? equipmentsId, List<byte?>? statusEquipments, int i) SearchEquipmentsRecursive(List<string>? SelectedEquipments, List<byte?>? StatusEquipments, DateTime Requested, DateTime Init, DateTime End, int? RequestId, int MaxEquipment, bool IsStudent)
     {
         string response = "h", response2 = "hi";

@@ -300,7 +300,6 @@ partial class Program{
                 int pages = countTotal / batchS;
                 if(countTotal/batchS != 0){pages+=1;}
                 int pp=1;
-                int i=0;
                 while (continueListing)
                     {
                 var equips = equipments.Skip(offset).Take(batchS);
@@ -369,8 +368,6 @@ partial class Program{
                 .Include(e => e.Status)
                 .Include(e => e.Coordinator)
                 .Where(e => e.Name.StartsWith(SearchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
-
-
             if (!Equipments.Any()) // si no existen ningun equipo en la lista
             {
                 WriteLine("No equipment found matching the search term:  " + SearchTerm);

@@ -403,11 +403,11 @@ partial class Program
                     affected = db.SaveChanges();
                     if(affected>0)
                     {
-                        WriteLine("Request changed");
+                        WriteLine("Petition changed");
                     }
                     else 
                     {
-                        WriteLine("Request not changed");
+                        WriteLine("Petition not changed");
                     }
                 break;
                 case 6:
