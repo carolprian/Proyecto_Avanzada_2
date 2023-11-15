@@ -107,14 +107,14 @@ partial class Program{
 
     static (int affected, string storerId) ChangeStorerPsw(string username)
     {
-        using(bd_storage db = new())
+        using(bd_storage db = new()) // starts connection with the database
         {
             int incorrect = 0;
             // checks if it exists
             IQueryable<Storer> storers = db.Storers
-            .Where(s => s.StorerId == EncryptPass(username));
+            .Where(s => s.StorerId == EncryptPass(username)); // finds the storer that logged in
                                     
-            if(storers is null || !storers.Any())
+            if(storers is null || !storers.Any()) // checks if the query returned any results
             {
                 WriteLine("Storer not found");
             }
@@ -126,20 +126,20 @@ partial class Program{
                     WriteLine();
                     WriteLine("Please enter your old password"); 
                     oldPassword = ReadNonEmptyLine();
-                    if(EncryptPass(oldPassword) != storers.First().Password)
+                    if(EncryptPass(oldPassword) != storers.First().Password) // validates old password before changing to a new one
                     {
                         incorrect++;
-                        if(incorrect >= 3) return (0,"0");
+                        if(incorrect >= 3) return (0,"0"); // if user has entered old password 3 times in a row, return to storer main menu
                         WriteLine($"Incorrect Password, please try again ({incorrect})");
                     }
                     else
                     {
                         string newPassword = "";
                         WriteLine("Please enter your new password");
-                        newPassword = EncryptPass(VerifyReadLengthString(8));
-                        storers.First().Password = newPassword;
-                        int affected = db.SaveChanges();
-                        return(affected, storers.First().StorerId);;
+                        newPassword = EncryptPass(VerifyReadLengthString(8)); // reads a new password and verifies it is at least 8 characters long
+                        storers.First().Password = newPassword; // saves the new password on the database field
+                        int affected = db.SaveChanges(); // saves changes on database
+                        return(affected, storers.First().StorerId); 
                     }
                 } while (true);                
             }
@@ -240,12 +240,12 @@ partial class Program{
         {
             case "a":
                 affected = RegisterNewMaintenance(username);
-                if(affected > 1)
+                if(affected > 1) // verifies if changes were made on the database
                 {
                     WriteLine($"{affected} rows were succesfully added");
                     WriteLine("Here's a list of all Maintenances Registers that haven't been made yet");
                     WriteLine();
-                    ViewMaintenanceNotMade();
+                    ViewMaintenanceNotMade(); // LIsts all pending maintenance registers
                 }
                 else
                 {
@@ -255,12 +255,12 @@ partial class Program{
 
             case "b":
                 affected = FinishMaintenanceReport(username);
-                if(affected > 1)
+                if(affected > 1) // verifies if changes were made on the database
                 {
-                    WriteLine($"{affected} rows were succesfully added");
+                    WriteLine($"{affected} rows were succesfully updated");
                     WriteLine("Here's a list of all still pending Maintenance Registers");
                     WriteLine();
-                    ViewMaintenanceNotMade();
+                    ViewMaintenanceNotMade(); // LIsts all pending maintenance registers
                 }
             break;
 
@@ -384,7 +384,7 @@ partial class Program{
         WriteLine();
 
         opi=0;
-        using(bd_storage db = new())
+        using(bd_storage db = new()) // creates connection with the database
         {
             while(opi==0)
             {   
