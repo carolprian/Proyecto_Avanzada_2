@@ -56,6 +56,11 @@ partial class Program{
                     BackToMenu();
                 break;
                 case 7:
+                // Opción para ver los equipos que el estudiante ha dañado o perdido
+                    FindDandLequipmentByStudentId(UserName);
+                    BackToMenu();
+                break;
+                case 8:
                 // Opción para salir del menu de estudiantes
                     return;
                 default:

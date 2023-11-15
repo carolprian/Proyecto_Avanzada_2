@@ -177,7 +177,6 @@ partial class Program
     {
         using (bd_storage db = new())
         {
-
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
             .Include( r => r.Request.Student.Group)
             .Include( r => r.Equipment)
@@ -646,6 +645,36 @@ partial class Program
             }
         }
     }
+
+    public static void FindDandLequipmentByStudentId(string? StudentIdToFind)
+    {
+        using (bd_storage db = new())
+        {
+            //busca equipos registrados como dañados o perdidos
+            IQueryable<DyLequipment> dyLequipments = db.DyLequipments
+                .Include(dal => dal.Status)
+                .Include(dal => dal.Equipment)
+                .Include(dal => dal.Student)
+                .Include(dal => dal.Coordinator)
+                .Where(dal => dal.Student.StudentId==StudentIdToFind); 
+
+            db.ChangeTracker.LazyLoadingEnabled = false;
+
+            if (!dyLequipments.Any())
+            {
+                WriteLine("No damaged or lost equipment found with Student Id: " + StudentIdToFind);
+                return;
+            }
+
+            WriteLine("| {0,-11} | {1,-8} | {2,-35} | {3,-30} | {4}",
+                "EquipmentId", "Status", "Name", "To Return", "Date of Return");
+
+            foreach (var dal in dyLequipments)
+            {
+                WriteLine($"| {dal.Equipment?.EquipmentId,-11} | {dal.Status?.Value,-8} | {dal.Equipment?.Name,-35} | {dal.objectReturn, -30} | {dal.DateOfReturn}");
+            }
+        }
+    }
     
     public static void ListMaintenanceTypes()
     {
@@ -671,43 +700,54 @@ partial class Program
 
     public static void ListEquipmentsRequestsStudent(string Username)
     {
+        int i = 0;
         using (bd_storage db = new())
         {
-            IQueryable<RequestDetail>? requestDetails = db.RequestDetails
+             IQueryable<RequestDetail>? requestDetails = db.RequestDetails
             .Include( r => r.Equipment)
             .Include( r => r.Request).
             Include ( r => r.Status)
-            .Where( s => s.Request.StudentId == Username);
-
-            if (!requestDetails.Any() || requestDetails is null)
+            .Where( s => s.Request.StudentId == Username).OrderBy(r => r.RequestedDate);
+            if (requestDetails == null || !requestDetails.Any())
             {
                 WriteLine("No results found.");
+                MenuProfessors();
+                return;
+            } else {
+                var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
+
+                foreach (var group in groupedRequests)
+                {
+                    i++;
+                    string count = i + "";
+                    string nip = "";
+                    var firstRequest = group.First();
+                    var fistStatus = requestDetails.First();
+                    if (firstRequest.ProfessorNip == 0)
+                    {
+                        nip = "Pendiente";
+                    }
+
+                    var table = new ConsoleTable("NO. Request", count);
+
+                    table.AddRow("RequestId", firstRequest.RequestId);
+                    table.AddRow("StatusId", $"{fistStatus.Status?.Value ?? "Not delivered"}");
+                    table.AddRow("ProfessorNip", nip);
+                    table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
+                    table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
+                    table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
+                    table.AddRow("", "");
+                    foreach (var r in group)
+                    {
+                        // Adding an empty string as the first column to match the table structure
+                        table.AddRow("Equipment Name", r.Equipment.Name);
+                    }
+
+                    table.Write();
+                    WriteLine();
+                }
                 return;
             }
-
-            var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
-
-            int i = 0;
-
-            foreach (var group in groupedRequests)
-            {
-                i++;
-                var firstRequest = group.First();
-                WriteLine();
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}");
-                WriteLine($"Status: {firstRequest.Status.Value}");
-                WriteLine($"DispatchTime: {firstRequest.DispatchTime}");
-                WriteLine($"ReturnTime: {firstRequest.ReturnTime}");
-                WriteLine($"RequestedDate: {firstRequest.RequestedDate}");
-                WriteLine();
-
-                WriteLine("Equipment:");
-                foreach (var r in group)
-                {
-                    WriteLine($"  - Equipment Name: {r.Equipment.Name}");
-                }
-            }
-            return; 
         }
     }
 
@@ -719,7 +759,7 @@ partial class Program
             .Include( r => r.Equipment)
             .Include( r => r.Petition)
             .Include( s => s.Status)
-            .Where( s => s.Petition.ProfessorId.Equals(EncryptPass(Username)));
+            .Where( s => s.Petition.ProfessorId.Equals(EncryptPass(Username))).Where( p => p.RequestedDate > DateTime.Today);
 
             if (!petitionDetails.Any() || petitionDetails is null)
             {
@@ -759,60 +799,57 @@ partial class Program
 
     public static void ViewRequestFormatNotAcceptedYet(string Username)
     {
-        int i =0;
+        int i = 0;
         using (bd_storage db = new())
         {
             IQueryable<RequestDetail> requestDetails = db.RequestDetails
-            .Where( s => s.ProfessorNip == 0)
-            .Include( r => r.Equipment)
-            .Include( r => r.Request)
-            .Where( s => s.Request.StudentId == Username);
-
-            IQueryable<Request> requests = db.Requests
-            .Include( r => r.Classroom)
-            .Include (r => r.Professor)
-            .Where( s => s.RequestId == requestDetails.First().RequestId);
-
-            if (!requestDetails.Any() || requestDetails is null)
+                .Where(s => s.ProfessorNip == 0)
+                .Include(r => r.Equipment)
+                .Include(r => r.Request)
+                .Where(s => s.Request != null && s.Request.StudentId == Username);
+            if (requestDetails == null || !requestDetails.Any())
             {
                 WriteLine("No results found.");
                 MenuProfessors();
-            }
+                return;
+            } else {
+                var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
 
-            var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
-
-            foreach (var group in groupedRequests)
-            {
-                 i++;
-                string count = i + "";
-                string nip = "";
-                var firstRequest = group.First();
-                if(firstRequest.ProfessorNip == 0)
+                foreach (var group in groupedRequests)
                 {
-                    nip = "Pendiente";
+                    i++;
+                    string count = i + "";
+                    string nip = "";
+                    var firstRequest = group.First();
+                    var fistStatus = requestDetails.First();
+                    if (firstRequest.ProfessorNip == 0)
+                    {
+                        nip = "Pendiente";
+                    }
+
+                    var table = new ConsoleTable("NO. Request", count);
+
+                    table.AddRow("RequestId", firstRequest.RequestId);
+                    table.AddRow("StatusId", $"{fistStatus.Status?.Value ?? "Not delivered"}");
+                    table.AddRow("ProfessorNip", nip);
+                    table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
+                    table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
+                    table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
+                    table.AddRow("", "");
+                    foreach (var r in group)
+                    {
+                        // Adding an empty string as the first column to match the table structure
+                        table.AddRow("Equipment Name", r.Equipment.Name);
+                    }
+
+                    table.Write();
+                    WriteLine();
                 }
-
-                var table = new ConsoleTable("NO. Request", count);
-
-                table.AddRow("RequestId", firstRequest.RequestId);
-                table.AddRow("StatusId", $"{firstRequest.Status.Value}");
-                table.AddRow("ProfessorNip", nip);
-                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
-                table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
-                table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
-                table.AddRow("", "");
-                foreach (var r in group)
-                {
-                    // Adding an empty string as the first column to match the table structure
-                    table.AddRow("Equipment Name", r.Equipment.Name);
-                }
-
-                table.Write();
-                WriteLine();
+                return;
             }
-            return;
-        } 
+        }
     }
+
 
     public static void LateReturningStudent(string Username)
     {
@@ -832,16 +869,16 @@ partial class Program
                 return;
             }
 
-            int i = 0;
             foreach (var use in requestDetails)
             {
                 if (use.ReturnTime < currentDate)
                 {
-                    i++;
-                    WriteLine($"{i}. Equipment Name: {use.Equipment?.Name} ");
+                    WriteLine();
+                    WriteLine($"Equipment Name: {use.Equipment?.Name} ");
                     WriteLine($" Equipment ID: {use.Equipment?.EquipmentId} ");
                     WriteLine($"Return Time: {use.ReturnTime.TimeOfDay}");
-                    WriteLine($"Date: {use.RequestedDate}");
+                    WriteLine($"Date: {use.RequestedDate.Day}/{use.RequestedDate.Month}/{use.RequestedDate.Year}");
+                    WriteLine();
                 }
             }
         }

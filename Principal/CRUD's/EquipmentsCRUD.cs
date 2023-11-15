@@ -406,7 +406,7 @@ partial class Program{
             .Include(e => e.Area)
             .Include(e => e.Status)
             .Include(e => e.Coordinator)
-            .Where(e=>e.EquipmentId.Equals(Id));
+            .Where(e=>e.EquipmentId.ToLower().Equals(Id.ToLower()));
 
             if(equipms is not null)
             {
@@ -419,7 +419,6 @@ partial class Program{
                     WriteLine($"Equipment Year of Fabrication:  {equip.Year}");
                     WriteLine($"Equipment Status:  {equip.Status?.Value}");
                     WriteLine($"Equipment Control Number: {equip.ControlNumber}");
-                    WriteLine($"Equipment Coordinator:  {equip.Coordinator?.Name} {equip.Coordinator?.LastNameP} {equip.Coordinator?.LastNameM}");
                 }
                 return equipms.Count();
             }

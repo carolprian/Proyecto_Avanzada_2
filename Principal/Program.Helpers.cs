@@ -33,9 +33,6 @@ partial class Program
         return input;
     }
 
-
-
-
     public static bool IsAlphabetic(string? input) // checks if the string is alphabetic
     {
         if (string.IsNullOrEmpty(input)) // checks it isnt an empty line
@@ -68,6 +65,47 @@ partial class Program
         return text;
     }
 
+    public static string VerifyAllNumbers() // checks if a string is only numbers
+    {
+        string? text;
+        do
+        {
+            text = ReadNonEmptyLine();  // reads line in an infinite loop until the string is only numbers
+            if (string.IsNullOrEmpty(text) || !text.All(char.IsDigit)) // verifies string is not empty an it is inlly numbers
+            {
+                WriteLine("Invalid input. Please enter numeric characters only. Try again:");
+            }
+        } while (string.IsNullOrEmpty(text) || !text.All(char.IsDigit));
+        return text;
+    }
+
+    public static string VerifyNumericInput10()
+    {
+        string? text;
+        do
+        {
+            text = ReadLine();
+            if (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || text.Length < 10 || text.Length > 10 )
+            {
+                WriteLine("Invalid input. Please enter numeric characters only and 10 of them. Try again:");
+            }
+        } while (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || text.Length < 10 || text.Length > 10);
+        return text;
+    }
+
+    public static string VerifyNumericInput8()
+    {
+        string? text;
+        do
+        {
+            text = ReadLine();
+            if (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || text.Length < 8 || text.Length > 8)
+            {
+                WriteLine("Invalid input. Please enter numeric characters only and 8 of them. Try again:");
+            }
+        } while (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || text.Length < 8 || text.Length > 8);
+        return text;
+    }
 
     public static string VerifyUpperCaseAndNumeric(string text)
     {
