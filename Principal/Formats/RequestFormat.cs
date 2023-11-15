@@ -49,7 +49,7 @@ partial class Program
             // Si se agrego el registro en Request
             if(request.affected > 0){
                 // Agrega los datos a la tabla Request Details
-                var requestDetailsId = AddRequestDetails(request.requestId, equipments.equipmentsId, professorNip, Times.Item1, Times.Item2, RequestDate, CurrentDate, equipments.statusEquipments);
+                var requestDetailsId = AddRequestDetails(request.requestId, EquipmentsId, professorNip, Times.Item1, Times.Item2, RequestDate, CurrentDate, StatusEquipments);
                 // Verifica que se haya agregado correctamente
                 if(requestDetailsId.Affected.Count() >= 1){
                     WriteLine("Request added");
@@ -114,18 +114,22 @@ partial class Program
 
     public static string WritePlantel()
     {
+        // Declaración de variables
         string Plantel="";
         bool Ban = false;
         do{
+            // Pide que se ponga el valor
             WriteLine("Insert the plantel: ");
             Plantel = ReadNonEmptyLine();
+            // De acuerdo a la verificacion si es valido se termina el ciclo, si no se queda hasta que sea correcto
             Ban = VerifyPlantel(Plantel);
         }while(Ban==false);
         return Plantel;
     }
 
     public static bool VerifyPlantel(string Plantel){
-        if(Plantel.ToLower()=="colomos"){
+        // Verifica que sea colomos con Trim que es quitar espacios en blanco y ToLower que pone todo en minusculas
+        if(Plantel.Trim().ToLower()=="colomos"){
             return true;
         } else 
         {
@@ -134,101 +138,93 @@ partial class Program
         }
     }
 
-    public static int ListClassrooms()
-    {
-        // Indice de la lista
-        int i = 1;
-
-        using (bd_storage db = new())
-        {
-            // verifica que exista la tabla de Classroom
-            if( db.Classrooms is null)
-            {
-                throw new InvalidOperationException("The table does not exist.");
-            } 
-            else
-            {
-                IQueryable<Classroom> Classrooms = db.Classrooms;
-                
-                foreach (var cl in Classrooms)
-                {
-                    WriteLine($"{i}. {cl.Clave}");
-                    i++;
-                }
-                
-                return Classrooms.Count();
-            }
-        }
-    }
     public static int AddClassroom(){
-        int classId=0;
-        bool ban=true;
-        do{
-            using (bd_storage db = new())
-            {
-                int Count = ListClassrooms();
+        int ClassroomId=0;
+        bool Ban=true;
+        using (bd_storage db = new()){
+            // Lista los salones
+            int Count = ListClassrooms();
+            // Pide que seleccione uno
+            do{
                 WriteLine("Select the number of the classroom: ");
-                
-                classId = TryParseStringaEntero(ReadNonEmptyLine());
-                IQueryable<Classroom> classroomsId = db.Classrooms.Where(c => c.ClassroomId==classId);
+                ClassroomId = TryParseStringaEntero(ReadNonEmptyLine());
+                // Verifica que exista
+                IQueryable<Classroom> classroomsId = db.Classrooms.Where(c => c.ClassroomId==ClassroomId);
+                // Si no existe le pide que ingrese otra vez el valor
                 if(classroomsId is null || !classroomsId.Any())
                 {
                     WriteLine("Not a valid key. Try again");
-                } else {
-                    //WriteLine($"Classroom {classroomsId.Clave}");
-                    ban=false;
-                    return classId;
+                } else // Si existe termina el bucle y retorna el valor
+                {
+                    Ban=false;
                 }
-            }
-        }while(ban==true);
-        return classId;
+            } while(Ban==true);
+        }
+        return ClassroomId;
     }
 
     public static string? AddStorer(){
-        string? storerId = "";
         using(bd_storage db= new()){
+            //Obtiene la consulta de Storers
             IQueryable<Storer> storers = db.Storers;
-            if(storers is not null && storers.Any()){
-                storerId = storers.First().StorerId;
-            } else {
-                storerId = null;
+            //Si no es nulo agarra el primer ID y lo retorna
+            if(storers is not null && storers.Any())
+            {
+                return storers.First().StorerId;
+            } else // Retorna un valor nulo si no hay algun storer registrado
+            {
+                return null;
             }
         }
-        return storerId;
     }
 
     public static (int affected, int requestId) AddRequest(int ClassroomId, string ProfessorId, string StudentId, string StorerId, string SubjectId){
         using(bd_storage db = new()){
-            if(db.Requests is null){ return(0, -1);}
-            Request r  = new Request()
-            {
-                ClassroomId = ClassroomId,
-                ProfessorId = ProfessorId,
-                StudentId = StudentId,
-                StorerId = StorerId,
-                SubjectId = SubjectId
-            };
-
-            EntityEntry<Request> entity = db.Requests.Add(r);
-            int affected = db.SaveChanges();
-            return (affected, r.RequestId);
+            // Verifica que exista la tabla
+            if(db.Requests is null){ 
+                throw new InvalidOperationException("The table request is not found");
+            }
+            else{ // Si existe la tabla
+                // Crea el objeto y le asigna valores
+                Request r  = new Request()
+                {
+                    ClassroomId = ClassroomId,
+                    ProfessorId = ProfessorId,
+                    StudentId = StudentId,
+                    StorerId = StorerId,
+                    SubjectId = SubjectId
+                };
+                // Agrega el objeto a la tabla
+                EntityEntry<Request> Entity = db.Requests.Add(r);
+                // Cambia los valores de la bd
+                int Affected = db.SaveChanges();
+                // Retorna los valores de filas aceptadas y el ID del nuevo request
+                return (Affected, r.RequestId);
+            }
         }
     }
 
     public static DateTime AddDate(DateTime CurrentDate)
     {
-        DateTime dateValue= DateTime.MinValue;
-        bool valideDate = false;
-        while (valideDate==false)
+        //Inicializa variables
+        DateTime DateValue= DateTime.Today;
+        bool ValideDate = false;
+        while (ValideDate==false)
         {
+            // Pide que inserte la fecha
             WriteLine("Insert the date of the class: yyyy/MM/dd");
-            string dateInput = ReadNonEmptyLine();
-            if (DateTime.TryParseExact(dateInput, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+            string DateInput = ReadNonEmptyLine();
+            // Lo trata de convertir al formato especificado, teniendo en cuenta la zona horaria de la computadora, sin ningun estilo especial
+            // Y si es correcto entra al if
+            if (DateTime.TryParseExact(DateInput, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateValue))
             {
-                if(dateValue > CurrentDate.Date && CurrentDate.AddDays(14) >= dateValue.Date){
-                    if (dateValue.DayOfWeek != DayOfWeek.Saturday && dateValue.DayOfWeek != DayOfWeek.Sunday )
+                // Verifica que sea minimo un día antes y maximo 14
+                if(DateValue > CurrentDate.Date && CurrentDate.AddDays(14) >= DateValue.Date){
+                    // Verifica que no se hagan permisos en sabado o domingo
+                    if (DateValue.DayOfWeek != DayOfWeek.Saturday && DateValue.DayOfWeek != DayOfWeek.Sunday )
                     {
-                        valideDate = true;
+                        // Si es válida la fecha termina el ciclo
+                        ValideDate = true;
                     } else {
                         WriteLine("The request must be between monday to friday");
                     }
@@ -239,7 +235,7 @@ partial class Program
                 WriteLine("The format must be yyyy/mm/dd. Try again.");
             }
         }
-        return dateValue;
+        return DateValue;
     }
 
     public static (DateTime, DateTime) AddTimes(DateTime dateValue)
@@ -321,8 +317,6 @@ partial class Program
         return (initTimeValue, endTimeValue);
     }
 
-
-
     private static int GetOffset(DayOfWeek day, bool selectingInit)
     {
         // Método para determinar el desplazamiento (offset) en función del día de la semana y
@@ -357,23 +351,6 @@ partial class Program
         return offset;
     }
 
-    private static void ShowScheduleOptions(IQueryable<Schedule> schedules, int offset, int startHourId)
-    {
-        // Filtrar las opciones de horario para mostrar solo aquellas que sean mayores que la hora de inicio seleccionada.
-        var filteredSchedules = schedules.Where(s => s.ScheduleId > startHourId);
-
-        foreach (var sch in filteredSchedules)
-        {
-            int hour = sch.InitTime.Hour;
-            int minute = sch.InitTime.Minute;
-            WriteLine($"{sch.ScheduleId - offset}. {hour:D2}:{minute:D2}");
-        }
-
-        string prompt = "Select the number to choose the class end hour";
-        WriteLine(prompt);
-    }
-
-
     private static bool IsValidScheduleId(int selectedScheduleId, int min, int max)
     {
         // Método para validar si el identificador de la hora seleccionada es válido.
@@ -395,20 +372,23 @@ partial class Program
         }
     }
 
-    public static void DeleteRequest(int? requestId)
+    public static void DeleteRequest(int? RequestID)
     {
         using (bd_storage db = new())
         {
-            var request = db.Requests
-                    .Where(r => r.RequestId == requestId)
+            // Guarda el request donde sea igual al requestId
+            var Request = db.Requests
+                    .Where(r => r.RequestId == RequestID)
                     .FirstOrDefault();
-
-            if (request != null)
+            // Verifica que no sea nulo
+            if (Request != null)
             {
-                db.Requests.Remove(request);
-                int affected = db.SaveChanges();
-
-                if (affected > 0)
+                // Lo elimina de la tabla
+                db.Requests.Remove(Request);
+                // Guarda los cambios en la bd
+                int Affected = db.SaveChanges();
+                // Verifica que si se hayan realizado cambios y manda el mensaje
+                if (Affected > 0)
                 {
                     WriteLine("Request successfully deleted");
                 }
@@ -424,269 +404,262 @@ partial class Program
         }
     }
 
-    public static void DeleteRequestFormat(string Username)
+    public static void DeleteRequestFormat(string UserName)
     {
-        WriteLine("Here's a list of all the request format that has not been accepted yet. ");
-        ViewRequestFormatNotAcceptedYet(Username);
-
-        while (true)
+        do
         {
+            // Mostrar una lista de los formatos de solicitud que aún no han sido aceptados
+            WriteLine("Here's a list of all the request formats that have not been accepted yet. ");
+            ViewRequestFormatNotAcceptedYet(UserName);
+
+            // Solicitar el ID de la solicitud a eliminar
             WriteLine();
             WriteLine("Provide the ID of the request that you want to delete (check the list): ");
-            int detailsId = Convert.ToInt32(ReadLine());
+            int DetailsId = TryParseStringaEntero(ReadNonEmptyLine());
 
             using (bd_storage db = new())
             {
-                var requestDetail = db.RequestDetails
-                .FirstOrDefault(e => e.RequestDetailsId == detailsId);
+                // Obtener el detalle de la solicitud con el ID proporcionado
+                var RequestDetail = db.RequestDetails.FirstOrDefault(e => e.RequestDetailsId == DetailsId);
 
-                // Obtén el RequestId asociado
-                int? requestId = requestDetail.RequestId;
-
-                var request = db.Requests
-                .FirstOrDefault(r => r.RequestId == requestId);
-
-
-                if (requestDetail == null)
+                if (RequestDetail is not null)
                 {
-                    WriteLine("That request ID doesn't exist in the database, try again");
-                    continue; // Vuelve al inicio del bucle
-                }
-                else
-                {
-                    // Elimina el registro de RequestDetails
-                    db.RequestDetails.Remove(requestDetail);
-                    int affectedDetails = db.SaveChanges();
+                    int? RequestId = RequestDetail.RequestId;
 
-                    if (affectedDetails > 0)
+                    // Eliminar todos los RequestDetails con el mismo RequestId
+                    var RequestDetailsToDelete = db.RequestDetails.Where(d => d.RequestId == RequestId);
+                    db.RequestDetails.RemoveRange(RequestDetailsToDelete);
+
+                    int AffectedDetails = db.SaveChanges();
+                    // Mostrar los mensajes dependiendo del valor de Affected
+                    if (AffectedDetails > 0)
                     {
-                        WriteLine("RequestDetail successfully deleted");
-                        db.Requests.Remove(request);
-                        int affectedRquest= db.SaveChanges();
+                        WriteLine("RequestDetails successfully deleted");
 
-                        if (affectedRquest == 1)
+                        // Eliminar la solicitud principal
+                        var Request = db.Requests.FirstOrDefault(r => r.RequestId == RequestId);
+                        if (Request is not null)
                         {
-                            WriteLine("Request successfully deleted");
+                            db.Requests.Remove(Request);
+                            int AffectedRequest = db.SaveChanges();
+                            // Mostrar los mensajes necesarios por el estado de la consulta
+                            if (AffectedRequest == 1)
+                            {
+                                WriteLine("Request successfully deleted");
+                            }
+                            else
+                            {
+                                WriteLine("Request couldn't be deleted");
+                            }
                         }
                         else
                         {
-                            WriteLine("Request couldn't be deleted");
+                            WriteLine("Request not found");
                         }
-                        
                     }
                     else
                     {
-                        WriteLine("RequestDetail couldn't be deleted");
+                        WriteLine("The details of the request couldn't be deleted");
                     }
-
+                }
+                else
+                {
+                    WriteLine("That request ID doesn't exist in the database, try again");
                 }
             }
 
-            return;
-        }
+            // Preguntar al usuario si desea eliminar otra solicitud
+            WriteLine("Do you want to delete another request? (yes/no): ");
+        } while (ReadNonEmptyLine().Trim().ToLower() == "yes");
     }
 
-    public static void UpdateRequestFormat(string Username){
-        int i=1, affected = 0, op=0;
-        bool validateRequest=false;
-        DateTime request=DateTime.Today;
+    public static void UpdateRequestFormat(string UserName){
+       
+        #region Variables
+        int i=1, Affected = 0, Option=0, EquipId = 0;
+        bool ValidateRequest=false, ValidateEq = false;;
+        DateTime RequestDate=DateTime.Today;
+        #endregion
+
+        // Listar permisos no aprobados por el profesor
         WriteLine("Here's a list of all the request format that has not been accepted yet. ");
-        ViewRequestFormatNotAcceptedYet(Username);
+        ViewRequestFormatNotAcceptedYet(UserName);
         WriteLine();
+
+        // Pedir el ID del permiso a modificar
         WriteLine("Provide the ID of the request that you want to modify (check the list): ");
-        int requestID = Convert.ToInt32(ReadNonEmptyLine());
+        int RequestID = Convert.ToInt32(ReadNonEmptyLine());
+
         using(bd_storage db = new bd_storage()){
-            IQueryable<Request> requestss = db.Requests
+
+            // Consultar si existen los permisos que escogio el usuario y guardar los campos
+            IQueryable<Request> RequestsQuery = db.Requests
                 .Include(rd => rd.Classroom)
                 .Include(rd => rd.Professor)
                 .Include(rd => rd.Subject)
-                .Include(rd => rd.Student).Where( rd => rd.RequestId==requestID);
-            IQueryable<RequestDetail> requestDetailss = db.RequestDetails
+                .Include(rd => rd.Student).Where( rd => rd.RequestId==RequestID);
+            IQueryable<RequestDetail> RequestDetailsQuery = db.RequestDetails
                 .Include(rd => rd.Status)
                 .Include(rd=> rd.Equipment)
-                .Where(r => r.RequestId==requestID).Where(r=> r.ProfessorNip==0);
-            var requestList = requestDetailss.ToList();
-            List <Equipment> listEquipments= new List<Equipment>();
+                .Where(r => r.RequestId==RequestID).Where(r=> r.ProfessorNip==0);
+
+            // Hace listas de equipos y requestDetails
+            var RequestList = RequestDetailsQuery.ToList();
+            List <Equipment> ListEquipments= new List<Equipment>();
+            
             do{
-                if(requestss is not null && requestss.Any() && 
-                requestDetailss is not null && requestDetailss.Any() ){
+                if (RequestsQuery != null && RequestsQuery.Any() && RequestDetailsQuery != null && RequestDetailsQuery.Any())
+                {
+                    // Mostrar los campos que se pueden modificar
                     WriteLine("These are the fields you can update:");
-                    WriteLine($"{i}. Classroom: {requestss.First().Classroom.Name}");
-                    WriteLine($"{i+1}. Professor: {requestss.First().Professor.Name} {requestss.First().Professor.LastNameP}");
-                    WriteLine($"{i+2}. Subject: {requestss.First().Subject.Name}");
-                    WriteLine($"{i+3}. Date of the request: {requestDetailss.First().RequestedDate.Date}");
-                    WriteLine($"{i+4}. Dispatch time: {requestDetailss.First().DispatchTime.TimeOfDay} and Return time: {requestDetailss.First().ReturnTime.TimeOfDay}");
-                    WriteLine($"{i+5}. Equipment(s) in the request:");
-                    foreach (var requestDetail in requestDetailss)
+                    WriteLine($"1. Classroom: {RequestsQuery.First().Classroom.Name}");
+                    WriteLine($"2. Professor: {RequestsQuery.First().Professor.Name} {RequestsQuery.First().Professor.LastNameP}");
+                    WriteLine($"3. Subject: {RequestsQuery.First().Subject.Name}");
+                    WriteLine($"4. Date of the request: {RequestDetailsQuery.First().RequestedDate.Date}");
+                    WriteLine($"5. Dispatch time: {RequestDetailsQuery.First().DispatchTime.TimeOfDay} and Return time: {RequestDetailsQuery.First().ReturnTime.TimeOfDay}");
+
+                    // Mostrar todos los equipos del permiso seleccionado
+                    WriteLine($"6. Equipment(s) in the request:");
+                    foreach (var requestDetail in RequestDetailsQuery)
                     {
                         WriteLine($"     -{requestDetail.Equipment.EquipmentId} ({requestDetail.Equipment.Name})");
-                        listEquipments.Add(requestDetail.Equipment);
+                        // Agregar a lista para poder manipular los datos de forma sencilla
+                        ListEquipments.Add(requestDetail.Equipment);
                         i++;
                     }
-                    WriteLine("Select an option to modify");
-                    op = Convert.ToInt32(ReadNonEmptyLine());
-                    validateRequest=true;
+                    WriteLine("Select an option to modify: ");
+                    Option = Convert.ToInt32(ReadNonEmptyLine());
+                    ValidateRequest = true;
                 }
                 else {
-                    Console.Clear();
+                    Clear();
                     WriteLine("Request not found. Try again.");
+                    // Se realiza el mismo proceso del inicio si esta mal el ID hasta que se encuentre un valor
                     WriteLine("Here's a list of all the request format that has not been accepted yet. ");
-                    ViewRequestFormatNotAcceptedYet(Username);
+                    ViewRequestFormatNotAcceptedYet(UserName);
                     WriteLine();
                     WriteLine("Provide the ID of the request that you want to modify (check the list): ");
-                    requestID = Convert.ToInt32(ReadNonEmptyLine());
-                    requestss = db.Requests
+                    RequestID = Convert.ToInt32(ReadNonEmptyLine());
+
+                    RequestsQuery = db.Requests
                     .Include(rd => rd.Classroom)
                     .Include(rd => rd.Professor)
                     .Include(rd => rd.Subject)
-                    .Include(rd => rd.Student).Where( rd => rd.RequestId==requestID);
-                    requestDetailss = db.RequestDetails
+                    .Include(rd => rd.Student).Where( rd => rd.RequestId==RequestID);
+
+                    RequestDetailsQuery = db.RequestDetails
                     .Include(rd => rd.Status)
                     .Include(rd=> rd.Equipment)
-                    .Where(r => r.RequestId==requestID).Where(r=> r.ProfessorNip==0);
-                        requestList = requestDetailss.ToList();
-                        listEquipments= new List<Equipment>();
+                    .Where(r => r.RequestId==RequestID).Where(r=> r.ProfessorNip==0);
+                    RequestList = RequestDetailsQuery.ToList();
                 }
-            } while (validateRequest==false);
-            switch(op)
+
+            } while (ValidateRequest==false);
+
+            // De acuerdo a la opcion del campo a modificar
+            switch(Option)
             {
                 case 1:
                 {
-                    int classroomId = AddClassroom();
-                    requestss.First().ClassroomId=classroomId;
-                    affected = db.SaveChanges();
-                    if(affected>0){
-                        WriteLine("Request changed");
-                    }
-                    else {
-                        WriteLine("Request not changed");
-                    }
-                }break;
+                    // Llamar la función para listar los salones y que se seleccione uno
+                    int ClassroomId = AddClassroom();
+                    // Cambiar la query en el primer valor con el nuevo ID del classroom
+                    RequestsQuery.First().ClassroomId=ClassroomId;
+                    Affected = db.SaveChanges();
+                
+                }break; 
                 case 2:
                 {
-                    string professorId = SearchProfessorByName("xyz", 0, 0);
-                    requestss.First().ProfessorId = professorId;
-                    affected = db.SaveChanges();
-                    if(affected>0){
-                        WriteLine("Request changed");
-                    }
-                    else {
-                        WriteLine("Request not changed");
-                    }
+                    // Llama la función para buscar al profesor de la clase
+                    string ProfessorId = SearchProfessorByName(" ", 0, 0);
+                    // Cambiar la query en el primer valor con el nuevo ID del profesor
+                    RequestsQuery.First().ProfessorId = ProfessorId;
+                    Affected = db.SaveChanges();
                 }break;
                 case 3:
                 {
-                    string subjectId = SearchSubjectsByName("xyz", 1);
-                    requestss.First().SubjectId = subjectId;
-                    if(affected>0){
-                        WriteLine("Request changed");
-                    }
-                    else {
-                        WriteLine("Request not changed");
-                    }
+                    // Llamar la función para buscar la nueva materia
+                    string SubjectId = SearchSubjectsByName(" ", 1);
+                    // Cambiar la query en el primer valor con el nuevo ID de la materia
+                    RequestsQuery.First().SubjectId = SubjectId;
+                    Affected = db.SaveChanges();
                 }break;
                 case 4:
                 {
-                    DateTime newDate = AddDate(DateTime.Now.Date);
-                    foreach (var requestDetail in requestDetailss)
+                    // Llamar la función para establecer la nueva fecha del pedido
+                    DateTime NewDate = AddDate(DateTime.Today.Date);
+                    // Por todos los Request Details de un Request se guarda el nuevo valor de la fecha
+                    foreach (var requestDetail in RequestDetailsQuery)
                     {
-                        requestDetail.RequestedDate = newDate;
+                        requestDetail.RequestedDate = NewDate;
                     }
-                    affected = db.SaveChanges();
-                    if(affected>0){
-                        WriteLine("Request changed");
-                    }
-                    else {
-                        WriteLine("Request not changed");
-                    }
+                    // Guardar los cambios en la bd
+                    Affected = db.SaveChanges();
                 }break;
                 case 5:
                 {
-                    var times = AddTimes(request);
-                    foreach (var requestDetail in requestDetailss)
+                    // Llamar la función para establecer las horas de la clase de un pedido
+                    var Times = AddTimes(RequestDate);
+                    // Por todos los Request Details de un Request se guarda los nuevos valores de horas 
+                    foreach (var requestDetail in RequestDetailsQuery)
                     {
-                        requestDetail.DispatchTime = times.Item1;
-                        requestDetail.ReturnTime = times.Item2;
+                        requestDetail.DispatchTime = Times.Item1;
+                        requestDetail.ReturnTime = Times.Item2;
                     }
-                    affected = db.SaveChanges();
-                    if(affected>0){
-                        WriteLine("Request changed");
-                    }
-                    else {
-                        WriteLine("Request not changed");
-                    }
+                    Affected = db.SaveChanges();
                 } break;
                 case 6:
                 {
                     i = 1;
-                    int equipId = 0;
-                    foreach (var e in listEquipments)
+                    // Lista los equipos del permiso y permite al usuario seleccionar uno
+                    foreach (var e in RequestDetailsQuery)
                     {
-                        WriteLine($"{i}. {e.EquipmentId}-{e.Name}");
+                        WriteLine($"{e.RequestDetailsId}. {e.Equipment.Name}");
                     }
                     WriteLine("Select the number of the equipment");
-                    bool validateEq = false;
+                    // Ciclo para asegurarse de que ingrese un numero valido   
                     do{
-                        try
+                        // Lo convierte a Int y si escoge un numero de los que se le muestra sale del ciclo de do-While
+                        EquipId = Convert.ToInt32(ReadNonEmptyLine());
+                        if(EquipId>0)
                         {
-                            equipId = Convert.ToInt32(ReadNonEmptyLine());
-                            if(equipId>0 && equipId<=listEquipments.Count())
-                            {
-                                validateEq=true;
-                            }
+                            ValidateEq=true;
                         }
-                        catch (FormatException)
-                        {
-                            WriteLine("That is not a correct option, try again.");
-                        }
-                        catch (OverflowException)
-                        {
-                            WriteLine("That is not a correct option, try again.");
-                        }
-                    }while (validateEq==false);
-
-                    var selectedEquipment = listEquipments[equipId - 1];
-                    List<string> equipmentsId = new List<string>();
-                    List<byte?> statusIds = new List<byte?>();
-                    var updatedEquipments = SearchEquipmentsRecursive(
-                        equipmentsId,
-                        statusIds,
-                        requestDetailss.First().RequestedDate,
-                        requestDetailss.First().DispatchTime,
-                        requestDetailss.First().ReturnTime,
-                        requestDetailss.First().RequestId,
+                    } while (ValidateEq==false);
+                    // Creacion de listas para mandar como parametros
+                    List<string> EquipmentsId = new List<string>();
+                    List<byte?> StatusIds = new List<byte?>();
+                    // Llamar a la funcion para obtener el valor del nuevo equipo
+                    var UpdatedEquipments = SearchEquipmentsRecursive(
+                        EquipmentsId,
+                        StatusIds,
+                        RequestDetailsQuery.First().RequestedDate,
+                        RequestDetailsQuery.First().DispatchTime,
+                        RequestDetailsQuery.First().ReturnTime,
+                        RequestDetailsQuery.First().RequestId,
                         1, 
                         true
                     );
 
-                    // Obtener los valores del nuevo equipo seleccionado
-
-                    foreach (var requestDetail in requestDetailss)
-                    {
-                        // Cambiar el equipo en la tabla de la base de datos
-                        requestDetail.EquipmentId = updatedEquipments.equipmentsId.First();
-                        // Cambiar el estado del equipo conforme al nuevo equipo seleccionado
-                        requestDetail.StatusId = updatedEquipments.statusEquipments.First();
-                    }
-
-                    affected = db.SaveChanges();
-                    if(affected>0){
-                        WriteLine("Request changed");
-                    }
-                    else {
-                        WriteLine("Request not changed");
-                    }
-                    break;
-                }
-
+                    // Escoger un solo equipo en la tabla Request Details
+                    var SingularRequestDetail = db.RequestDetails
+                    .Where(rD => rD.RequestDetailsId == EquipId);
+                    // Cambiar el equipo en la tabla de la base de datos
+                    SingularRequestDetail.First().EquipmentId = UpdatedEquipments.EquipmentsId.First();
+                    // Cambiar el estado del equipo conforme al nuevo equipo seleccionado
+                    SingularRequestDetail.First().StatusId = UpdatedEquipments.StatusEquipments.First();
+                    Affected = db.SaveChanges();
+                } break;
                 case 7:
                 {
                     return;
+
                 }
                 default:{
                     WriteLine("Not a valide option. Try again.");
                 }break;
             }
+            WriteLine(Affected > 0 ? "Request changed" : "Request not changed");
         }
     }
 }

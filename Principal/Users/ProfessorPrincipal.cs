@@ -17,27 +17,35 @@ partial class Program
             switch (op)
             {
                 case 1:
+                // Ve un historial de permisos que ha y no ha aprobado
                     WatchPermissions(username);
                     break;
                 case 2:
+                // Opción para aprobar o denegar permisos
                     ApprovePermissions(username);
                     break;
                 case 3:
+                // Opción para solicitar material
                     PetitionFormat(username);
                     break;
                 case 4:
+                // Opcion para modificar permisos de material
                     UpdatePetitionFormat(username);
                     break;
                 case 5:
+                // Opcion para borrar permisos cuya fecha sea futura
                     DeletePetitionFormat(username);
                     break;
                 case 6:
+                // Ve todos los equipos existentes en almacen
                     ViewAllEquipments();
                     break;
                 case 7:
+                // Modifica su perfil
                     UpdateProfessorFields(username);
                     break;
                 case 8:
+                // Salir del menu
                     exitRequested = true;
                     break;
                 default:

@@ -1,72 +1,85 @@
 using Microsoft.EntityFrameworkCore;
 using AutoGens;
 using System.Linq;
+using ConsoleTables;
 partial class Program
 {
-    public static void SearchStudentGeneral()
+    public static bool SearchStudentGeneral()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
+            // Se le pide el registro del usuario
             WriteLine("Provide the ID of the student you want to search:");
             string studentId = ReadNonEmptyLine();
-
+            // Se selecciona uno solo ya que el registro es un numero irrepetible 
             var student = db.Students
             .Include( g => g.Group)
             .SingleOrDefault(s => s.StudentId == studentId);
-
+        
             if (student == null)
             {
+                // No se encontro ningun estudiante
                 WriteLine("No student found");
-                SubMenuStudentsHistory();
-            }
-
-            WriteLine("Student Information: ");
-            
-            WriteLine($"Name: {student.Name}, Paternal Last Name: {student.LastNameP}, Maternal Last Name: {student.LastNameM}, Group: {student.Group.Name}");
-
-            var requests = db.Requests.Where(r => r.StudentId == student.StudentId).ToList();
-
-            if (requests.Count == 0)
+                // Se vuelve a mandar al menu
+                aux = true;
+                return aux;
+            } else
             {
-                WriteLine("No history found for the student.");
-                SubMenuStudentsUsingEquipment();
-            }
+                // Se muestra la información encontrada del estudiante y los permisos que ha solicitado
 
-            List<int> requestIds = requests.Select(r => r.RequestId).ToList();
-            
-            IQueryable<RequestDetail> RequestDetails = db.RequestDetails
-            .Where(rd => requestIds.Contains((int)rd.RequestId))
-            .Include(rd => rd.Equipment);
+                WriteLine("Student Information: ");
+                var table = new ConsoleTable("Id", "Name", "LastName P", "LasName M", "Group");
+                
+                table.AddRow(student.StudentId, student.Name, student.LastNameP, student.LastNameM, student.Group.Name);
 
-            var groupedRequests = RequestDetails.GroupBy(r => r.RequestId);
-
-            int i = 0;
-            WriteLine("");
-            WriteLine("Student History: ");
-
-            foreach (var group in groupedRequests)
-            {
-                i++;
-                var firstRequest = group.First();
-
-                WriteLine($"Request {i}: ");
-                WriteLine($"Request Detail: {firstRequest.RequestId}");
-                WriteLine($"Dispatch Time: {firstRequest.DispatchTime}");
-                WriteLine($"Return Time: {firstRequest.ReturnTime}");
-                WriteLine($"Requested Date: {firstRequest.RequestedDate}");
-                WriteLine($"Current Date: {firstRequest.CurrentDate}");
-
-                WriteLine("Equipment:");
-                foreach (var r in group)
+                table.Write();
+                WriteLine();
+                // Se realiza una lista de los permisos que ha solicitado el estudiante
+                var requests = db.Requests.Where(r => r.StudentId == student.StudentId).ToList();
+                // Si no hay se manda de nuevo al menu y se muestra el mensaje explicativo
+                if (requests.Count == 0)
                 {
-                    WriteLine($"Equipment Name: {r.Equipment.Name}");
+                    WriteLine("No history found for the student.");
+                    SubMenuStudentsUsingEquipment();
                 }
-            }  
+                // Realiza una lista de enteros de los Id de los request del estudiante
+                List<int> requestIds = requests.Select(r => r.RequestId).ToList();
+                
+                IQueryable<RequestDetail> RequestDetails = db.RequestDetails
+                .Where(rd => requestIds.Contains((int)rd.RequestId))
+                .Include(rd => rd.Equipment);
+                // Agrupa los Request Details por su Request Id
+                var groupedRequests = RequestDetails.GroupBy(r => r.RequestId);
+
+                int i = 0;
+                foreach (var group in groupedRequests)
+                {
+                    i++;
+                    var firstRequest = group.First();
+
+                    var table1 = new ConsoleTable("No.", "Request Detail Id", "Dispatch Time", "Return Time", "Request Date", "Current Date");
+                
+                    table1.AddRow(i, firstRequest.RequestId, firstRequest.DispatchTime.TimeOfDay, firstRequest.ReturnTime.TimeOfDay, 
+                    $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}", $"{firstRequest.CurrentDate.Day}/{firstRequest.CurrentDate.Month}/{firstRequest.CurrentDate.Year}");
+
+                    foreach (var r in group)
+                    {
+                        // Adding an empty string as the first column to match the table structure
+                        table1.AddRow("Equipment Name", r.Equipment.Name, "", "", "", "");
+                    }
+
+                    table1.Write();
+                    WriteLine();
+                } 
+            }
         }
+        return aux;
     }
 
-    public static void SearchStudentUsingEquipment()
+    public static bool SearchStudentUsingEquipment()
     {
+        bool aux = false;
         using (bd_storage db = new())
         {
             WriteLine("Provide the ID of the student you want to search:");
@@ -80,6 +93,8 @@ partial class Program
             {
                 WriteLine("No student found");
                 SubMenuStudentsUsingEquipment();
+                aux = true;
+                return aux;
             }
 
             var requests = db.Requests.Where(r => r.StudentId == student.StudentId).ToList();
@@ -121,48 +136,53 @@ partial class Program
 
             } 
         }
+        return aux;
     }
 
      public static string SearchProfessorByName(string SearchTerm, int Op, int Recursive){
+        // Indice de busqueda
         int i = 1;
-
+        // Si Op == 0 se busca empezando por los nombres
         if (Op==0)
         {
+            // Se piden los nombres
             WriteLine("Insert the names of the professor WITHOUT accents");
             SearchTerm = ReadNonEmptyLine();
 
             using (bd_storage db = new())
             {
-                IQueryable<Professor>? professors = db.Professors.Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
-                
-                if (!professors.Any())
+                // Se buscan los profesores cuyos nombres inicien por el termino escrito por el usuario
+                IQueryable<Professor>? Professors = db.Professors
+                .Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
+                // Si no encuentra ningun profesor vuelve a llamar a la funcion en el apartado de nombres
+                if (!Professors.Any())
                 {
                     WriteLine($"No professors found matching the search term: {SearchTerm}. Try again");
                     return SearchProfessorByName(SearchTerm, 0, 0);
                 } 
                 else 
                 {
-                    if (professors.Count() == 1)
+                    if (Professors.Count() == 1)
                     {
-                        // Si encontramos una única materia, la retornamos
-                        return professors.FirstOrDefault().ProfessorId;
+                        // Si encontramos un único profesor, lo retornamos
+                        return Professors.First().ProfessorId;
                     }
-                    else if(professors.Count() >1)
+                    else if(Professors.Count() >1)
                     {
-                        foreach(var s in professors)
+                        // Si encontramos 2 o más profesores se muestra el nombre completo de todos los profesores
+                        foreach(var s in Professors)
                         {
                             WriteLine($"{i}. {s.Name} {s.LastNameP} {s.LastNameM}");
                             i++;
                         }
 
-                        // Si hay más de una materia que coincide, pedimos el nombre completo
+                        // Pedir el apellido paterno para volver a buscar pero ahora con ese dato
                         WriteLine("Insert the PATERN last name of the teacher WITHOUT accents");
-                        string searchTermNew = ReadNonEmptyLine();
-                        return SearchProfessorByName(searchTermNew, 1, 0);
+                        return SearchProfessorByName(SearchTerm, 1, 1);
                     }
                     else 
                     {
-                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
+                        // Si no encontramos ningun profesor, solicitamos que se ingrese el nombre nuevamente
                         WriteLine("Professor not found. Try again");
                         return SearchProfessorByName(SearchTerm, 0, 0);
                     }
@@ -170,43 +190,45 @@ partial class Program
             }
         } else if(Op==1) 
         {
+            // Esto es para que solo se muestre este writeLine cuando no se ha preguntado anteriormente
             if(Recursive==0)
             {
                 WriteLine("Insert the PATERN last name of the teacher WITHOUT accents");
             }
-
+            // Se escribe el apellido paterno
             SearchTerm = ReadNonEmptyLine();
-
             using (bd_storage db = new())
             {
-                IQueryable<Professor>? professors = db.Professors.Where(s => s.LastNameP.StartsWith(SearchTerm));
-                if (!professors.Any() || professors is null)
+                // busca a los profesores cuyo apellido paterno inicie con el apellido que nos dio el usuario
+                IQueryable<Professor>? Professors = db.Professors.Where(s => s.LastNameP.StartsWith(SearchTerm));
+                if (!Professors.Any() || Professors is null)
                 {
+                    // Si no se encuentra ningun profesor se busca de nuevo desde el nombre
                     WriteLine($"No professors found matching the patern last name: {SearchTerm}. Try again");
                     return SearchProfessorByName(SearchTerm, 1, 0);
                 } else
                 {
-                    if (professors.Count() == 1)
+                    if (Professors.Count() == 1)
                     {
                         // Si encontramos un único profesor, lo retornamos
-                        return professors.FirstOrDefault().ProfessorId;
+                        return Professors.FirstOrDefault().ProfessorId;
                     }
-                    else if(professors.Count() > 1)
+                    else if(Professors.Count() > 1)
                     {
-                        foreach(var s in professors)
+                        // Si encontramos 2 o más profesores se muestra el nombre completo de todos los profesores
+                        foreach(var s in Professors)
                         {
                             WriteLine($"{i}. {s.Name} {s.LastNameP} {s.LastNameM}");
                             i++;
                         }
 
-                        // Si hay más de una materia que coincide, pedimos el apellido
+                        // Si hay más de un profesor que coincide, pedimos el apellido materno
                         WriteLine("Insert the MATERN last name of the teacher WITHOUT accents");
-                        string searchTermNew = ReadNonEmptyLine();
-                        return SearchProfessorByName(searchTermNew, 2, 0);
+                        return SearchProfessorByName(SearchTerm, 2, 1);
                     }
                     else 
                     {
-                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
+                        // Si no encontramos ninguna profesor, solicitamos que se ingrese el nombre nuevamente
                         WriteLine("Professor not found. Try again");
                         return SearchProfessorByName(SearchTerm, 0, 0);
                     }
@@ -219,27 +241,30 @@ partial class Program
             {
                 WriteLine("Insert the MATERN last name of the teacher WITHOUT accents");
             }
-
+            // Se ingresa el apellido paterno del profesor
+            SearchTerm = ReadNonEmptyLine();
             using (bd_storage db = new())
             {
-                IQueryable<Professor>? professors = db.Professors
+                // Se busca un profesor cuyo apellido materno comience como lo indica el usuario
+                IQueryable<Professor>? Professors = db.Professors
                     .Where(s => s.LastNameM.StartsWith(SearchTerm));
                 
-                if (!professors.Any())
+                if (!Professors.Any() || Professors is null)
                 {
+                    // Si no se encuentra se pide que vuelva a ingresar el nombre
                     WriteLine($"No professors found matching the matern last name: {SearchTerm}. Try again");
                     return SearchProfessorByName(SearchTerm, 2, 0);
                 } 
                 else 
                 {
-                    if (professors.Count() == 1)
+                    if (Professors.Count() == 1)
                     {
                         // Si encontramos un único profesor, lo retornamos
-                        return professors.FirstOrDefault().ProfessorId;
+                        return Professors.First().ProfessorId;
                     }
                     else 
                     {
-                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
+                        // Si no encontramos ninguna profesor, solicitamos que se ingrese el nombre nuevamente
                         WriteLine("Professor not found. Try again");
                         return SearchProfessorByName(SearchTerm, 0, 0);
                     }
@@ -251,53 +276,62 @@ partial class Program
     public static string SearchSubjectsByName(string SearchTerm, int Op)
     {
         int i = 0;
-
+        //Para que no se impriman los mismos WriteLine mas de lo necesario
         if(Op==1)
         {
             WriteLine("Insert the name start of the subject WITHOUT accents");
-            SearchTerm = VerifyAlphabeticInput();
         } 
-    
+        SearchTerm = VerifyAlphabeticInput();
+        //Esto para que si hay materias que se llaman igual en todo excepto en el numero romano
+        //Puedan encontrarse
+        SearchTerm = SearchTerm + " ";
         using (bd_storage db = new())
         {
-            IQueryable<Subject>? subjects = db.Subjects.Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
-            
-            if (!subjects.Any() || subjects is null)
-            {
-                WriteLine("No subjects found matching the search term: " + SearchTerm + "Try again.");
-                return SearchSubjectsByName(SearchTerm, 1);
-            } 
-            else 
-            {
-                i = 1;
-
-                if (subjects.Count() == 1)
+            if( db.Subjects is null){
+                throw new InvalidOperationException("Not table found");
+            } else {
+                // Se buscan materias que su nombre empiece con el que el usuario puso
+                IQueryable<Subject>? subjects = db.Subjects.Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
+                // Si no se encuentra ninguna se manda el mensaje y se manda al inicio de la funcion
+                if (!subjects.Any() || subjects is null)
                 {
-                    // Si encontramos una única materia, la retornamos
-                    return subjects.FirstOrDefault().SubjectId;
-                }
-                else if(subjects.Count() >1)
-                {
-                    foreach(var s in subjects){
-                        WriteLine($"{i}. {s.Name}");
-                        i++;
-                    }
-                    // Si hay más de una materia que coincide, pedimos el nombre completo
-                    WriteLine("Insert the whole name of the subject to confirm");
-                    return SearchSubjectsByName(SearchTerm, 2);
-                }
+                    WriteLine("No subjects found matching the search term: " + SearchTerm + "Try again.");
+                    return SearchSubjectsByName(SearchTerm, 1);
+                } 
                 else 
                 {
-                    // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
-                    WriteLine("Subject not found. Try again.");
-                    return SearchSubjectsByName(SearchTerm, 1);
+                    //Indice
+                    i = 1;
+                    if (subjects.Count() == 1)
+                    {
+                        // Si encontramos una única materia, la retornamos
+                        return subjects.First().SubjectId;
+                    }
+                    else if(subjects.Count() >1)
+                    {
+                        // Se imprime la lista de las materias con el mismo inicio de nombre
+                        foreach(var s in subjects){
+                            WriteLine($"{i}. {s.Name}");
+                            i++;
+                        }
+                        // Si hay más de una materia que coincide, pedimos el nombre completo
+                        WriteLine("Insert the whole name of the subject to confirm");
+                        return SearchSubjectsByName(SearchTerm, 2);
+                    }
+                    else 
+                    {
+                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
+                        WriteLine("Subject not found. Try again.");
+                        return SearchSubjectsByName(SearchTerm, 1);
+                    }
                 }
             }
         }
     }
 
-    public static void SearchEquipmentsById(string? SearchTerm)
+    public static bool SearchEquipmentsById(string? SearchTerm)
     {
+        bool aux = false;
         if (string.IsNullOrEmpty(SearchTerm))
         {
             throw new InvalidOperationException();
@@ -315,7 +349,8 @@ partial class Program
             if (!equipments.Any())
             {
                 WriteLine("No equipment found matching the search term: " + SearchTerm);
-                return;
+                aux = true;
+                return aux;
             }
             else
             {
@@ -341,95 +376,116 @@ partial class Program
                 }
             }
         }
+        return aux;
     }
 
-    
-    public static (List<string>? equipmentsId, List<byte?>? statusEquipments, int i) SearchEquipmentsRecursive(List<string>? SelectedEquipments, List<byte?>? StatusEquipments, DateTime Requested, DateTime Init, DateTime End, int? RequestId, int MaxEquipment, bool IsStudent)
+    public static (List<string>? EquipmentsId, List<byte?>? StatusEquipments, int i) SearchEquipmentsRecursive(List<string>? SelectedEquipments, List<byte?>? StatusEquipments, DateTime Requested, DateTime Init, DateTime End, int? RequestId, int MaxEquipment, bool IsStudent)
     {
-        string response = "h", response2 = "hi";
+        //Inicializacion de variables
+        string Response = " ", Response2 = " ";
         using (bd_storage db = new())
         {
+            //Inserta como comienza el nombre del equipo
             WriteLine("Insert the start of the name of equipment without accents: ");
-            string searchTerm = ReadNonEmptyLine().ToLower();
-
+            string SearchTerm = ReadNonEmptyLine().ToLower();
+            // Hace un var donde se guardan los equipos que estan en uno en la fecha y hora que el usuario registro el nuevo permiso y lo convierte a una lista
             var equipmentIdsInUseStud = db.RequestDetails
             .Where(rd => rd.RequestedDate.Date == Requested && rd.DispatchTime < End && rd.ReturnTime > Init)
             .Select(rd => rd.EquipmentId)
             .ToList();
-
+            // Hace un var donde se guardan los equipos que estan en uno en la fecha y hora que el usuario registro el nuevo permiso y lo convierte a una lista
+            // Pero ahora con los equipos solicitados por el profesor
             var equipmentIdsInUseProf = db.PetitionDetails
             .Where(rd => rd.RequestedDate.Date == Requested && rd.DispatchTime < End && rd.ReturnTime > Init)
             .Select(rd => rd.EquipmentId)
             .ToList();
 
+            // Busca equipos que no esten en mantenimiento, dañados o perdidos que su nombre empiece con el termino que especifico el usuario
+            // Y de los equipos que aparezcan se quitan los que estan en las listas de equipmentsInUse
             IQueryable<Equipment>? equipments = db.Equipments
             .Include(s => s.Status)
-            .Where(e => e.Name.ToLower().StartsWith(searchTerm) &&
+            .Where(e => e.Name.ToLower().StartsWith(SearchTerm) &&
                             !(equipmentIdsInUseStud.Contains(e.EquipmentId) ||
                             equipmentIdsInUseProf.Contains(e.EquipmentId) ||
                             e.StatusId == 3 || e.StatusId == 4 || e.StatusId == 5))
-            .AsEnumerable()
-            .OrderBy(e => Guid.NewGuid())
+            .AsEnumerable().OrderBy(e => Guid.NewGuid())
+            // Se convierte a IEnumerable para poder acormodarse en un orden aleatorio gracias al identificador GUID
+            // Que produce numeros de manera aleatoria para realizar combinaciones, por eso la conversion y poder tratar "la lista"
+            // como "numeros"
             .AsQueryable();
-
+            // Y se vuelve a convertir a IQueryable para manipularlo pero con el orden diferente
             if (!equipments.Any() || equipments.Count() < 1 || equipments is null)
             {
-                WriteLine("No equipment found matching the search term: " + searchTerm + " Try again.");
+                // Si no se encuentra algun valor se vuelve a llamar la funcion
+                WriteLine("No equipment found matching the search term: " + SearchTerm + " Try again.");
                 SearchEquipmentsRecursive(SelectedEquipments, StatusEquipments, Requested, Init, End, RequestId, 4, IsStudent);
             }
             else if (equipments.Count() > 1)
             {
                 do
                 {
-                    // Si hay más de una opción, seleccionar una al azar sin OrderBy(Guid.NewGuid())
+                    // Si hay más de una opción, seleccionar una al azar con random
                     var random = new Random();
+                    // Se ordena por un número random que sea positivo que se especifica con el .Next()
+                    // Y se selecciona el primero
                     var randomEquipment = equipments.OrderBy(e => random.Next()).First();
-
-                    WriteLine("| {0,-11} | {1,-30} | {2,-55} | {3, 17}",
+                    // Imprimir los valores del equipo
+                    WriteLine("| {0,-11} | {1,-60} | {2,-65} | {3, 17}",
                         "EquipmentId", "Name", "Description", "Status");
 
-                    WriteLine($"| {randomEquipment.EquipmentId,-11} | {randomEquipment.Name,-30} | {randomEquipment.Description,-55} | {randomEquipment.Status?.Value,17}");
-
+                    WriteLine($"| {randomEquipment.EquipmentId,-11} | {randomEquipment.Name,-60} | {randomEquipment.Description,-65} | {randomEquipment.Status?.Value,17}");
+                    // Selecciona que hacer con el equipo que se muestra
                     WriteLine("Do you want to add this equipment?");
                     WriteLine("1. Yes");
                     WriteLine("2. No. Other similar");
                     WriteLine("3. Start again with the search");
                     WriteLine("4. No. End the search");
-                    response = ReadNonEmptyLine();
-                    if (response == "1")
+                    Response = ReadNonEmptyLine();
+                    if (Response == "1")
                     {
+                        // Lo agrega a la lista de equipos con su respectivo status que se guarda en la lista de status
                         SelectedEquipments.Add(randomEquipment.EquipmentId);
                         StatusEquipments.Add(randomEquipment.StatusId);
                     }
-                    if (response == "3")
+                    if (Response == "3")
                     {
+                        // Empieza a buscar otra vez el equipo, pidiendole un nombre inicial
                         SearchEquipmentsRecursive(SelectedEquipments, StatusEquipments, Requested, Init, End, RequestId, 4, IsStudent);
                     }
-                    if (response == "4")
+                    if (Response == "4")
                     {
+                        // Si no hay equipos registrados en la lista
                         if (SelectedEquipments.Count < 1)
                         {
                             WriteLine("There's not an equipment registered. Select an option:");
                             WriteLine("1. Delete the whole request");
                             WriteLine("2. Start again adding the equipments");
-                            response2 = ReadNonEmptyLine();
-                            if (response2 == "1")
+                            Response2 = ReadNonEmptyLine();
+                            // Borrará el registro de la linking table que se creo
+                            if (Response2 == "1")
                             {
-                                if(IsStudent == true){
+                                // Si el permiso es para el estudiante borra en la tabla request
+                                if(IsStudent == true)
+                                {
                                     DeleteRequest(RequestId);
                                     return (SelectedEquipments, StatusEquipments, 1);
-                                } else {
+                                } else // Si el permiso es para un profesor se borra de la tabla petition
+                                {
                                     DeletePetition(RequestId);
                                     return (SelectedEquipments, StatusEquipments, 1);
                                 }
                             }
-                            if(response2== "2")
+                            if(Response2== "2")
                             {
+                                // vuelve a llamar a la funcion para que se inicie la busqueda otra vez
                                 SearchEquipmentsRecursive(SelectedEquipments, StatusEquipments, Requested, Init, End, RequestId, 4, IsStudent);
                             }
                         }
                     }
-                } while (response == "2");
+                    // El proceso de escoger uno random y todas las opciones que se mencionaron se realiza
+                    // si el usuario sigue presionando 2 para generar equipos similares
+                    // Esto con el proposito de que sea el equipo que el usuario quiere
+                } while (Response == "2");
             }
             else
             {
@@ -438,24 +494,27 @@ partial class Program
                 WriteLine("| {0,-11} | {1,-30} | {2,-55} | {3, 17}",
                     "EquipmentId", "Name", "Description", "Status");
                 WriteLine($"| {singleEquipment.EquipmentId,-11} | {singleEquipment.Name,-30} | {singleEquipment.Description,-55} | {singleEquipment.Status?.Value,17}");
-
+                // Preguntar para confirmacion
                 WriteLine("Do you want to add this equipment? y/n");
-                response = ReadNonEmptyLine().ToLower();
-                if (response == "y")
+                Response = ReadNonEmptyLine().ToLower();
+                if (Response == "y")
                 {
+                    // Si su respuesta es y o si se agrega el equipo a la lista
                     SelectedEquipments.Add(singleEquipment.EquipmentId);
                     StatusEquipments.Add(singleEquipment.StatusId);
                 }
-                else if(response == "n")
+                else if(Response == "n") // Si no quiere agregar ese equipo se despliegan otras opciones
                 {
+                    // si su respuesta es no se muestra otro menu
                    if (SelectedEquipments.Count < 1)
                     {
                         WriteLine("There's not an equipment registered. Select an option:");
                         WriteLine("1. Delete the whole request");
                         WriteLine("2. Start again adding the equipments");
-                        response2 = ReadNonEmptyLine();
-                        if (response2 == "1")
+                        Response2 = ReadNonEmptyLine();
+                        if (Response2 == "1")
                         {
+                            // Borrará el registro de la linking table que se creo
                             if(IsStudent == true){
                                 DeleteRequest(RequestId);
                                 return (SelectedEquipments, StatusEquipments, 1);
@@ -464,21 +523,24 @@ partial class Program
                                 return (SelectedEquipments, StatusEquipments, 1);
                             }
                         }
-                        if(response2== "2")
+                        if(Response2== "2")
                         {
+                            // Inicia otra vez la busqueda
                             SearchEquipmentsRecursive(SelectedEquipments, StatusEquipments, Requested, Init, End, RequestId, 4, IsStudent);
                         }
                     }
-                    else {
+                    else { // Si hay equipos guardados en la lista muestra lo siguiente
+
                         WriteLine("Select an option");
                         WriteLine("1. Continued the request");
                         WriteLine("2. End the request");
-                        response2 = ReadNonEmptyLine();
-                        if(response2== "1")
+                        Response2 = ReadNonEmptyLine();
+                        if(Response2== "1")
                         {
+                            //Inicia de nuevo la busqueda
                             SearchEquipmentsRecursive(SelectedEquipments, StatusEquipments, Requested, Init, End, RequestId, 4, IsStudent);
                         }
-                        if (response2 == "2")
+                        if (Response2 == "2") //termina la busqueda con los equipos ya registrados
                         {
                             return (SelectedEquipments, StatusEquipments, 1);
                         }
@@ -486,24 +548,30 @@ partial class Program
                 }
             }
         }
-        if (SelectedEquipments.Count <= MaxEquipment)
+        // Verifica si el maximo de equipos ya se alcanzo
+        if (SelectedEquipments.Count < MaxEquipment)
         {
+            // Si no se ha superado se puede agregar otro equipo
             WriteLine("Do you want to add another equipment? y/n");
-            response = ReadNonEmptyLine().ToLower();
-            if (response == "y")
+            Response = ReadNonEmptyLine().ToLower();
+            if (Response == "y")
             {
+                // Si la respuesta es que si se inicia la busqueda otra vez
                 SearchEquipmentsRecursive(SelectedEquipments, StatusEquipments, Requested, Init, End, RequestId, 4, IsStudent);
             }
-            else if(response == "n")
+            else if(Response == "n")
             {
+                // Si la respuesta es no se termina y se agregan los equipos seleccionados al permiso
                 return (SelectedEquipments, StatusEquipments, 0);
             }
         }
         else
         {
+            // Mostrar mensaje de limite de equipos alcanzados
             WriteLine($"You have reached the maximum limit of {MaxEquipment} equipments.");
             return (SelectedEquipments, StatusEquipments, 0);
         }
+
         return (SelectedEquipments, StatusEquipments, 0);
     }
 }

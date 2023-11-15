@@ -3,8 +3,6 @@ C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Prin
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.AssemblyInfoInputs.cache
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.AssemblyInfo.cs
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.csproj.CoreCompileInputs.cache
-C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.dll
-C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.pdb
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.exe
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.deps.json
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.runtimeconfig.json
@@ -57,9 +55,16 @@ C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\runt
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.csproj.CopyComplete
+C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.dll
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\refint\Principal.dll
+C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.pdb
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.genruntimeconfig.cache
 C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\ref\Principal.dll
+C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.csproj.AssemblyReference.cache
+C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.AssemblyInfoInputs.cache
+C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.AssemblyInfo.cs
+C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.csproj.CoreCompileInputs.cache
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.exe
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.deps.json
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\Principal.runtimeconfig.json
@@ -111,11 +116,6 @@ C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Pri
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\bin\Debug\net7.0\runtimes\win-x86\native\e_sqlite3.dll
-C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.csproj.AssemblyReference.cache
-C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.AssemblyInfoInputs.cache
-C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.AssemblyInfo.cs
-C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.csproj.CoreCompileInputs.cache
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.csproj.CopyComplete
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\Principal.dll
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Principal\obj\Debug\net7.0\refint\Principal.dll
