@@ -21,14 +21,13 @@ partial class Program{
                     Validate = ValidateAddRequest(UserName);
                     // Si retorna un valor true si es valido que inserte un RequestFormat
                     //Si retorna false no puede llenar más permisos por el día
-                    if(Validate == true)
+                    if(Validate == false)
                     {
                         RequestFormat(UserName);
                     }
                     else 
                     {
                         WriteLine("You are only allow to fill a request format per day.");
-                        return;
                     }
                     BackToMenu();
                 break;

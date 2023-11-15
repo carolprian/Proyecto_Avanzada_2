@@ -44,7 +44,7 @@ partial class Program
     private static void UpdateProfessor()
     {
         WriteLine("Enter the ID of the professor you want to update:");
-        string ProfessorId = VerifyReadMaxLengthString(10);
+        string ProfessorId = VerifyNumericInput();
         UpdateProfessorFields(ProfessorId);
     }
 

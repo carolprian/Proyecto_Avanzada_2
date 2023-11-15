@@ -49,7 +49,7 @@ partial class Program
             // Si se agrego el registro en Request
             if(request.affected > 0){
                 // Agrega los datos a la tabla Request Details
-                var requestDetailsId = AddRequestDetails(request.requestId, equipments.equipmentsId, professorNip, Times.Item1, Times.Item2, RequestDate, CurrentDate, equipments.statusEquipments);
+                var requestDetailsId = AddRequestDetails(request.requestId, equipments.EquipmentsId, professorNip, Times.Item1, Times.Item2, RequestDate, CurrentDate, equipments.StatusEquipments);
                 // Verifica que se haya agregado correctamente
                 if(requestDetailsId.Affected.Count() >= 1){
                     WriteLine("Request added");
@@ -138,27 +138,6 @@ partial class Program
         }
     }
 
-    public static int ListClassrooms(){
-        // Indice de la lista
-        int i = 0;
-        using (bd_storage db = new()){
-            // verifica que exista la tabla de Classroom
-            if( db.Classrooms is null){
-                throw new InvalidOperationException("The table does not exist.");
-            } else {
-                // Muestra toda la lista de classrooms con un indice y la clave de este
-                IQueryable<Classroom> Classrooms = db.Classrooms;
-                foreach (var cl in Classrooms)
-                {
-                    WriteLine($"{i}. {cl.Clave}");
-                    i++;
-                }
-                //retorna el tamaño de classrooms para verificar que sea correcto
-                return Classrooms.Count();
-            }
-        }
-    }
-
     public static int AddClassroom(){
         int ClassroomId=0;
         bool Ban=true;
@@ -234,15 +213,17 @@ partial class Program
         {
             // Pide que inserte la fecha
             WriteLine("Insert the date of the class: yyyy/MM/dd");
-            string dateInput = ReadNonEmptyLine();
+            string DateInput = ReadNonEmptyLine();
             // Lo trata de convertir al formato especificado, teniendo en cuenta la zona horaria de la computadora, sin ningun estilo especial
             // Y si es correcto entra al if
-            if (DateTime.TryParseExact(dateInput, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateValue))
+            if (DateTime.TryParseExact(DateInput, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateValue))
             {
-                // Verifica que 
+                // Verifica que sea minimo un día antes y maximo 14
                 if(DateValue > CurrentDate.Date && CurrentDate.AddDays(14) >= DateValue.Date){
+                    // Verifica que no se hagan permisos en sabado o domingo
                     if (DateValue.DayOfWeek != DayOfWeek.Saturday && DateValue.DayOfWeek != DayOfWeek.Sunday )
                     {
+                        // Si es válida la fecha termina el ciclo
                         ValideDate = true;
                     } else {
                         WriteLine("The request must be between monday to friday");
@@ -257,200 +238,138 @@ partial class Program
         return DateValue;
     }
 
-    public static (DateTime, DateTime) AddTimes(DateTime DateValue){
-        int scheduleIdInitI = 0, scheduleIdEndI = 0, offset=0, take=9;
-        DateTime initTimeValue=DateTime.MinValue, endTimeValue=DateTime.MinValue;
-        DayOfWeek day = DateValue.DayOfWeek;
-        string dayString = day.ToString(), scheduleIdInit, scheduleIdEnd;
-        bool valideHours = false;
-        bool initEnd=false; //falso para init, true para end
-        while(valideHours==false){
-            using (bd_storage db = new()){
+    public static (DateTime, DateTime) AddTimes(DateTime dateValue)
+    {
+        // Variables para almacenar los identificadores de las horas de inicio y fin,
+        // así como las horas de inicio y fin reales.
+        int scheduleIdInit = 0, scheduleIdEnd = 0, take = 9;
+        DateTime initTimeValue = DateTime.MinValue, endTimeValue = DateTime.MinValue;
+
+        // Obtener el día de la semana de la fecha proporcionada.
+        DayOfWeek day = dateValue.DayOfWeek;
+
+        // Indicador para saber si estamos seleccionando la hora de inicio o fin.
+        bool validHours = false;
+        bool selectingInit = true;
+
+        // Bucle principal para la selección de horas.
+        while (!validHours)
+        {
+            // Se utiliza el contexto de base de datos con una declaración 'using' para
+            // asegurar que se libere correctamente después de su uso.
+            using (bd_storage db = new())
+            {
                 IQueryable<Schedule> schedules = db.Schedules;
-                while(initEnd==false){
-                    switch(day){
-                        case DayOfWeek.Monday:{
-                            offset=0;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{sch.ScheduleId.ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if(scheduleIdInitI >= offset && (offset+10) >= scheduleIdInitI){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            } else {
-                                WriteLine("Option not valide. Try again.");
-                            }
-                        }break;
-                        case DayOfWeek.Tuesday:{
-                            offset=10;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if((scheduleIdInitI >= offset) && ((offset+10) >= scheduleIdInitI)){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            }
-                        }break;
-                        case DayOfWeek.Wednesday:{
-                            offset=20;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if(scheduleIdInitI >= offset && (offset+10) >= scheduleIdInitI){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            }
-                        }break;
-                        case DayOfWeek.Thursday:{
-                            offset=30;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if(scheduleIdInitI >= offset && (offset+10) >= scheduleIdInitI){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            }
-                        }break;
-                        case DayOfWeek.Friday:{
-                            offset=40;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class start hour");
-                            scheduleIdInit = ReadNonEmptyLine();
-                            scheduleIdInitI = TryParseStringaEntero(scheduleIdInit);
-                            scheduleIdInitI += offset;
-                            if(scheduleIdInitI >= offset && (offset+10) >= scheduleIdInitI){
-                                WriteLine("Class start hour added");
-                                initEnd=true;
-                            }
-                        }break;
-                    }
-                }
-                while(initEnd==true){
-                    switch(day){
-                        case DayOfWeek.Monday:{
-                            offset = 1;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{sch.ScheduleId.ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI = TryParseStringaEntero(scheduleIdEnd);
-                            scheduleIdEndI += offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                        case DayOfWeek.Tuesday:{
-                            offset=11;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI = TryParseStringaEntero(scheduleIdEnd);
-                            scheduleIdEndI += offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                        case DayOfWeek.Wednesday:{
-                            offset=21;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI= TryParseStringaEntero(scheduleIdEnd) + offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                        case DayOfWeek.Thursday:{
-                            offset=31;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI= TryParseStringaEntero(scheduleIdEnd) + offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                        case DayOfWeek.Friday:{
-                            offset=41;
-                            var saltos = schedules.Skip(offset).Take(take);
-                            foreach(var sch in saltos){
-                                WriteLine($"{(sch.ScheduleId-offset).ToString()}. {sch.InitTime.ToString("HH:mm")}");
-                            }
-                            WriteLine($"Select the number to choose the class end hour");
-                            scheduleIdEnd = ReadNonEmptyLine();
-                            scheduleIdEndI= TryParseStringaEntero(scheduleIdEnd) + offset;
-                            if(scheduleIdEndI >= offset && (offset+take) >= scheduleIdEndI){
-                                WriteLine("Class end hour added");
-                                initEnd=false;
-                            }
-                        }break;
-                    }
-                }
 
-                if (scheduleIdInitI > scheduleIdEndI){
-                    WriteLine($"It can't be first the end of the class. Try again.");
-                } else if((scheduleIdEndI - scheduleIdInitI) < 1 || (scheduleIdEndI - scheduleIdInitI) > 5 ) {
-                    WriteLine($"The bare minium of loans are 50 min and maximun are 3 hours and 20 minuts"); 
-                } else {
-                    IQueryable<Schedule>? startHour = db.Schedules.Where(s => s.ScheduleId == scheduleIdInitI);
-                    if(startHour is null || !startHour.Any()){
-                        WriteLine("Wrong start hour. Try again");
-                        initEnd=false;
-                    } else 
+                // Obtener todas las horas de inicio o fin disponibles para el día y la fase de selección.
+                int offset = GetOffset(day, selectingInit);
+                var selectedSchedules = schedules.Skip(offset).Take(take);
+
+                // Mostrar las opciones de horas de inicio/fin disponibles.
+                // Le paso el horario del inicio de la clase para que no le muestre horas menores para elegir el final de la clase
+                ShowScheduleOptions(selectedSchedules, offset, scheduleIdInit);
+
+                // Leer la entrada del usuario para seleccionar una opción.
+                string scheduleIdInput = ReadNonEmptyLine();
+                int selectedScheduleId = TryParseStringaEntero(scheduleIdInput) + offset;
+
+                // Validar la opción seleccionada.
+                if (IsValidScheduleId(selectedScheduleId, offset, offset + take) && 
+                    (selectingInit || selectedScheduleId > scheduleIdInit))
+                {
+                    // Procesar la opción seleccionada.
+                    if (selectingInit)
                     {
-                        initTimeValue = DateValue.Date + startHour.First().InitTime.TimeOfDay;
+                        WriteLine("Class start hour added");
+                        scheduleIdInit = selectedScheduleId;
+                    }
+                    else
+                    {
+                        WriteLine("Class end hour added");
+                        scheduleIdEnd = selectedScheduleId;
+                    }
 
-                        IQueryable<Schedule> finHour = db.Schedules.Where(s => s.ScheduleId == scheduleIdEndI);
-                        if(finHour is null || !finHour.Any()){
-                            WriteLine("Wrong end hour. Try again");
-                            initEnd=false;
-                        } else {
-                            endTimeValue = DateValue.Date + finHour.First().InitTime.TimeOfDay;
-                            valideHours=true;
+                    // Cambiar a la fase de selección opuesta.
+                    selectingInit = !selectingInit;
+
+                    // Si se han seleccionado ambas horas, verificar y calcular las horas de inicio y fin.
+                    if (scheduleIdInit > 0 && scheduleIdEnd > 0)
+                    {
+                        if (scheduleIdInit < scheduleIdEnd)
+                        {
+                            validHours = true;
+                            InitAndEndTimesFromIds(scheduleIdInit, scheduleIdEnd, dateValue, out initTimeValue, out endTimeValue);
+                        }
+                        else
+                        {
+                            WriteLine("It can't be first the end of the class. Try again.");
                         }
                     }
                 }
+                else
+                {
+                    WriteLine("Invalid option. Try again.");
+                }
             }
         }
+
+        // Devolver las horas de inicio y fin seleccionadas.
         return (initTimeValue, endTimeValue);
+    }
+
+    private static int GetOffset(DayOfWeek day, bool selectingInit)
+    {
+        // Método para determinar el desplazamiento (offset) en función del día de la semana y
+        // de si estamos seleccionando la hora de inicio o fin.
+        int offset = 0;
+
+        switch (day)
+        {
+            // Los números específicos son asignados para evitar superposiciones y garantizar la coherencia
+            // "condición ? expresión_si_verdadero : expresión_si_falso"
+            case DayOfWeek.Monday:
+                offset = selectingInit ? 0 : 1; 
+            break;
+
+            case DayOfWeek.Tuesday:
+                offset = selectingInit ? 10 : 11; 
+            break;
+            
+            case DayOfWeek.Wednesday:
+                offset = selectingInit ? 20 : 21; 
+            break;
+
+            case DayOfWeek.Thursday: 
+                offset = selectingInit ? 30 : 31;
+            break;
+
+            case DayOfWeek.Friday: 
+                offset = selectingInit ? 40 : 41; 
+            break;
+        }
+
+        return offset;
+    }
+
+    private static bool IsValidScheduleId(int selectedScheduleId, int min, int max)
+    {
+        // Método para validar si el identificador de la hora seleccionada es válido.
+        return selectedScheduleId >= min && selectedScheduleId <= max;
+    }
+
+    private static void InitAndEndTimesFromIds(int initId, int endId, DateTime dateValue, out DateTime initTime, out DateTime endTime)
+    {
+        // Método para obtener las horas de inicio y fin reales a partir de los identificadores seleccionados.
+        using (bd_storage db = new())
+        {
+            var initSchedule = db.Schedules.FirstOrDefault(s => s.ScheduleId == initId);
+            var endSchedule = db.Schedules.FirstOrDefault(s => s.ScheduleId == endId);
+
+            // Calcular las horas de inicio y fin basadas en las horas de inicio de la base de datos.
+            initTime = dateValue.Date + (initSchedule?.InitTime ?? DateTime.MinValue).TimeOfDay;
+            endTime = dateValue.Date + (endSchedule?.InitTime ?? DateTime.MinValue).TimeOfDay;
+
+        }
     }
 
     public static void DeleteRequest(int? RequestID)
@@ -512,7 +431,7 @@ partial class Program
                     db.RequestDetails.RemoveRange(RequestDetailsToDelete);
 
                     int AffectedDetails = db.SaveChanges();
-
+                    // Mostrar los mensajes dependiendo del valor de Affected
                     if (AffectedDetails > 0)
                     {
                         WriteLine("RequestDetails successfully deleted");
@@ -523,7 +442,7 @@ partial class Program
                         {
                             db.Requests.Remove(Request);
                             int AffectedRequest = db.SaveChanges();
-
+                            // Mostrar los mensajes necesarios por el estado de la consulta
                             if (AffectedRequest == 1)
                             {
                                 WriteLine("Request successfully deleted");
@@ -540,7 +459,7 @@ partial class Program
                     }
                     else
                     {
-                        WriteLine("RequestDetails couldn't be deleted");
+                        WriteLine("The details of the request couldn't be deleted");
                     }
                 }
                 else
@@ -555,167 +474,181 @@ partial class Program
     }
 
     public static void UpdateRequestFormat(string UserName){
-        int i=1, Affected = 0, op=0;
-        bool validateRequest=false;
-        DateTime request=DateTime.Today;
+       
+        #region Variables
+        int i=1, Affected = 0, Option=0, EquipId = 0;
+        bool ValidateRequest=false, ValidateEq = false;;
+        DateTime RequestDate=DateTime.Today;
+        #endregion
+
+        // Listar permisos no aprobados por el profesor
         WriteLine("Here's a list of all the request format that has not been accepted yet. ");
         ViewRequestFormatNotAcceptedYet(UserName);
         WriteLine();
+
+        // Pedir el ID del permiso a modificar
         WriteLine("Provide the ID of the request that you want to modify (check the list): ");
-        int requestID = Convert.ToInt32(ReadNonEmptyLine());
+        int RequestID = Convert.ToInt32(ReadNonEmptyLine());
+
         using(bd_storage db = new bd_storage()){
-            IQueryable<Request> requestss = db.Requests
+
+            // Consultar si existen los permisos que escogio el usuario y guardar los campos
+            IQueryable<Request> RequestsQuery = db.Requests
                 .Include(rd => rd.Classroom)
                 .Include(rd => rd.Professor)
                 .Include(rd => rd.Subject)
-                .Include(rd => rd.Student).Where( rd => rd.RequestId==requestID);
-            IQueryable<RequestDetail> requestDetailss = db.RequestDetails
+                .Include(rd => rd.Student).Where( rd => rd.RequestId==RequestID);
+            IQueryable<RequestDetail> RequestDetailsQuery = db.RequestDetails
                 .Include(rd => rd.Status)
                 .Include(rd=> rd.Equipment)
-                .Where(r => r.RequestId==requestID).Where(r=> r.ProfessorNip==0);
-            var requestList = requestDetailss.ToList();
-            List <Equipment> listEquipments= new List<Equipment>();
+                .Where(r => r.RequestId==RequestID).Where(r=> r.ProfessorNip==0);
+
+            // Hace listas de equipos y requestDetails
+            var RequestList = RequestDetailsQuery.ToList();
+            List <Equipment> ListEquipments= new List<Equipment>();
+            
             do{
-                if(requestss is not null && requestss.Any() && 
-                requestDetailss is not null && requestDetailss.Any() ){
+                if (RequestsQuery != null && RequestsQuery.Any() && RequestDetailsQuery != null && RequestDetailsQuery.Any())
+                {
+                    // Mostrar los campos que se pueden modificar
                     WriteLine("These are the fields you can update:");
-                    WriteLine($"{i}. Classroom: {requestss.First().Classroom.Name}");
-                    WriteLine($"{i+1}. Professor: {requestss.First().Professor.Name} {requestss.First().Professor.LastNameP}");
-                    WriteLine($"{i+2}. Subject: {requestss.First().Subject.Name}");
-                    WriteLine($"{i+3}. Date of the request: {requestDetailss.First().RequestedDate.Date}");
-                    WriteLine($"{i+4}. Dispatch time: {requestDetailss.First().DispatchTime.TimeOfDay} and Return time: {requestDetailss.First().ReturnTime.TimeOfDay}");
-                    WriteLine($"{i+5}. Equipment(s) in the request:");
-                    foreach (var requestDetail in requestDetailss)
+                    WriteLine($"1. Classroom: {RequestsQuery.First().Classroom.Name}");
+                    WriteLine($"2. Professor: {RequestsQuery.First().Professor.Name} {RequestsQuery.First().Professor.LastNameP}");
+                    WriteLine($"3. Subject: {RequestsQuery.First().Subject.Name}");
+                    WriteLine($"4. Date of the request: {RequestDetailsQuery.First().RequestedDate.Date}");
+                    WriteLine($"5. Dispatch time: {RequestDetailsQuery.First().DispatchTime.TimeOfDay} and Return time: {RequestDetailsQuery.First().ReturnTime.TimeOfDay}");
+
+                    // Mostrar todos los equipos del permiso seleccionado
+                    WriteLine($"6. Equipment(s) in the request:");
+                    foreach (var requestDetail in RequestDetailsQuery)
                     {
                         WriteLine($"     -{requestDetail.Equipment.EquipmentId} ({requestDetail.Equipment.Name})");
-                        listEquipments.Add(requestDetail.Equipment);
+                        // Agregar a lista para poder manipular los datos de forma sencilla
+                        ListEquipments.Add(requestDetail.Equipment);
                         i++;
                     }
-                    WriteLine("Select an option to modify");
-                    op = Convert.ToInt32(ReadNonEmptyLine());
-                    validateRequest=true;
+                    WriteLine("Select an option to modify: ");
+                    Option = Convert.ToInt32(ReadNonEmptyLine());
+                    ValidateRequest = true;
                 }
                 else {
                     Clear();
                     WriteLine("Request not found. Try again.");
+                    // Se realiza el mismo proceso del inicio si esta mal el ID hasta que se encuentre un valor
                     WriteLine("Here's a list of all the request format that has not been accepted yet. ");
                     ViewRequestFormatNotAcceptedYet(UserName);
                     WriteLine();
                     WriteLine("Provide the ID of the request that you want to modify (check the list): ");
-                    requestID = Convert.ToInt32(ReadNonEmptyLine());
-                    requestss = db.Requests
+                    RequestID = Convert.ToInt32(ReadNonEmptyLine());
+
+                    RequestsQuery = db.Requests
                     .Include(rd => rd.Classroom)
                     .Include(rd => rd.Professor)
                     .Include(rd => rd.Subject)
-                    .Include(rd => rd.Student).Where( rd => rd.RequestId==requestID);
-                    requestDetailss = db.RequestDetails
+                    .Include(rd => rd.Student).Where( rd => rd.RequestId==RequestID);
+
+                    RequestDetailsQuery = db.RequestDetails
                     .Include(rd => rd.Status)
                     .Include(rd=> rd.Equipment)
-                    .Where(r => r.RequestId==requestID).Where(r=> r.ProfessorNip==0);
-                        requestList = requestDetailss.ToList();
-                        listEquipments= new List<Equipment>();
+                    .Where(r => r.RequestId==RequestID).Where(r=> r.ProfessorNip==0);
+                    RequestList = RequestDetailsQuery.ToList();
                 }
-            } while (validateRequest==false);
-            switch(op)
+
+            } while (ValidateRequest==false);
+
+            // De acuerdo a la opcion del campo a modificar
+            switch(Option)
             {
                 case 1:
                 {
-                    int classroomId = AddClassroom();
-                    requestss.First().ClassroomId=classroomId;
+                    // Llamar la función para listar los salones y que se seleccione uno
+                    int ClassroomId = AddClassroom();
+                    // Cambiar la query en el primer valor con el nuevo ID del classroom
+                    RequestsQuery.First().ClassroomId=ClassroomId;
                     Affected = db.SaveChanges();
-                    WriteLine(Affected > 0 ? "Request changed" : "Request not changed");
                 
                 }break; 
                 case 2:
                 {
-                    string professorId = SearchProfessorByName("xyz", 0, 0);
-                    requestss.First().ProfessorId = professorId;
+                    // Llama la función para buscar al profesor de la clase
+                    string ProfessorId = SearchProfessorByName(" ", 0, 0);
+                    // Cambiar la query en el primer valor con el nuevo ID del profesor
+                    RequestsQuery.First().ProfessorId = ProfessorId;
                     Affected = db.SaveChanges();
-                    WriteLine(Affected > 0 ? "Request changed" : "Request not changed");
                 }break;
                 case 3:
                 {
-                    string subjectId = SearchSubjectsByName("xyz", 1);
-                    requestss.First().SubjectId = subjectId;
+                    // Llamar la función para buscar la nueva materia
+                    string SubjectId = SearchSubjectsByName(" ", 1);
+                    // Cambiar la query en el primer valor con el nuevo ID de la materia
+                    RequestsQuery.First().SubjectId = SubjectId;
                     Affected = db.SaveChanges();
-                    WriteLine(Affected > 0 ? "Request changed" : "Request not changed");
                 }break;
                 case 4:
                 {
-                    DateTime newDate = AddDate(DateTime.Now.Date);
-                    foreach (var requestDetail in requestDetailss)
+                    // Llamar la función para establecer la nueva fecha del pedido
+                    DateTime NewDate = AddDate(DateTime.Today.Date);
+                    // Por todos los Request Details de un Request se guarda el nuevo valor de la fecha
+                    foreach (var requestDetail in RequestDetailsQuery)
                     {
-                        requestDetail.RequestedDate = newDate;
+                        requestDetail.RequestedDate = NewDate;
                     }
+                    // Guardar los cambios en la bd
                     Affected = db.SaveChanges();
-                    WriteLine(Affected > 0 ? "Request changed" : "Request not changed");
                 }break;
                 case 5:
                 {
-                    var times = AddTimes(request);
-                    foreach (var requestDetail in requestDetailss)
+                    // Llamar la función para establecer las horas de la clase de un pedido
+                    var Times = AddTimes(RequestDate);
+                    // Por todos los Request Details de un Request se guarda los nuevos valores de horas 
+                    foreach (var requestDetail in RequestDetailsQuery)
                     {
-                        requestDetail.DispatchTime = times.Item1;
-                        requestDetail.ReturnTime = times.Item2;
+                        requestDetail.DispatchTime = Times.Item1;
+                        requestDetail.ReturnTime = Times.Item2;
                     }
                     Affected = db.SaveChanges();
-                    WriteLine(Affected > 0 ? "Request changed" : "Request not changed");
                 } break;
                 case 6:
                 {
                     i = 1;
-                    int equipId = 0;
-                    foreach (var e in listEquipments)
+                    // Lista los equipos del permiso y permite al usuario seleccionar uno
+                    foreach (var e in RequestDetailsQuery)
                     {
-                        WriteLine($"{i}. {e.EquipmentId}-{e.Name}");
+                        WriteLine($"{e.RequestDetailsId}. {e.Equipment.Name}");
                     }
                     WriteLine("Select the number of the equipment");
-                    bool validateEq = false;
+                    // Ciclo para asegurarse de que ingrese un numero valido   
                     do{
-                        try
+                        // Lo convierte a Int y si escoge un numero de los que se le muestra sale del ciclo de do-While
+                        EquipId = Convert.ToInt32(ReadNonEmptyLine());
+                        if(EquipId>0)
                         {
-                            equipId = Convert.ToInt32(ReadNonEmptyLine());
-                            if(equipId>0 && equipId<=listEquipments.Count())
-                            {
-                                validateEq=true;
-                            }
+                            ValidateEq=true;
                         }
-                        catch (FormatException)
-                        {
-                            WriteLine("That is not a correct option, try again.");
-                        }
-                        catch (OverflowException)
-                        {
-                            WriteLine("That is not a correct option, try again.");
-                        }
-                    }while (validateEq==false);
-
-                    var selectedEquipment = listEquipments[equipId - 1];
-                    List<string> equipmentsId = new List<string>();
-                    List<byte?> statusIds = new List<byte?>();
-                    var updatedEquipments = SearchEquipmentsRecursive(
-                        equipmentsId,
-                        statusIds,
-                        requestDetailss.First().RequestedDate,
-                        requestDetailss.First().DispatchTime,
-                        requestDetailss.First().ReturnTime,
-                        requestDetailss.First().RequestId,
+                    } while (ValidateEq==false);
+                    // Creacion de listas para mandar como parametros
+                    List<string> EquipmentsId = new List<string>();
+                    List<byte?> StatusIds = new List<byte?>();
+                    // Llamar a la funcion para obtener el valor del nuevo equipo
+                    var UpdatedEquipments = SearchEquipmentsRecursive(
+                        EquipmentsId,
+                        StatusIds,
+                        RequestDetailsQuery.First().RequestedDate,
+                        RequestDetailsQuery.First().DispatchTime,
+                        RequestDetailsQuery.First().ReturnTime,
+                        RequestDetailsQuery.First().RequestId,
                         1, 
                         true
                     );
 
-                    // Obtener los valores del nuevo equipo seleccionado
-
-                    foreach (var requestDetail in requestDetailss)
-                    {
-                        // Cambiar el equipo en la tabla de la base de datos
-                        requestDetail.EquipmentId = updatedEquipments.equipmentsId.First();
-                        // Cambiar el estado del equipo conforme al nuevo equipo seleccionado
-                        requestDetail.StatusId = updatedEquipments.statusEquipments.First();
-                    }
-
+                    // Escoger un solo equipo en la tabla Request Details
+                    var SingularRequestDetail = db.RequestDetails
+                    .Where(rD => rD.RequestDetailsId == EquipId);
+                    // Cambiar el equipo en la tabla de la base de datos
+                    SingularRequestDetail.First().EquipmentId = UpdatedEquipments.EquipmentsId.First();
+                    // Cambiar el estado del equipo conforme al nuevo equipo seleccionado
+                    SingularRequestDetail.First().StatusId = UpdatedEquipments.StatusEquipments.First();
                     Affected = db.SaveChanges();
-                    WriteLine(Affected > 0 ? "Request changed" : "Request not changed");
                 } break;
                 case 7:
                 {
@@ -726,6 +659,7 @@ partial class Program
                     WriteLine("Not a valide option. Try again.");
                 }break;
             }
+            WriteLine(Affected > 0 ? "Request changed" : "Request not changed");
         }
     }
 }

@@ -101,10 +101,6 @@ partial class Program
                 {
                     nip = "aceptado";
                 }
-                else if (firstRequest.ProfessorNip == 0 )
-                {
-                    nip = "Pendiente";
-                }
 
                 var table = new ConsoleTable("Request Details", count);
 
@@ -192,13 +188,15 @@ partial class Program
             {
 
                 i++;
-                WriteLine();
-                WriteLine($"Student {i} Information: ");
-                WriteLine("");
-                WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
-                WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                WriteLine($"Return Time: {use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
-                WriteLine($"Date: {use.RequestedDate.Date}");
+                string count = i + "";
+                var table = new ConsoleTable("Students Using Equipments", count);
+
+                table.AddRow("Student Information", $"{use.Request.Student.Name} {use.Request.Student.LastNameP} {use.Request.Student.Group.Name}");
+                table.AddRow("Equipment Name", use.Equipment.Name);
+                table.AddRow("Return Time", $"{use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
+                table.AddRow("Date:", use.RequestedDate.Date);
+
+                table.Write();
                 WriteLine();
 
             } 
@@ -331,7 +329,48 @@ partial class Program
             return studentsid;
         }
     }
+
+    public static int ListClassrooms()
+    {
+        // Indice de la lista
+        int i = 1;
+
+        using (bd_storage db = new())
+        {
+            // verifica que exista la tabla de Classroom
+            if( db.Classrooms is null)
+            {
+                throw new InvalidOperationException("The table does not exist.");
+            } else {
+                // Muestra toda la lista de classrooms con un indice y la clave de este
+                IQueryable<Classroom> Classrooms = db.Classrooms;
+                
+                foreach (var cl in Classrooms)
+                {
+                    WriteLine($"{i}. {cl.Clave}");
+                    i++;
+                }
+                return Classrooms.Count();
+            }
+        }
+    }
     
+    private static void ShowScheduleOptions(IQueryable<Schedule> schedules, int offset, int startHourId)
+    {
+        // Filtrar las opciones de horario para mostrar solo aquellas que sean mayores que la hora de inicio seleccionada.
+        var filteredSchedules = schedules.Where(s => s.ScheduleId > startHourId);
+
+        foreach (var sch in filteredSchedules)
+        {
+            int hour = sch.InitTime.Hour;
+            int minute = sch.InitTime.Minute;
+            WriteLine($"{sch.ScheduleId - offset}. {hour:D2}:{minute:D2}");
+        }
+
+        string prompt = "Select the number to choose the class end hour";
+        WriteLine(prompt);
+    }
+
     public static void ViewAllEquipmentsCoord()
     {
         using (bd_storage db = new())
@@ -710,6 +749,11 @@ partial class Program
             .Include( r => r.Request)
             .Where( s => s.Request.StudentId == Username);
 
+            IQueryable<Request> requests = db.Requests
+            .Include( r => r.Classroom)
+            .Include (r => r.Professor)
+            .Where( s => s.RequestId == requestDetails.First().RequestId);
+
             if (!requestDetails.Any() || requestDetails is null)
             {
                 WriteLine("No results found.");
@@ -718,14 +762,11 @@ partial class Program
 
             var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
 
-            int i = 0;
-
             foreach (var group in groupedRequests)
             {
-                i++;
                 var firstRequest = group.First();
 
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, RequestDId: {firstRequest.RequestDetailsId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime.TimeOfDay}, ReturnTime: {firstRequest.ReturnTime.TimeOfDay}, RequestedDate: {firstRequest.RequestedDate}");
+                WriteLine($"{firstRequest.RequestId}. StatusId: {firstRequest.StatusId}, Classroom: {requests.First().Classroom.Clave}, Approved: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime.TimeOfDay}, ReturnTime: {firstRequest.ReturnTime.TimeOfDay}, RequestedDate: {firstRequest.RequestedDate}");
 
                 WriteLine("Equipment:");
                 foreach (var r in group)
