@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\ProgramUnitTestings.csproj": {}
+    "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\LogInUnitTestings\\ProgramUnitTestings.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\ProgramUnitTestings.csproj": {
+    "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\LogInUnitTestings\\ProgramUnitTestings.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\ProgramUnitTestings.csproj",
+        "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\LogInUnitTestings\\ProgramUnitTestings.csproj",
         "projectName": "ProgramUnitTestings",
-        "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\ProgramUnitTestings.csproj",
-        "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\LogInUnitTestings\\obj\\",
+        "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\LogInUnitTestings\\ProgramUnitTestings.csproj",
+        "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\LogInUnitTestings\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -26,8 +26,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {
-                "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj"
+              "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {
+                "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj"
               }
             }
           }
@@ -42,9 +42,35 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[17.6.0, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.69, )"
             },
             "coverlet.collector": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -83,17 +109,17 @@
         }
       }
     },
-    "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {
+    "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
+        "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
         "projectName": "Principal",
-        "projectPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
-        "packagesPath": "C:\\Users\\Samantha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Samantha\\Documents\\progra\\progra avanzada\\again\\Proyecto_Avanzada_2\\Principal\\obj\\",
+        "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
+        "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Samantha\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -117,6 +143,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "ConsoleTables": {
+              "target": "Package",
+              "version": "[2.4.2, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.13, )"

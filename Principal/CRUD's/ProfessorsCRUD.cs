@@ -60,7 +60,7 @@ partial class Program
             else
             {
                 string DescryptPass = Decrypt(professor.Password);
-                string DescryptNip = Decrypt(professor.Nip);
+                
                 string op = "";
                 while (op != "7")
                 {
@@ -70,7 +70,7 @@ partial class Program
                     WriteLine($"2. Name: {professor.Name}");
                     WriteLine($"3. Last Name (Paternal): {professor.LastNameP}");
                     WriteLine($"4. Last Name (Maternal): {professor.LastNameM}");
-                    WriteLine($"5. NIP: {DescryptNip}");
+                    WriteLine($"5. NIP: {professor.Nip}");
                     WriteLine($"6. Password: {DescryptPass}");
                     WriteLine($"7. None. Exit the Update of the Professor");
                     Write("Choose the option:");
