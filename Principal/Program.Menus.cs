@@ -93,9 +93,9 @@ partial class Program
             WriteLine();
             Write("Option : ");
             option = Convert.ToInt32(ReadNonEmptyLine());
-            if (option<1 || option >7)
+            if (option<1 || option >8)
             {
-                WriteLine("Please choose a valid option (1 - 7)");
+                WriteLine("Please choose a valid option (1 - 8)");
                 option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else
