@@ -1,6 +1,7 @@
 ﻿using AutoGens;
 public partial class Program
 {
+    
     public static void Main()
     {
         bd_storage db = new();

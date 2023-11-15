@@ -1,9 +1,9 @@
 partial class Program
 {
 
-    public static string MenuSignUp()
+    public static int MenuSignUp()
     {
-        string op = "";
+        int option = 0;
         bool valid = false;
         //menu de para registrar
         WriteLine("Welcome to the register ");
@@ -18,11 +18,11 @@ partial class Program
         {
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >5)
             {
                 WriteLine("Please choose a valid option (1 - 5)");
-                op = ReadNonEmptyLine();
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else
             {
@@ -30,14 +30,15 @@ partial class Program
             }
         } while (!valid);
 
-        return op;
+        return option;
     }
 
-    public static string MenuCoordinators()
+    public static int MenuCoordinators()
     {
-        string op = "";
+        int option = 0;
         bool valid = false;
-
+        WriteLine();
+        WriteLine("**********************************MENU**********************************");
         WriteLine(" 1. View inventory");
         WriteLine(" 2. Search equipment by serial number");
         WriteLine(" 3. View damaged and lost equipment");
@@ -57,11 +58,11 @@ partial class Program
         {
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8" && op != "9" && op != "10" && op != "11" && op != "12" && op != "13" && op != "14")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >14)
             {
                 WriteLine("Please choose a valid option (1 - 14)");
-                op = ReadNonEmptyLine();
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else
             {
@@ -69,31 +70,33 @@ partial class Program
             }
         } while (!valid);
 
-        return op;
+        return option;
     }
 
-    public static string MenuProfessors()
+    public static int MenuProfessors()
     {
-        string op = "";
+        int option = 0;
         bool valid = false;
-
+        WriteLine();
+        WriteLine("**********************************MENU**********************************");
         WriteLine(" 1. Watch permissions");
         WriteLine(" 2. Approve or Deny Permissions");
         WriteLine(" 3. Request for Material");
         WriteLine(" 4. Edit Request for Material");
         WriteLine(" 5. Delete Request for Material");
         WriteLine(" 6. View All materials of the storage");
-        WriteLine(" 7. Exit");
+        WriteLine(" 7. Update my info");
+        WriteLine(" 8. Exit");
 
         do
         {
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >8)
             {
-                WriteLine("Please choose a valid option (1 - 7)");
-                op = ReadNonEmptyLine();
+                WriteLine("Please choose a valid option (1 - 8)");
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else
             {
@@ -101,59 +104,57 @@ partial class Program
             }
         } while (!valid);
 
-        return op;
+        return option;
     }
 
-    public static string MenuStorer()
+    public static int MenuStorer()
     {
-        string op = "";
         bool valid = false;
-
+        int option;
         WriteLine();
         WriteLine("**********************************MENU**********************************");
         WriteLine("Please choose an option, a number between 1 and 14");
         WriteLine(" 1. Add new equipment");
         WriteLine(" 2. Update equipment information");
         WriteLine(" 3. View equipments");
-        WriteLine(" 4. Delete equipment");
-        WriteLine(" 5. Search for a equipment by equipment ID or equipment Name");
-        WriteLine(" 6. View Equipment Requests");
-        WriteLine(" 7. View Tomorrows Equipment Requests");
-        WriteLine(" 8. View and Search for a Students History");
+        WriteLine(" 4. Search for a equipment by equipment ID or equipment Name");
+        WriteLine(" 5. View Equipment Requests");
+        WriteLine(" 6. View Tomorrows Equipment Requests");
+        WriteLine(" 7. View and Search for a Students History");
         WriteLine("         a. See all students");
         WriteLine("         b. Search for a student in specific");
         WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)");
-        WriteLine(" 9. View and Search for Students using Equipment at this moment");
+        WriteLine(" 8. View and Search for Students using Equipment at this moment");
         WriteLine("         a. See all students using equipments ");
         WriteLine("         b. Search for a specific student in this list");
         WriteLine("         c. See the list of students that are late for returning equipments");
-        WriteLine(" 10. Delivery equipment.");
+        WriteLine(" 9. Delivery equipment.");
         WriteLine("         a. To students ");
         WriteLine("         b. To professor ");
-        WriteLine(" 11. Register the Return of Equipment(s) of a request");
-        WriteLine(" 12. Create report of damaged or lost equipment");
-        WriteLine(" 13. Student debt Of LostDamagedEquipment");
-        WriteLine(" 14. Program maintenance for a equipment");
+        WriteLine(" 10. Register the Return of Equipment(s) of a request");
+        WriteLine(" 11. Create report of damaged or lost equipment");
+        WriteLine(" 12. Student debt Of LostDamagedEquipment");
+        WriteLine(" 13. Program maintenance for a equipment");
         WriteLine("         a. Program a new maintenance");
         WriteLine("         b. Report Finished Maintenance");
-        WriteLine(" 15. View Maintenance History");
-        WriteLine(" 16. Change password");
-        WriteLine(" 17. Sign out");
+        WriteLine(" 14. View Maintenance History");
+        WriteLine(" 15. Change password");
+        WriteLine(" 16. Sign out");
 
         do
         {
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "1"  &&  op != "2" &&  op != "3" &&  op != "4" &&  op != "5" &&  op != "6" &&  op != "7" &&  op != "8" &&  op != "9" &&  op != "10" &&  op != "11" &&  op != "12" &&  op != "13" &&  op != "14" && op!="15" && op!="16" && op!="17")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >16)
             {
-                WriteLine("Please choose a valid option (1 - 17)");
-                op = ReadNonEmptyLine(); 
+                WriteLine("Please choose a valid option (1 - 16)");
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else valid = true;
         } while (!valid);
 
-        return op;
+        return option;
     }
 
     public static string SubMenuMantenance()
@@ -211,7 +212,7 @@ partial class Program
         return op;
     }
 
-    public static string SubMenuStudentsusingEquipment()
+    public static string SubMenuStudentsUsingEquipment()
     {
         string op = "";
         bool valid = false;
@@ -292,34 +293,32 @@ partial class Program
         return op;
     }
 
-    public static string MenuStudents()
+    public static int MenuStudents()
     { 
-        string op = "";
+        int option = 0;
         bool valid = false;
         WriteLine();
         WriteLine("********Menu********");
-        WriteLine("1. Fill a request format"); //SI
-        WriteLine("2. View equipments"); //SI
-        WriteLine("3. View request formats"); //sam SI
-        WriteLine("4. Edit request formats that aren't signed yet"); //CARO
-        WriteLine("5. Delete request formats that aren't signed yet"); //SAM SI
-        WriteLine("6. See a list of equipments that are late for returning"); //SAM ver sus request tardios Si
+        WriteLine("1. Fill a request format"); 
+        WriteLine("2. View equipments"); 
+        WriteLine("3. View request formats"); 
+        WriteLine("4. Edit request formats that aren't signed yet"); 
+        WriteLine("5. Delete request formats that aren't signed yet"); 
+        WriteLine("6. See a list of equipments that are late for returning"); 
         WriteLine("7. Sign out");
 
         do{
             WriteLine();
             Write("Option : ");
-            op = ReadNonEmptyLine();
-            if (op != "1"  &&  op != "2" &&  op != "3" && op != "4" && op != "5" && op != "6" && op != "7")
+            option = Convert.ToInt32(ReadNonEmptyLine());
+            if (option<1 || option >7)
             {
-                WriteLine("Please choose a valid option (1 to 7)");
-                op = ReadNonEmptyLine(); 
+                WriteLine("Please choose a valid option (1 - 7)");
+                option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
-            else
-            {
-                valid = true;
-            }
+            else valid = true;
         } while (!valid);
-        return op;
+
+        return option;
     }
 }

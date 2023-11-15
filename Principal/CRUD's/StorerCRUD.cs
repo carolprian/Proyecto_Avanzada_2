@@ -11,11 +11,10 @@ partial class Program
         {
             WriteLine("1. List all storers");
             WriteLine("2. Update a storer");
-            WriteLine("3. Remove a storer");
-            WriteLine("4. Exit");
+            WriteLine("3. Exit");
             op = VerifyReadLengthStringExact(1);
 
-            if (op == "1" || op == "2" || op == "3" || op == "4")
+            if (op == "1" || op == "2" || op == "3")
             {
                 b = true;
             }
@@ -29,9 +28,6 @@ partial class Program
                     UpdateStorer();
                     break;
                 case "3":
-                    RemoveStorer();
-                    break;
-                case "4":
                     // Exit
                     return;
                 default:
@@ -124,35 +120,5 @@ partial class Program
         Write($"Write the new {fieldName}: ");
         string newValue = VerifyReadMaxLengthString(30);
         updateAction(newValue);
-    }
-
-    private static void RemoveStorer()
-    {
-        WriteLine("Enter the ID of the storer you want to remove:");
-        string storerId = VerifyReadMaxLengthString(10);
-
-        using (bd_storage db = new())
-        {
-            var storer = db.Storers
-                .FirstOrDefault(s => s.StorerId.Equals(storerId));
-
-            if (storer == null)
-            {
-                WriteLine("Storer with that ID is not registered");
-            }
-            else
-            {
-                db.Storers.Remove(storer);
-                int affected = db.SaveChanges();
-                if (affected == 0)
-                {
-                    WriteLine("The storer was not removed, sorry");
-                }
-                else
-                {
-                    WriteLine("The storer was removed successfully");
-                }
-            }
-        }
     }
 }

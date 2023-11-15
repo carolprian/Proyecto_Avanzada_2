@@ -1,5 +1,5 @@
 --
--- Archivo generado con SQLiteStudio v3.4.4 el jue. nov. 9 21:42:55 2023
+-- Archivo generado con SQLiteStudio v3.4.4 el lun. nov. 13 12:12:18 2023
 --
 -- Codificaci�n de texto usada: System
 --
@@ -171,15 +171,15 @@ INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, 
 INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('PROG604', 'USB Programmer TOP853 Universal ', 6, 'Universal programmer with USB interface and LCD display', 2020, 1, '34567890123456789012', 'CokUy+/bPTOOfNMUx77mMg==');
 INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('PROG605', 'Universal Programmer BeeProg+ ', 6, 'Universal programmer with 48-pin ZIF socket', 2016, 1, '45678901234567890123', 'CokUy+/bPTOOfNMUx77mMg==');
 INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('FIBO701', 'FiberInspector Mini Fluke Networks FT500 ', 7, 'Portable fiber inspection scope for inspecting connectors', 2019, 2, '56789012345678901234', 'CokUy+/bPTOOfNMUx77mMg==');
-INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('FIBO702', 'VIAVI FFL-050 Visual Fault Locator', '7', 'Visual fault locator for fiber optic cable testing', '2018', '1', '67890123456789012345', 'CokUy+/bPTOOfNMUx77mMg==');
-INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('NETW801', 'Fluke Networks Pro3000 Tone and Probe Kit', '8', 'Tone and probe kit for network cable tracing', '2019', '1', '12345678901234567890', 'CokUy+/bPTOOfNMUx77mMg==');
-INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('NETW802', 'Klein Tools VDV501-823 Scout Pro 2 Tester Kit', '8', 'Network tester kit with cable length measurement', '2018', '1', '23456789012345678901', 'CokUy+/bPTOOfNMUx77mMg==');
-INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('MOTR901', 'Maxon RE35 DC Motor', '9', 'High-performance DC motor for various applications', '2018', '1', '67890123456789012345', 'CokUy+/bPTOOfNMUx77mMg==');
-INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('MOTR902', 'Faulhaber 2232U012S DC Motor', '9', 'Micro DC motor with high torque and compact design', '2019', '1', '78901234567890123456', 'CokUy+/bPTOOfNMUx77mMg==');
-INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('DEVL1001', 'Arduino Uno R3', '10', 'Open-source electronics platform with easy-to-use hardware and software', '2017', '1', '23456789012345678901', 'CokUy+/bPTOOfNMUx77mMg==');
-INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('DEVL1002', 'Raspberry Pi 4 Model B', '10', 'Single-board computer with powerful features for various applications', '2019', '1', '34567890123456789012', 'CokUy+/bPTOOfNMUx77mMg==');
-INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('CABL1201', 'Greenlee PA901053 ProGrip Punchdown Tool', '12', 'ProGrip punchdown tool for terminating and cutting wires', '2019', '1', '67890123456789012345', 'CokUy+/bPTOOfNMUx77mMg==');
-INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('SOLD1301', 'Weller WE1010NA Digital Soldering Station', '13', 'Digital soldering station with adjustable temperature control', '2018', '1', '78901234567890123456', 'CokUy+/bPTOOfNMUx77mMg==');
+INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('FIBO702', 'VIAVI FFL-050 Visual Fault Locator', 7, 'Visual fault locator for fiber optic cable testing', 2018, 1, '67890123456789012345', 'CokUy+/bPTOOfNMUx77mMg==');
+INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('NETW801', 'Fluke Networks Pro3000 Tone and Probe Kit', 8, 'Tone and probe kit for network cable tracing', 2019, 1, '12345678901234567890', 'CokUy+/bPTOOfNMUx77mMg==');
+INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('NETW802', 'Klein Tools VDV501-823 Scout Pro 2 Tester Kit', 8, 'Network tester kit with cable length measurement', 2018, 1, '23456789012345678901', 'CokUy+/bPTOOfNMUx77mMg==');
+INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('MOTR901', 'Maxon RE35 DC Motor', 9, 'High-performance DC motor for various applications', 2018, 1, '67890123456789012345', 'CokUy+/bPTOOfNMUx77mMg==');
+INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('MOTR902', 'Faulhaber 2232U012S DC Motor', 9, 'Micro DC motor with high torque and compact design', 2019, 1, '78901234567890123456', 'CokUy+/bPTOOfNMUx77mMg==');
+INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('DEVL1001', 'Arduino Uno R3', 10, 'Open-source electronics platform with easy-to-use hardware and software', 2017, 1, '23456789012345678901', 'CokUy+/bPTOOfNMUx77mMg==');
+INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('DEVL1002', 'Raspberry Pi 4 Model B', 10, 'Single-board computer with powerful features for various applications', 2019, 1, '34567890123456789012', 'CokUy+/bPTOOfNMUx77mMg==');
+INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('CABL1201', 'Greenlee PA901053 ProGrip Punchdown Tool', 12, 'ProGrip punchdown tool for terminating and cutting wires', 2019, 1, '67890123456789012345', 'CokUy+/bPTOOfNMUx77mMg==');
+INSERT INTO equipments (equipmentId, name, areaId, description, year, statusId, controlNumber, coordinatorId) VALUES ('SOLD1301', 'Weller WE1010NA Digital Soldering Station', 13, 'Digital soldering station with adjustable temperature control', 2018, 1, '78901234567890123456', 'CokUy+/bPTOOfNMUx77mMg==');
 
 -- Tabla: groups
 CREATE TABLE IF NOT EXISTS groups (
@@ -247,32 +247,26 @@ INSERT INTO maintenanceTypes (maintenanceTypeId, name) VALUES (3, 'Predictivo');
 
 -- Tabla: petitionDetails
 CREATE TABLE IF NOT EXISTS petitionDetails (
-    petitionDetailsId INTEGER      PRIMARY KEY AUTOINCREMENT,
-    petitionId        INTEGER      REFERENCES petitions (petitionId),
-    equipmentId      VARCHAR (15) REFERENCES equipments (equipmentId),
-    statusId         INTEGER      REFERENCES status (statusId),
-    dispatchTime     TIME,
-    returnTime       TIME,
-    requestedDate    DATE,
-    currentDate      DATE
-);
-INSERT INTO petitionDetails (petitionDetailsId, petitionId, equipmentId, statusId, dispatchTime, returnTime, requestedDate, currentDate) VALUES (1, 1, 'GEN401', 2, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
-INSERT INTO petitionDetails (petitionDetailsId, petitionId, equipmentId, statusId, dispatchTime, returnTime, requestedDate, currentDate) VALUES (2, 1, 'GEN403', 2, '07:00:00', '08:40:00', '2023-11-10', '2023-11-05');
-INSERT INTO petitionDetails (petitionDetailsId, petitionId, equipmentId, statusId, dispatchTime, returnTime, requestedDate, currentDate) VALUES (3, 2, 'MMT303', 2, '10:20:00', '14:30:00', '2023-09-07', '2023-09-05');
-INSERT INTO petitionDetails (petitionDetailsId, petitionId, equipmentId, statusId, dispatchTime, returnTime, requestedDate, currentDate) VALUES (4, 3, 'MMT302', 2, '10:20:00', '14:30:00', '2023-09-07', '2023-09-05');
+    petitionDetailsId INTEGER PRIMARY KEY AUTOINCREMENT, 
+    petitionId INTEGER REFERENCES petitions (petitionId), 
+    equipmentId VARCHAR (15) REFERENCES equipments (equipmentId), 
+    statusId INTEGER REFERENCES status (statusId), 
+    dispatchTime TIME, 
+    returnTime TIME, 
+    requestedDate DATE, 
+    currentDate DATE
+    );
+INSERT INTO petitionDetails (petitionDetailsId, petitionId, equipmentId, statusId, dispatchTime, returnTime, requestedDate, currentDate) VALUES (1, 1, 'OSC103', 1, '10:20', '12:00', '2023/11/18', '2023/11/13');
 
 -- Tabla: petitions
 CREATE TABLE IF NOT EXISTS petitions (
     petitionId INTEGER PRIMARY KEY AUTOINCREMENT, 
     classroomId INTEGER REFERENCES classrooms (classroomId), 
-    professorId CHAR (10) REFERENCES classrooms (classroomId), 
+    professorId CHAR (10) REFERENCES professors (professorId), 
     storerId CHAR (10) REFERENCES storers (storerId), 
-    subjectId VARCHAR (13) REFERENCES subjects (subjectId)
-);
-
-INSERT INTO petitions (petitionId, classroomId, professorId, storerId, subjectId) VALUES (1, 3, 'owTkVgr0sk6DHaUug+7/SA==', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO101');
-INSERT INTO petitions (petitionId, classroomId, professorId, storerId, subjectId) VALUES (2, 7, 's+d1CVba7aAcZHO4z0LPaw==', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO202');
-INSERT INTO petitions (petitionId, classroomId, professorId, storerId, subjectId) VALUES (3, 12, 'AEd+FHe4V36Wpe7FXKWZtg==', 'owTkVgr0sk6DHaUug+7/SA==', '18MPBDSO411');
+    subjectId VARCHAR (13) REFERENCES subjects (subjectId));
+    
+INSERT INTO petitions (petitionId, classroomId, professorId, storerId, subjectId) VALUES (1, 5, 's+d1CVba7aAcZHO4z0LPaw==', 'kT556oT3ig6WU155xbGHTw==', '18MPEDS0620');
 
 -- Tabla: professors
 CREATE TABLE IF NOT EXISTS professors (
@@ -283,10 +277,11 @@ CREATE TABLE IF NOT EXISTS professors (
     nip         VARCHAR (50),
     password    VARCHAR (50) 
 );
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('s+d1CVba7aAcZHO4z0LPaw==', 'Carlos', 'Molina', 'Martínez', 'gxLjEIaXCcvWek8lrMK0Qg==', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('s+d1CVba7aAcZHO4z0LPaw==', 'Nancy del Carmen', 'Benavides', 'Medina', 'JhRuGQE/CqIGDl0yZkNnMQ==', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('AEd+FHe4V36Wpe7FXKWZtg==', 'Diana Marisol', 'Figueroa', 'Flores', 'MSMqLGP2jK9q59XrnJ4f+w==', 'F8t128gjJIaegDAGPG//LA==');
-INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('i7T8ZRB4ZgI/GHgQY3B6IQ==', 'Clara Gabriela', 'Garcia', 'Duran', 'QUhomydkInt//RMMHtlzNQ==', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('owTkVgr0sk6DHaUug+7/SA==', 'Carlos', 'Molina', 'Martinez', '1000', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('s+d1CVba7aAcZHO4z0LPaw==', 'Nancy del Carmen', 'Benavides', 'Medina', '2000', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('AEd+FHe4V36Wpe7FXKWZtg==', 'Diana Marisol', 'Figueroa', 'Flores', '3000', 'F8t128gjJIaegDAGPG//LA==');
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('WlFpmcuL+BVJ8ArjUZQrJg==', 'Clara Gabriela', 'Garcia', 'Duran', '4000', 'F8t128gjJIaegDAGPG//LA=='); 
+INSERT INTO professors (professorId, name, lastNameP, lastNameM, nip, password) VALUES ('tOg3M5y+JKu0JgQGDtUn2Q==', 'Carlos Alberto', 'Ramirez', 'Garcia', '5000', 'F8t128gjJIaegDAGPG//LA==');
 
 -- Tabla: requestDetails
 CREATE TABLE IF NOT EXISTS requestDetails (

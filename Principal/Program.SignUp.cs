@@ -8,17 +8,17 @@ partial class Program
         string tableName;
         while (true)
         {
-            string opcion = MenuSignUp();
+            int opcion = MenuSignUp();
             bool bdquery = false;
             string safecode;
             switch (opcion)
             {
-                case "1":
+                case 1:
                     bdquery = RegistroStudent();
                     return;
 
-                case "2":
-                //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
+                case 2:
+                //pide safecode para que se pueda registrar un profesor, un storer y un coordinator
                     WriteLine("Please enter the safecode in order to create a new Professor");
                     safecode = ReadPassword();
                     if(safecode == "Brambi12345")
@@ -33,7 +33,7 @@ partial class Program
                     }
                     return;
 
-                case "3":
+                case 3:
                 //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     tableName = "Coordinator";
                     WriteLine("Please enter the safecode in order to create a new Coordinator");
@@ -50,7 +50,7 @@ partial class Program
                     }                    
                     return;
 
-                case "4":
+                case 4:
                 //pide safecode para que se peuda registrar un profesor, un storer y un coordinator
                     tableName = "Storer";
                     WriteLine("Please enter the safecode in order to create a new Storer");
@@ -67,7 +67,7 @@ partial class Program
                     }                    
                     return;
                     
-                case "5":
+                case 5:
                     return;
 
                 default:
@@ -80,21 +80,21 @@ partial class Program
 
     public static bool RegistroProf()
     {
-        //pide datos para registro, ReadNonEmptyLine() poara que se regustren datos
+        //pide datos para registro, ReadNonEmptyLine() para que no se dejen campos vacios
         WriteLine("Provide your payroll number, this will be your ID: ");
-        string username = EncryptPass(VerifyReadLengthStringExact(10));
+        string username = EncryptPass(VerifyNumericInput());
 
         WriteLine("Provide your name: ");
-        string firstname = ReadNonEmptyLine();
+        string firstname = VerifyAlphabeticInput();
 
         WriteLine("Provide your paternal last name: ");
-        string lastnameP = ReadNonEmptyLine();
+        string lastnameP = VerifyAlphabeticInput();
 
         WriteLine("Provide your maternal last name: ");
-        string lastnameM = ReadNonEmptyLine();
+        string lastnameM = VerifyAlphabeticInput();
 
         WriteLine("Create your password: ");
-        string encryptedPassword = EncryptPass(VerifyReadLengthString(8));
+        string encryptedPassword = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
         
         string nip = "";
         int op = 0;
@@ -103,7 +103,7 @@ partial class Program
         {
             //mientras no sea valido lo pide todo el rato
             WriteLine("Create your confirmation NIP for your students requests (4 digits): ");
-            nip = VerifyReadLengthStringExact(4);
+            nip = EncryptPass(VerifyReadLengthStringExact(4));
 
             using (bd_storage db = new())
             {

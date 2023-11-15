@@ -9,85 +9,80 @@ partial class Program{
 
         while (true)
         {
-            string op = MenuStorer();
+            int op = MenuStorer();
+
             WriteLine();
             switch(op)
             {
-                case "1": //  Añadir un equipo usando la funcion dentro de EquipmentsCRUD
+                case 1: //  Añadir un equipo usando la funcion dentro de EquipmentsCRUD
                     //Aux porque es un auxiliar para hacer el formulario y validacion y ya despues llamar al CRUD
                     AuxAddEquipmentStorer();
                 break;
 
-                case "2": // Actualizar informacion de algun equipo
+                case 2: // Actualizar informacion de algun equipo
                     UpdateEquipment();
                 break;
 
-                case "3": // Ver una lista de todos los equipos
-                    ViewAllEquipments(1);
+                case 3: // Ver una lista de todos los equipos
+                    ViewAllEquipments();
                     BackToMenu();
                 break;
-
-                case "4": // Eliminar un equipo
-                    DeleteEquipment();
-                break;
-
-                case "5":  // Buscar un equipo ya sea por su nombre o por su ID
+                case 4:  // Buscar un equipo ya sea por su nombre o por su ID
                     //Aux porque es un auxiliar para hacer el formulario y validacion y ya despues llamar al CRUD
                     AuxSearchEquipment();
                     BackToMenu();
                 break;
 
-                case "6": // Lista de todos los Request que YA hayan sido aceptados por un maestro
+                case 5: // Lista de todos los Request que YA hayan sido aceptados por un maestro
                     ListEquipmentsRequests();
                     BackToMenu();
                 break;
 
-                case "7": // Lista de los equipos de los Request de mañana
+                case 6: // Lista de los equipos de los Request de mañana
                     TomorrowsEquipmentRequests();
                     BackToMenu();
                 break;
 
-                case "8": // Submenu para poder ver a todos los estudiantes, buscar uno en especifico o ver los que han roto o dañado
+                case 7: // Submenu para poder ver a todos los estudiantes, buscar uno en especifico o ver los que han roto o dañado
                     StudentsHistory();   
                     BackToMenu();       
                 break;
 
-                case "9": // Submenu para poder ver a todos los estudiantes que esten usando un material, buscar uno en especifico o los que esten tarde de entregar
-                    StudentsusingEquipment();
+                case 8: // Submenu para poder ver a todos los estudiantes que esten usando un material, buscar uno en especifico o los que esten tarde de entregar
+                    StudentsUsingEquipment();
                     BackToMenu();
                 break;
 
-                case "10": // Entrega del material de parte de la almacenista
+                case 9: // Entrega del material de parte de la almacenista
                     DeliveryEquipment(); 
                     BackToMenu();
                 break;
 
-                case "11": //Regreso del material por parte del alumno
+                case 10: //Regreso del material por parte del alumno
                     ReturnEquipment();
                     BackToMenu();
                 break;
 
-                case "12": //Hacer un reporte de material dañado o perdido
+                case 11: //Hacer un reporte de material dañado o perdido
                     DamagedLostReportInit();
                     BackToMenu();
                 break;
 
-                case "13": // El estudiante vino a pagar du "deuda" por haber dañado o perdido un equipo
+                case 12: // El estudiante vino a pagar du "deuda" por haber dañado o perdido un equipo
                     StudentDebtLostDamagedEquipment();
                     BackToMenu();
                 break;
 
-                case "14": //Reporte para programar mantenimiento de un equipo
+                case 13: //Reporte para programar mantenimiento de un equipo
                     MaintenanceRegister(username);
                     BackToMenu();
                 break;
 
-                case "15": // Ver el historial de mantenimiento
+                case 14: // Ver el historial de mantenimiento
                     ViewMaintenanceHistory();
                     BackToMenu();
                 break;
-
-                case "16":// Cambiar la contraseña
+                case 15:// Cambiar la contraseña
                     var resultChangeStorerPsw = ChangeStorerPsw(username);
                     if(resultChangeStorerPsw.affected == 1)
                     {
@@ -96,7 +91,7 @@ partial class Program{
                     BackToMenu();
                 break;
 
-                case "17": // Salir de la cuenta
+                case 16: // Salir de la cuenta
                 return;
 
                 default:
@@ -107,14 +102,14 @@ partial class Program{
 
     static (int affected, string storerId) ChangeStorerPsw(string username)
     {
-        using(bd_storage db = new())
+        using(bd_storage db = new()) // starts connection with the database
         {
             int incorrect = 0;
             // checks if it exists
             IQueryable<Storer> storers = db.Storers
-            .Where(s => s.StorerId == EncryptPass(username));
+            .Where(s => s.StorerId == EncryptPass(username)); // finds the storer that logged in
                                     
-            if(storers is null || !storers.Any())
+            if(storers is null || !storers.Any()) // checks if the query returned any results
             {
                 WriteLine("Storer not found");
             }
@@ -126,20 +121,20 @@ partial class Program{
                     WriteLine();
                     WriteLine("Please enter your old password"); 
                     oldPassword = ReadNonEmptyLine();
-                    if(EncryptPass(oldPassword) != storers.First().Password)
+                    if(EncryptPass(oldPassword) != storers.First().Password) // validates old password before changing to a new one
                     {
                         incorrect++;
-                        if(incorrect >= 3) return (0,"0");
+                        if(incorrect >= 3) return (0,"0"); // if user has entered old password 3 times in a row, return to storer main menu
                         WriteLine($"Incorrect Password, please try again ({incorrect})");
                     }
                     else
                     {
                         string newPassword = "";
                         WriteLine("Please enter your new password");
-                        newPassword = EncryptPass(VerifyReadLengthString(8));
-                        storers.First().Password = newPassword;
-                        int affected = db.SaveChanges();
-                        return(affected, storers.First().StorerId);;
+                        newPassword = EncryptPass(VerifyReadLengthString(8)); // reads a new password and verifies it is at least 8 characters long
+                        storers.First().Password = newPassword; // saves the new password on the database field
+                        int affected = db.SaveChanges(); // saves changes on database
+                        return(affected, storers.First().StorerId); 
                     }
                 } while (true);                
             }
@@ -188,9 +183,9 @@ partial class Program{
         }   
     }
 
-    public static void StudentsusingEquipment()
+    public static void StudentsUsingEquipment()
     {   
-        string op = SubMenuStudentsusingEquipment();
+        string op = SubMenuStudentsUsingEquipment();
         switch(op)
         {
             case "a":
@@ -240,12 +235,12 @@ partial class Program{
         {
             case "a":
                 affected = RegisterNewMaintenance(username);
-                if(affected > 1)
+                if(affected > 1) // verifies if changes were made on the database
                 {
                     WriteLine($"{affected} rows were succesfully added");
                     WriteLine("Here's a list of all Maintenances Registers that haven't been made yet");
                     WriteLine();
-                    ViewMaintenanceNotMade();
+                    ViewMaintenanceNotMade(); // LIsts all pending maintenance registers
                 }
                 else
                 {
@@ -255,12 +250,12 @@ partial class Program{
 
             case "b":
                 affected = FinishMaintenanceReport(username);
-                if(affected > 1)
+                if(affected > 1) // verifies if changes were made on the database
                 {
-                    WriteLine($"{affected} rows were succesfully added");
+                    WriteLine($"{affected} rows were succesfully updated");
                     WriteLine("Here's a list of all still pending Maintenance Registers");
                     WriteLine();
-                    ViewMaintenanceNotMade();
+                    ViewMaintenanceNotMade(); // LIsts all pending maintenance registers
                 }
             break;
 
@@ -384,7 +379,7 @@ partial class Program{
         WriteLine();
 
         opi=0;
-        using(bd_storage db = new())
+        using(bd_storage db = new()) // creates connection with the database
         {
             while(opi==0)
             {   

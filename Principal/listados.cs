@@ -39,13 +39,13 @@ partial class Program
                     nip = "Pendiente";
                 }
 
-                var table = new ConsoleTable("Request Details", count);
+                var table = new ConsoleTable("NO. Request", count);
 
                 table.AddRow("RequestId", firstRequest.RequestId);
                 table.AddRow("StatusId", $"{firstRequest.Status.Value}");
                 table.AddRow("ProfessorNip", nip);
-                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.Hour}:{firstRequest.DispatchTime.Minute}");
-                table.AddRow("Return Time", $"{firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}");
+                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
+                table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
                 table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
                 table.AddRow("", "");
                 foreach (var r in group)
@@ -115,8 +115,8 @@ partial class Program
                 table.AddRow("RequestId", firstRequest.RequestId);
                 table.AddRow("StatusId", $"{firstRequest.Status.Value}");
                 table.AddRow("ProfessorNip", nip);
-                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.Hour}:{firstRequest.DispatchTime.Minute}");
-                table.AddRow("Return Time", $"{firstRequest.ReturnTime.Hour}:{firstRequest.ReturnTime.Minute}");
+                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
+                table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
                 table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
                 table.AddRow("", "");
                 foreach (var r in group)
@@ -187,7 +187,7 @@ partial class Program
             if (!requestDetails.Any() || requestDetails is null)
             {
                 WriteLine("No students found.");
-                SubMenuStudentsusingEquipment();
+                SubMenuStudentsUsingEquipment();
                 return;
             }
 
@@ -196,13 +196,15 @@ partial class Program
             {
 
                 i++;
-                WriteLine();
-                WriteLine($"Student {i} Information: ");
-                WriteLine("");
-                WriteLine($"Name: {use.Request.Student.Name}, Last Name: {use.Request.Student.LastNameP}, Group: {use.Request.Student.Group.Name}");
-                WriteLine($"Equipment Name: {use.Equipment.Name} ");
-                WriteLine($"Return Time: {use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
-                WriteLine($"Date: {use.RequestedDate.Date}");
+                string count = i + "";
+                var table = new ConsoleTable("Students Using Equipments", count);
+
+                table.AddRow("Student Information", $"{use.Request.Student.Name} {use.Request.Student.LastNameP} {use.Request.Student.Group.Name}");
+                table.AddRow("Equipment Name", use.Equipment.Name);
+                table.AddRow("Return Time", $"{use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
+                table.AddRow("Date:", use.RequestedDate.Date);
+
+                table.Write();
                 WriteLine();
 
             } 
@@ -223,7 +225,7 @@ partial class Program
             if (!requestDetails.Any())
             {
                 WriteLine("No students found with overdue equipment.");
-                SubMenuStudentsusingEquipment();
+                SubMenuStudentsUsingEquipment();
                 return;
             }
 
@@ -632,7 +634,8 @@ partial class Program
         {
             IQueryable<RequestDetail>? requestDetails = db.RequestDetails
             .Include( r => r.Equipment)
-            .Include( r => r.Request)
+            .Include( r => r.Request).
+            Include ( r => r.Status)
             .Where( s => s.Request.StudentId == Username);
 
             if (!requestDetails.Any() || requestDetails is null)
@@ -651,8 +654,7 @@ partial class Program
                 var firstRequest = group.First();
                 WriteLine();
                 WriteLine($"{i}. RequestId: {firstRequest.RequestId}");
-                WriteLine($"StatusId: {firstRequest.StatusId}");
-                WriteLine($"ProfessorNip: {firstRequest.ProfessorNip}");
+                WriteLine($"Status: {firstRequest.Status.Value}");
                 WriteLine($"DispatchTime: {firstRequest.DispatchTime}");
                 WriteLine($"ReturnTime: {firstRequest.ReturnTime}");
                 WriteLine($"RequestedDate: {firstRequest.RequestedDate}");
@@ -675,6 +677,7 @@ partial class Program
             IQueryable<PetitionDetail> petitionDetails = db.PetitionDetails
             .Include( r => r.Equipment)
             .Include( r => r.Petition)
+            .Include( s => s.Status)
             .Where( s => s.Petition.ProfessorId.Equals(EncryptPass(Username)));
 
             if (!petitionDetails.Any() || petitionDetails is null)
@@ -690,15 +693,24 @@ partial class Program
             foreach (var group in groupedPetitions)
             {
                 i++;
+                string count = i + "";
                 var firstRequest = group.First();
+                var table1 = new ConsoleTable("NO. Petition", count);
 
-                WriteLine($"PetitionId: {firstRequest.PetitionId}, PetitionDId: {firstRequest.PetitionDetailsId}, StatusId: {firstRequest.StatusId}, DispatchTime: {firstRequest.DispatchTime.TimeOfDay}, ReturnTime: {firstRequest.ReturnTime.TimeOfDay}, RequestedDate: {firstRequest.RequestedDate}");
-
-                WriteLine("Equipment:");
+                table1.AddRow("Petition Id", firstRequest.PetitionDetailsId);
+                table1.AddRow("StatusId", $"{firstRequest.Status.Value}");
+                table1.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
+                table1.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
+                table1.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
+                table1.AddRow("", "");
                 foreach (var r in group)
                 {
-                    WriteLine($"Equipment Name: {r.Equipment.Name}");
+                    // Adding an empty string as the first column to match the table structure
+                    table1.AddRow("Equipment Name", r.Equipment.Name);
                 }
+
+                table1.Write();
+                WriteLine();
             }
             return;
         } 
@@ -717,7 +729,7 @@ partial class Program
             if (!requestDetails.Any() || requestDetails is null)
             {
                 WriteLine("No results found.");
-                return;
+                MenuProfessors();
             }
 
             var groupedRequests = requestDetails.GroupBy(r => r.RequestId);
@@ -726,21 +738,36 @@ partial class Program
 
             foreach (var group in groupedRequests)
             {
-                i++;
+                 i++;
+                string count = i + "";
+                string nip = "";
                 var firstRequest = group.First();
+                if(firstRequest.ProfessorNip == 0)
+                {
+                    nip = "Pendiente";
+                }
 
-                WriteLine($"{i}. RequestId: {firstRequest.RequestId}, RequestDId: {firstRequest.RequestDetailsId}, StatusId: {firstRequest.StatusId}, ProfessorNip: {firstRequest.ProfessorNip}, DispatchTime: {firstRequest.DispatchTime.TimeOfDay}, ReturnTime: {firstRequest.ReturnTime.TimeOfDay}, RequestedDate: {firstRequest.RequestedDate}");
+                var table = new ConsoleTable("NO. Request", count);
 
-                WriteLine("Equipment:");
+                table.AddRow("RequestId", firstRequest.RequestId);
+                table.AddRow("StatusId", $"{firstRequest.Status.Value}");
+                table.AddRow("ProfessorNip", nip);
+                table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
+                table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
+                table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
+                table.AddRow("", "");
                 foreach (var r in group)
                 {
-                    WriteLine($"Equipment Name: {r.Equipment.Name}");
+                    // Adding an empty string as the first column to match the table structure
+                    table.AddRow("Equipment Name", r.Equipment.Name);
                 }
+
+                table.Write();
+                WriteLine();
             }
             return;
         } 
     }
-
 
     public static void LateReturningStudent(string Username)
     {
@@ -767,7 +794,8 @@ partial class Program
                 {
                     i++;
                     WriteLine($"{i}. Equipment Name: {use.Equipment?.Name} ");
-                    WriteLine($"Return Time: {use.ReturnTime.Hour}:{use.ReturnTime.Minute}");
+                    WriteLine($" Equipment ID: {use.Equipment?.EquipmentId} ");
+                    WriteLine($"Return Time: {use.ReturnTime.TimeOfDay}");
                     WriteLine($"Date: {use.RequestedDate}");
                 }
             }
@@ -866,19 +894,28 @@ partial class Program
             IQueryable<RequestDetail> requests = db.RequestDetails
                 .Include(r => r.Request).ThenInclude(s=>s.Student).ThenInclude(g=>g.Group)
                 .Include(e=>e.Equipment).Where(d =>d.Request.ProfessorId == EncryptPass(User));
-                WriteLine("| {0,-1} | {1,-15} | {2,-26} | {3,-10} | {4,-3} | {5,-22} | {6,-22} | {7, -15}",
-                        "Number of permission | "," Students Name | ","Students Paternal Last Name | ",
-                         "Students Maternal Last Name | ", "Students Group | ","Equipments Name | ", "Dispatch Time | ", "Return Time");
+                
+            if (requests == null || !requests.Any())
+                {
+                    WriteLine("There are no permissions");
+                    WriteLine();
+                    return;
+                }
+                var table = new ConsoleTable("NO. ", "Student Name", 
+                "Last Name P","Last Name M", "Group", 
+                "Equipment Name","Current Date", "Dispatch Time", "Return Time");
 
                 foreach (var element in requests)
                 {
-                    WriteLine("| {0,-1} | {1,-23} | {2,-12} | {3,-10} | {4,-3} | {5,-41} | {6,-22} | {7, -22}",
-                        i, element.Request.Student.Name,element.Request.Student.LastNameP, 
-                        element.Request.Student.LastNameM,element.Request.Student.Group.Name, element.Equipment.Name,
-                        element.DispatchTime,element.ReturnTime);
-                        i++;
+                    table.AddRow(i, element.Request.Student.Name, element.Request.Student.LastNameP, 
+                        element.Request.Student.LastNameM, element.Request.Student.Group.Name, element.Equipment.Name, $"{element.RequestedDate.Day}/{element.RequestedDate.Month}/{element.RequestedDate.Year}",
+                        element.DispatchTime.TimeOfDay, element.ReturnTime.TimeOfDay);
+
+                    i++;
                 }
+                Clear();
+                table.Write();
+                WriteLine();
         }
     }
-
 }

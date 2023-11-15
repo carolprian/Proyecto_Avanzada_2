@@ -16,10 +16,8 @@ partial class Program
             WriteLine("How would you like to see the information?");
             WriteLine("1. All history of maintenances ordered by programmed date");
             WriteLine("2. Search for one equipment maintenance history specifically");
-            WriteLine(
-                "3. All programmed maintenances that haven't been made yet (just programmed)"
-            );
-            WriteLine("4. exit");
+            WriteLine("3. All programmed maintenances that haven't been made yet (just programmed)");
+            WriteLine("4. Exit");
 
             op = TryParseStringaEntero(VerifyReadLengthStringExact(1));
             switch (op)

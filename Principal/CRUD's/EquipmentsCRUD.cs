@@ -9,10 +9,10 @@ partial class Program{
     // CREATE
     static (int affected, string EquipmentId) AddEquipment(string equipmentid, string name, short areaid, string description, int year, byte statusid, string controlnumber, string coordinatorid )
     {
-        using(bd_storage db = new())
+        using(bd_storage db = new()) // creates connects connection with the database
         {
-            if(db.Equipments is null){ return(0,"0");}
-            Equipment e = new() 
+            if(db.Equipments is null){ return(0,"0");} // checks if the table exists inside the database
+            Equipment e = new()  // creates a new object of Equipment type with all the previosuly entered values
             {
                 EquipmentId = equipmentid, 
                 Name = name,
@@ -21,12 +21,12 @@ partial class Program{
                 Year = year, 
                 StatusId = statusid, 
                 ControlNumber = controlnumber,
-                CoordinatorId = EncryptPass(coordinatorid)
+                CoordinatorId = EncryptPass(coordinatorid) // encrypts Coordinator ID
             };
 
-            EntityEntry<Equipment> entity = db.Equipments.Add(e);
-            int affected = db.SaveChanges();
-            return (affected, e.EquipmentId);
+            EntityEntry<Equipment> entity = db.Equipments.Add(e); // adds the object that was just created to Equipments table inside the database
+            int affected = db.SaveChanges(); // saves chenages that were made inside the database and stores the number of rows that were affected
+            return (affected, e.EquipmentId); // returns number of rows that were affected and the new Equipment ID
         }
     }
     public static void UpdateEquipment()
@@ -40,16 +40,16 @@ partial class Program{
             Write("Equipment ID : ");
             string equipmentID = VerifyReadMaxLengthString(15); // reads the equipment ID from the user
 
-            using(bd_storage db = new())
+            using(bd_storage db = new()) // creates connectio with the database
             {
-                // checks if it exists
+                // checks if it exists inside the Equipment table, if it does, it gets all values from other tables with any of the Euqipments
                 IQueryable<Equipment> equipments = db.Equipments
                 .Include(e => e.Area)
                 .Include(e => e.Status)
                 .Include(e => e.Coordinator)
                 .Where(e => e.EquipmentId == equipmentID);
                                         
-                if(equipments is null || !equipments.Any())
+                if(equipments is null || !equipments.Any()) // checks if the query returned anything
                 {
                     WriteLine("That equipment ID doesn't exist in the database");
                 }
@@ -65,7 +65,7 @@ partial class Program{
                         WriteLine($"4 - Description : {equipments.First().Description}");
                         WriteLine($"5 - Year of Fabrication : {equipments.First().Year}");
                         WriteLine($"6 - Status ID : {equipments.First().Status.Value}");                   
-                        // WriteLine($"7 - Coordinator ID : {equipments.First().Coordinator.CoordinatorId} - Name : {equipments.First().Coordinator.Name} {equipments.First().Coordinator.LastNameP} {equipments.First().Coordinator.LastNameM}");
+                        WriteLine($"7 - Coordinator ID : {Decrypt(equipments.First().Coordinator.CoordinatorId)} - Name : {equipments.First().Coordinator.Name} {equipments.First().Coordinator.LastNameP} {equipments.First().Coordinator.LastNameM}");
                         WriteLine();
                         WriteLine("Please choose a number between 1 and 7 to change the respective field");
                         WriteLine("Choose 8 if you are done editing the information");
@@ -73,8 +73,8 @@ partial class Program{
                         do
                         {
                             Write("Option : ");
-                            option = VerifyReadLengthStringExact(1);
-                            if(option != "1" && option != "2" && option != "3" && option != "4" && option != "5" && option != "6" && option != "7" && option != "8")
+                            option = VerifyReadLengthStringExact(1); // reads option from user
+                            if(option != "1" && option != "2" && option != "3" && option != "4" && option != "5" && option != "6" && option != "7" && option != "8") // verifies it is one of the valid options
                             {
                                 WriteLine("Please choose a number between 1 and 8");
                             }
@@ -89,9 +89,9 @@ partial class Program{
                         {
                             case "1": // change name
                                 WriteLine($"Please enter the new name for the Equipment {equipments.First().EquipmentId}");
-                                string newEquipmentName = VerifyReadMaxLengthString(40);
-                                equipments.First().Name = newEquipmentName;
-                                affected = db.SaveChanges();
+                                string newEquipmentName = VerifyReadMaxLengthString(40); // reads new name from the user and verifies it does not exceed 40 characters
+                                equipments.First().Name = newEquipmentName; // changes the name of the desired equipment previously chosen
+                                affected = db.SaveChanges(); // saves changes on the database and stores number of rows affected
                                 if(affected == 1)
                                 {
                                     WriteLine($"Name was successfully changed for ID : {equipments.First().EquipmentId}");
@@ -104,10 +104,10 @@ partial class Program{
                                 do
                                 {
                                     WriteLine($"Please enter the new Control Number for the Equipment {equipments.First().EquipmentId}");
-                                    controlnumber = VerifyReadMaxLengthString(20);
-                                    IQueryable<Equipment> repeatedEquipment = db.Equipments.Where(e => e.ControlNumber == controlnumber);
+                                    controlnumber = VerifyReadMaxLengthString(20); // reads new control number from the user and verifies it does not exceed 20 characters
+                                    IQueryable<Equipment> repeatedEquipment = db.Equipments.Where(e => e.ControlNumber == controlnumber); // checks the controll numbe does not already exist on any of the other equipments
                                     
-                                    if(repeatedEquipment is null || !repeatedEquipment.Any())
+                                    if(repeatedEquipment is null || !repeatedEquipment.Any()) //  checks if the query returned anything, if it did, user must enter another control number that is not on the database
                                     {
                                         repeated = false;
                                     }
@@ -116,8 +116,8 @@ partial class Program{
                                         WriteLine("That control number is already in use, try again.");
                                     }                                    
                                 } while (repeated);
-                                equipments.First().ControlNumber = controlnumber;
-                                affected = db.SaveChanges();
+                                equipments.First().ControlNumber = controlnumber; // changes the control numbber of the desired equipment previously chosen
+                                affected = db.SaveChanges(); // saves changes on the database and stores number of rows affected
                                 if(affected == 1)
                                 {
                                     WriteLine($"Control Number was successfully changed for ID : {equipments.First().EquipmentId}");
@@ -127,10 +127,10 @@ partial class Program{
                             case "3": // change area id
                                 WriteLine("Here's a list of the available areas : ");
                                 short areaid=-1;                       
-                                int areasCount = ListAreas();
+                                int areasCount = ListAreas(); // lists all existing equipment areas
                                 WriteLine();
                                 WriteLine("Please choose the area of the equipment:");
-                                while(areaid <= 0 || areaid > areasCount )
+                                while(areaid <= 0 || areaid > areasCount ) // reads option of the user and asks him again if it isnt in the desired format or if it isnt an option from the list
                                 {
                                     try
                                     {   
@@ -148,8 +148,8 @@ partial class Program{
                                         areaid = -1;
                                     }
                                 }
-                                equipments.First().AreaId = areaid;
-                                affected = db.SaveChanges();
+                                equipments.First().AreaId = areaid; // changes the area of the desired equipment previously chosen
+                                affected = db.SaveChanges(); // saves changes on the database and stores number of rows affected
                                 if(affected == 1)
                                 {
                                     WriteLine($"Area was successfully changed for ID : {equipments.First().EquipmentId}");
@@ -158,9 +158,9 @@ partial class Program{
 
                             case "4": // change description
                                 WriteLine($"Please enter the new description for the Equipment {equipments.First().EquipmentId}");
-                                string newEquipmentDesc = VerifyReadMaxLengthString(200);
-                                equipments.First().Description = newEquipmentDesc;
-                                affected = db.SaveChanges();
+                                string newEquipmentDesc = VerifyReadMaxLengthString(200); // reads the new description from the user, verifies it does not exceedd 200 characters
+                                equipments.First().Description = newEquipmentDesc; // changes the new description of the previously chosen equipment
+                                affected = db.SaveChanges(); // save changes on the database and stores number of rows affected
                                 if(affected == 1)
                                 {
                                     WriteLine($"Description was successfully changed for ID : {equipments.First().EquipmentId}");
@@ -169,9 +169,9 @@ partial class Program{
 
                             case "5": //change year of fabrication
                                 WriteLine($"Please enter the new Year of Fabrication of the Equipment {equipments.First().EquipmentId}");
-                                int year = TryParseStringaEntero(ReadNonEmptyLine());
-                                equipments.First().Year = year;
-                                affected = db.SaveChanges();
+                                int year = TryParseStringaEntero(ReadNonEmptyLine()); // reads an integer number from the user
+                                equipments.First().Year = year; // changes the year of fabrication of the previously chosen equipment
+                                affected = db.SaveChanges(); // sabes changes on the database and stores number of rows affected
                                 if(affected == 1)
                                 {
                                     WriteLine($"Year of Fabrication was successfully changed for ID : {equipments.First().EquipmentId}");
@@ -180,11 +180,11 @@ partial class Program{
 
                             case "6": // change status
                                 WriteLine("Here's a list of the possible Equipment Statuses");
-                                int statusCount = ListStatus();
+                                int statusCount = ListStatus(); // lists all existing statuses
                                 byte statusid = 0;
                                 WriteLine();
                                 WriteLine("Please choose the current status of the equipment:");
-                                while(statusid == 0 || statusid > statusCount)
+                                while(statusid == 0 || statusid > statusCount) // reads a valid status if from the user
                                 {
                                     try
                                     {
@@ -202,8 +202,8 @@ partial class Program{
                                         statusid = 0;
                                     }
                                 }
-                                equipments.First().StatusId = statusid;
-                                affected = db.SaveChanges();
+                                equipments.First().StatusId = statusid; // changes the status of the chosen equipment
+                                affected = db.SaveChanges(); // saves changes in the database and stores number of rows affected
                                 if(affected == 1)
                                 {
                                     WriteLine($"Status was successfully changed for ID : {equipments.First().EquipmentId}");
@@ -212,17 +212,17 @@ partial class Program{
 
                             case "7": // change coordinator
                                 WriteLine("Here's a list of all coordinators:");
-                                string[]? coordinators = ListCoordinators();
+                                string[]? coordinators = ListCoordinators(); // lists all existing coordinators
                                 WriteLine();
                                 WriteLine("Please choose the coordinator in charge of the equipment:");
-                                int coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+                                int coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1)); // reads the a valid number from the corrdinators list
                                 string coordinatorid = "";
                                 if(coordinators is not null)
                                 {
                                     coordinatorid = coordinators[coordid - 1];
                                 }
-                                equipments.First().CoordinatorId = coordinatorid;
-                                affected = db.SaveChanges();
+                                equipments.First().CoordinatorId = coordinatorid; // changes the coordinator id of the desired equipment
+                                affected = db.SaveChanges(); // saves changes made on the database
                                 if(affected == 1)
                                 {
                                     WriteLine($"Coordinator in charge was successfully changed for ID : {equipments.First().EquipmentId}");
@@ -230,7 +230,7 @@ partial class Program{
                                 break;
 
                             case "8": // exit equipment info editor
-                            Console.Clear();
+                            Console.Clear(); // clears everyything on console
                             return;
 
                             default:
@@ -246,9 +246,7 @@ partial class Program{
 
     public static void DeleteEquipment()
     {
-        //WriteLine("Here's a list of all registered equipment");
         WriteLine("Please enter the ID of the equipment you wish to change");
-        //ViewAllEquipments(1);
         do
         {
             WriteLine();
@@ -265,11 +263,11 @@ partial class Program{
                 {
                     WriteLine("That equipment ID doesn't exist in the database, try again");
                 }
-                else
+                else // if it does exist, it removes it from Equipments table
                 {
                     db.Equipments.Remove(equipments.First());
-                    int affected = db.SaveChanges();
-                    if(affected == 1)
+                    int affected = db.SaveChanges(); // saves changes on the database
+                    if(affected == 1) // verifies if it was successfully deleted
                     {
                         WriteLine("Equipment successfully deleted");
                     }
@@ -283,106 +281,76 @@ partial class Program{
         } while (true);            
     }
 
-    public static void ViewAllEquipments(int op)
+    public static void ViewAllEquipments()
     {
-        if (op==1){
-            using( bd_storage db = new()) // connection to the database bd_storage.db
-            {
-                // query to select all the equipments ordered by area
-                IQueryable<Equipment>? equipments = db.Equipments
-                .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator).OrderBy(e=>e.AreaId);
-                
-                if((equipments is null) || !equipments.Any()) // check if the list is empty
-                {
-                    WriteLine("There are no equipments found");
-                }
-                else 
-                { // if the list is not empty
-
-                    int countTotal = equipments.Count(); // save the total quantity of equipments in the inventory
-                    bool continueListing = true;
-                    int offset = 0, batchS = 20; // that starts showing from the first equipments, until the first 20
-                    int pages = countTotal / batchS; // quantity of pages available
-                    if(countTotal/batchS != 0){pages+=1;} 
-                    int pp=1; // initial page
-                    int i=0;
-                    while (continueListing)
-                    {
-                        var equips = equipments.Skip(offset).Take(batchS); // new list of a range of 20 equipments, each time the list of equipments change                      
-                        // header of the format table
-                        WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
-                            "EquipmentId", "Equipment Name", "Year", "Status");
-                        WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
-                        
-                        foreach( var e in equips)
-                            { // printing each equipments register in general
-                                WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
-                                e.EquipmentId, e.Name, e.Year, e.Status?.Value);
-                            
-                            }
-                        //printing the page number and the total count of equipments in the inventory at the end of the table
-                        WriteLine();
-                        WriteLine($"Total:   {countTotal} ");
-                        WriteLine($"{pp} / {pages}");
-                        WriteLine("");
-                        // start the asking to see all the information about one equipment ID in specific
-                        WriteLine("Do you want to see more information about any of the equipments?(y/n)");
-                        string read = VerifyReadLengthStringExact(1);
-                        if(read == "y" || read =="Y") // if user wants to see the info
-                        {
-                            WriteLine("Provide the equipment ID you want to see more info:");
-                            read = VerifyReadMaxLengthString(15); // insert and verify maximum 15 characters of equipment id to look for
-                            int found = ShowEquipmentBylookigForEquipmentId(read); // function that looks for the equipment ID and shows it
-                            if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );} // if the id doesn't exist
-                            
-                        }
-                        WriteLine("Press the left or right arrow key to see more results (press 'Enter' to exit)...");
-                        if(ReadKey(intercept: true).Key == ConsoleKey.LeftArrow) // go to the last page
-                        {
-                            offset = offset - batchS; // show the last 20 equipments
-                            if(pp>1){
-                                pp--; // return one page count
-                            }
-                            Clear();
-
-                        }
-                        if(ReadKey(intercept: true).Key == ConsoleKey.RightArrow) // go to the next page
-                        {
-                            offset = offset + batchS; // show the next 20 equipments
-                            if(pp < pages) // check that the pages count shown is not bigger than the actual total pages
-                            {
-                                pp ++; // go to the next page count
-                            }
-                            Clear();
-                        }
-                        if(ReadKey(intercept: true).Key == ConsoleKey.Enter) // Exit the View ALL Equipments
-                        {
-                            continueListing = false;
-                            Clear();
-                        }
-                    }
-                    }
-            }
-        } else 
+        using( bd_storage db = new())
         {
-            using( bd_storage db = new())
+            IQueryable<Equipment>? equipments = db.Equipments
+            .Include(e => e.Area).Include(e => e.Status).Include(e => e.Coordinator).OrderBy(e=>e.AreaId);
+
+            if((equipments is null) || !equipments.Any())
             {
-                IQueryable<Equipment>? equipments = db.Equipments
-                .Include(e => e.Status).Where(s => s.Status.StatusId==1 || s.Status.StatusId==2);
+                WriteLine("There are no quipments found");
+            } else {
+                int countTotal = equipments.Count();
+                bool continueListing = true;
+                int offset = 0, batchS = 20;
+                int pages = countTotal / batchS;
+                if(countTotal/batchS != 0){pages+=1;}
+                int pp=1;
+                int i=0;
+                while (continueListing)
+                    {
+                var equips = equipments.Skip(offset).Take(batchS);
+                    WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                        "EquipmentId", "Equipment Name", "Year", "Status");
+                    WriteLine("-------------------------------------------------------------------------------------------------------------------------------------");
+                    
+                    foreach( var e in equips)
+                        {
+                            WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                             e.EquipmentId, e.Name, e.Year, e.Status?.Value);
+                        }
+                
+                    WriteLine();
+                    WriteLine($"Total:   {countTotal} ");
+                    WriteLine($"{pp} / {pages}");
+                    WriteLine("");
 
-                if((equipments is null) || !equipments.Any())
-                {
-                    WriteLine("There are no status found");
-                }
-                int i=1;
-                WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3}", "Index", "EquipmentId", "Equipment Name", "Description");
-                WriteLine("-------------------------------------------------------------------------------");
+                    WriteLine("Do you want to see more information about any of the equipments?(y/n)");
+                    string read = VerifyReadLengthStringExact(1);
+                    if(read == "y" || read =="Y")
+                    {
+                        WriteLine("Provide the equipment ID you want to see more info:");
+                        read = VerifyReadMaxLengthString(15);
+                        int found = ShowEquipmentBylookigForEquipmentId(read);   
+                        if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );}
+                        
+                    }
+                    WriteLine("Press the left or right arrow key to see more results (press 'q' to exit)...");
+                    if(ReadKey(intercept: true).Key == ConsoleKey.LeftArrow)
+                    {
+                        offset = offset - batchS;
+                        if(pp>1){
+                            pp--;
+                        }
+                        Console.Clear();
 
-                foreach (var e in equipments)
-                {
-                    WriteLine("| {0,-5} | {1,-15} | {2,-27} | {3}",
-                        i, e.EquipmentId, e.Name, e.Description);
-                    i++;
+                    }
+                    if(ReadKey(intercept: true).Key == ConsoleKey.RightArrow)
+                    {
+                        offset = offset + batchS;
+                        if(pp < pages)
+                        {
+                        pp ++;
+                        }
+                        Console.Clear();
+                    }
+                    if(ReadKey(intercept: true).Key == ConsoleKey.Q)
+                    {
+                        continueListing = false;
+                        Console.Clear();
+                    }
                 }
             }
         }
@@ -437,35 +405,32 @@ partial class Program{
     {
         using(bd_storage db = new())  // connection to the database
         {
-            // query that has the result of all registers in the table Equipments that has an EquipmentID that matches the parameter of the function
-            IQueryable<Equipment>  Equipments = db.Equipments
-                .Include(e => e.Area)
-                .Include(e => e.Status)
-                .Include(e => e.Coordinator)
-                .Where(e=>e.EquipmentId.Equals(Id));
-                //checking that the results of the query are not null
-                if(Equipments is not null)
+        IQueryable<Equipment>  equipms = db.Equipments
+            .Include(e => e.Area)
+            .Include(e => e.Status)
+            .Include(e => e.Coordinator)
+            .Where(e=>e.EquipmentId.Equals(Id));
+
+            if(equipms is not null)
+            {
+                foreach(var equip in equipms)
                 {
-                    //print all the information of each equipment
-                    foreach(var Equipment in Equipments)
-                    {
-                        WriteLine();
-                        WriteLine($"Equipment ID:  {Equipment.EquipmentId}");
-                        WriteLine($"Equipment Name:  {Equipment.Name}");
-                        WriteLine($"Equipment Area:  {Equipment.Area?.Name}");
-                        WriteLine($"Equipment Description:  {Equipment.Description}");
-                        WriteLine($"Equipment Year of Fabrication:  {Equipment.Year}");
-                        WriteLine($"Equipment Status:  {Equipment.Status?.Value}");
-                        WriteLine($"Equipment Control Number: {Equipment.ControlNumber}");
-                        WriteLine();
-                    }
-                    return Equipments.Count();
+                    WriteLine($"Equipment ID:  {equip.EquipmentId}");
+                    WriteLine($"Equipment Name:  {equip.Name}");
+                    WriteLine($"Equipment Area:  {equip.Area?.Name}");
+                    WriteLine($"Equipment Description:  {equip.Description}");
+                    WriteLine($"Equipment Year of Fabrication:  {equip.Year}");
+                    WriteLine($"Equipment Status:  {equip.Status?.Value}");
+                    WriteLine($"Equipment Control Number: {equip.ControlNumber}");
+                    WriteLine($"Equipment Coordinator:  {equip.Coordinator?.Name} {equip.Coordinator?.LastNameP} {equip.Coordinator?.LastNameM}");
                 }
-                else
-                {
-                    return 0;
-                }
+                return equipms.Count();
             }
+            else
+            {
+                return 0;
+            }
+        }
     }
 
     public static void ViewAllEquipmentsForMaintenance()
