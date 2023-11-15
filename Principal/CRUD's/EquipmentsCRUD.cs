@@ -64,8 +64,8 @@ partial class Program{
                         WriteLine($"3 - Area ID : {equipments.First().Area?.Name}");
                         WriteLine($"4 - Description : {equipments.First().Description}");
                         WriteLine($"5 - Year of Fabrication : {equipments.First().Year}");
-                        WriteLine($"6 - Status ID : {equipments.First().Status.Value}");                   
-                        WriteLine($"7 - Coordinator ID : {Decrypt(equipments.First().Coordinator.CoordinatorId)} - Name : {equipments.First().Coordinator.Name} {equipments.First().Coordinator.LastNameP} {equipments.First().Coordinator.LastNameM}");
+                        WriteLine($"6 - Status ID : {equipments.First().Status?.Value}");                   
+                        WriteLine($"7 - Coordinator ID : {Decrypt(equipments.First().CoordinatorId)} - Name : {equipments.First().Coordinator?.Name} {equipments.First().Coordinator?.LastNameP} {equipments.First().Coordinator?.LastNameM}");
                         WriteLine();
                         WriteLine("Please choose a number between 1 and 7 to change the respective field");
                         WriteLine("Choose 8 if you are done editing the information");
@@ -214,14 +214,19 @@ partial class Program{
                                 WriteLine("Here's a list of all coordinators:");
                                 string[]? coordinators = ListCoordinators(); // lists all existing coordinators
                                 WriteLine();
-                                WriteLine("Please choose the coordinator in charge of the equipment:");
-                                int coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1)); // reads the a valid number from the corrdinators list
+                                
+                                int coordid = 0;
+                                while(coordinators?.Length < coordid || coordid < 1)
+                                {
+                                    WriteLine("Please choose the coordinator in charge of the equipment:");
+                                    coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+                                }
                                 string coordinatorid = "";
                                 if(coordinators is not null)
                                 {
                                     coordinatorid = coordinators[coordid - 1];
                                 }
-                                equipments.First().CoordinatorId = coordinatorid; // changes the coordinator id of the desired equipment
+                                equipments.First().CoordinatorId = EncryptPass(coordinatorid); // changes the coordinator id of the desired equipment
                                 affected = db.SaveChanges(); // saves changes made on the database
                                 if(affected == 1)
                                 {

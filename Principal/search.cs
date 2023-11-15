@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using AutoGens;
 using System.Linq;
+using ConsoleTables;
 partial class Program
 {
     public static void SearchStudentGeneral()
@@ -21,12 +22,13 @@ partial class Program
                 WriteLine("No student found");
                 // Se vuelve a mandar al menu
                 SubMenuStudentsHistory();
-            } else
+            } 
+            else
             {
                 // Se muestra la información encontrada del estudiante y los permisos que ha solicitado
                 WriteLine("Student Information: ");
                 
-                WriteLine($"Name: {student.Name}, Paternal Last Name: {student.LastNameP}, Maternal Last Name: {student.LastNameM}, Group: {student.Group.Name}");
+                WriteLine($"Name: {student.Name} {student.LastNameP} {student.LastNameM}, Group: {student.Group.Name}");
                 // Se realiza una lista de los permisos que ha solicitado el estudiante
                 var requests = db.Requests.Where(r => r.StudentId == student.StudentId).ToList();
                 // Si no hay se manda de nuevo al menu y se muestra el mensaje explicativo
@@ -39,6 +41,7 @@ partial class Program
                 List<int> requestIds = requests.Select(r => r.RequestId).ToList();
                 
                 IQueryable<RequestDetail> RequestDetails = db.RequestDetails
+                .Include(s=>s.Status)
                 .Where(rd => requestIds.Contains((int)rd.RequestId))
                 .Include(rd => rd.Equipment);
                 // Agrupa los Request Details por su Request Id
@@ -53,18 +56,21 @@ partial class Program
                     i++;
                     var firstRequest = group.First();
 
-                    WriteLine($"Request {i}: ");
-                    WriteLine($"Request Detail: {firstRequest.RequestId}");
-                    WriteLine($"Dispatch Time: {firstRequest.DispatchTime}");
-                    WriteLine($"Return Time: {firstRequest.ReturnTime}");
-                    WriteLine($"Requested Date: {firstRequest.RequestedDate}");
-                    WriteLine($"Current Date: {firstRequest.CurrentDate}");
+                    var table = new ConsoleTable("NO. Request", i.ToString());
 
-                    WriteLine("Equipment:");
+                    table.AddRow("Request ID", firstRequest.RequestId);
+                    table.AddRow("Student", $"{firstRequest.Request?.Student?.Name} {firstRequest.Request?.Student?.LastNameP} {firstRequest.Request?.Student?.LastNameM}" );
+                    table.AddRow("StatusId", $"{firstRequest.Status?.Value}");
+                    table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
+                    table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");
+                    table.AddRow("RequestedDate", $"{firstRequest.RequestedDate.Day}/{firstRequest.RequestedDate.Month}/{firstRequest.RequestedDate.Year}");
+                    table.AddRow("Format Written Date", $"{firstRequest.CurrentDate.Day} {firstRequest.CurrentDate.Month} {firstRequest.CurrentDate.Year}");
                     foreach (var r in group)
                     {
-                        WriteLine($"Equipment Name: {r.Equipment.Name}");
+                        table.AddRow("Equipment", $"{r.EquipmentId} - {r.Equipment.Name}");
                     }
+                    table.Write();
+
                 } 
             }
         }

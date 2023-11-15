@@ -95,10 +95,10 @@ partial class Program
 
     public static string VerifyReadLengthStringExact(int Characters) // verifies a string entered by user has x amount of characters
     {
-        string text;
+        string text = "";
         do
         {
-            text = ReadLine(); // reads a string from the user
+            text = ReadNonEmptyLine(); // reads a string from the user
             if (text.Length < Characters || text.Length > Characters || string.IsNullOrEmpty(text)) // checks if the string has the specified amount of characters and verifies it isnt null or an empty string
             {
                 WriteLine($"The input must have {Characters} characters. Try again:");
@@ -112,7 +112,7 @@ partial class Program
         string? text;
         do
         {
-            text = ReadLine(); // reads a string from the user
+            text = ReadNonEmptyLine(); // reads a string from the user
             if (text.Length < Characters) //  checks if the string has at least the sepcified amount of characters
             {
                 WriteLine($"The input must have minimum {Characters} caracteres. Try again:");
@@ -126,7 +126,7 @@ partial class Program
         string? text;
         do
         {
-            text = ReadLine();  // reads a string from the user
+            text = ReadNonEmptyLine();  // reads a string from the user
             if (text.Length > Characters || string.IsNullOrEmpty(text)) // checks the string is not emptyy or null and that it does not exceed the specified amount of characters
             {
                 WriteLine($"The input must have maximum {Characters} caracteres. Try again:");

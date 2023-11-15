@@ -1,3 +1,4 @@
+
 using AutoGens;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
@@ -645,7 +646,7 @@ partial class Program
                     var SingularRequestDetail = db.RequestDetails
                     .Where(rD => rD.RequestDetailsId == EquipId);
                     // Cambiar el equipo en la tabla de la base de datos
-                    SingularRequestDetail.First().EquipmentId = UpdatedEquipments.EquipmentsId.First();
+                    SingularRequestDetail.First().EquipmentId = UpdatedEquipments.EquipmentsId.First(); // cambie aca quité UpdatedEquipments de ambos
                     // Cambiar el estado del equipo conforme al nuevo equipo seleccionado
                     SingularRequestDetail.First().StatusId = UpdatedEquipments.StatusEquipments.First();
                     Affected = db.SaveChanges();
