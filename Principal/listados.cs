@@ -254,7 +254,6 @@ partial class Program
         using( bd_storage db = new())
         {
         IQueryable<Area> areas = db.Areas;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((areas is null) || !areas.Any())
             {
                 WriteLine("There are no areas found");
@@ -274,7 +273,6 @@ partial class Program
         using( bd_storage db = new())
         {
         IQueryable<Status> status = db.Statuses;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((status is null) || !status.Any())
             {
                 WriteLine("There are no status found");
@@ -295,7 +293,6 @@ partial class Program
         using (bd_storage db = new())
         {
             IQueryable<Coordinator> coordinators = db.Coordinators;
-            db.ChangeTracker.LazyLoadingEnabled = false;
             if ((coordinators is null) || !coordinators.Any())
             {
                 WriteLine("There are no registered coordinators found");
