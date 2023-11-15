@@ -11,11 +11,10 @@ partial class Program
         {
             WriteLine("1. List all professors");
             WriteLine("2. Update a professor");
-            WriteLine("3. Remove a professor");
-            WriteLine("4. Exit");
+            WriteLine("3. Exit");
             op = VerifyReadLengthStringExact(1);
 
-            if (op == "1" || op == "2" || op == "3" || op == "4")
+            if (op == "1" || op == "2" || op == "3")
             {
                 b = true;
             }
@@ -29,9 +28,6 @@ partial class Program
                     UpdateProfessor();
                     break;
                 case "3":
-                    RemoveProfessor();
-                    break;
-                case "4":
                     // Exit
                     return;
                 default:
@@ -143,36 +139,5 @@ partial class Program
         Write($"Write the new {fieldName}: ");
         string newValue = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
         updateAction(newValue);
-    }
-
-
-    private static void RemoveProfessor()
-    {
-        WriteLine("Enter the ID of the professor you want to remove:");
-        string professorId = VerifyReadMaxLengthString(10);
-
-        using (bd_storage db = new())
-        {
-            var professor = db.Professors
-                .FirstOrDefault(p => p.ProfessorId.Equals(professorId));
-
-            if (professor == null)
-            {
-                WriteLine("Professor with that ID is not registered");
-            }
-            else
-            {
-                db.Professors.Remove(professor);
-                int affected = db.SaveChanges();
-                if (affected == 0)
-                {
-                    WriteLine("The professor was not removed, sorry");
-                }
-                else
-                {
-                    WriteLine("The professor was removed successfully");
-                }
-            }
-        }
     }
 }

@@ -246,9 +246,7 @@ partial class Program{
 
     public static void DeleteEquipment()
     {
-        //WriteLine("Here's a list of all registered equipment");
         WriteLine("Please enter the ID of the equipment you wish to change");
-        //ViewAllEquipments(1);
         do
         {
             WriteLine();
@@ -292,7 +290,7 @@ partial class Program{
 
             if((equipments is null) || !equipments.Any())
             {
-                WriteLine("There are no status found");
+                WriteLine("There are no quipments found");
             } else {
                 int countTotal = equipments.Count();
                 bool continueListing = true;
@@ -305,13 +303,12 @@ partial class Program{
                 var equips = equipments.Skip(offset).Take(batchS);
                     WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
                         "EquipmentId", "Equipment Name", "Year", "Status");
-                    WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+                    WriteLine("-------------------------------------------------------------------------------------------------------------------------------------");
                     
                     foreach( var e in equips)
                         {
                             WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
                              e.EquipmentId, e.Name, e.Year, e.Status?.Value);
-                        
                         }
                 
                     WriteLine();

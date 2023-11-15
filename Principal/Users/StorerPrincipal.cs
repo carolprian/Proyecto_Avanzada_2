@@ -27,67 +27,62 @@ partial class Program{
                     ViewAllEquipments();
                     BackToMenu();
                 break;
-
-                case 4: // Eliminar un equipo
-                    DeleteEquipment();
-                break;
-
-                case 5:  // Buscar un equipo ya sea por su nombre o por su ID
+                case 4:  // Buscar un equipo ya sea por su nombre o por su ID
                     //Aux porque es un auxiliar para hacer el formulario y validacion y ya despues llamar al CRUD
                     AuxSearchEquipment();
                     BackToMenu();
                 break;
 
-                case 6: // Lista de todos los Request que YA hayan sido aceptados por un maestro
+                case 5: // Lista de todos los Request que YA hayan sido aceptados por un maestro
                     ListEquipmentsRequests();
                     BackToMenu();
                 break;
 
-                case 7: // Lista de los equipos de los Request de mañana
+                case 6: // Lista de los equipos de los Request de mañana
                     TomorrowsEquipmentRequests();
                     BackToMenu();
                 break;
 
-                case 8: // Submenu para poder ver a todos los estudiantes, buscar uno en especifico o ver los que han roto o dañado
+                case 7: // Submenu para poder ver a todos los estudiantes, buscar uno en especifico o ver los que han roto o dañado
                     StudentsHistory();   
                     BackToMenu();       
                 break;
 
-                case 9: // Submenu para poder ver a todos los estudiantes que esten usando un material, buscar uno en especifico o los que esten tarde de entregar
+                case 8: // Submenu para poder ver a todos los estudiantes que esten usando un material, buscar uno en especifico o los que esten tarde de entregar
                     StudentsUsingEquipment();
                     BackToMenu();
                 break;
 
-                case 10: // Entrega del material de parte de la almacenista
+                case 9: // Entrega del material de parte de la almacenista
                     DeliveryEquipment(); 
                     BackToMenu();
                 break;
 
-                case 11: //Regreso del material por parte del alumno
+                case 10: //Regreso del material por parte del alumno
                     ReturnEquipment();
                     BackToMenu();
                 break;
 
-                case 12: //Hacer un reporte de material dañado o perdido
+                case 11: //Hacer un reporte de material dañado o perdido
                     DamagedLostReportInit();
                     BackToMenu();
                 break;
 
-                case 13: // El estudiante vino a pagar du "deuda" por haber dañado o perdido un equipo
+                case 12: // El estudiante vino a pagar du "deuda" por haber dañado o perdido un equipo
                     StudentDebtLostDamagedEquipment();
                     BackToMenu();
                 break;
 
-                case 14: //Reporte para programar mantenimiento de un equipo
+                case 13: //Reporte para programar mantenimiento de un equipo
                     MaintenanceRegister(username);
                     BackToMenu();
                 break;
 
-                case 15: // Ver el historial de mantenimiento
+                case 14: // Ver el historial de mantenimiento
                     ViewMaintenanceHistory();
                     BackToMenu();
                 break;
-                case 16:// Cambiar la contraseña
+                case 15:// Cambiar la contraseña
                     var resultChangeStorerPsw = ChangeStorerPsw(username);
                     if(resultChangeStorerPsw.affected == 1)
                     {
@@ -96,7 +91,7 @@ partial class Program{
                     BackToMenu();
                 break;
 
-                case 17: // Salir de la cuenta
+                case 16: // Salir de la cuenta
                 return;
 
                 default:

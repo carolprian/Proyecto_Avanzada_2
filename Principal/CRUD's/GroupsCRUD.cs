@@ -11,11 +11,10 @@ partial class Program
         {
             WriteLine("1. List all groups");
             WriteLine("2. Update a group");
-            WriteLine("3. Remove a group");
-            WriteLine("4. Exit");
+            WriteLine("3. Exit");
             op = VerifyReadLengthStringExact(1);
 
-            if (op == "1" || op == "2" || op == "3" || op == "4")
+            if (op == "1" || op == "2" || op == "3")
             {
                 b = true;
             }
@@ -29,9 +28,6 @@ partial class Program
                     UpdateGroup();
                     break;
                 case "3":
-                    RemoveGroup();
-                    break;
-                case "4":
                     // Exit
                     return;
                 default:
@@ -104,38 +100,6 @@ partial class Program
                 else
                 {
                     WriteLine("Update was not successful, sorry.");
-                }
-            }
-        }
-    }
-
-    private static void RemoveGroup()
-    {
-        WriteLine("Enter the ID of the group you want to remove:");
-        string? groupIdString = ReadLine();
-
-        int groupId = TryParseStringaEntero(groupIdString);
-
-        using (bd_storage db = new())
-        {
-            var group = db.Groups
-                .FirstOrDefault(g => g.GroupId == groupId);
-
-            if (group == null)
-            {
-                WriteLine("Group with that ID is not registered");
-            }
-            else
-            {
-                db.Groups.Remove(group);
-                int affected = db.SaveChanges();
-                if (affected == 0)
-                {
-                    WriteLine("The group was not removed, sorry");
-                }
-                else
-                {
-                    WriteLine("The group was removed successfully");
                 }
             }
         }

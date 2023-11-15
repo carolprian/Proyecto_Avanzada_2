@@ -1,18 +1,18 @@
 using System.Globalization;
-using System.Security.Cryptography;
+using System.Security.Cryptography; // for encryption and decryption
 using System.Text;
 
 
 partial class Program
 {
-    public static string VerifyAlphabeticInput()
+    public static string VerifyAlphabeticInput() // checks all characters on a string entered by user are alphabetic (letters)
     {
         string? input;
         do
         {
-            input = ReadLine();
+            input = ReadNonEmptyLine(); // reads line from user
 
-            if (!IsAlphabetic(input))
+            if (!IsAlphabetic(input)) // checks if the string is alphabetic
             {
                 WriteLine("Invalid input. Please enter alphabetic characters and ensure it's not empty. Try again:");
             }
@@ -22,25 +22,28 @@ partial class Program
         return input;
     }
 
-    public static string VerifyAlphanumericInput(string input)
+    public static string VerifyAlphanumericInput(string input) // verifies a string is alphanumeric and does not contain special characters
     {
-        while (string.IsNullOrWhiteSpace(input) || !input.All(char.IsLetterOrDigit))
+        while (string.IsNullOrWhiteSpace(input) || !input.All(char.IsLetterOrDigit)) // checks it is not an empty line and that it is only letters and digits
         {
             WriteLine("Invalid input. Please enter a valid alphanumeric string without spaces or special characters:");
-            input = ReadLine();
+            input = ReadLine(); // reads line again if necessary
         }
 
         return input;
     }
 
-    public static bool IsAlphabetic(string? input)
+
+
+
+    public static bool IsAlphabetic(string? input) // checks if the string is alphabetic
     {
-        if (string.IsNullOrEmpty(input))
+        if (string.IsNullOrEmpty(input)) // checks it isnt an empty line
         {
             return false;
         }
 
-        foreach (char c in input)
+        foreach (char c in input) // verifies if each char is a letter of the alphabet
         {
             if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
             {
@@ -51,13 +54,13 @@ partial class Program
         return true;
     }
 
-    public static string VerifyNumericInput()
+    public static string VerifyNumericInput() // checks if a string is only numbers
     {
         string? text;
         do
         {
-            text = ReadNonEmptyLine();
-            if (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || (text.Length < 8 || text.Length > 10))
+            text = ReadNonEmptyLine();  // reads line in an infinite loop until the string is only numbers
+            if (string.IsNullOrEmpty(text) || !text.All(char.IsDigit) || (text.Length < 8 || text.Length > 10)) // verifies string is not empty an it is inlly numbers
             {
                 WriteLine("Invalid input. Please enter numeric characters only, between 8 and 10 digits. Try again:");
             }
@@ -89,70 +92,71 @@ partial class Program
             }
         }
     }
-    public static string VerifyReadLengthStringExact(int Characters)
+
+    public static string VerifyReadLengthStringExact(int Characters) // verifies a string entered by user has x amount of characters
     {
         string text;
         do
         {
-            text = ReadNonEmptyLine();
-            if (text.Length < Characters || text.Length > Characters || string.IsNullOrEmpty(text))
+            text = ReadLine(); // reads a string from the user
+            if (text.Length < Characters || text.Length > Characters || string.IsNullOrEmpty(text)) // checks if the string has the specified amount of characters and verifies it isnt null or an empty string
             {
-                WriteLine($"The input must have {Characters} caracteres. Try again:");
+                WriteLine($"The input must have {Characters} characters. Try again:");
             }
-        } while (text.Length < Characters || text.Length > Characters);
+        } while (text.Length < Characters || text.Length > Characters); // infinte loop until conditions are met
         return text;
     }
 
-    public static string VerifyReadLengthString(int Characters)
+    public static string VerifyReadLengthString(int Characters) // verifies a string entered by the user has at least x amount of characters
     {
         string? text;
         do
         {
-            text = ReadLine();
-            if (text.Length < Characters)
+            text = ReadLine(); // reads a string from the user
+            if (text.Length < Characters) //  checks if the string has at least the sepcified amount of characters
             {
                 WriteLine($"The input must have minimum {Characters} caracteres. Try again:");
             }
-        } while (text.Length < Characters);
+        } while (text.Length < Characters); // infinte loop until conditions are met
         return text;
     }
 
-    public static string VerifyReadMaxLengthString(int Characters)
+    public static string VerifyReadMaxLengthString(int Characters) // verifies a string entered by the user does not exceed x amount of characters
     {
         string? text;
         do
         {
-            text = ReadLine();
-            if (text.Length > Characters || string.IsNullOrEmpty(text))
+            text = ReadLine();  // reads a string from the user
+            if (text.Length > Characters || string.IsNullOrEmpty(text)) // checks the string is not emptyy or null and that it does not exceed the specified amount of characters
             {
                 WriteLine($"The input must have maximum {Characters} caracteres. Try again:");
             }
-        } while (text.Length > Characters);
+        } while (text.Length > Characters); // infinte loop until conditions are met
         return text;
     }
 
-    public static string ReadNonEmptyLine()
+    public static string ReadNonEmptyLine() // reads a line from the user until the user enters a line with something on it, not empty, not a whitespace nor null
     {
         string? input = "";
-        input = ReadLine();
-        while (string.IsNullOrWhiteSpace(input) || string.IsNullOrEmpty(input) || input == "")
+        input = ReadLine(); // reads a line from the user
+        while (string.IsNullOrWhiteSpace(input) || string.IsNullOrEmpty(input) || input == "") // checks user didnt enter a null, a whitespace nor an empty line
         {
             WriteLine(" It cant be empty. ");
-            input = ReadLine();
+            input = ReadLine(); // reads again until conditions are met
         }
         return input;
     }
 
-    public static int TryParseStringaEntero(string? Op)
+    public static int TryParseStringaEntero(string? Op) // tries converting a string to an integer
     {
         int input;
         while (true) // Infinite loop until there is a return, that there is a valid number
         {
-            if (int.TryParse(Op, out input))
+            if (int.TryParse(Op, out input)) // tries converting the string, if it can, it return the integer value
             {
                 return input;
             }
-            else
+            else // otherwise it reads it again
             {
                 WriteLine("That's not a correct form of number. Try again:");
                 Op = ReadNonEmptyLine();
@@ -160,7 +164,7 @@ partial class Program
         }
     }
 
-    public static string ReadPassword()
+    public static string ReadPassword() // reads password from user and turns every character entered by them to an asterisk (*)
     {
         string password = "";
         ConsoleKeyInfo key;
@@ -186,15 +190,15 @@ partial class Program
         return password;
     }
 
-    public static DateTime ProgrammedMaintenanceDate()
+    public static DateTime ProgrammedMaintenanceDate() // reads a string from the user a tries converting it to a datetime value
     {
         DateTime dateValue = new();
         bool valideDate = false;
         while (!valideDate)
         {
-            string dateInput = ReadNonEmptyLine();
+            string dateInput = ReadNonEmptyLine(); // reads a valid line from the user
             if (
-                DateTime.TryParseExact(
+                DateTime.TryParseExact( // tries converting the line to DateTime
                     dateInput,
                     "yyyy/MM/dd",
                     CultureInfo.InvariantCulture,
@@ -205,7 +209,7 @@ partial class Program
             {
                 valideDate = true;
             }
-            else
+            else // re-reads if it couldn't convert it
             {
                 WriteLine("The format must be yyyy/mm/dd. Try again.");
             }
@@ -213,15 +217,15 @@ partial class Program
         return dateValue;
     }
 
-    public static DateTime ReturnMaintenanceDate(DateTime CurrentDate)
+    public static DateTime ReturnMaintenanceDate(DateTime CurrentDate) // reads a string from the user a tries converting it to a datetime value and checks it is a date after the programmed date
     {
         DateTime dateValue = new();
         bool valideDate = false;
         while (!valideDate)
         {
-            string dateInput = ReadNonEmptyLine();
+            string dateInput = ReadNonEmptyLine(); // reads a valid line from the user
             if (
-                DateTime.TryParseExact(
+                DateTime.TryParseExact( // tries converting the line to DateTime
                     dateInput,
                     "yyyy/MM/dd",
                     CultureInfo.InvariantCulture,
@@ -240,12 +244,12 @@ partial class Program
                         valideDate = true;
                     }
                 }
-                else
+                else // re-reads if it wasn't a date after the specified date
                 {
                     WriteLine("It must be after the programmed date. Try again");
                 }
             }
-            else
+            else // re-reads if it couldn't convert it
             {
                 WriteLine("The format must be yyyy/mm/dd. Try again.");
             }
@@ -264,7 +268,7 @@ partial class Program
         }
     }
 
-    public static string EncryptPass(string PlainText)
+    public static string EncryptPass(string PlainText) // encrypts with a specified key a string
     {
         using (Aes aesAlg = Aes.Create())
         {
@@ -291,7 +295,7 @@ partial class Program
         }
     }
 
-    public static string Decrypt(string? CipherText)
+    public static string Decrypt(string? CipherText) // decrypts previously encrypted text with the key it was encrypted with
     {
         using (Aes aesAlg = Aes.Create())
         {

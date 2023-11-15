@@ -117,39 +117,38 @@ partial class Program
         WriteLine(" 1. Add new equipment");
         WriteLine(" 2. Update equipment information");
         WriteLine(" 3. View equipments");
-        WriteLine(" 4. Delete equipment");
-        WriteLine(" 5. Search for a equipment by equipment ID or equipment Name");
-        WriteLine(" 6. View Equipment Requests");
-        WriteLine(" 7. View Tomorrows Equipment Requests");
-        WriteLine(" 8. View and Search for a Students History");
+        WriteLine(" 4. Search for a equipment by equipment ID or equipment Name");
+        WriteLine(" 5. View Equipment Requests");
+        WriteLine(" 6. View Tomorrows Equipment Requests");
+        WriteLine(" 7. View and Search for a Students History");
         WriteLine("         a. See all students");
         WriteLine("         b. Search for a student in specific");
         WriteLine("         c. See students that have lost or damaged an equipment (and haven't made up for it)");
-        WriteLine(" 9. View and Search for Students using Equipment at this moment");
+        WriteLine(" 8. View and Search for Students using Equipment at this moment");
         WriteLine("         a. See all students using equipments ");
         WriteLine("         b. Search for a specific student in this list");
         WriteLine("         c. See the list of students that are late for returning equipments");
-        WriteLine(" 10. Delivery equipment.");
+        WriteLine(" 9. Delivery equipment.");
         WriteLine("         a. To students ");
         WriteLine("         b. To professor ");
-        WriteLine(" 11. Register the Return of Equipment(s) of a request");
-        WriteLine(" 12. Create report of damaged or lost equipment");
-        WriteLine(" 13. Student debt Of LostDamagedEquipment");
-        WriteLine(" 14. Program maintenance for a equipment");
+        WriteLine(" 10. Register the Return of Equipment(s) of a request");
+        WriteLine(" 11. Create report of damaged or lost equipment");
+        WriteLine(" 12. Student debt Of LostDamagedEquipment");
+        WriteLine(" 13. Program maintenance for a equipment");
         WriteLine("         a. Program a new maintenance");
         WriteLine("         b. Report Finished Maintenance");
-        WriteLine(" 15. View Maintenance History");
-        WriteLine(" 16. Change password");
-        WriteLine(" 17. Sign out");
+        WriteLine(" 14. View Maintenance History");
+        WriteLine(" 15. Change password");
+        WriteLine(" 16. Sign out");
 
         do
         {
             WriteLine();
             Write("Option : ");
             option = Convert.ToInt32(ReadNonEmptyLine());
-            if (option<1 || option >17)
+            if (option<1 || option >16)
             {
-                WriteLine("Please choose a valid option (1 - 17)");
+                WriteLine("Please choose a valid option (1 - 16)");
                 option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else valid = true;
