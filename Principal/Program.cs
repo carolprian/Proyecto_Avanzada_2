@@ -7,7 +7,8 @@ public partial class Program
         bd_storage db = new();
         WriteLine($"Provider : {db.Database.ProviderName}"); 
         WriteLine();
-        ForegroundColor = ConsoleColor.Gray;
+        ForegroundColor = ConsoleColor.Gray;     
+        
         while (true)
         {
             //menu principal para usar el sistema

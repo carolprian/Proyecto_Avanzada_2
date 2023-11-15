@@ -3,7 +3,7 @@ using AutoGens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-
+using ConsoleTables;
 partial class Program
 {
     public static void ViewMaintenanceHistory() //order by equipments
@@ -79,24 +79,8 @@ partial class Program
                 var maintainn = maintain.Skip(offset).Take(batchS);
 
                 //                Console.Clear();
-
-                WriteLine(
-                    "|{0,-2}|{1,-10}|{2,-45}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
-                    "ID",
-                    "ID Equipment",
-                    "Equipment",
-                    "Maintenance",
-                    "Instructions for maintenance",
-                    "Description of the maintenance",
-                    "Started",
-                    "Returned",
-                    "Storer",
-                    "",
-                    "Used Materials"
-                );
-                WriteLine(
-                    "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-                );
+                var table = new ConsoleTable("ID", "Equipment ID", "Equipment", "Maintenance", "Instruct. for Maintenance", "Made Maintenance", "Started", "Returned", "Storer", "", "Used Materials");
+                
                 foreach (var m in maintain)
                 {
                     if (
@@ -105,8 +89,7 @@ partial class Program
                         || m.Maintenance.MaintenanceDescription == "0"
                     )
                     {
-                        WriteLine(
-                            "|{0,-2}|{1,-10}|{2,-50}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
+                        table.AddRow(
                             m.MaintenanceId,
                             m.Equipment?.EquipmentId,
                             m.Equipment?.Name,
@@ -117,14 +100,11 @@ partial class Program
                             "--/--/----",
                             m.Maintenance?.Storer?.Name,
                             m.Maintenance?.Storer?.LastNameP,
-                            "----"
-                        );
+                            "----");
                     }
                     else
                     {
-                        WriteLine(
-                            "|{0,-2}|{1,-10}|{2,-50}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
-                            m.MaintenanceId,
+                        table.AddRow(m.MaintenanceId,
                             m.Equipment?.EquipmentId,
                             m.Equipment?.Name,
                             m.Maintenance?.MaintenanceType?.Name,
@@ -137,10 +117,10 @@ partial class Program
                             m.Maintenance?.MaintenanceMaterialsDescription
                         );
                     }
-                }
+                } table.Write();
 
                 WriteLine();
-                WriteLine($"Total:   {countTotal} ");
+                //WriteLine($"Total:   {countTotal} ");
                 WriteLine($"{pp} / {pages}");
                 WriteLine("");
 
@@ -176,7 +156,6 @@ partial class Program
 
     public static void ViewMaintenanceNotMade()
     {
-        Console.Clear();
         using (bd_storage db = new())
         {
             DateTime dateTime = new(year: 2001, month: 01, day: 01);
@@ -199,7 +178,7 @@ partial class Program
             }
 
             WriteLine(
-                "|{0,-3}|{1,-12}|{2,-55}|{3,-11}|{4,-50}|{5, -15}|{6, -15}|",
+                "|{0,-3}|{1,-12}|{2,-55}|{3,-11}|{4,-75}|{5, -15}|{6, -15}|",
                 "ID",
                 "ID Equipment",
                 "Equipment",
@@ -209,12 +188,12 @@ partial class Program
                 "Storer ID"
             );
             WriteLine(
-                "-------------------------------------------------------------------------------------------------------------------------------------------------------"
+                "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
             );
             foreach (var m in maintain)
             {
                 WriteLine(
-                "|{0,-3}|{1,-12}|{2,-55}|{3,-11}|{4,-50}|{5, -15}|{6, -15}|",
+                "|{0,-3}|{1,-12}|{2,-55}|{3,-11}|{4,-75}|{5, -15}|{6, -15}|",
                     m.Maintenance?.MaintenanceId,
                     m.Equipment?.EquipmentId,
                     m.Equipment?.Name,
@@ -256,6 +235,7 @@ partial class Program
             {
                 Console.Clear();
 
+/*
                 WriteLine(
                     "|{0,-2}|{1,-10}|{2,-35}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
                     "ID",
@@ -273,6 +253,9 @@ partial class Program
                 WriteLine(
                     "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
                 );
+                */
+                var table = new ConsoleTable("ID", "Equipment ID", "Equipment", "Maintenance", "Instruct. for Maintenance", "Made Maintenance", "Started", "Returned", "Storer", "", "Used Materials");
+                
                 foreach (var m in maintain)
                 {
                     if (
@@ -281,8 +264,7 @@ partial class Program
                         || m.Maintenance.MaintenanceDescription == "0"
                     )
                     {
-                        WriteLine(
-                            "|{0,-2}|{1,-10}|{2,-35}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
+                        table.AddRow(
                             m.MaintenanceId,
                             m.Equipment?.EquipmentId,
                             m.Equipment?.Name,
@@ -293,14 +275,11 @@ partial class Program
                             "--/--/----",
                             m.Maintenance?.Storer?.Name,
                             m.Maintenance?.Storer?.LastNameP,
-                            "----"
-                        );
+                            "----");
                     }
                     else
                     {
-                        WriteLine(
-                            "|{0,-2}|{1,-10}|{2,-35}|{3,-11}|{4,-20}|{5, -20}|{6, 10}|{7,-10}|{8, 10} {9,-10}|{10}",
-                            m.MaintenanceId,
+                        table.AddRow(m.MaintenanceId,
                             m.Equipment?.EquipmentId,
                             m.Equipment?.Name,
                             m.Maintenance?.MaintenanceType?.Name,
@@ -313,12 +292,13 @@ partial class Program
                             m.Maintenance?.MaintenanceMaterialsDescription
                         );
                     }
-                }
+                } table.Write();
+
             }
         }
     }
 
-    public static int RegisterNewMaintenance(string username)
+    public static int RegisterNewMaintenance(string username) // asks for all info requiered to create a new maintenance register, creates one, and connects it with all equipments related to it through a maintains table
     {
         WriteLine(
             "Here's a list of all the available equipment for maintenance (Only Available or Damaged Equipment)"
