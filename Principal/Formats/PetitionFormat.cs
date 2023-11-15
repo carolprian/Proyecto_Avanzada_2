@@ -32,7 +32,7 @@ partial class Program
         {
             if(petition.affected > 0)
             {
-                var petitionDetailsId = AddPetitionDetails(petition.petitionId, equipments.equipmentsId, times.Item1, times.Item2, requestDate, currentDate, equipments.statusEquipments);
+                var petitionDetailsId = AddPetitionDetails(petition.petitionId, equipments.EquipmentsId, times.Item1, times.Item2, requestDate, currentDate, equipments.StatusEquipments);
                 if(petitionDetailsId.affected.Count() >= 1)
                 {
                     WriteLine("Petition added");
@@ -395,9 +395,9 @@ partial class Program
                     foreach (var requestDetail in petitionDetailss)
                     {
                         // Cambiar el equipo en la tabla de la base de datos
-                        requestDetail.EquipmentId = updatedEquipments.equipmentsId.First();
+                        requestDetail.EquipmentId = updatedEquipments.EquipmentsId.First();
                         // Cambiar el estado del equipo conforme al nuevo equipo seleccionado
-                        requestDetail.StatusId = updatedEquipments.statusEquipments.First();
+                        requestDetail.StatusId = updatedEquipments.StatusEquipments.First();
                     }
 
                     affected = db.SaveChanges();

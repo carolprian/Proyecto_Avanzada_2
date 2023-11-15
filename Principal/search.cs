@@ -129,45 +129,49 @@ partial class Program
     }
 
      public static string SearchProfessorByName(string SearchTerm, int Op, int Recursive){
+        // Indice de busqueda
         int i = 1;
-
+        // Si Op == 0 se busca empezando por los nombres
         if (Op==0)
         {
+            // Se piden los nombres
             WriteLine("Insert the names of the professor WITHOUT accents");
             SearchTerm = ReadNonEmptyLine();
 
             using (bd_storage db = new())
             {
-                IQueryable<Professor>? professors = db.Professors.Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
-                
-                if (!professors.Any())
+                // Se buscan los profesores cuyos nombres inicien por el termino escrito por el usuario
+                IQueryable<Professor>? Professors = db.Professors
+                .Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
+                // Si no encuentra ningun profesor vuelve a llamar a la funcion en el apartado de nombres
+                if (!Professors.Any())
                 {
                     WriteLine($"No professors found matching the search term: {SearchTerm}. Try again");
                     return SearchProfessorByName(SearchTerm, 0, 0);
                 } 
                 else 
                 {
-                    if (professors.Count() == 1)
+                    if (Professors.Count() == 1)
                     {
-                        // Si encontramos una única materia, la retornamos
-                        return professors.FirstOrDefault().ProfessorId;
+                        // Si encontramos un único profesor, lo retornamos
+                        return Professors.First().ProfessorId;
                     }
-                    else if(professors.Count() >1)
+                    else if(Professors.Count() >1)
                     {
-                        foreach(var s in professors)
+                        // Si encontramos 2 o más profesores se muestra el nombre completo de todos los profesores
+                        foreach(var s in Professors)
                         {
                             WriteLine($"{i}. {s.Name} {s.LastNameP} {s.LastNameM}");
                             i++;
                         }
 
-                        // Si hay más de una materia que coincide, pedimos el nombre completo
+                        // Pedir el apellido paterno para volver a buscar pero ahora con ese dato
                         WriteLine("Insert the PATERN last name of the teacher WITHOUT accents");
-                        string searchTermNew = ReadNonEmptyLine();
-                        return SearchProfessorByName(searchTermNew, 1, 0);
+                        return SearchProfessorByName(SearchTerm, 1, 1);
                     }
                     else 
                     {
-                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
+                        // Si no encontramos ningun profesor, solicitamos que se ingrese el nombre nuevamente
                         WriteLine("Professor not found. Try again");
                         return SearchProfessorByName(SearchTerm, 0, 0);
                     }
@@ -175,43 +179,45 @@ partial class Program
             }
         } else if(Op==1) 
         {
+            // Esto es para que solo se muestre este writeLine cuando no se ha preguntado anteriormente
             if(Recursive==0)
             {
                 WriteLine("Insert the PATERN last name of the teacher WITHOUT accents");
             }
-
+            // Se escribe el apellido paterno
             SearchTerm = ReadNonEmptyLine();
-
             using (bd_storage db = new())
             {
-                IQueryable<Professor>? professors = db.Professors.Where(s => s.LastNameP.StartsWith(SearchTerm));
-                if (!professors.Any() || professors is null)
+                // busca a los profesores cuyo apellido paterno inicie con el apellido que nos dio el usuario
+                IQueryable<Professor>? Professors = db.Professors.Where(s => s.LastNameP.StartsWith(SearchTerm));
+                if (!Professors.Any() || Professors is null)
                 {
+                    // Si no se encuentra ningun profesor se busca de nuevo desde el nombre
                     WriteLine($"No professors found matching the patern last name: {SearchTerm}. Try again");
                     return SearchProfessorByName(SearchTerm, 1, 0);
                 } else
                 {
-                    if (professors.Count() == 1)
+                    if (Professors.Count() == 1)
                     {
                         // Si encontramos un único profesor, lo retornamos
-                        return professors.FirstOrDefault().ProfessorId;
+                        return Professors.FirstOrDefault().ProfessorId;
                     }
-                    else if(professors.Count() > 1)
+                    else if(Professors.Count() > 1)
                     {
-                        foreach(var s in professors)
+                        // Si encontramos 2 o más profesores se muestra el nombre completo de todos los profesores
+                        foreach(var s in Professors)
                         {
                             WriteLine($"{i}. {s.Name} {s.LastNameP} {s.LastNameM}");
                             i++;
                         }
 
-                        // Si hay más de una materia que coincide, pedimos el apellido
+                        // Si hay más de un profesor que coincide, pedimos el apellido materno
                         WriteLine("Insert the MATERN last name of the teacher WITHOUT accents");
-                        string searchTermNew = ReadNonEmptyLine();
-                        return SearchProfessorByName(searchTermNew, 2, 0);
+                        return SearchProfessorByName(SearchTerm, 2, 1);
                     }
                     else 
                     {
-                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
+                        // Si no encontramos ninguna profesor, solicitamos que se ingrese el nombre nuevamente
                         WriteLine("Professor not found. Try again");
                         return SearchProfessorByName(SearchTerm, 0, 0);
                     }
@@ -224,27 +230,30 @@ partial class Program
             {
                 WriteLine("Insert the MATERN last name of the teacher WITHOUT accents");
             }
-
+            // Se ingresa el apellido paterno del profesor
+            SearchTerm = ReadNonEmptyLine();
             using (bd_storage db = new())
             {
-                IQueryable<Professor>? professors = db.Professors
+                // Se busca un profesor cuyo apellido materno comience como lo indica el usuario
+                IQueryable<Professor>? Professors = db.Professors
                     .Where(s => s.LastNameM.StartsWith(SearchTerm));
                 
-                if (!professors.Any())
+                if (!Professors.Any() || Professors is null)
                 {
+                    // Si no se encuentra se pide que vuelva a ingresar el nombre
                     WriteLine($"No professors found matching the matern last name: {SearchTerm}. Try again");
                     return SearchProfessorByName(SearchTerm, 2, 0);
                 } 
                 else 
                 {
-                    if (professors.Count() == 1)
+                    if (Professors.Count() == 1)
                     {
                         // Si encontramos un único profesor, lo retornamos
-                        return professors.FirstOrDefault().ProfessorId;
+                        return Professors.First().ProfessorId;
                     }
                     else 
                     {
-                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
+                        // Si no encontramos ninguna profesor, solicitamos que se ingrese el nombre nuevamente
                         WriteLine("Professor not found. Try again");
                         return SearchProfessorByName(SearchTerm, 0, 0);
                     }
@@ -256,46 +265,54 @@ partial class Program
     public static string SearchSubjectsByName(string SearchTerm, int Op)
     {
         int i = 0;
-
+        //Para que no se impriman los mismos WriteLine mas de lo necesario
         if(Op==1)
         {
             WriteLine("Insert the name start of the subject WITHOUT accents");
-            SearchTerm = VerifyAlphabeticInput();
         } 
-    
+        SearchTerm = VerifyAlphabeticInput();
+        //Esto para que si hay materias que se llaman igual en todo excepto en el numero romano
+        //Puedan encontrarse
+        SearchTerm = SearchTerm + " ";
         using (bd_storage db = new())
         {
-            IQueryable<Subject>? subjects = db.Subjects.Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
-            
-            if (!subjects.Any() || subjects is null)
-            {
-                WriteLine("No subjects found matching the search term: " + SearchTerm + "Try again.");
-                return SearchSubjectsByName(SearchTerm, 1);
-            } 
-            else 
-            {
-                i = 1;
-
-                if (subjects.Count() == 1)
+            if( db.Subjects is null){
+                throw new InvalidOperationException("Not table found");
+            } else {
+                // Se buscan materias que su nombre empiece con el que el usuario puso
+                IQueryable<Subject>? subjects = db.Subjects.Where(s => s.Name.ToLower().StartsWith(SearchTerm.ToLower()));
+                // Si no se encuentra ninguna se manda el mensaje y se manda al inicio de la funcion
+                if (!subjects.Any() || subjects is null)
                 {
-                    // Si encontramos una única materia, la retornamos
-                    return subjects.FirstOrDefault().SubjectId;
-                }
-                else if(subjects.Count() >1)
-                {
-                    foreach(var s in subjects){
-                        WriteLine($"{i}. {s.Name}");
-                        i++;
-                    }
-                    // Si hay más de una materia que coincide, pedimos el nombre completo
-                    WriteLine("Insert the whole name of the subject to confirm");
-                    return SearchSubjectsByName(SearchTerm, 2);
-                }
+                    WriteLine("No subjects found matching the search term: " + SearchTerm + "Try again.");
+                    return SearchSubjectsByName(SearchTerm, 1);
+                } 
                 else 
                 {
-                    // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
-                    WriteLine("Subject not found. Try again.");
-                    return SearchSubjectsByName(SearchTerm, 1);
+                    //Indice
+                    i = 1;
+                    if (subjects.Count() == 1)
+                    {
+                        // Si encontramos una única materia, la retornamos
+                        return subjects.First().SubjectId;
+                    }
+                    else if(subjects.Count() >1)
+                    {
+                        // Se imprime la lista de las materias con el mismo inicio de nombre
+                        foreach(var s in subjects){
+                            WriteLine($"{i}. {s.Name}");
+                            i++;
+                        }
+                        // Si hay más de una materia que coincide, pedimos el nombre completo
+                        WriteLine("Insert the whole name of the subject to confirm");
+                        return SearchSubjectsByName(SearchTerm, 2);
+                    }
+                    else 
+                    {
+                        // Si no encontramos ninguna materia, solicitamos que se ingrese el nombre nuevamente
+                        WriteLine("Subject not found. Try again.");
+                        return SearchSubjectsByName(SearchTerm, 1);
+                    }
                 }
             }
         }
