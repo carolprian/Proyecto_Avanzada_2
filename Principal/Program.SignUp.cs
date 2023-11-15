@@ -82,7 +82,7 @@ partial class Program
     {
         //pide datos para registro, ReadNonEmptyLine() para que no se dejen campos vacios
         WriteLine("Provide your payroll number, this will be your ID: ");
-        string username = EncryptPass(VerifyNumericInput());
+        string username = EncryptPass(VerifyNumericInput10());
 
         WriteLine("Provide your name: ");
         string firstname = VerifyAlphabeticInput();
@@ -156,7 +156,7 @@ partial class Program
         //pide datos para registr, ReadNonEmptyLine() poara que se regustren datos
         //es el mismo 
         WriteLine("Provide your payroll number, this will be your ID: ");
-        string username = EncryptPass(VerifyNumericInput());
+        string username = EncryptPass(VerifyNumericInput10());
  
         WriteLine("Provide your name: ");
         string firstname = VerifyAlphabeticInput();
@@ -230,16 +230,16 @@ partial class Program
     public static bool RegistroStudent()
     {
         WriteLine("Provide your register, this will be your ID: ");
-        string username = VerifyReadLengthStringExact(8);
+        string username = VerifyNumericInput8();
 
         WriteLine("Provide your name: ");
-        string firstname = ReadNonEmptyLine();
+        string firstname = VerifyAlphabeticInput();
 
         WriteLine("Provide your paternal last name: ");
-        string lastnameP = ReadNonEmptyLine();
+        string lastnameP = VerifyAlphabeticInput();
 
         WriteLine("Provide your maternal last name: ");
-        string lastnameM = ReadNonEmptyLine();
+        string lastnameM = VerifyAlphabeticInput();
         int? groupid=0;
         int op=0;
         
@@ -273,7 +273,7 @@ partial class Program
         }
 
         WriteLine("Create your password: ");
-        string? encryptedPassword = EncryptPass(VerifyReadLengthString(8));
+        string? encryptedPassword = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
         int affected = 0;
         bool changes;
         using (bd_storage db = new())

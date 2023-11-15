@@ -50,7 +50,7 @@ partial class Program
             // Si se agrego el registro en Request
             if(request.affected > 0){
                 // Agrega los datos a la tabla Request Details
-                var requestDetailsId = AddRequestDetails(request.requestId, equipments.EquipmentsId, professorNip, Times.Item1, Times.Item2, RequestDate, CurrentDate, equipments.StatusEquipments);
+                var requestDetailsId = AddRequestDetails(request.requestId, EquipmentsId, professorNip, Times.Item1, Times.Item2, RequestDate, CurrentDate, StatusEquipments);
                 // Verifica que se haya agregado correctamente
                 if(requestDetailsId.Affected.Count() >= 1){
                     WriteLine("Request added");
@@ -121,7 +121,7 @@ partial class Program
         do{
             // Pide que se ponga el valor
             WriteLine("Insert the plantel: ");
-            Plantel = ReadNonEmptyLine();
+            Plantel = VerifyReadLengthStringExact(7);
             // De acuerdo a la verificacion si es valido se termina el ciclo, si no se queda hasta que sea correcto
             Ban = VerifyPlantel(Plantel);
         }while(Ban==false);
@@ -148,7 +148,7 @@ partial class Program
             // Pide que seleccione uno
             do{
                 WriteLine("Select the number of the classroom: ");
-                ClassroomId = TryParseStringaEntero(ReadNonEmptyLine());
+                ClassroomId = TryParseStringaEntero(VerifyAllNumbers());
                 // Verifica que exista
                 IQueryable<Classroom> classroomsId = db.Classrooms.Where(c => c.ClassroomId==ClassroomId);
                 // Si no existe le pide que ingrese otra vez el valor
@@ -475,7 +475,6 @@ partial class Program
     }
 
     public static void UpdateRequestFormat(string UserName){
-       
         #region Variables
         int i=1, Affected = 0, Option=0, EquipId = 0;
         bool ValidateRequest=false, ValidateEq = false;;
@@ -637,7 +636,7 @@ partial class Program
                         RequestDetailsQuery.First().RequestedDate,
                         RequestDetailsQuery.First().DispatchTime,
                         RequestDetailsQuery.First().ReturnTime,
-                        RequestDetailsQuery.First().RequestId,
+                        (int)RequestDetailsQuery.First().RequestId,
                         1, 
                         true
                     );

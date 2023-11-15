@@ -13,12 +13,11 @@ partial class Program
         WriteLine("3.Coordinator");
         WriteLine("4.Storer");
         WriteLine("5.Exit");
-
-        do
-        {
-            WriteLine();
+        WriteLine();
             Write("Option : ");
             option = Convert.ToInt32(ReadNonEmptyLine());
+        do
+        {
             if (option<1 || option >5)
             {
                 WriteLine("Please choose a valid option (1 - 5)");
@@ -304,16 +303,17 @@ partial class Program
         WriteLine("3. View request formats"); 
         WriteLine("4. Edit request formats that aren't signed yet"); 
         WriteLine("5. Delete request formats that aren't signed yet"); 
-        WriteLine("6. See a list of equipments that are late for returning"); 
-        WriteLine("7. Sign out");
+        WriteLine("6. See a list of equipments that are late for returning");
+        WriteLine("7. See a list of equipments that you have damaged or lost"); 
+        WriteLine("8. Sign out");
 
         do{
             WriteLine();
             Write("Option : ");
             option = Convert.ToInt32(ReadNonEmptyLine());
-            if (option<1 || option >7)
+            if (option<1 || option >8)
             {
-                WriteLine("Please choose a valid option (1 - 7)");
+                WriteLine("Please choose a valid option (1 - 8)");
                 option = Convert.ToInt32(ReadNonEmptyLine()); 
             }
             else valid = true;

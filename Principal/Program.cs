@@ -4,6 +4,7 @@ public partial class Program
     
     public static void Main()
     {
+        Clear();
         bd_storage db = new();
         WriteLine($"Provider : {db.Database.ProviderName}"); 
         WriteLine();

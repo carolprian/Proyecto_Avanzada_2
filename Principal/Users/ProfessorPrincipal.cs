@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 partial class Program
 {
-    public static void ProfessorsPrincipal(string username)
+    public static void ProfessorsPrincipal(string UserName)
     {
         bool exitRequested = false;
         WriteLine("Welcome Professor!");
@@ -18,23 +18,23 @@ partial class Program
             {
                 case 1:
                 // Ve un historial de permisos que ha y no ha aprobado
-                    WatchPermissions(username);
+                    WatchPermissions(UserName);
                     break;
                 case 2:
                 // Opción para aprobar o denegar permisos
-                    ApprovePermissions(username);
+                    ApprovePermissions(UserName);
                     break;
                 case 3:
                 // Opción para solicitar material
-                    PetitionFormat(username);
+                    PetitionFormat(UserName);
                     break;
                 case 4:
                 // Opcion para modificar permisos de material
-                    UpdatePetitionFormat(username);
+                    UpdatePetitionFormat(UserName);
                     break;
                 case 5:
                 // Opcion para borrar permisos cuya fecha sea futura
-                    DeletePetitionFormat(username);
+                    DeletePetitionFormat(UserName);
                     break;
                 case 6:
                 // Ve todos los equipos existentes en almacen
@@ -42,7 +42,7 @@ partial class Program
                     break;
                 case 7:
                 // Modifica su perfil
-                    UpdateProfessorFields(username);
+                    UpdateProfessorFields(UserName);
                     break;
                 case 8:
                 // Salir del menu
