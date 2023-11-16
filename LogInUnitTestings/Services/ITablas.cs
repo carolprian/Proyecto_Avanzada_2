@@ -27,5 +27,7 @@ namespace Data
         DbSet<Student> Students { get; }
         DbSet<Subject> Subjects { get; }
         DbSet<Teach> Teaches { get;}
+
+         int SaveChanges();
     }
 }

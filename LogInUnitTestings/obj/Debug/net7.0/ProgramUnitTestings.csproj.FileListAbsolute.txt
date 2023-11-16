@@ -144,3 +144,9 @@ C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\Log
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\LogInUnitTestings\obj\Debug\net7.0\ProgramUnitTestings.pdb
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\LogInUnitTestings\obj\Debug\net7.0\ProgramUnitTestings.genruntimeconfig.cache
 C:\Users\Samantha\Documents\progra\progra avanzada\again\Proyecto_Avanzada_2\LogInUnitTestings\obj\Debug\net7.0\ref\ProgramUnitTestings.dll
+C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\LogInUnitTestings\bin\Debug\net7.0\CoverletSourceRootsMapping
+C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\LogInUnitTestings\obj\Debug\net7.0\ProgramUnitTestings.csproj.AssemblyReference.cache
+C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\LogInUnitTestings\obj\Debug\net7.0\ProgramUnitTestings.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\LogInUnitTestings\obj\Debug\net7.0\ProgramUnitTestings.AssemblyInfoInputs.cache
+C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\LogInUnitTestings\obj\Debug\net7.0\ProgramUnitTestings.AssemblyInfo.cs
+C:\Users\aacar\Documents\PA1\Proyecto_Avanzada_2\LogInUnitTestings\obj\Debug\net7.0\ProgramUnitTestings.csproj.CoreCompileInputs.cache

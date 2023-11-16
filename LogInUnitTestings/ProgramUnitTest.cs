@@ -5,6 +5,7 @@ using Moq;
 
 public class LogInUnitTest
 {
+    
     [Fact]
     public void TestDeleteNotExistUser()
     {
