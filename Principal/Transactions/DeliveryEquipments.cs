@@ -448,7 +448,7 @@ partial class Program
                         table.AddRow("StudentId", Register);
                         table.AddRow("Dispatch Time", $"{r.DispatchTime.Hour}:{r.DispatchTime.Minute}");
                         table.AddRow("Return Time", $"{r.ReturnTime.Hour}:{r.ReturnTime.Minute}");
-                        table.AddRow("Requested Date:", r.RequestedDate.Date);
+                        table.AddRow("Requested Date:", r.RequestedDate.ToString("dd/MM/yyyy"));
 
                         IQueryable<RequestDetail> requestDetailss = db.RequestDetails.Include(e=>e.Status).Include(e=>e.Equipment).Where(e=>e.RequestId.Equals(r.RequestId));
                         var Equips = requestDetailss.Select(e=>e.EquipmentId);

@@ -11,6 +11,7 @@ partial class Program
             IQueryable<RequestDetail>? requestDetails = db.RequestDetails
             .Include( e => e.Equipment)
             .Include( s => s.Status)
+            .Include(e=> e.Request.Student)
             .Where( r => r.ProfessorNip == 1)
             .OrderByDescending( f  => f.RequestedDate);
 
@@ -42,7 +43,8 @@ partial class Program
                 var table = new ConsoleTable("NO. Request", count);
 
                 table.AddRow("RequestId", firstRequest.RequestId);
-                table.AddRow("StatusId", $"{firstRequest.Status.Value}");
+                table.AddRow("Student", $"{firstRequest.Request?.Student?.Name} {firstRequest.Request?.Student?.LastNameP} {firstRequest.Request?.Student?.LastNameM}" );
+                table.AddRow("StatusId", $"{firstRequest.Status?.Value}");
                 table.AddRow("ProfessorNip", nip);
                 table.AddRow("DispatchTime", $"{firstRequest.DispatchTime.TimeOfDay}");
                 table.AddRow("Return Time", $"{firstRequest.ReturnTime.TimeOfDay}");

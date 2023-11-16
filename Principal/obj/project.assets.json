@@ -1945,19 +1945,22 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\aacar\\.nuget\\packages\\": {}
+    "C:\\Users\\Valeria\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
+      "projectUniqueName": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
       "projectName": "Principal",
-      "projectPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
-      "packagesPath": "C:\\Users\\aacar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aacar\\Documents\\PA1\\Proyecto_Avanzada_2\\Principal\\obj\\",
+      "projectPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
+      "packagesPath": "C:\\Users\\Valeria\\.nuget\\packages\\",
+      "outputPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2\\Principal\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\aacar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Valeria\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"

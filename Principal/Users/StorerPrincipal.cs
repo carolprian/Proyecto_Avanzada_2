@@ -250,12 +250,16 @@ partial class Program{
 
             case "b":
                 affected = FinishMaintenanceReport(username);
-                if(affected > 1) // verifies if changes were made on the database
+                if(affected >= 1) // verifies if changes were made on the database
                 {
                     WriteLine($"{affected} rows were succesfully updated");
                     WriteLine("Here's a list of all still pending Maintenance Registers");
                     WriteLine();
                     ViewMaintenanceNotMade(); // LIsts all pending maintenance registers
+                }
+                else
+                {
+                    WriteLine("Maintenances Register couldn't be created");
                 }
             break;
 
@@ -345,6 +349,10 @@ partial class Program{
                 WriteLine("That is not a correct option, try again.");
                 areaid = -1;
             }
+            if(areaid<=0 || areaid> areasCount)
+            {
+                WriteLine("That is not a correct option, try again.");
+            }
         }
                     
         WriteLine();
@@ -358,7 +366,7 @@ partial class Program{
         int statusCount = ListStatus();
 
         byte statusid = 0;
-        while(statusid == 0 || statusid > statusCount)
+        while(statusid == 0 || statusid > 5)
         {
             try
             {
@@ -373,6 +381,10 @@ partial class Program{
             {
                 WriteLine("That is not a correct option, try again.");
                 statusid = 0;
+            }
+            if(statusid<=0 || statusid> statusCount)
+            {
+                WriteLine("That is not a correct option, try again.");
             }
         }
 
@@ -404,8 +416,12 @@ partial class Program{
         WriteLine("Choose the coordinator in charge:");
         string[]? coordinators = ListCoordinators();
         WriteLine();
-        WriteLine("Write the choosen option:");
-        int coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+        int coordid = 0;
+        while(coordinators?.Length < coordid || coordid < 1)
+        {
+            WriteLine("Write the choosen option:");
+            coordid = TryParseStringaEntero(VerifyReadLengthStringExact(1));
+        }
         string coordinatorid = "";
         if(coordinators is not null)
         {

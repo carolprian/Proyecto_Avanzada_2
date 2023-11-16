@@ -47,6 +47,7 @@ partial class Program
                 List<int> requestIds = requests.Select(r => r.RequestId).ToList();
                 
                 IQueryable<RequestDetail> RequestDetails = db.RequestDetails
+                .Include(s=>s.Status)
                 .Where(rd => requestIds.Contains((int)rd.RequestId))
                 .Include(rd => rd.Equipment);
                 // Agrupa los Request Details por su Request Id

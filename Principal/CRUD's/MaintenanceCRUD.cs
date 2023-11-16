@@ -330,7 +330,7 @@ partial class Program
                     ) // verifies the equipment chosen has a valid status in order to add it to the report
                     {
                         bool repeated = false;
-                        foreach (var eq in equipmentIdList)
+                        foreach (var eq in equipmentIdList) // verifies that the id chosen wasn´t previously added to the equipment list of the maintenance report
                         {
                             if (equipmentId == eq)
                             {
@@ -338,35 +338,35 @@ partial class Program
                                 repeated = true;
                             }
                         }
-                        if (!repeated)
+                        if (!repeated) // if it isn´t added yet, it asks for the equipment status
                         {
-                            equipmentIdList.Add(equipmentId);
+                            equipmentIdList.Add(equipmentId); // adds the equipment id to the list
                             WriteLine(
                                 "Is the equipment under maintenance or should it be kept avalaible until the programmed date?"
                             );
                             WriteLine("1- Under Maintenance");
                             WriteLine("2- Keep available (if it isn't damaged)");
                             bool optValid = false;
-                            do
+                            do // reads an option from the user until them enter a valid option
                             {
                                 Write("Option : ");
-                                string opt = ReadNonEmptyLine();
+                                string opt = ReadNonEmptyLine(); // reads a string from the user which is not empty, a whitespace or null
 
-                                IQueryable<Equipment>? statusEquipment = db.Equipments.Where(
+                                IQueryable<Equipment>? statusEquipment = db.Equipments.Where( // finds the equipment with its equipment id
                                     e => e.EquipmentId == equipmentId
                                 );
                                 if (opt != "1" && opt != "2")
                                 {
                                     WriteLine("Please select a valid option, try again");
                                 }
-                                else if (opt == "1" || statusEquipment.First().StatusId == 4)
+                                else if (opt == "1" || statusEquipment.First().StatusId == 4) // changes status to "under maintenance" if the user chooses this option or if the old status was "damaged"
                                 {
-                                    statusList.Add(5);
+                                    statusList.Add(5); // adds the status id to the status list
                                     optValid = true;
                                 }
-                                else
+                                else // keeps old status
                                 {
-                                    statusList.Add(statusEquipment.First().StatusId);
+                                    statusList.Add(statusEquipment.First().StatusId); // adds old status to the status list
                                     optValid = true;
                                 }
                             } while (!optValid);
@@ -375,10 +375,10 @@ partial class Program
                             );
                             string moreEquipment = "";
                             bool validAns = false;
-                            do
+                            do // reads from the user until them enter a valid answer
                             {
                                 Write("Option: ");
-                                moreEquipment = ReadNonEmptyLine();
+                                moreEquipment = ReadNonEmptyLine(); // reads a string from the user which is not empty, a whitespace or null
                                 if (
                                     moreEquipment != "y"
                                     && moreEquipment != "n"
@@ -395,14 +395,14 @@ partial class Program
                             } while (!validAns);
                             switch (moreEquipment)
                             {
-                                case "y":
+                                case "y": // tells the user how many equipments have they added to the list and starts reading the information necessary to add the next one
                                 case "Y":
                                     WriteLine(
                                         $"You have added {equipmentIdList.Count()} equipments until now"
                                     );
                                     break;
 
-                                case "n":
+                                case "n": // breaks the cycle and continues reading the other info to create the maintenance report
                                 case "N":
                                     WriteLine("Continuing...");
                                     valid = true;
@@ -425,38 +425,32 @@ partial class Program
 
         WriteLine();
         WriteLine("Here's a list of all the maintenance types");
-        ListMaintenanceTypes();
+        ListMaintenanceTypes(); // lists all three of the maintenance types
         valid = false;
         string mTypeID = "";
-        do
+        do // reads from the user until them enter a valid option
         {
             WriteLine("Please select the ID of the Maintenance Type you wish to create");
-            mTypeID = ReadNonEmptyLine();
-            if (mTypeID != "1" && mTypeID != "2" && mTypeID != "3")
+            mTypeID = ReadNonEmptyLine(); // reads a string from the user which is not empty, a whitespace or null
+            if (mTypeID != "1" && mTypeID != "2" && mTypeID != "3") // checks if the user entered a valid option
             {
                 WriteLine("Please select a valid option");
             }
             else
             {
-                valid = true;
+                valid = true; // continues if the option is valid
             }
         } while (!valid);
 
         WriteLine();
         WriteLine("Instructions for Maintenance: ");
-        string instruct = VerifyReadMaxLengthString(255);
-
-        //! A CHAMBEAR
-        // TODO: Valid date protections (not a date in the past or before programmed date, a day between 1 and 31, a month between 1 and 12, and if the day exists on that month)
-        //! A CHAMBEAR
-
-        // normal
+        string instruct = VerifyReadMaxLengthString(255); // reads maintenance instructions from the user, verifying it does not exceed 255 characters
 
         WriteLine();
         WriteLine("Programmed date for Maintenance: ");
-        DateTime initialDate = ProgrammedMaintenanceDate();
-        List<DateTime> dateList = new();
-        dateList.Add(initialDate);
+        DateTime initialDate = ProgrammedMaintenanceDate(); // reads a valid date from the user
+        List<DateTime> dateList = new(); // if the user chooses to periodically repeat the maintenance, this list will increase
+        dateList.Add(initialDate); // adds the first date to the date list
         DateTime date;
         valid = false;
         if (mTypeID != "2")
@@ -464,10 +458,10 @@ partial class Program
             WriteLine();
             WriteLine("Do you want to periodically repeat this maintenance? y/n");
             string repeatMaintenance = "";
-            do
+            do // reads from the user until them enter a valid option
             {
                 Write("Option: ");
-                repeatMaintenance = ReadNonEmptyLine();
+                repeatMaintenance = ReadNonEmptyLine(); // reads a string from the user which is not empty, a whitespace or null
                 if (
                     repeatMaintenance != "y"
                     && repeatMaintenance != "n"
@@ -484,28 +478,28 @@ partial class Program
             } while (!valid);
             switch (repeatMaintenance)
             {
-                case "y":
+                case "y": // if the maintenance will be repeates periodically
                 case "Y":
-                    int maintenanceFrequency = 0;
-                    int maintenanceQuantity = 0;
+                    int maintenanceFrequency = 0; // will tell how many months will pass between each maintenance  
+                    int maintenanceQuantity = 0; // will tell how many times the maintenance is repeated
                     WriteLine();
                     WriteLine(
                         "Frequency of Maintenance in Months (ex. 1 - Every Month, 2 - Every 2 months, ...) : "
                     );
-                    maintenanceFrequency = TryParseStringaEntero(ReadNonEmptyLine());
+                    maintenanceFrequency = TryParseStringaEntero(ReadNonEmptyLine()); // reads a number from the user 
 
                     WriteLine("How many times do you want to repeat the maintenance?");
-                    maintenanceQuantity = TryParseStringaEntero(ReadNonEmptyLine());
+                    maintenanceQuantity = TryParseStringaEntero(ReadNonEmptyLine()); // reads a number from the user 
 
                     date = initialDate;
-                    for (int i = 0; i < maintenanceQuantity; i++)
+                    for (int i = 0; i < maintenanceQuantity; i++) // moves x amount of months x amount of times and adds each date to the date list
                     {
-                        date = date.Date.AddMonths(maintenanceFrequency);
-                        dateList.Add(date);
+                        date = date.Date.AddMonths(maintenanceFrequency); // moves the specified amount of months in the future to create a new date
+                        dateList.Add(date); // adds created date to the date list
                     }
                     break;
 
-                case "n":
+                case "n": // maintenance won't be repeated
                 case "N":
                     WriteLine("Maintenance will only happen once");
                     break;
@@ -517,15 +511,15 @@ partial class Program
         }
 
         int affected = 0;
-        // Add values to new register
-        using (bd_storage db = new())
+        // Add values to new registers from maintenance registers and maintains table and  updates statuses from equipment table on maintenance-related equipments
+        using (bd_storage db = new()) // creates connection to database
         {
-            if (db.MaintenanceRegisters is null)
+            if (db.MaintenanceRegisters is null) // checks if maintenance register table exists
                 return 0;
-            foreach (var dateValue in dateList)
+            foreach (var dateValue in dateList) // creates a maintenance register for each date on the date lists previosuly filled
             {
                 MaintenanceRegister m =
-                    new()
+                    new() // creates a new maintenance register object and stores all information related to it
                     {
                         MaintenanceTypeId = Convert.ToByte(mTypeID),
                         MaintenanceInstructions = instruct,
@@ -535,42 +529,41 @@ partial class Program
                         StorerId = EncryptPass(username),
                         MaintenanceMaterialsDescription = "0"
                     };
-                EntityEntry<MaintenanceRegister> entity = db.MaintenanceRegisters.Add(m);
-                affected += db.SaveChanges();
+                EntityEntry<MaintenanceRegister> entity = db.MaintenanceRegisters.Add(m); // adds the created object to the maintenance register table
+                affected += db.SaveChanges(); // saves changes on the database and adds the amount of rows affected to the total
                 int i = 0;
-                foreach (var EID in equipmentIdList)
+                foreach (var EID in equipmentIdList) // creates a maintains row for each equipment related to the equipment register, and connects it to the maintenance register through maintenance register id 
                 {
-                    Maintain maintainValue =
+                    Maintain maintainValue = // creates a new maintain object with the maintenance register id and each of the equipments id related to it
                         new() { MaintenanceId = m.MaintenanceId, EquipmentId = EID };
-                    EntityEntry<Maintain> entity2 = db.Maintain.Add(maintainValue);
-                    affected += db.SaveChanges();
+                    EntityEntry<Maintain> entity2 = db.Maintain.Add(maintainValue); // saves each of the maintain objects on the database
+                    affected += db.SaveChanges(); // saves changes on the database and adds the amount of rows affected to the total
 
                     IQueryable<Equipment>? equipments = db.Equipments.Where(
-                        e => e.EquipmentId == EID
+                        e => e.EquipmentId == EID // searches for the equipment id on the equipment table
                     );
-                    byte? status = statusList[i];
+                    byte? status = statusList[i]; // creates a variable status to save each of the statuses previously saved on the status list
                     if (equipments is not null && equipments.Any())
                     {
-                        equipments.ExecuteUpdate(
+                        equipments.ExecuteUpdate( // updates status on each of the equipments whick were added to the maintenance report
                             u =>
                                 u.SetProperty(
                                     p => p.StatusId, // Property Selctor
                                     p => status // Value to edit
                                 )
                         );
-                        affected += db.SaveChanges();
+                        affected += db.SaveChanges(); // saves changes on the database and adds the amount of rows affected to the total
                     }
-                    i++;
+                    i++; // increments index for status list
                 }
             }
             return affected;
         }
     }
 
-    // TODO: finish execute update and add protections for reading data from the user
-    public static int FinishMaintenanceReport(string username)
+    public static int FinishMaintenanceReport(string username) // updates returnedDate, maintenanceDescription and maintenanceMatsDescription with values entered by user for a pending maintenance register chosen by the user
     {
-        using (bd_storage db = new())
+        using (bd_storage db = new()) // creates connection with the database
         {
             DateTime? endDate = new();
             DateTime startDate = new();
@@ -581,7 +574,7 @@ partial class Program
                 "Here's a list of all Maintenances Registers that haven't been completed yet"
             );
             WriteLine();
-            ViewMaintenanceNotMade();
+            ViewMaintenanceNotMade(); // lists all pending maintenance registers
             WriteLine();
 
             bool valid = false;
@@ -592,52 +585,43 @@ partial class Program
                     "Please select the ID of the Maintenance and the date in which the maintenance you wish to complete was started"
                 );
                 Write("Maintenance ID : ");
-                maintenanceRegId = ReadNonEmptyLine();
+                maintenanceRegId = ReadNonEmptyLine(); // reads a string from the user which is not empty, a whitespace or null
 
                 WriteLine();
                 WriteLine("Date : ");
-                startDate = ProgrammedMaintenanceDate();
+                startDate = ProgrammedMaintenanceDate(); // reads a valid date from the user
 
-                IQueryable<Maintain>? mRegisters = db.Maintain
-                    .Include(m => m.Maintenance)
+                IQueryable<Maintain>? mRegisters = db.Maintain // searches for maintains register that have the maintenance register id and that inside them, have the programmed date entered by the user                    .Include(m => m.Maintenance)
                     .Include(m => m.Equipment)
+                    .Include(m => m.Maintenance)
                     .Where(
                         m =>
                             m.Maintenance.MaintenanceId == Convert.ToInt32(maintenanceRegId)
                             && m.Maintenance.ProgrammedDate == startDate
-                    ); // checks if the user selected a valid id from the table
-                if (mRegisters is null || !mRegisters.Any())
+                    ); // checks if the user selected a valid maintenance register from the table
+                if (mRegisters is null || !mRegisters.Any()) // checks if the query returned anything
                 {
                     WriteLine($"ID '{maintenanceRegId}' is not-existent or date entered is wrong");
                 }
                 else
                 {
-                    foreach (var mRegister in mRegisters)
-                    {
-                        if (
-                            mRegister.Maintenance?.ExitDate.Date
-                            < mRegister.Maintenance?.ProgrammedDate.Date
-                        )
-                        {
-                            valid = true;
+                    valid = true;
 
-                            WriteLine();
-                            WriteLine(
-                                "Enter the date when the equipment(s) was(were) returned after maintenance"
-                            );
-                            endDate = ReturnMaintenanceDate(mRegisters.First().Maintenance.ProgrammedDate);
+                    WriteLine();
+                    WriteLine(
+                        "Enter the date when the equipment(s) was(were) returned after maintenance"
+                    );
+                    endDate = ReturnMaintenanceDate(mRegisters.First().Maintenance.ProgrammedDate); // reads a valid date from the user and verifies it isn´t before the programmed date
 
-                            WriteLine();
-                            WriteLine("Please describe what was done to the equipment");
-                            maintenanceDesc = VerifyReadMaxLengthString(255);
+                    WriteLine();
+                    WriteLine("Please describe what was done to the equipment");
+                    maintenanceDesc = VerifyReadMaxLengthString(255); // reads a description from the user and verifies it doesn't exceed 255 characters
 
-                            WriteLine();
-                            WriteLine(
-                                "Please describe which materials were used for the maintenance"
-                            );
-                            maintenanceMatsDesc = VerifyReadMaxLengthString(100);
-                        }
-                    }
+                    WriteLine();
+                    WriteLine(
+                        "Please describe which materials were used for the maintenance"
+                    );
+                    maintenanceMatsDesc = VerifyReadMaxLengthString(100); // reads a materials description from the user and verifies it doesn't exceed 100 characters
                     if (!valid)
                     {
                         WriteLine("Please select an ID of the ones showed above");
@@ -648,15 +632,15 @@ partial class Program
             int affected = 0;
             byte status = 1;
 
-            IQueryable<MaintenanceRegister>? updateRegisters = db.MaintenanceRegisters.Where(
+            IQueryable<MaintenanceRegister>? updateRegisters = db.MaintenanceRegisters.Where( // searches for the chosen maintenance register id and the programmed date inside it
                 m =>
                     m.MaintenanceId == Convert.ToInt32(maintenanceRegId)
                     && m.ProgrammedDate == startDate
             ); 
 
-            if (updateRegisters is not null && updateRegisters.Any())
+            if (updateRegisters is not null && updateRegisters.Any()) // verifies the query returned something
             {
-                updateRegisters.ExecuteUpdate(
+                updateRegisters.ExecuteUpdate( // updates fields with the info entered by the user
                     u =>
                         u.SetProperty(
                                 m => m.ExitDate, // Property Selctor
@@ -671,10 +655,10 @@ partial class Program
                                 m => maintenanceMatsDesc // Value to edit
                             )
                 );
-                affected += db.SaveChanges();
+                affected += db.SaveChanges(); // saves changes on the database and adds the amount of rows affected to the total
             }
 
-            IQueryable<string>? maintainedEquipmentsId = db.Maintain
+            IQueryable<string>? maintainedEquipmentsId = db.Maintain // returns all equipments related to the maintenance register 
                 .Include(m => m.Maintenance)
                 .Include(m => m.Equipment)
                 .Where(
@@ -684,24 +668,24 @@ partial class Program
                 )
                 .Select(m => m.EquipmentId);
 
-            if (maintainedEquipmentsId is not null && maintainedEquipmentsId.Any())
+            if (maintainedEquipmentsId is not null && maintainedEquipmentsId.Any()) //checks if the query returned anything
             {
-                foreach (var EID in maintainedEquipmentsId)
+                foreach (var EID in maintainedEquipmentsId) // goes through each one of ther equipments related to the maintenance register
                 {
-                    IQueryable<Equipment>? maintainedEquipments = db.Equipments.Where(
+                    IQueryable<Equipment>? maintainedEquipments = db.Equipments.Where( // searches for the equipment inside the equipment table
                         m => m.EquipmentId == EID
                     );
 
-                    if (maintainedEquipments is not null && maintainedEquipments.Any())
+                    if (maintainedEquipments is not null && maintainedEquipments.Any()) // checks if the query returned anything
                     {
-                        maintainedEquipments.ExecuteUpdate(
+                        maintainedEquipments.ExecuteUpdate( // updates the status of each of the equipments to "Available"
                             u =>
                                 u.SetProperty(
                                     w => w.StatusId, // Property Selctor
                                     w => status // Value to edit
                                 )
                         );
-                        affected += db.SaveChanges();
+                        affected += db.SaveChanges(); // saves changes on the database and adds the amount of rows affected to the total
                     }
                 }
             }
