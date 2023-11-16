@@ -3,6 +3,7 @@
 //using AutoGens;
 using Microsoft.Data.Sqlite;
 using UnitTests;
+using console;
 
 //new
 using Moq;
@@ -75,6 +76,64 @@ namespace FunctionsName
                 return null;
             }
         }
+
+        public static int ListClassroomsForUt(IAll db)
+        {
+            // Indice de la lista
+            int i = 1;
+                // verifica que exista la tabla de Classroom
+                if( db.Classrooms is null)
+                {
+                    throw new InvalidOperationException("The table does not exist.");
+                } 
+                else 
+                {
+                    // Muestra toda la lista de classrooms con un indice y la clave de este
+                    IQueryable<Classroom> Classrooms = db.Classrooms;
+                    
+                    foreach (var cl in Classrooms)
+                    {
+                        WriteLine($"{i}. {cl.Clave}");
+                        i++;
+                    }
+                    return Classrooms.Count();
+                }
+        }
+
+       public static DateTime AddDate(DateTime CurrentDate)
+    {
+        //Inicializa variables
+        DateTime DateValue= DateTime.Today;
+        bool ValideDate = false;
+        while (ValideDate==false)
+        {
+            // Pide que inserte la fecha
+            WriteLine("Insert the date of the class: yyyy/MM/dd");
+            string DateInput = ReadNonEmptyLine();
+            // Lo trata de convertir al formato especificado, teniendo en cuenta la zona horaria de la computadora, sin ningun estilo especial
+            // Y si es correcto entra al if
+            if (DateTime.TryParseExact(DateInput, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateValue))
+            {
+                // Verifica que sea minimo un día antes y maximo 14
+                if(DateValue > CurrentDate.Date && CurrentDate.AddDays(14) >= DateValue.Date){
+                    // Verifica que no se hagan permisos en sabado o domingo
+                    if (DateValue.DayOfWeek != DayOfWeek.Saturday && DateValue.DayOfWeek != DayOfWeek.Sunday )
+                    {
+                        // Si es válida la fecha termina el ciclo
+                        ValideDate = true;
+                    } else {
+                        WriteLine("The request must be between monday to friday");
+                    }
+                }else{
+                    WriteLine("It must be one day appart of the minimum and 2 weeks maximum. Try again");
+                }
+            } else{
+                WriteLine("The format must be yyyy/mm/dd. Try again.");
+            }
+        }
+        return DateValue;
+    }
+    
 
         public static void ApprovePermissions(string? User, IAll db)
         {
@@ -165,7 +224,26 @@ namespace FunctionsName
                     }
                 }
         }
+        public static bool ListStorers(IAll db)
+        {
+            bool aux = true;
+                IQueryable<Storer> storers = db.Storers;
 
+                if ((storers is null) || !storers.Any())
+                {
+                    WriteLine("There are no storers");
+                    aux = false;
+                    return aux;
+                }
+
+                WriteLine("| {0,-10} | {1,-30} | {2,-30} | {3,-30} | {4,-50} |", "Id", "Name", "Last Name P", "Last Name M", "Password");
+
+                foreach (var storer in storers)
+                {
+                    WriteLine("| {0:0000000000} | {1,-30} | {2,-30} | {3,-30} | {4,-50} |", storer.StorerId, storer.Name, storer.LastNameP, storer.LastNameM, Decrypt(storer.Password));
+                }
+            return aux;
+        }
         public static bool WatchPermissions(string User, IAll db)
         {
             bool aux = true;
@@ -199,224 +277,6 @@ namespace FunctionsName
             return aux;
         }
 
-        public static bool RegistroProf(IAll db)
-        {
-            //pide datos para registro, ReadNonEmptyLine() para que no se dejen campos vacios
-            WriteLine("Provide your payroll number, this will be your ID: ");
-            string username = EncryptPass(VerifyNumericInput10());
-
-            WriteLine("Provide your name: ");
-            string firstname = VerifyAlphabeticInput();
-
-            WriteLine("Provide your paternal last name: ");
-            string lastnameP = VerifyAlphabeticInput();
-
-            WriteLine("Provide your maternal last name: ");
-            string lastnameM = VerifyAlphabeticInput();
-
-            WriteLine("Create your password: ");
-            string encryptedPassword = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
-            
-            string nip = "";
-            int op = 0;
-
-            while (op == 0)
-            {
-                //mientras no sea valido lo pide todo el rato
-                WriteLine("Create your confirmation NIP for your students requests (4 digits): ");
-                nip = EncryptPass(VerifyReadLengthStringExact(4));
-                IQueryable<Professor> professors = db.Professors.Where(p => p.Nip == nip);
-                if (((professors is null) || !professors.Any()))
-                {
-                    op = 1;
-                }
-            }
-
-            // add to the database the register
-            int affected = 0;
-            Professor p = new()
-            {
-                ProfessorId = username,
-                Name = firstname,
-                LastNameP = lastnameP,
-                LastNameM = lastnameM,
-                Password = encryptedPassword,
-                Nip = nip
-            };
-
-            EntityEntry<Professor> entity = db.Professors.Add(p);
-            WriteLine($"State: {entity.State} ProfessorId: {p.ProfessorId}");
-            // SAVE THE CHANGES ON DB
-            affected = db.SaveChanges();
-
-            WriteLine();
-            bool changes;
-            if (affected == 1)
-            {
-                WriteLine($"Congratulations Professor, you were added succesfully!");
-                changes = true;
-            }
-            else
-            {
-                WriteLine($"Professor was not registered");
-                changes = false;
-            }
-
-            return changes;
-
-        }
-
-        public static bool RegistroStorerCoord(string TableName, IAll db)
-        {
-            //pide datos para registr, ReadNonEmptyLine() poara que se regustren datos
-            //es el mismo 
-            WriteLine("Provide your payroll number, this will be your ID: ");
-            string username = EncryptPass(VerifyNumericInput10());
-    
-            WriteLine("Provide your name: ");
-            string firstname = VerifyAlphabeticInput();
-
-            WriteLine("Provide your paternal last name: ");
-            string lastnameP = VerifyAlphabeticInput();
-
-            WriteLine("Provide your maternal last name: ");
-            string lastnameM = VerifyAlphabeticInput();
-
-            WriteLine("Create your password: ");
-            string encryptedPassword = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
-
-            // add to the database the register
-            int affected = 0;
-            
-            if (TableName == "Storer")
-            {
-                //agrega a la bd
-                Storer s = new()
-                {
-                    StorerId = username,
-                    Name = firstname,
-                    LastNameP = lastnameP,
-                    LastNameM = lastnameM,
-                    Password = encryptedPassword
-                };
-
-                EntityEntry<Storer> entity = db.Storers.Add(s);
-                WriteLine($"State: {entity.State} StorerId: {s.StorerId}");
-                // SAVE THE CHANGES ON DB
-                affected = db.SaveChanges();
-            }
-            else if (TableName == "Coordinator")
-            {
-                Coordinator c = new()
-                {
-                    CoordinatorId = username,
-                    Name = firstname,
-                    LastNameP = lastnameP,
-                    LastNameM = lastnameM,
-                    Password = encryptedPassword
-                };
-
-                EntityEntry<Coordinator> entity = db.Coordinators.Add(c);
-                WriteLine($"State: {entity.State} CoordinatorId: {c.CoordinatorId}");
-                // SAVE THE CHANGES ON DB
-                affected = db.SaveChanges();
-            }
-            WriteLine();
-            bool changes;
-            if (affected == 1)
-            {
-                WriteLine($"Congratulations {TableName}, you were added succesfully!");
-                changes = true;
-            }
-            else
-            {
-                WriteLine($"{TableName} was not registered");
-                changes = false;
-            }
-            return changes;
-        }
-
-        public static bool RegistroStudent(IAll db)
-        {
-            WriteLine("Provide your register, this will be your ID: ");
-            string username = VerifyNumericInput8();
-
-            WriteLine("Provide your name: ");
-            string firstname = VerifyAlphabeticInput();
-
-            WriteLine("Provide your paternal last name: ");
-            string lastnameP = VerifyAlphabeticInput();
-
-            WriteLine("Provide your maternal last name: ");
-            string lastnameM = VerifyAlphabeticInput();
-            int? groupid=0;
-            int op=0;
-            
-            while(op==0)
-            {
-                WriteLine("Provide your group:");
-                string? group = VerifyReadLengthStringExact(3);
-                IQueryable<Group> groups = db.Groups.Where(g=> g.Name == group);
-                
-                if(groups is null || !groups.Any())
-                {
-                    Group g = new()
-                    {
-                        Name = group
-                    };
-
-                    EntityEntry<Group> entiti = db.Groups.Add(g);
-                    int changed = db.SaveChanges();  
-                }
-                IQueryable<Group>? groupsid = db.Groups.Where(g=> g.Name == group);
-                if(groupsid is not null && groupsid.Any())
-                {
-                    var groupfirst = groupsid.First();
-                    groupid = groupfirst.GroupId;
-                    op=1; 
-                }
-            }
-
-            WriteLine("Create your password: ");
-            string? encryptedPassword = EncryptPass(VerifyUpperCaseAndNumeric(VerifyReadLengthString(8)));
-            int affected = 0;
-            bool changes;
-            Student s = new()
-            {
-                StudentId = username,
-                Name = firstname,
-                LastNameP = lastnameP,
-                LastNameM = lastnameM,
-                GroupId = groupid,
-                Password = encryptedPassword
-            };
-
-            EntityEntry<Student> entity = db.Students.Add(s);
-            WriteLine($"State: {entity.State} StudentId: {s.StudentId}");
-            // SAVE THE CHANGES ON DB
-            affected = db.SaveChanges();
-            
-            WriteLine();
-            if (affected == 1)
-            {
-                WriteLine("Congratulations Student, you were added succesfully!");
-                changes = true;
-
-            }
-            else
-            {
-                WriteLine("Your student ID was not registered");
-                changes = false;
-            }
-
-            return changes;
-        }
-
-
-
-
-
-
 
 
 
@@ -434,6 +294,98 @@ namespace FunctionsName
 
 
         // Vali
+    public static(int Affected, List<string> ListEquipmentsId) UpdateRequestEquipmentsStatus( string RequestId, IAll db)
+    {
+        int Affected = -1;
+        List<string> EquipmentsIds = new List<string>();
+            IQueryable<RequestDetail> reqs = db.RequestDetails.Where(r=>r.RequestId == TryParseStringaEntero(RequestId));
+            if(reqs is  null || !reqs.Any() ){}
+            else
+            {
+                foreach (var r in reqs)
+                {
+                    EquipmentsIds.Add(r.EquipmentId);
+                }
+                foreach(var eq in EquipmentsIds)
+                {
+                    IQueryable<Equipment>? equipments = db.Equipments?.Where(e => e.EquipmentId.Equals(eq));
+                            
+                    if (equipments is not null || equipments.Any())
+                    {
+                        equipments.First().StatusId = 2;
+                        Affected += db.SaveChanges();
+                    }
+                } 
+            }
+        return (Affected, EquipmentsIds);
+    }
+
+    public static bool StudentsLateReturn(IAll db)
+    {
+        bool aux = false;
+            var currentDate = DateTime.Now;
+
+            IQueryable<RequestDetail> requestDetails = db.RequestDetails
+            .Include(r => r.Request.Student.Group)
+            .Include(r => r.Equipment)
+            .Where(s => s.StatusId == 2 && s.ProfessorNip == 1 && s.RequestedDate < currentDate);
+
+            if (!requestDetails.Any())
+            {
+                WriteLine("No students found with overdue equipment.");
+                //SubMenuStudentsUsingEquipment();
+                aux = true;
+                return aux;
+            }
+
+            var table = new ConsoleTable("Id", "Name", "LastName P", "Group", "Equipment", "Return Time", "Return Date");
+            int i = 0;
+            foreach (var use in requestDetails)
+            {
+                    i++;
+
+                    table.AddRow(use.Request.Student.StudentId, use.Request.Student.Name, use.Request.Student.LastNameP, 
+                    use.Request.Student.Group.Name, use.Equipment.Name, $"{use.ReturnTime.Hour}:{use.ReturnTime.Minute}", use.RequestedDate);
+            }
+
+            table.Write();
+            WriteLine();
+        return aux;
+    }
+
+    public static int ListAreas(IAll db)
+    {
+        IQueryable<Area> areas = db.Areas;
+            if ((areas is null) || !areas.Any())
+            {
+                WriteLine("There are no areas found");
+                return 0;
+            }
+            // Use the data
+            foreach (var area in areas)
+            {
+                WriteLine($"{area.AreaId} . {area.Name} ");
+            }
+            return areas.Count();
+    }
+    public static int UpdateRequestFormatStatus(string RequestId, IAll db)
+    {
+        int affected = -1;
+        byte status = 2;
+        //update request details status where RequestId == requestid (variable)
+        IQueryable<RequestDetail> requestDetails = db.RequestDetails.Where(r=> r.RequestId.Equals(TryParseStringaEntero(RequestId)));
+        
+        if(requestDetails is not null || requestDetails.Any())
+        {
+            affected = requestDetails.ExecuteUpdate(u => u.SetProperty(
+                p => p.StatusId, // Property Selctor
+                p => status // Value to edit
+            ));
+            db.SaveChanges();
+        }
+        
+        return affected;
+    }
 
         public static bool VerifyControlNumberExistence(string controlnumber, IAll db)
         {
@@ -474,9 +426,9 @@ namespace FunctionsName
 
 
 
-        public static string? ListEquipmentsRequests(IAll db)
-        {
-                IQueryable<RequestDetail>? requestDetails = db.RequestDetails
+    public static string? ListEquipmentsRequests(IAll db)
+    {
+            IQueryable<RequestDetail>? requestDetails = db.RequestDetails
                 .Include( e => e.Equipment)
                 .Include( s => s.Status)
                 .Include(e=> e.Request.Student)
@@ -530,6 +482,98 @@ namespace FunctionsName
                 }
                 return count;
         }
+
+    public static bool SearchEquipmentsById(IConsoleInput consoleInput, IConsoleOutput consoleOutput, IAll db, string? searchTerm)
+    {
+        // Variable to indicate if the equipment is found
+        bool aux = false;
+
+        // Check if the search term is null or empty, and throw an exception if so
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            WriteLine("Search term cannot be null or empty.");
+            throw new InvalidOperationException("Search term cannot be null or empty.");
+        }
+
+        // Use Entity Framework to query the database for equipments by ID
+        IQueryable<Equipment>? equipments = db.Equipments
+            .Include(e => e.Area)
+            .Include(e => e.Status)
+            .Include(e => e.Coordinator)
+            .Where(e => e.EquipmentId.StartsWith(searchTerm));
+
+        // Check if no equipment is found with the given ID
+        if (!equipments.Any())
+        {
+            WriteLine("No equipment found matching the search term: " + searchTerm);
+            aux = true;
+            return aux;
+        }
+        else
+        {
+            // Display table header
+            WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                "EquipmentId", "Equipment Name", "Year", "Status");
+            WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+
+            // Display details of the equipments with the given ID
+            foreach (var e in equipments)
+            {
+                WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
+                    e.EquipmentId, e.Name, e.Year, e.Status?.Value);
+            }
+
+            // Ask the user if they want to see more information about any of the equipments
+            WriteLine("Do you want to see more information about any of the equipments? (y/n)");
+            string read = consoleInput.ReadLine();
+
+            // If the user wants more information, prompt for the equipment ID
+            if (read == "y" || read == "Y")
+            {
+                consoleOutput.WriteLine("Provide the equipment ID you want to see more info:");
+                read = consoleInput.ReadLine();
+            }
+        }
+
+        // Return the flag indicating if the equipment is found
+        return aux;
+    
+    }
+
+
+
+
+    public static int MenuSignUp(IConsoleInput consoleInput, IConsoleOutput consoleOutput)
+    {
+        int option = 0;
+        bool valid = false;
+
+        consoleOutput.WriteLine("Welcome to the registration");
+        consoleOutput.WriteLine("What kind of user are you?");
+        consoleOutput.WriteLine("1. Student");
+        consoleOutput.WriteLine("2. Professor");
+        consoleOutput.WriteLine("3. Coordinator");
+        consoleOutput.WriteLine("4. Storer");
+        consoleOutput.WriteLine("5. Exit");
+
+        do
+        {
+            consoleOutput.WriteLine("Option: ");
+            string input = consoleInput.ReadLine();
+
+            if (int.TryParse(input, out option) && option >= 1 && option <= 5)
+            {
+                valid = true;
+            }
+            else
+            {
+                consoleOutput.WriteLine("Please choose a valid option (1 - 5)");
+            }
+
+        } while (!valid);
+
+        return option;
+    }
 
           
     public static string VerifyAlphabeticInput() // checks all characters on a string entered by user are alphabetic (letters)
@@ -882,11 +926,12 @@ namespace FunctionsName
         }
     }
 
+    }
 
+    }
 
 
 
         // fin VAli
 
-    }
-}
+    

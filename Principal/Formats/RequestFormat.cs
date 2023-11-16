@@ -239,6 +239,8 @@ partial class Program
         return DateValue;
     }
 
+    
+
     public static (DateTime, DateTime) AddTimes(DateTime dateValue)
     {
         // Variables para almacenar los identificadores de las horas de inicio y fin,

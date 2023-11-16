@@ -33,10 +33,13 @@ partial class Program
         return option;
     }
 
+    // This functions displays a menu with options for the coordinator
     public static int MenuCoordinators()
     {
+        // Variables to store the user input and if the input is valid are initializated
         int option = 0;
         bool valid = false;
+        // Displays the options for the coordinator
         WriteLine();
         WriteLine("**********************************MENU**********************************");
         WriteLine(" 1. View inventory");
@@ -54,11 +57,14 @@ partial class Program
         WriteLine(" 13. Manage subjects");
         WriteLine(" 14. Exit");
 
+        // A loop to make sure that the user adds a valid option
         do
         {
             WriteLine();
             Write("Option : ");
+            // Converts the user´s input to an integer
             option = Convert.ToInt32(ReadNonEmptyLine());
+            // Checks if the input is in range and asks again if not
             if (option<1 || option >14)
             {
                 WriteLine("Please choose a valid option (1 - 14)");
@@ -66,6 +72,7 @@ partial class Program
             }
             else
             {
+                // Exit loop
                 valid = true;
             }
         } while (!valid);

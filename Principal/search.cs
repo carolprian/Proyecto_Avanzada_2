@@ -327,23 +327,31 @@ partial class Program
         }
     }
 
+    // Method to search for equipments by ID
     public static bool SearchEquipmentsById(string? SearchTerm)
     {
+        // Variable to indicate if the equipment is found
         bool aux = false;
+
+        // Check if the search term is null or empty, and throw an exception if so
         if (string.IsNullOrEmpty(SearchTerm))
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Search term cannot be null or empty.");
         }
+
+        // Use Entity Framework to query the database for equipments by ID
         using (bd_storage db = new())
         {
             IQueryable<Equipment>? equipments = db.Equipments
                 .Include(e => e.Area)
                 .Include(e => e.Status)
                 .Include(e => e.Coordinator)
-                .Where(e => e.EquipmentId.StartsWith(SearchTerm)); // Utiliza StartsWith para buscar equipos cuyos nombres comiencen con el término de búsqueda
+                .Where(e => e.EquipmentId.StartsWith(SearchTerm));
 
+            // Disable lazy loading to ensure related entities are loaded
             db.ChangeTracker.LazyLoadingEnabled = false;
 
+            // Check if no equipment is found with the given ID
             if (!equipments.Any())
             {
                 WriteLine("No equipment found matching the search term: " + SearchTerm);
@@ -352,28 +360,39 @@ partial class Program
             }
             else
             {
+                // Display table header
                 WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
-                        "EquipmentId", "Equipment Name", "Year", "Status");
+                    "EquipmentId", "Equipment Name", "Year", "Status");
                 WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
-                    
-                foreach( var e in equipments)
+
+                // Display details of the equipments with the given ID
+                foreach (var e in equipments)
                 {
                     WriteLine("| {0,-15} | {1,-80} | {2,7} | {3,-22} |",
-                        e.EquipmentId, e.Name, e.Year, e.Status?.Value); 
+                        e.EquipmentId, e.Name, e.Year, e.Status?.Value);
                 }
-                    
-                WriteLine("Do you want to see more information about any of the equipments?(y/n)");
+
+                // Ask the user if they want to see more information about any of the equipments
+                WriteLine("Do you want to see more information about any of the equipments? (y/n)");
                 string read = VerifyReadLengthStringExact(1);
-                if(read == "y" || read =="Y")
+
+                // If the user wants more information, prompt for the equipment ID
+                if (read == "y" || read == "Y")
                 {
                     WriteLine("Provide the equipment ID you want to see more info:");
                     read = VerifyReadMaxLengthString(15);
-                    int found = ShowEquipmentBylookigForEquipmentId(read);   
-                    if(found == 0){ WriteLine($"There are no equipments that match the id:  {read}" );}
-                        
+                    int found = ShowEquipmentBylookigForEquipmentId(read);
+
+                    // If no matching equipment is found, display a message
+                    if (found == 0)
+                    {
+                        WriteLine($"There are no equipments that match the ID: {read}");
+                    }
                 }
             }
         }
+
+        // Return the flag indicating if the equipment is found
         return aux;
     }
 
