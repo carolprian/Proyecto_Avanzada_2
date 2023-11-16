@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using AutoGens;
 using ConsoleTables;
+
 partial class Program
 {
     public static string? ListEquipmentsRequests()

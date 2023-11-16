@@ -3,6 +3,7 @@ using System.Security.Cryptography; // for encryption and decryption
 using System.Text;
 
 
+
 partial class Program
 {
     public static string VerifyAlphabeticInput() // checks all characters on a string entered by user are alphabetic (letters)

@@ -135,7 +135,7 @@ partial class Program
         } else 
         {
             WriteLine("Plantel not registered. Try again");
-            return false;
+            throw new ArgumentException("Not a valide option");
         }
     }
 
