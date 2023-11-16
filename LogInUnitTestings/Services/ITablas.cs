@@ -1,12 +1,12 @@
 using AutoGens;
 using Microsoft.EntityFrameworkCore;
-
+// esto es la interfaz de la bd_storage
 namespace Data
 {
     public interface IAll:IDisposable
     {
         DbSet<Academy> Academies {get;}
-        DbSet<Areas> Areas {get;}
+        DbSet<Area> Areas {get;}
         DbSet<Classroom> Classrooms {get;}
         DbSet<Coordinator> Coordinators { get; }
         DbSet<Division> Divisions { get; }
@@ -28,6 +28,6 @@ namespace Data
         DbSet<Subject> Subjects { get; }
         DbSet<Teach> Teaches { get;}
 
-         int SaveChanges();
+        int SaveChanges();
     }
 }

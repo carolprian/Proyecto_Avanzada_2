@@ -3,7 +3,6 @@ using AutoGens;
 using ConsoleTables;
 partial class Program
 {
-    
     public static string? ListEquipmentsRequests()
     {
         using (bd_storage db = new())
@@ -1043,7 +1042,7 @@ partial class Program
 
     public static bool WatchPermissions(string User)
     {
-        bool aux = false;
+        bool aux = true;
         int i = 1;
 
         using (bd_storage db = new bd_storage())
@@ -1056,7 +1055,7 @@ partial class Program
                 {
                     WriteLine("There are no permissions");
                     WriteLine();
-                    aux = true;
+                    aux = false;
                     return aux;
                 }
                 var table = new ConsoleTable("NO. ", "Student Name", 

@@ -1,18 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {}
+    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2_MockUps\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {}
   },
   "projects": {
-    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {
+    "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2_MockUps\\Proyecto_Avanzada_2\\Principal\\Principal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
+        "projectUniqueName": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2_MockUps\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
         "projectName": "Principal",
-        "projectPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
+        "projectPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2_MockUps\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
         "packagesPath": "C:\\Users\\Valeria\\.nuget\\packages\\",
-        "outputPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2\\Principal\\obj\\",
+        "outputPath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2_MockUps\\Proyecto_Avanzada_2\\Principal\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
           "C:\\Users\\Valeria\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
@@ -22,6 +25,7 @@
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

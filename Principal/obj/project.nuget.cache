@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "N+ip08YQpUEr16rOCojuuszOEVd3Z3ZG1HPYhOwTtFeSANcKgOsGATCCDxXmyLEUyUYIQGnd4KS1Q0KaV4ClkA==",
+  "dgSpecHash": "qdZVceuoUu8g7TerRHolUAc5+9Msu/VyZzJadTrI5uz5HSKDtubydfkx394tCw/EJaJVs77BsQHIrJS6Ppnt1A==",
   "success": true,
-  "projectFilePath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
+  "projectFilePath": "D:\\Valeria\\Documents\\.ceti\\7mo\\prograAvanzada\\3P\\Proyecto_Avanzada_2_MockUps\\Proyecto_Avanzada_2\\Principal\\Principal.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Valeria\\.nuget\\packages\\consoletables\\2.4.2\\consoletables.2.4.2.nupkg.sha512",
     "C:\\Users\\Valeria\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
